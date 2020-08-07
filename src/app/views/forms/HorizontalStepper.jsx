@@ -1,107 +1,112 @@
-import React from "react";
-import {
-  TextField,
-  Icon,
-  Button,
-  StepLabel,
-  Step,
-  Stepper,
-  Grid
-} from "@material-ui/core";
+import React from 'react';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';  
+import Typography from '@material-ui/core/Typography';
+import Countries from './Countries';
+import Marital from './Marital';
+import Languages from './Languages';
+import Visit from './Visit';
+import ID from './ID';
+import Personal from './Personal';
+import Contact from './Contact';
+import Education from './Education';
+import Employment from './Employment';
+import Background from './Background';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import MobileStepper from '@material-ui/core/MobileStepper';
 
-function getSteps() {
-  return ["First Name", "Last Name", "Address"];
-}
+const useStyles = makeStyles((theme) => ({
+  buttons: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  button: {
+    marginTop: theme.spacing(3),
+    marginLeft: theme.spacing(1),
+  },
+}));
 
-function getStepContent(stepIndex) {
-  switch (stepIndex) {
+function getStepContent(step) {
+  switch (step) {
     case 0:
-      return (
-        <form noValidate autoComplete="off">
-          <Grid container spacing={3}>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
-              <TextField className="w-full" label="First Name" />
-            </Grid>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
-              <TextField className="w-full" label="Middle Name" />
-            </Grid>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
-              <TextField className="w-full" label="Last Name" />
-            </Grid>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
-              <TextField className="w-full" label="Age" />
-            </Grid>
-          </Grid>
-        </form>
-      );
+      return <Personal />;
     case 1:
-      return <TextField label="Company Name"></TextField>;
+      return <Countries />;
     case 2:
-      return <TextField label="Address"></TextField>;
+      return <Marital />;
+    case 3:
+      return <Languages />;
+    case 4:
+      return <ID />;
+    case 5:
+      return <Contact />;
+    case 6:
+      return <Visit />;
+    case 7:
+      return <Education />;
+    case 8:
+      return <Employment />;
+    case 9:
+      return <Background />;
     default:
-      return "";
+      throw new Error('Unknown step');
   }
 }
 
-export default function HorizontalStepper() {
+export default function ProgressMobileStepper() {
+  const classes = useStyles();
+  const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const steps = getSteps();
 
   const handleNext = () => {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   return (
-    <div>
-      <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map(label => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <div>
-        {activeStep === steps.length ? (
-          <div>
-            <div className="flex items-center mb-4">
-              <Icon>done</Icon> <span className="ml-2">Done</span>
-            </div>
-            <Button variant="contained" color="secondary" onClick={handleReset}>
-              Reset
-            </Button>
-          </div>
-        ) : (
-          <div>
-            {getStepContent(activeStep)}
-            <div className="pt-6">
-              <Button
-                variant="contained"
-                color="secondary"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-              >
+    <React.Fragment>
+      <CssBaseline />
+      <main className={classes.layout}>
+        <Paper className={classes.paper}>
+          <Typography component="h1" variant="h5" align="center">
+            Visitor Visa Application
+          </Typography>
+          <br></br>
+          <React.Fragment>
+          <MobileStepper
+            variant="progress"
+            steps={10}
+            position="static"
+            activeStep={activeStep}
+            className={classes.root}
+            nextButton={
+              <Button size="small" onClick={handleNext} disabled={activeStep === 9}>
+                Next
+                  {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+              </Button>
+            }
+            backButton={
+              <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
                 Back
               </Button>
-              <Button
-                className="ml-4"
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-              >
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
+            }
+          />
+          <br></br>
+              <React.Fragment>
+                {getStepContent(activeStep)}
+              </React.Fragment>
+          </React.Fragment>
+          
+        </Paper>
+      </main>
+    </React.Fragment>
   );
+  
 }
