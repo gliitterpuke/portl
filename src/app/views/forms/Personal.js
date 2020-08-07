@@ -10,7 +10,9 @@ import {
   FormControlLabel,
   FormLabel,
   TextField,
-  Typography
+  Typography,
+  Select,
+  InputLabel
 } from "@material-ui/core";
 import "date-fns";
 
@@ -76,6 +78,8 @@ class SimpleForm extends Component {
       PersonalDetails_PlaceBirthCity,
       PersonalDetails_PlaceBirthCountry,
       PersonalDetails_Citizenship_Citizenship,
+      PersonalDetails_ServiceIn_ServiceIn,
+      PersonalDetails_VisaType_VisaType
     } = this.state;
     return (
       <div>
@@ -88,19 +92,29 @@ class SimpleForm extends Component {
               Personal Information
           </Typography>
           <Grid container spacing={6}>
-            <Grid item xs={12} md={6}>
-              <TextValidator
-                className="mb-8 w-full"
-                label="Family Name"
+          <Grid item xs={12} md={6}>
+            <InputLabel>Service In</InputLabel>
+                <Select
+                native required="true" style={{ width: 300 }}
+                name="PersonalDetails_ServiceIn_ServiceIn" autoWidth="true"
                 onChange={this.handleChange}
-                type="text"
-                name="PersonalDetails_Name_FamilyName"
-                value={PersonalDetails_Name_FamilyName}
-                validators={[
-                  "required",
-                ]}
-                errorMessages={["this field is required"]}
-              />
+                >
+                <option aria-label="None" value="" />
+                <option>English</option>
+                <option>French</option>
+                </Select>
+            </Grid>
+            <Grid item xs={12} md={6}>
+            <InputLabel>Visa Type</InputLabel>
+                <Select
+                native required="true" style={{ width: 300 }}
+                name="PersonalDetails_VisaType_VisaType" autoWidth="true"
+                onChange={this.handleChange}
+                >
+                <option aria-label="None" value="" />
+                <option>Visitor</option>
+                <option>Transit</option>
+                </Select>
             </Grid>
             <Grid item xs={12} md={6}>
               <TextValidator className="mb-8 w-full"
@@ -109,6 +123,19 @@ class SimpleForm extends Component {
                 type="text"
                 name="PersonalDetails_Name_GivenName"
                 value={PersonalDetails_Name_GivenName}
+                validators={[
+                  "required",
+                ]}
+                errorMessages={["this field is required"]}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextValidator className="mb-8 w-full"
+                label="Family Name"
+                onChange={this.handleChange}
+                type="text"
+                name="PersonalDetails_Name_FamilyName"
+                value={PersonalDetails_Name_FamilyName}
                 validators={[
                   "required",
                 ]}
@@ -184,10 +211,30 @@ class SimpleForm extends Component {
               </RadioGroup>
             
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={2}>
               <TextValidator
-                className="mb-8 w-full" label="Date of Birth" onChange={this.handleChange} type="date" InputLabelProps={{ shrink: true }}
+                className="mb-8 w-full" label="YYYY" onChange={this.handleChange} type="text" //InputLabelProps={{ shrink: true }}
                 name="PersonalDetails_DOBYear" value={PersonalDetails_DOBYear}
+                validators={[
+                  "required",
+                ]}
+                errorMessages={["this field is required"]}
+              />
+            </Grid>
+            <Grid item xs={12} md={2}>
+              <TextValidator
+                className="mb-8 w-full" label="MM" onChange={this.handleChange} type="text" //InputLabelProps={{ shrink: true }}
+                name="PersonalDetails_DOBMonth" value={PersonalDetails_DOBYear}
+                validators={[
+                  "required",
+                ]}
+                errorMessages={["this field is required"]}
+              />
+            </Grid>
+            <Grid item xs={12} md={2}>
+              <TextValidator
+                className="mb-8 w-full" label="DD" onChange={this.handleChange} type="text" //InputLabelProps={{ shrink: true }}
+                name="PersonalDetails_DOBDay" value={PersonalDetails_DOBYear}
                 validators={[
                   "required",
                 ]}
@@ -229,7 +276,7 @@ class SimpleForm extends Component {
               style={{ width: 300 }} options={countries} autoHighlight getOptionLabel={(option) => option.label}
               renderOption={(option) => (
               <React.Fragment>
-                <span>{countryToFlag(option.code)}</span> {option.label} ({option.code})
+                {option.label}
               </React.Fragment> )}
               renderInput={(params) => (
               <TextField
