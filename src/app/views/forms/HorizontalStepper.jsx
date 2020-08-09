@@ -18,13 +18,69 @@ import MobileStepper from '@material-ui/core/MobileStepper';
 export class Hor extends Component {
     state = {
       step: 1,
-      ContactInformation_contact_PhoneNumbers_Phone_CanadaUS: '0',
-      ContactInformation_contact_PhoneNumbers_Phone_Other: '0',
-      ContactInformation_contact_PhoneNumbers_AltPhone_CanadaUS: '0',
-      ContactInformation_contact_PhoneNumbers_AltPhone_Other: '0',
-      ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_CanadaUS: '0',
-      ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_Other: '0',
-
+      PersonalDetails_ServiceIn_ServiceIn: "English",
+      PersonalDetails_VisaType_VisaType: "Transit",
+      PersonalDetails_Name_FamilyName: "Last",
+      PersonalDetails_Name_GivenName: "First",
+      PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator: "Yes",
+      PersonalDetails_Sex_Sex: "Female",
+      PersonalDetails_DOBYear: "1995",
+      PersonalDetails_DOBMonth: "11",
+      PersonalDetails_DOBDay: "19",
+      PersonalDetails_PlaceBirthCity: "Toronto",
+      PersonalDetails_PlaceBirthCountry: "Canada",
+      PersonalDetails_Citizenship_Citizenship: "Taiwan",
+      PersonalDetails_CurrentCOR_Row2_Country: "Canada",
+      PersonalDetails_CurrentCOR_Row2_Status: "Citizen",
+      PersonalDetails_CurrentCOR_Row2_FromDate: "2019-01-01",
+      PersonalDetails_CurrentCOR_Row2_ToDate: "2022-02-02",
+      PersonalDetails_PCRIndicator: "Yes",
+      PersonalDetails_SameAsCORIndicator: "Yes",
+      MaritalStatus_SectionA_MaritalStatus: "Single",
+      MaritalStatus_SectionA_PrevMarriedIndicator: "Yes",
+      MaritalStatus_SectionA_PassportNum_PassportNum: "12345",
+      MaritalStatus_SectionA_Passport_CountryofIssue_CountryofIssue: "Canada",
+      MaritalStatus_SectionA_Passport_IssueDate_IssueDate: "2019-01-01",
+      MaritalStatus_SectionA_Passport_ExpiryDate: "2021-02-01",
+      MaritalStatus_SectionA_Passport_TaiwanPIN: "No",
+      MaritalStatus_SectionA_Passport_IsraelPassportIndicator: "Yes",
+      MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang: "English",
+      MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate: "Yes",
+      MaritalStatus_SectionA_Languages_LanguageTest: "Yes",
+      natID_q1_natIDIndicator: "Yes",
+      USCard_q1_usCardIndicator: "Yes",
+      ContactInformation_contact_SameAsMailingIndicator: "Yes", 
+      ContactInformation_contact_PhoneNumbers_Phone_Type: "Residence",
+      ContactInformation_contact_PhoneNumbers_Phone_CanadaUS: "1",
+      ContactInformation_contact_PhoneNumbers_Phone_Other: "0",
+      ContactInformation_contact_PhoneNumbers_Phone_NumberCountry: "Canada",
+      ContactInformation_contact_PhoneNumbers_AltPhone_Type: "Cellular",
+      ContactInformation_contact_PhoneNumbers_AltPhone_CanadaUS: "0",
+      ContactInformation_contact_PhoneNumbers_AltPhone_Other: "0",
+      ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_CanadaUS: "0",
+      ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_Other: "0",
+      DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit: "Tourism",
+      DetailsOfVisit_PurposeRow1_HowLongStay_FromDate: "2020-09-01",
+      DetailsOfVisit_PurposeRow1_HowLongStay_ToDate: "2020-12-01",
+      DetailsOfVisit_PurposeRow1_Funds_Funds: "100000",
+      DetailsOfVisit_Contacts_Row1_Name_Name: "Bill Nye",
+      DetailsOfVisit_Contacts_Row1_AddressinCanada_AddressinCanada: "The Science Guy",
+      Education_EducationIndicator: "Yes",
+      Occupation_OccupationRow1_FromYear: "2020",
+      Occupation_OccupationRow1_FromMonth: "01",
+      Occupation_OccupationRow1_Occupation_Occupation: "CEO pls",
+      Occupation_OccupationRow1_Employer: "me pls",
+      Occupation_OccupationRow1_CityTown_CityTown: "Toronto",
+      Occupation_OccupationRow1_Country_Country: "Canada",
+      BackgroundInfo2_VisaChoice1: "Yes",
+      BackgroundInfo2_VisaChoice2: "No",
+      BackgroundInfo2_Details_VisaChoice3: "Yes",
+      BackgroundInfo3_Choice : "No",
+      Military_Choice: "Yes",
+      Military_militaryServiceDetails: "mebe",
+      Occupation_Choice: "Yes",
+      GovPosition_Choice: "No",
+      BackgroundInfo_Choice: ['Yes', 'No']
     };
   
     // Proceed to next step
@@ -51,9 +107,9 @@ export class Hor extends Component {
     handleSubmit = (event) => {
       alert('A form was submitted: ' + this.state);
   
-      fetch('https://portl-dev.herokuapp.com/api//v1/forms/trv/', {
+      fetch('https://portl-dev.herokuapp.com/api//v1/forms/trv/{application_id}', {
           method: 'POST',
-          body: JSON.stringify(this.state)
+          body: encodeURIComponent(JSON.stringify(this.state))
         }).then(function(response) {
           console.log(response)
           return response.json();
