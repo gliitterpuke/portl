@@ -16,13 +16,7 @@ export class Tester3 extends Component {
             alert(JSON.stringify(this.props, null, 2));
             }
         return (
-      <form onsubmit={handleSubmit || this.handleSubmit}>
-      <MuiThemeProvider>
-          <Dialog
-            open
-            fullWidth
-            maxWidth='sm'
-          >
+        <div>
             <List>
               <ListItem>
                 <ListItemText primary="Last Name" secondary={PersonalDetails_Name_FamilyName} />
@@ -35,11 +29,10 @@ export class Tester3 extends Component {
               </ListItem>
             </List>
             <br />
-
-            <button onClick={handleSubmit}>Submit</button>
-          </Dialog>
-        </MuiThemeProvider>
-        </form>
+        <Button color="primary" variant="contained" onClick={handleSubmit}>
+          Submit
+        </Button>
+        </div>
     );
   }
 }
