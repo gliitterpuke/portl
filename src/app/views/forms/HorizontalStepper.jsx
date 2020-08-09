@@ -5,7 +5,6 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';  
 import Typography from '@material-ui/core/Typography';
 import CountriesN from './CountriesN';
-import Marital from './Marital';
 import LanguagesN from './LanguagesN';
 import VisitN from './VisitN';
 import MaritalN from './MaritalN';
