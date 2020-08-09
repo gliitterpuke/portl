@@ -1,9 +1,4 @@
 import React, { Component } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';  
-import Typography from '@material-ui/core/Typography';
 import CountriesN from './CountriesN';
 import LanguagesN from './LanguagesN';
 import VisitN from './VisitN';
@@ -391,14 +386,6 @@ export class Hor extends Component {
         Education_Edu_Row1_CityTown,
         Education_Edu_Row1_Country_Country,
         Education_Edu_Row1_ProvState,
-        Education_EducationIndicator,
-        Education_Edu_Row1_FromYear,
-        Education_Edu_Row1_FromMonth,
-        Education_Edu_Row1_ToYear,
-        Education_Edu_Row1_ToMonth,
-        Education_Edu_Row1_FieldOfStudy,
-        Education_Edu_Row1_School,
-        Education_Edu_Row1_CityTown,
         BackgroundInfo_Choice,
         BackgroundInfo_Details_MedicalDetails,
         BackgroundInfo_backgroundInfoCalc,
