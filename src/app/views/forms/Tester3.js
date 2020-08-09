@@ -29,9 +29,8 @@ export class Tester3 extends Component {
               </ListItem>
             </List>
             <br />
-        <Button color="primary" variant="contained" onClick={handleSubmit}>
-          Submit
-        </Button>
+        <Button color="secondary" variant="contained" onClick={this.back}>Back</Button>
+        <Button color="default" variant="contained" onClick={handleSubmit}>Submit</Button>
         </div>
     );
   }

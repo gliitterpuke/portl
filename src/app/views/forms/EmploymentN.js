@@ -269,10 +269,9 @@ export class EmploymentN extends Component {
             </Grid>
         </Grid>
         <br />
-        <Button color="primary" variant="contained" onClick={this.continue}>
-            Continue
-        </Button>
-        <button onClick={handleSubmit}>Submit</button>
+        <Button color="secondary" variant="contained" onClick={this.back}>Back</Button>
+        <Button color="primary" variant="contained" onClick={this.continue}>Continue</Button>
+        <Button color="default" variant="contained" onClick={handleSubmit}>Submit</Button>
         </ValidatorForm>
       </div>
     );
