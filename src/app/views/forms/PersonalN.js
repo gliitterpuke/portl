@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import "date-fns";
 
-export class IDN extends Component {
+export class PersonalN extends Component {
     continue = e => {
         e.preventDefault();
         this.props.nextStep();
@@ -224,7 +224,7 @@ export class IDN extends Component {
   }
 }
 
-export default IDN;
+export default PersonalN;
 
 
 const countries = [
