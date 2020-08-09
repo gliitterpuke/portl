@@ -23,9 +23,19 @@ export class IDN extends Component {
 
     render() {
 
-        const handleSubmit = (e) => {
+        const handleSubmit = (event) => {
           alert(JSON.stringify(this.props, null, 2));
-          }
+          fetch('https://portl-dev.herokuapp.com/api//v1/forms/trv/{application_id}', {
+            method: 'POST',
+            body: JSON.stringify(this.state),
+            headers:{ 'Content-Type': 'application/x-www-form-urlencoded' } 
+          }).then(function(response) {
+            console.log(response)
+            return response.json();
+          });
+    
+        event.preventDefault();
+    }
         const { values, handleChange } = this.props
         return (
 
