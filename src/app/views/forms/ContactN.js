@@ -218,7 +218,7 @@ export class ContactN extends Component {
           <Grid container spacing={6}> 
             <Grid item xs={12}>
               <RadioGroup
-                className="mb-4" >
+                className="mb-4" row>
                 <FormControlLabel
                   onChange={handleChange('ContactInformation_contact_PhoneNumbers_Phone_CanadaUS')} value="1" control={<Radio color="secondary" />} label="Can/US" />
                 <FormControlLabel
@@ -266,7 +266,7 @@ export class ContactN extends Component {
           <Grid container spacing={6}> 
             <Grid item xs={12}>
               <RadioGroup
-                className="mb-4" >
+                className="mb-4" row>
                 <FormControlLabel
                   onChange={handleChange('ContactInformation_contact_PhoneNumbers_AltPhone_CanadaUS')} value="1" control={<Radio color="secondary" />} label="Can/US" />
                 <FormControlLabel
@@ -314,7 +314,7 @@ export class ContactN extends Component {
           <Grid container spacing={6}> 
             <Grid item xs={12}>
               <RadioGroup
-                className="mb-4" >
+                className="mb-4" row>
                 <FormControlLabel
                   onChange={handleChange('ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_CanadaUS')} value="1" control={<Radio color="secondary" />} label="Can/US" />
                 <FormControlLabel
