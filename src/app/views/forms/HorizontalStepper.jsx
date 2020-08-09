@@ -18,12 +18,12 @@ import MobileStepper from '@material-ui/core/MobileStepper';
 export class Hor extends Component {
     state = {
       step: 1,
-      ContactInformation_contact_PhoneNumbers_Phone_CanadaUS: '',
-      ContactInformation_contact_PhoneNumbers_Phone_Other: '',
-      ContactInformation_contact_PhoneNumbers_AltPhone_CanadaUS: '',
-      ContactInformation_contact_PhoneNumbers_AltPhone_Other: '',
-      ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_CanadaUS: '',
-      ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_Other: '',
+      ContactInformation_contact_PhoneNumbers_Phone_CanadaUS: '0',
+      ContactInformation_contact_PhoneNumbers_Phone_Other: '0',
+      ContactInformation_contact_PhoneNumbers_AltPhone_CanadaUS: '0',
+      ContactInformation_contact_PhoneNumbers_AltPhone_Other: '0',
+      ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_CanadaUS: '0',
+      ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_Other: '0',
 
     };
   
