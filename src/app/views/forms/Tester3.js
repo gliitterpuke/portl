@@ -16,9 +16,8 @@ export class Tester3 extends Component {
             alert(JSON.stringify(this.props, null, 2));
             }
         return (
-          <form onsubmit={handleSubmit || this.handleSubmit}>
+      <form onsubmit={handleSubmit || this.handleSubmit}>
       <MuiThemeProvider>
-        <>
           <Dialog
             open
             fullWidth
@@ -39,7 +38,6 @@ export class Tester3 extends Component {
 
             <button onClick={handleSubmit}>Submit</button>
           </Dialog>
-        </>
         </MuiThemeProvider>
         </form>
     );
