@@ -207,13 +207,13 @@ export class HorizontalStepper extends Component {
     };
 
     handleSubmit = (event) => {
-      alert(JSON.stringify(this.props, null, 2));
+      alert(JSON.stringify(this.props.values, null, 2));
       fetch('http://localhost:8000/api/v1/forms/trv/3', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(this.props),
+        body: JSON.stringify(this.props.values),
       }).then(response => response.json())
       .then(response => {
       
