@@ -207,21 +207,21 @@ export class HorizontalStepper extends Component {
     };
 
     handleSubmit = (event) => {
-      alert('A form was submitted: ' + this.state);
-  
-      fetch('https://portl-dev.herokuapp.com/api//v1/forms/trv/{application_id}', {
-          method: 'POST',
-          body: JSON.stringify(this.state),
-          headers:{ 'Content-Type': 'application/x-www-form-urlencoded' } 
-        }).then(function(response) {
+      alert(JSON.stringify(this.props, null, 2));
+      fetch('http://localhost:8000/api/v1/forms/trv/3', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.props),
+      }).then(response => response.json())
+      .then(response => {
+      
           console.log(response)
-          return response.json();
-        });
-  
-      event.preventDefault();
-  }
-  
-  
+      });
+
+    event.preventDefault();
+}
   render() {
     const { step } = this.state;
     const {       
@@ -232,6 +232,8 @@ export class HorizontalStepper extends Component {
         PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator,
         PersonalDetails_Sex_Sex,
         PersonalDetails_DOBYear,
+        PersonalDetails_DOBMonth,
+        PersonalDetails_DOBDay,
         PersonalDetails_PlaceBirthCity,
         PersonalDetails_PlaceBirthCountry,
         PersonalDetails_Citizenship_Citizenship,
@@ -400,6 +402,8 @@ export class HorizontalStepper extends Component {
         PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator,
         PersonalDetails_Sex_Sex,
         PersonalDetails_DOBYear,
+        PersonalDetails_DOBMonth,
+        PersonalDetails_DOBDay,
         PersonalDetails_PlaceBirthCity,
         PersonalDetails_PlaceBirthCountry,
         PersonalDetails_Citizenship_Citizenship,
