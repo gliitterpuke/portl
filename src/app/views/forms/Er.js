@@ -1,8 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
+import * as yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 import { Select, RadioGroup } from 'formik-material-ui'
+import { KeyboardDatePicker } from 'formik-material-ui-pickers';
 import {
   Button,
   FormControlLabel,
@@ -15,12 +16,12 @@ import {
   MenuItem,
   FormControl
 } from "@material-ui/core";
-import * as yup from 'yup';
 import {
     Autocomplete,
-    ToggleButtonGroup,
     AutocompleteRenderInputParams,
   } from 'formik-material-ui-lab';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
   
 const useStyles = makeStyles(theme => ({
   button: {
@@ -67,6 +68,7 @@ export const Er = ({ formData, setFormData, nextStep }) => {
         {({ errors, touched }) => (
 
       <Form>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Typography variant="h6" gutterBottom>
               Current Country of Residence
         </Typography>
@@ -91,7 +93,7 @@ export const Er = ({ formData, setFormData, nextStep }) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <FormControl>
-              <InputLabel>Service In</InputLabel>
+              <InputLabel>Status</InputLabel>
               <Field
                 component={Select} style={{ width: 300 }} name="PersonalDetails_ServiceIn_ServiceIn">
                 <MenuItem value={'01'}>Citizen</MenuItem>
@@ -114,6 +116,191 @@ export const Er = ({ formData, setFormData, nextStep }) => {
               helperText={touched.PersonalDetails_CurrentCOR_Row2_Other && errors.PersonalDetails_CurrentCOR_Row2_Other}
             />
           </Grid>
+          <Grid item xs={12} md={6}>
+            <Field component={KeyboardDatePicker} label="From" name="PersonalDetails_CurrentCOR_Row2_FromDate" />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Field component={KeyboardDatePicker} label="To" name="PersonalDetails_CurrentCOR_Row2_ToDate" />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="h6" gutterBottom>
+              Previous Countries or Territories of Residence
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <FormLabel FormLabel component="legend">Have you lived in any country outside of your country of citizenship or your current country/territory for more than six months in the past 5 years?</FormLabel>
+            <Field component={RadioGroup} row name="PersonalDetails_PCRIndicator">
+              <FormControlLabel
+                value="Y" control={<Radio />} label="Yes" />
+              <FormControlLabel
+                value="N" control={<Radio />} label="No" />
+            </Field>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Field
+              name="PersonalDetails_PreviousCOR_Row2_Country"
+              component={Autocomplete}
+              options={countries}
+              getOptionLabel={(option: label) => option.label}
+              style={{ width: 300 }}
+              renderInput={(params: AutocompleteRenderInputParams) => (
+                <TextField
+                  {...params}
+                  error={touched['PersonalDetails_PreviousCOR_Row2_Country'] && !!errors['PersonalDetails_PreviousCOR_Row2_Country']}
+                  helperText={errors['PersonalDetails_PreviousCOR_Row2_Country']}
+                  label="Previous Country"
+                  variant="outlined"
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <FormControl>
+              <InputLabel>Status</InputLabel>
+              <Field
+                component={Select} style={{ width: 300 }} name="PersonalDetails_PreviousCOR_Row2_Status">
+                <MenuItem value={'01'}>Citizen</MenuItem>
+                <MenuItem value={'02'}>Permanent Resident</MenuItem>
+                <MenuItem value={'03'}>Worker</MenuItem>
+                <MenuItem value={'04'}>Visitor</MenuItem>
+                <MenuItem value={'05'}>Student</MenuItem>
+                <MenuItem value={'06'}>Other</MenuItem>
+                <MenuItem value={'07'}>Protected Person</MenuItem>
+                <MenuItem value={'08'}>Refugee Claimant</MenuItem>
+                <MenuItem value={'09'}>Foreign National</MenuItem>
+              </Field>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <Field
+              name='PersonalDetails_PreviousCOR_Row2_Other' label='Other *'
+              margin='normal' as={TextField} fullWidth
+              error={touched.PersonalDetails_PreviousCOR_Row2_Other && errors.PersonalDetails_PreviousCOR_Row2_Other}
+              helperText={touched.PersonalDetails_PreviousCOR_Row2_Other && errors.PersonalDetails_PreviousCOR_Row2_Other}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Field component={KeyboardDatePicker} label="From" name="PersonalDetails_PreviousCOR_Row2_FromDate" />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Field component={KeyboardDatePicker} label="To" name="PersonalDetails_PreviousCOR_Row2_ToDate" />
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <Field
+              name="PersonalDetails_PreviousCOR_Row3_Country"
+              component={Autocomplete}
+              options={countries}
+              getOptionLabel={(option: label) => option.label}
+              style={{ width: 300 }}
+              renderInput={(params: AutocompleteRenderInputParams) => (
+                <TextField
+                  {...params}
+                  error={touched['PersonalDetails_PreviousCOR_Row3_Country'] && !!errors['PersonalDetails_PreviousCOR_Row3_Country']}
+                  helperText={errors['PersonalDetails_PreviousCOR_Row3_Country']}
+                  label="Previous Country"
+                  variant="outlined"
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <FormControl>
+              <InputLabel>Status</InputLabel>
+              <Field
+                component={Select} style={{ width: 300 }} name="PersonalDetails_PreviousCOR_Row3_Status">
+                <MenuItem value={'01'}>Citizen</MenuItem>
+                <MenuItem value={'02'}>Permanent Resident</MenuItem>
+                <MenuItem value={'03'}>Worker</MenuItem>
+                <MenuItem value={'04'}>Visitor</MenuItem>
+                <MenuItem value={'05'}>Student</MenuItem>
+                <MenuItem value={'06'}>Other</MenuItem>
+                <MenuItem value={'07'}>Protected Person</MenuItem>
+                <MenuItem value={'08'}>Refugee Claimant</MenuItem>
+                <MenuItem value={'09'}>Foreign National</MenuItem>
+              </Field>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <Field
+              name='PersonalDetails_PreviousCOR_Row3_Other' label='Other *'
+              margin='normal' as={TextField} fullWidth
+              error={touched.PersonalDetails_PreviousCOR_Row3_Other && errors.PersonalDetails_PreviousCOR_Row3_Other}
+              helperText={touched.PersonalDetails_PreviousCOR_Row3_Other && errors.PersonalDetails_PreviousCOR_Row3_Other}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Field component={KeyboardDatePicker} label="From" name="PersonalDetails_PreviousCOR_Row3_FromDate" />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Field component={KeyboardDatePicker} label="To" name="PersonalDetails_PreviousCOR_Row3_ToDate" />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="h6" gutterBottom>
+              Country Where Applying From
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <FormLabel FormLabel component="legend">Same as your current country/territory of residence?</FormLabel>
+            <Field component={RadioGroup} row name="PersonalDetails_SameAsCORIndicator">
+              <FormControlLabel
+                value="Y" control={<Radio />} label="Yes" />
+              <FormControlLabel
+                value="N" control={<Radio />} label="No" />
+            </Field>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Field
+              name="PersonalDetails_CountryWhereApplying_Row2_Country"
+              component={Autocomplete}
+              options={countries}
+              getOptionLabel={(option: label) => option.label}
+              style={{ width: 300 }}
+              renderInput={(params: AutocompleteRenderInputParams) => (
+                <TextField
+                  {...params}
+                  error={touched['PersonalDetails_CountryWhereApplying_Row2_Country'] && !!errors['PersonalDetails_CountryWhereApplying_Row2_Country']}
+                  helperText={errors['PersonalDetails_CountryWhereApplying_Row2_Country']}
+                  label="Previous Country"
+                  variant="outlined"
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <FormControl>
+              <InputLabel>Status</InputLabel>
+              <Field
+                component={Select} style={{ width: 300 }} name="PersonalDetails_CountryWhereApplying_Row2_Status">
+                <MenuItem value={'01'}>Citizen</MenuItem>
+                <MenuItem value={'02'}>Permanent Resident</MenuItem>
+                <MenuItem value={'03'}>Worker</MenuItem>
+                <MenuItem value={'04'}>Visitor</MenuItem>
+                <MenuItem value={'05'}>Student</MenuItem>
+                <MenuItem value={'06'}>Other</MenuItem>
+                <MenuItem value={'07'}>Protected Person</MenuItem>
+                <MenuItem value={'08'}>Refugee Claimant</MenuItem>
+                <MenuItem value={'09'}>Foreign National</MenuItem>
+              </Field>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <Field
+              name='PersonalDetails_CountryWhereApplying_Row2_Other' label='Other *'
+              margin='normal' as={TextField} fullWidth
+              error={touched.PersonalDetails_PreviousCOR_Row2_Other && errors.PersonalDetails_PreviousCOR_Row2_Other}
+              helperText={touched.PersonalDetails_PreviousCOR_Row2_Other && errors.PersonalDetails_PreviousCOR_Row2_Other}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Field component={KeyboardDatePicker} label="From" name="PersonalDetails_CountryWhereApplying_Row2_FromDate" />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Field component={KeyboardDatePicker} label="To" name="PersonalDetails_CountryWhereApplying_Row2_ToDate" />
+          </Grid>
+
             <Button
               type='submit'
               variant='contained'
@@ -123,6 +310,7 @@ export const Er = ({ formData, setFormData, nextStep }) => {
               Continue
             </Button>
           </Grid>
+        </MuiPickersUtilsProvider>
         </Form>
         )}
       </Formik>
