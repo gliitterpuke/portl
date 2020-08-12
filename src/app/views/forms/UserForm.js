@@ -8,7 +8,8 @@ import { Liu } from './Liu' // Contact Info
 import { Qi } from './Qi' // Visit Details
 import { Ba } from './Ba' // Employment
 import { Jiu } from './Jiu' // Education
-import { ZuiHou } from './ZuiHou'; // Background
+import { Shi } from './Shi' // Background
+import { ZuiHou } from './ZuiHou';
 import { QueDing } from './QueDing';
 import { Success } from './Success';
 
@@ -85,7 +86,7 @@ export const UserForm = () => {
       );
     case 8:
       return (
-        <ZuiHou
+        <Ba
           formData={formData}
           setFormData={setFormData}
           nextStep={nextStep}
@@ -93,6 +94,24 @@ export const UserForm = () => {
         />
       );
     case 9:
+      return (
+        <Jiu
+          formData={formData}
+          setFormData={setFormData}
+          nextStep={nextStep}
+          prevStep={prevStep}
+        />
+      );
+    case 10:
+      return (
+        <Shi
+          formData={formData}
+          setFormData={setFormData}
+          nextStep={nextStep}
+          prevStep={prevStep}
+        />
+      );
+    case 11:
       return (
         <QueDing formData={formData} nextStep={nextStep} prevStep={prevStep} />
       );
