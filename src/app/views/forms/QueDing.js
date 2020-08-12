@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import { List, ListItem, ListItemText } from '@material-ui/core/';
 import { Header } from './Header';
 
 const useStyles = makeStyles(theme => ({
-  textCenter: {
-    textAlign: 'center'
-  },
   button: {
     margin: theme.spacing(1)
   }
@@ -34,13 +31,24 @@ export const QueDing = ({ formData, prevStep, nextStep }) => {
  } = formData;
   const handleSubmit = (event) => {
     alert(JSON.stringify(formData));
+          fetch('http://localhost:8000/api/v1/forms/trv/4', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData),
+        }).then(response => response.json())
+        .then(response => {
+        
+            console.log(response)
+        });
 
   event.preventDefault();
 }
   return (
     <>
-      <Header title='Confirm User Data' />
       <div>
+        <Typography variant="h6">Confirmation</Typography>
         <List>
           <ListItem>
             <ListItemText
