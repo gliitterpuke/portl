@@ -68,125 +68,12 @@ export const Er = ({ formData, setFormData, nextStep }) => {
 
       <Form>
         <Typography variant="h6" gutterBottom>
-              Personal Information
+              Current Country of Residence
         </Typography>
         <Grid container spacing={6}>
           <Grid item xs={12} md={6}>
-            <FormControl>
-              <InputLabel>Service In</InputLabel>
-              <Field
-                component={Select} style={{ width: 300 }} name="PersonalDetails_ServiceIn_ServiceIn">
-                <MenuItem value={'English'}>English</MenuItem>
-                <MenuItem value={'French'}>French</MenuItem>
-              </Field>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FormControl>
-              <InputLabel>Visa Type</InputLabel>
-              <Field
-                component={Select} style={{ width: 300 }} name="PersonalDetails_VisaType_VisaType">
-                <MenuItem value={'Business'}>Business</MenuItem>
-                <MenuItem value={'Transit'}>Transit</MenuItem>
-              </Field>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} md={6}>
             <Field
-              name='PersonalDetails_Name_FamilyName' label='Last Name *'
-              margin='normal' as={TextField} fullWidth
-              error={touched.PersonalDetails_Name_FamilyName && errors.PersonalDetails_Name_FamilyName}
-              helperText={touched.PersonalDetails_Name_FamilyName && errors.PersonalDetails_Name_FamilyName}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Field
-              name='PersonalDetails_Name_GivenName' label='First Name *'
-              margin='normal' as={TextField} fullWidth
-              error={touched.PersonalDetails_Name_GivenName && errors.PersonalDetails_Name_GivenName}
-              helperText={touched.PersonalDetails_Name_GivenName && errors.PersonalDetails_Name_GivenName}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <FormLabel FormLabel component="legend">Have you ever used another name?</FormLabel>
-            <Field component={RadioGroup} row name="PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator">
-              <FormControlLabel
-                value="Y"
-                control={<Radio />}
-                label="Yes"
-              />
-              <FormControlLabel
-                value="N"
-                control={<Radio />}
-                label="No"
-              />
-            </Field>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Field
-              name='PersonalDetails_AliasName_AliasFamilyName' label='Previous Last Name *'
-              margin='normal' as={TextField} fullWidth
-              error={touched.PersonalDetails_AliasName_AliasFamilyName && errors.PersonalDetails_AliasName_AliasFamilyName}
-              helperText={touched.PersonalDetails_AliasName_AliasFamilyName && errors.PersonalDetails_AliasName_AliasFamilyName}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Field
-              name='PersonalDetails_AliasName_AliasGivenName' label='Previous First Name *'
-              margin='normal' as={TextField} fullWidth
-              error={touched.PersonalDetails_AliasName_AliasGivenName && errors.PersonalDetails_AliasName_AliasGivenName}
-              helperText={touched.PersonalDetails_AliasName_AliasGivenName && errors.PersonalDetails_AliasName_AliasGivenName}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <FormLabel FormLabel component="legend">Sex</FormLabel>
-            <Field component={RadioGroup} row name="PersonalDetails_Sex_Sex">
-              <FormControlLabel
-                value="Female" control={<Radio />} label="Female" />
-              <FormControlLabel
-                value="Male" control={<Radio />} label="Male" />
-              <FormControlLabel
-                value="Unknown" control={<Radio />} label="Unknown" />
-              <FormControlLabel
-                value="Unspecified" control={<Radio />} label="Another Gender" />
-            </Field>
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <Field
-              name='PersonalDetails_DOBYear' label='YYYY *'
-              margin='normal' as={TextField} fullWidth
-              error={touched.PersonalDetails_DOBYear && errors.PersonalDetails_DOBYear}
-              helperText={touched.PersonalDetails_DOBYear && errors.PersonalDetails_DOBYear}
-            />
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <Field
-              name='PersonalDetails_DOBMonth' label='MM *'
-              margin='normal' as={TextField} fullWidth
-              error={touched.PersonalDetails_DOBMonth && errors.PersonalDetails_DOBMonth}
-              helperText={touched.PersonalDetails_DOBMonth && errors.PersonalDetails_DOBMonth}
-            />
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <Field
-              name='PersonalDetails_DOBDay' label='DD *'
-              margin='normal' as={TextField} fullWidth
-              error={touched.PersonalDetails_DOBDay && errors.PersonalDetails_DOBDay}
-              helperText={touched.PersonalDetails_DOBDay && errors.PersonalDetails_DOBDay}
-            />
-          </Grid>
-          <Grid item xs={12}><Typography variant="subtitle1">Place of Birth</Typography></Grid>
-          <Grid item xs={12} md={6}>
-            <Field
-              name='PersonalDetails_PlaceBirthCity' label='City/Town *'
-              margin='normal' as={TextField} fullWidth
-              error={touched.PersonalDetails_PlaceBirthCity && errors.PersonalDetails_PlaceBirthCity}
-              helperText={touched.PersonalDetails_PlaceBirthCity && errors.PersonalDetails_PlaceBirthCity}
-            />
-          </Grid>
-            <Grid item xs={12} md={6}>
-            <Field
-              name="PersonalDetails_PlaceBirthCountry"
+              name="PersonalDetails_CurrentCOR_Row2_Country"
               component={Autocomplete}
               options={countries}
               getOptionLabel={(option: label) => option.label}
@@ -196,41 +83,37 @@ export const Er = ({ formData, setFormData, nextStep }) => {
                   {...params}
                   error={touched['name'] && !!errors['name']}
                   helperText={errors['name']}
-                  label="Country of Birth *"
+                  label="Country/Territory"
                   variant="outlined"
                 />
               )}
             />
           </Grid>
           <Grid item xs={12} md={6}>
+            <FormControl>
+              <InputLabel>Service In</InputLabel>
+              <Field
+                component={Select} style={{ width: 300 }} name="PersonalDetails_ServiceIn_ServiceIn">
+                <MenuItem value={'01'}>Citizen</MenuItem>
+                <MenuItem value={'02'}>Permanent Resident</MenuItem>
+                <MenuItem value={'03'}>Worker</MenuItem>
+                <MenuItem value={'04'}>Visitor</MenuItem>
+                <MenuItem value={'05'}>Student</MenuItem>
+                <MenuItem value={'06'}>Other</MenuItem>
+                <MenuItem value={'07'}>Protected Person</MenuItem>
+                <MenuItem value={'08'}>Refugee Claimant</MenuItem>
+                <MenuItem value={'09'}>Foreign National</MenuItem>
+              </Field>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} md={8}>
             <Field
-                name="PersonalDetails_Citizenship_Citizenship"
-                component={Autocomplete}
-                options={countries}
-                getOptionLabel={(option: label) => option.label}
-                style={{ width: 300 }}
-                renderInput={(params: AutocompleteRenderInputParams) => (
-                  <TextField
-                    {...params}
-                    error={touched['name'] && !!errors['name']}
-                    helperText={errors['name']}
-                    label="Citizenship"
-                    variant="outlined"
-                  />
-                )}
-              />
-            </Grid>
-          <Grid item xs={12} md={6}>
-            <Field
-              type='email'
-              name='email'
-              label='Email *'
-              margin='normal'
-              as={TextField}
-              error={touched.email && errors.email}
-              helperText={touched.email && errors.email}
+              name='PersonalDetails_CurrentCOR_Row2_Other' label='Other *'
+              margin='normal' as={TextField} fullWidth
+              error={touched.PersonalDetails_CurrentCOR_Row2_Other && errors.PersonalDetails_CurrentCOR_Row2_Other}
+              helperText={touched.PersonalDetails_CurrentCOR_Row2_Other && errors.PersonalDetails_CurrentCOR_Row2_Other}
             />
-            </Grid>
+          </Grid>
             <Button
               type='submit'
               variant='contained'
