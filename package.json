@@ -80,6 +80,6 @@
     "eslint-plugin-react-hooks": "0.0.0-8d7535e54",
     "gh-pages": "^2.1.1",
     "react-app-rewired": "^2.1.5",
-    "react-scripts": "^3.3.1",
+    "react-scripts": "^3.3.1"
   }
 }
