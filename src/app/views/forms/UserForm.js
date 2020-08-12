@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
-import { Yi } from './Yi';
-import { ZuiHou } from './ZuiHou';
-import { Er } from './Er';
+import { Yi } from './Yi'; // Personal Info
+import { Er } from './Er'; // Countries
+import { San } from './San' // Marital
+import { Si } from './Si' // Languages
+import { Wu } from './Wu' // IDs
+import { Liu } from './Liu' // Contact Info
+import { Qi } from './Qi' // Visit Details
+import { Ba } from './Ba' // Employment
+import { Jiu } from './Jiu' // Education
+import { ZuiHou } from './ZuiHou'; // Background
 import { QueDing } from './QueDing';
 import { Success } from './Success';
 
@@ -33,6 +40,51 @@ export const UserForm = () => {
         );
     case 3:
       return (
+        <San
+          formData={formData}
+          setFormData={setFormData}
+          nextStep={nextStep}
+          prevStep={prevStep}
+        />
+      );
+    case 4:
+      return (
+        <Si
+          formData={formData}
+          setFormData={setFormData}
+          nextStep={nextStep}
+          prevStep={prevStep}
+        />
+      );
+    case 5:
+      return (
+        <Wu
+          formData={formData}
+          setFormData={setFormData}
+          nextStep={nextStep}
+          prevStep={prevStep}
+        />
+      );
+    case 6:
+      return (
+        <Liu
+          formData={formData}
+          setFormData={setFormData}
+          nextStep={nextStep}
+          prevStep={prevStep}
+        />
+      );
+    case 7:
+      return (
+        <Qi
+          formData={formData}
+          setFormData={setFormData}
+          nextStep={nextStep}
+          prevStep={prevStep}
+        />
+      );
+    case 8:
+      return (
         <ZuiHou
           formData={formData}
           setFormData={setFormData}
@@ -40,7 +92,7 @@ export const UserForm = () => {
           prevStep={prevStep}
         />
       );
-    case 3:
+    case 9:
       return (
         <QueDing formData={formData} nextStep={nextStep} prevStep={prevStep} />
       );
