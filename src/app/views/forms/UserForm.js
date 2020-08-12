@@ -9,7 +9,6 @@ import { Qi } from './Qi' // Visit Details
 import { Ba } from './Ba' // Employment
 import { Jiu } from './Jiu' // Education
 import { Shi } from './Shi' // Background
-import { ZuiHou } from './ZuiHou';
 import { QueDing } from './QueDing';
 import { Success } from './Success';
 
