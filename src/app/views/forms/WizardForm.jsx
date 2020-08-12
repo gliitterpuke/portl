@@ -1,12 +1,12 @@
 import React from "react";
 import { SimpleCard } from "matx";
-import HorizontalStepper from "./HorizontalStepper";
+import UserForm from "./UserForm";
 
 const WizardForm = () => {
   return (
     <div className="m-sm-30">
       <SimpleCard title="">
-        <HorizontalStepper></HorizontalStepper>
+        <UserForm></UserForm>
       </SimpleCard>
       <div className="py-3"></div>
     </div>
