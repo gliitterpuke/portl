@@ -33,6 +33,8 @@
     "prop-types": "^15.7.2",
     "qwest": "^4.5.0",
     "react": "^16.8.6",
+    "react-app-rewired": "^2.1.6",
+    "react-scripts": "^3.3.1",
     "react-beautiful-dnd": "^11.0.4",
     "react-big-calendar": "^0.24.0",
     "react-dom": "^16.8.6",
@@ -79,7 +81,7 @@
     "customize-cra": "^0.9.1",
     "eslint-plugin-react-hooks": "0.0.0-8d7535e54",
     "gh-pages": "^2.1.1",
-    "react-app-rewired": "^2.1.5",
+    "react-app-rewired": "^2.1.6",
     "react-scripts": "^3.3.1"
   }
 }
