@@ -176,14 +176,14 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
               )}
             />
         </Grid>
-
-
             <Button
-              type='submit'
-              variant='contained'
-              color='primary'
-              className={classes.button}
-            >
+              type='submit' variant='contained' color='primary' 
+              className={classes.button} onClick={() => setDirection('back')} >
+              Back
+            </Button>
+            <Button
+              type='submit' variant='contained' color='primary' 
+              className={classes.button} onClick={() => setDirection('forward')}>
               Continue
             </Button>
           </Grid>

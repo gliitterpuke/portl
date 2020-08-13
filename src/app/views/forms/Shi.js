@@ -226,21 +226,13 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
             </Field>
         </Grid>
             <Button
-              type='submit'
-              variant='contained'
-              color='primary'
-              className={classes.button}
-              onClick={() => setDirection('back')}
-            >
+              type='submit' variant='contained' color='primary' 
+              className={classes.button} onClick={() => setDirection('back')} >
               Back
             </Button>
             <Button
-              type='submit'
-              variant='contained'
-              color='primary'
-              className={classes.button}
-              onClick={() => setDirection('forward')}
-            >
+              type='submit' variant='contained' color='primary' 
+              className={classes.button} onClick={() => setDirection('forward')}>
               Continue
             </Button>
           </Grid>

@@ -188,13 +188,14 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
         <Grid item xs={12} md={6}>
             <Field component={KeyboardDatePicker} label="Expiry Date" name="USCard_usCardDocs_ExpiryDate" />
         </Grid>
-
+          <Button
+              type='submit' variant='contained' color='primary' 
+              className={classes.button} onClick={() => setDirection('back')} >
+              Back
+            </Button>
             <Button
-              type='submit'
-              variant='contained'
-              color='primary'
-              className={classes.button}
-            >
+              type='submit' variant='contained' color='primary' 
+              className={classes.button} onClick={() => setDirection('forward')}>
               Continue
             </Button>
           </Grid>

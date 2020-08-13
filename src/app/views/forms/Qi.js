@@ -173,13 +173,14 @@ export const Qi = ({ formData, setFormData, nextStep, prevStep }) => {
               helperText={touched.Contacts_Row2_AddressInCanada_AddressInCanada && errors.Contacts_Row2_AddressInCanada_AddressInCanada}
             />
         </Grid>
-
             <Button
-              type='submit'
-              variant='contained'
-              color='primary'
-              className={classes.button}
-            >
+              type='submit' variant='contained' color='primary' 
+              className={classes.button} onClick={() => setDirection('back')} >
+              Back
+            </Button>
+            <Button
+              type='submit' variant='contained' color='primary' 
+              className={classes.button} onClick={() => setDirection('forward')}>
               Continue
             </Button>
           </Grid>
