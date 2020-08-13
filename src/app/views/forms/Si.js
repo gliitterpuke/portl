@@ -108,16 +108,18 @@ export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
                 value="N" control={<Radio />} label="No" />
             </Field>
           </Grid>
+          <Grid item xs={12}>
             <Button
-              type='submit' variant='contained' color='primary' 
-              className={classes.button} onClick={() => setDirection('back')} >
-              Back
-            </Button>
-            <Button
-              type='submit' variant='contained' color='primary' 
-              className={classes.button} onClick={() => setDirection('forward')}>
-              Continue
-            </Button>
+                type='submit' variant='contained' color='secondary' 
+                className={classes.button} onClick={() => setDirection('back')} >
+                Back
+              </Button>
+              <Button
+                type='submit' variant='contained' color='primary' 
+                className={classes.button} onClick={() => setDirection('forward')}>
+                Continue
+              </Button>
+            </Grid>
           </Grid>
         </MuiPickersUtilsProvider>
         </Form>

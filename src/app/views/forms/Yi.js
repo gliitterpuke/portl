@@ -225,14 +225,14 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
                 )}
               />
             </Grid>
+            <Grid item xs={12}>
             <Button
-              type='submit'
-              variant='contained'
-              color='primary'
+              type='submit' variant='contained' color='primary'
               className={classes.button}
             >
               Continue
             </Button>
+            </Grid>
           </Grid>
         </Form>
         )}

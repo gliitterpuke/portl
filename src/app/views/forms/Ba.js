@@ -352,16 +352,18 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
               )}
             />
         </Grid>
+          <Grid item xs={12}>
             <Button
-              type='submit' variant='contained' color='primary' 
-              className={classes.button} onClick={() => setDirection('back')} >
-              Back
-            </Button>
-            <Button
-              type='submit' variant='contained' color='primary' 
-              className={classes.button} onClick={() => setDirection('forward')}>
-              Continue
-            </Button> 
+                type='submit' variant='contained' color='secondary' 
+                className={classes.button} onClick={() => setDirection('back')} >
+                Back
+              </Button>
+              <Button
+                type='submit' variant='contained' color='primary' 
+                className={classes.button} onClick={() => setDirection('forward')}>
+                Continue
+              </Button>
+            </Grid>
           </Grid>
         </MuiPickersUtilsProvider>
         </Form>

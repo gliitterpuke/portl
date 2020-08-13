@@ -429,16 +429,18 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
               helperText={touched.ContactInformation_contact_PhoneNumbers_FaxEmail_Email && errors.ContactInformation_contact_PhoneNumbers_FaxEmail_Email}
             />
         </Grid>
+        <Grid item xs={12}>
             <Button
-              type='submit' variant='contained' color='primary' 
-              className={classes.button} onClick={() => setDirection('back')} >
-              Back
-            </Button>
-            <Button
-              type='submit' variant='contained' color='primary' 
-              className={classes.button} onClick={() => setDirection('forward')}>
-              Continue
-            </Button>
+                type='submit' variant='contained' color='secondary' 
+                className={classes.button} onClick={() => setDirection('back')} >
+                Back
+              </Button>
+              <Button
+                type='submit' variant='contained' color='primary' 
+                className={classes.button} onClick={() => setDirection('forward')}>
+                Continue
+              </Button>
+          </Grid>
           </Grid>
         </MuiPickersUtilsProvider>
         </Form>

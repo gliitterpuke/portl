@@ -180,17 +180,19 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
         <Grid item xs={12} md={6}>
             <Field as={TextField} type="date" label="Expiry Date" name="USCard_usCardDocs_ExpiryDate" />
         </Grid>
-          <Button
-              type='submit' variant='contained' color='primary' 
-              className={classes.button} onClick={() => setDirection('back')} >
-              Back
-            </Button>
+            <Grid item xs={12}>
             <Button
-              type='submit' variant='contained' color='primary' 
-              className={classes.button} onClick={() => setDirection('forward')}>
-              Continue
-            </Button>
-          </Grid>
+                type='submit' variant='contained' color='secondary' 
+                className={classes.button} onClick={() => setDirection('back')} >
+                Back
+              </Button>
+              <Button
+                type='submit' variant='contained' color='primary' 
+                className={classes.button} onClick={() => setDirection('forward')}>
+                Continue
+              </Button>
+        </Grid>
+      </Grid>
         </MuiPickersUtilsProvider>
         </Form>
         )}

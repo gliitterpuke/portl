@@ -285,16 +285,18 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
           <Grid item xs={12} md={6}>
             <Field as={TextField} type="date" label="To" name="PersonalDetails_CountryWhereApplying_Row2_ToDate" />
           </Grid>
-          <Button
-              type='submit' variant='contained' color='primary' 
-              className={classes.button} onClick={() => setDirection('back')} >
-              Back
-            </Button>
+          <Grid item xs={12}>
             <Button
-              type='submit' variant='contained' color='primary' 
-              className={classes.button} onClick={() => setDirection('forward')}>
-              Continue
-            </Button>
+                type='submit' variant='contained' color='secondary' 
+                className={classes.button} onClick={() => setDirection('back')} >
+                Back
+              </Button>
+              <Button
+                type='submit' variant='contained' color='primary' 
+                className={classes.button} onClick={() => setDirection('forward')}>
+                Continue
+              </Button>
+            </Grid>
           </Grid>
         </MuiPickersUtilsProvider>
         </Form>
