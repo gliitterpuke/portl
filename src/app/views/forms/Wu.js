@@ -31,26 +31,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  PersonalDetails_Name_GivenName: yup
-    .string()
-    .required('First Name is required')
-    .max(20),
-  PersonalDetails_Name_FamilyName: yup
-    .string()
-    .required('Last Name is required')
-    .max(20),
-    PersonalDetails_AliasName_AliasGivenName: yup
-    .string()
-    .required('Previous First Name is required')
-    .max(20),
-  PersonalDetails_AliasName_AliasFamilyName: yup
-    .string()
-    .required('Previous Last Name is required')
-    .max(20),
-  email: yup
-    .string()
-    .email('Invalid email')
-    .required('Email is required')
+  MaritalStatus_SectionA_PassportNum_PassportNum: yup.string()
+    .required('Passport number required'),
+  MaritalStatus_SectionA_Passport_CountryofIssue_CountryofIssue: yup.string()
+    .required('Country/territory of issue required'),
+  MaritalStatus_SectionA_Passport_IssueDate_IssueDate: yup.string()
+    .required('Issue Date Required'),
+  MaritalStatus_SectionA_Passport_ExpiryDate: yup.string()
+    .required('Issue Date Required'),
 });
 
 export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -95,21 +83,25 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
                   {...params}
                   error={touched['MaritalStatus_SectionA_Passport_CountryofIssue_CountryofIssue'] && !!errors['MaritalStatus_SectionA_Passport_CountryofIssue_CountryofIssue']}
                   helperText={errors['MaritalStatus_SectionA_Passport_CountryofIssue_CountryofIssue']}
-                  label="Country/Territory of Issue"
+                  label="Country/Territory of Issue *"
                   variant="outlined"
                 />
               )}
             />
         </Grid>
         <Grid item xs={12} md={6}>
-            <Field component={KeyboardDatePicker} label="Issue Date" name="MaritalStatus_SectionA_Passport_IssueDate_IssueDate" />
+            <Field component={KeyboardDatePicker} helperText="Issue Date *" name="MaritalStatus_SectionA_Passport_IssueDate_IssueDate"
+            error={touched.MaritalStatus_SectionA_Passport_IssueDate_IssueDate && errors.MaritalStatus_SectionA_Passport_IssueDate_IssueDate} />
         </Grid>
         <Grid item xs={12} md={6}>
-            <Field component={KeyboardDatePicker} label="Expiry Date" name="PersonalDMaritalStatus_SectionA_Passport_ExpiryDate" />
+            <Field component={KeyboardDatePicker} helperText={"Expiry Date *"} name="MaritalStatus_SectionA_Passport_ExpiryDate"
+            error={touched.MaritalStatus_SectionA_Passport_ExpiryDate && errors.MaritalStatus_SectionA_Passport_ExpiryDate} />
         </Grid>
         <Grid item xs={12}>
-            <FormLabel FormLabel component="legend">For this trip, will you use a passport issued by the Ministry of Foreign Affairs in Taiwan that includes your personal identification number?</FormLabel>
-            <Field component={RadioGroup} row name="MaritalStatus_SectionA_Passport_TaiwanPIN">
+            <FormLabel FormLabel component="legend">For this trip, will you use a passport issued by the Ministry of Foreign Affairs in Taiwan that includes your personal identification number? *</FormLabel>
+            <Field component={RadioGroup} row name="MaritalStatus_SectionA_Passport_TaiwanPIN"
+            error={touched.MaritalStatus_SectionA_Passport_TaiwanPIN && errors.MaritalStatus_SectionA_Passport_TaiwanPIN}
+            helperText={touched.MaritalStatus_SectionA_Passport_TaiwanPIN && errors.MaritalStatus_SectionA_Passport_TaiwanPIN}>
               <FormControlLabel
                 value="Y" control={<Radio />} label="Yes" />
               <FormControlLabel
@@ -117,7 +109,7 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
             </Field>
         </Grid>
         <Grid item xs={12}>
-            <FormLabel FormLabel component="legend">For this trip, will you use a National Israeli passport?</FormLabel>
+            <FormLabel FormLabel component="legend">For this trip, will you use a National Israeli passport? *</FormLabel>
             <Field component={RadioGroup} row name="MaritalStatus_SectionA_Passport_IsraelPassportIndicator">
               <FormControlLabel
                 value="Y" control={<Radio />} label="Yes" />

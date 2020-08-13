@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
-import { Select, RadioGroup } from 'formik-material-ui'
+import { Select, RadioGroup, CheckboxWithLabel } from 'formik-material-ui'
 import { KeyboardDatePicker } from 'formik-material-ui-pickers';
 import {
   Button,
   FormControlLabel,
+  FormGroup,
   FormLabel,
   Grid,
   InputLabel,
@@ -30,26 +31,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  PersonalDetails_Name_GivenName: yup
-    .string()
-    .required('First Name is required')
-    .max(20),
-  PersonalDetails_Name_FamilyName: yup
-    .string()
-    .required('Last Name is required')
-    .max(20),
-    PersonalDetails_AliasName_AliasGivenName: yup
-    .string()
-    .required('Previous First Name is required')
-    .max(20),
-  PersonalDetails_AliasName_AliasFamilyName: yup
-    .string()
-    .required('Previous Last Name is required')
-    .max(20),
-  email: yup
-    .string()
-    .email('Invalid email')
-    .required('Email is required')
+
 });
 
 export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -92,31 +74,30 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
             </Typography>
         </Grid>
         <Grid item xs={12}>
-            <FormLabel FormLabel component="legend">Have you or any family members had, or been in contact with anyone, with tuberculosis within the past 2 years? *</FormLabel>
-            <Field component={RadioGroup} row name="BackgroundInfo_Choice">
-              <FormControlLabel
-                value="Y" control={<Radio />} label="Yes" />
-              <FormControlLabel
-                value="N" control={<Radio />} label="No" />
-            </Field>
-        </Grid>
-        <Grid item xs={12}>
+        <FormGroup row>
+        <FormLabel FormLabel component="legend">Have you or any family members had, or been in contact with anyone, with tuberculosis within the past 2 years? *</FormLabel>
+            {canus.map(opt => (
+              <Field
+                component={CheckboxWithLabel}
+                type="checkbox" //REQUIRED to work with non-boolean options
+                name="BackgroundInfo_Choice"
+                value={opt.value}
+                key={opt.value}
+                Label={{ label: opt.label }}
+              />
+            ))}
             <FormLabel FormLabel component="legend">Do you have any mental/physical disorders that would require social/health services, other than medication, during your stay in Canada? *</FormLabel>
-            <Field component={RadioGroup} row name="BackgroundInfo_Choice">
-              <FormControlLabel
-                value="Y" control={<Radio />} label="Yes" />
-              <FormControlLabel
-                value="N" control={<Radio />} label="No" />
-            </Field>
-        </Grid>
-        <Grid item xs={12}>
-          <FormLabel component="legend">Please provide the name and details of which this applies to.</FormLabel>
-            <Field
-              name='BackgroundInfo_Details_MedicalDetails'
-              margin='normal' as={TextField} fullWidth
-              error={touched.BackgroundInfo_Details_MedicalDetails && errors.BackgroundInfo_Details_MedicalDetails}
-              helperText={touched.BackgroundInfo_Details_MedicalDetails && errors.BackgroundInfo_Details_MedicalDetails}
-            />
+            {canus.map(opt => (
+              <Field
+                component={CheckboxWithLabel}
+                type="checkbox" //REQUIRED to work with non-boolean options
+                name="BackgroundInfo_Choice"
+                value={opt.value}
+                key={opt.value}
+                Label={{ label: opt.label }}
+              />
+            ))}
+          </FormGroup>
         </Grid>
 
         <Grid item xs={12}>
@@ -497,3 +478,8 @@ const countries = [
   { label: 'Zambia', value: '112' }, 
   { label: 'Zimbabwe', value: '113' },
 ];
+
+const canus =[
+  { label: "Yes", value: "Y" },
+  { label: "No", value: "N"}
+]

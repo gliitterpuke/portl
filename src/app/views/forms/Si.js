@@ -31,26 +31,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  PersonalDetails_Name_GivenName: yup
-    .string()
-    .required('First Name is required')
-    .max(20),
-  PersonalDetails_Name_FamilyName: yup
-    .string()
-    .required('Last Name is required')
-    .max(20),
-    PersonalDetails_AliasName_AliasGivenName: yup
-    .string()
-    .required('Previous First Name is required')
-    .max(20),
-  PersonalDetails_AliasName_AliasFamilyName: yup
-    .string()
-    .required('Previous Last Name is required')
-    .max(20),
-  email: yup
-    .string()
-    .email('Invalid email')
-    .required('Email is required')
+  MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang: yup.string()
+    .required('Required'),
+  MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate: yup.string()
+    .required('Required'),
 });
 
 export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -76,7 +60,7 @@ export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
         </Typography>
         <Grid container spacing={6}>
         <Grid item xs={12} md={6}>
-            <FormLabel component="legend">Native language/Mother tongue</FormLabel>
+            <FormLabel component="legend">Native language/Mother tongue *</FormLabel>
             <Field
               name="MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang"
               component={Autocomplete}
@@ -96,9 +80,10 @@ export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <FormControl>
-            <FormLabel FormLabel component="legend">Are you able to communciate in English or French?</FormLabel>
+            <FormLabel FormLabel component="legend">Are you able to communciate in English or French? *</FormLabel>
               <Field
-                component={Select} style={{ width: 300 }} name="MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate">
+                component={Select} style={{ width: 300 }} name="MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate"
+                error={touched.MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate && errors.MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate}>
                 <MenuItem value={'English'}>English</MenuItem>
                 <MenuItem value={'French'}>French</MenuItem>
                 <MenuItem value={'Both'}>Both</MenuItem>
@@ -150,9 +135,32 @@ Si.propTypes = {
 };
 
 const languages = [
-  { label: 'English' },
-  { label: 'French' },
-  { label: 'Chinese' },
-  { label: 'Japanese' },
-  { label: 'Korean' },
+  { label: 'Chinese', value: '299' }, 
+  { label: 'English', value: '001' }, 
+  { label: 'French', value: '002' }, 
+  { label: 'Japanese', value: '303' }, 
+  { label: 'Korean', value: '305' }, 
+  { label: 'Mandarin', value: '301' }, 
+  { label: 'Canto', value: '300' }, 
+  { label: 'Chinese, Min Nan', value: '545' }, 
+  { label: 'Chinese, Yue', value: '546' }, 
+  { label: 'Chinese, Yuh', value: '547' }, 
+  { label: 'Hindi', value: '321' }, 
+  { label: 'Hebrew', value: '253' }, 
+  { label: 'Dutch', value: '117' }, 
+  { label: 'German', value: '116' }, 
+  { label: 'Punjabi', value: '324' }, 
+  { label: 'Portugese', value: '115' }, 
+  { label: 'Russian', value: '101' }, 
+  { label: 'Shanghainese', value: '214' }, 
+  { label: 'Spanish', value: '050' }, 
+  { label: 'Turkish', value: '012' }, 
+  { label: 'Vietnamese', value: '306' }, 
+  { label: 'Welsh', value: '150' }, 
+  { label: 'Arabic', value: '250' }, 
+  { label: 'Italian', value: '123' }, 
+  { label: 'Interp. Not Required', value: '601' }, 
+  { label: 'Greek', value: '130' }, 
+  { label: 'Hebrew, Yemen', value: '588' }, 
+  { label: 'Kashmiri', value: '027' },
 ];

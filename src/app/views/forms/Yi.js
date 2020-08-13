@@ -29,26 +29,31 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  PersonalDetails_Name_GivenName: yup
-    .string()
+  PersonalDetails_ServiceIn_ServiceIn: yup.string()
+    .required('Required'),
+  PersonalDetails_VisaType_VisaType: yup.string()
+    .required('Required'),
+  PersonalDetails_Name_GivenName: yup.string()
     .required('First Name is required')
     .max(20),
-  PersonalDetails_Name_FamilyName: yup
-    .string()
+  PersonalDetails_Name_FamilyName: yup.string()
     .required('Last Name is required')
     .max(20),
-    PersonalDetails_AliasName_AliasGivenName: yup
-    .string()
-    .required('Previous First Name is required')
-    .max(20),
-  PersonalDetails_AliasName_AliasFamilyName: yup
-    .string()
-    .required('Previous Last Name is required')
-    .max(20),
-  email: yup
-    .string()
-    .email('Invalid email')
-    .required('Email is required'),
+  PersonalDetails_DOBYear: yup.number()
+    .min(1900).max(2020)
+    .required('Year required'),
+  PersonalDetails_DOBMonth: yup.number()
+    .min(1).max(12)
+    .required('Month required'),
+  PersonalDetails_DOBDay: yup.number()
+    .min(1).max(31)
+    .required('Day required'),
+  PersonalDetails_PlaceBirthCity: yup.string()
+    .required('City/Town is required'),
+  PersonalDetails_PlaceBirthCountry: yup.string()
+    .required('Country of birth required'),
+  PersonalDetails_Citizenship_Citizenship: yup.string()
+    .required('Required'),
 });
 
 export const Yi = ({ formData, setFormData, nextStep }) => {
@@ -75,7 +80,8 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
             <FormControl>
               <InputLabel>Service In</InputLabel>
               <Field
-                component={Select} style={{ width: 300 }} name="PersonalDetails_ServiceIn_ServiceIn">
+                component={Select} style={{ width: 300 }} name="PersonalDetails_ServiceIn_ServiceIn"
+                error={touched.PersonalDetails_ServiceIn_ServiceIn && errors.PersonalDetails_ServiceIn_ServiceIn}>
                 <MenuItem value={'English'}>English</MenuItem>
                 <MenuItem value={'French'}>French</MenuItem>
               </Field>
@@ -85,7 +91,8 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
             <FormControl>
               <InputLabel>Visa Type</InputLabel>
               <Field
-                component={Select} style={{ width: 300 }} name="PersonalDetails_VisaType_VisaType">
+                component={Select} style={{ width: 300 }} name="PersonalDetails_VisaType_VisaType"
+                error={touched.PersonalDetails_VisaType_VisaType && errors.PersonalDetails_VisaType_VisaType}>
                 <MenuItem value={'Business'}>Business</MenuItem>
                 <MenuItem value={'Transit'}>Transit</MenuItem>
               </Field>
@@ -109,7 +116,9 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
           </Grid>
           <Grid item xs={12}>
             <FormLabel FormLabel component="legend">Have you ever used another name?</FormLabel>
-            <Field component={RadioGroup} row name="PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator">
+            <Field required="true" component={RadioGroup} row name="PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator"
+            error={touched.PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator && errors.PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator}
+            helperText={touched.PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator && errors.PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator}>
               <FormControlLabel
                 value="Y"
                 control={<Radio />}
@@ -126,16 +135,12 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
             <Field
               name='PersonalDetails_AliasName_AliasFamilyName' label='Previous Last Name *'
               margin='normal' as={TextField} fullWidth
-              error={touched.PersonalDetails_AliasName_AliasFamilyName && errors.PersonalDetails_AliasName_AliasFamilyName}
-              helperText={touched.PersonalDetails_AliasName_AliasFamilyName && errors.PersonalDetails_AliasName_AliasFamilyName}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <Field
               name='PersonalDetails_AliasName_AliasGivenName' label='Previous First Name *'
               margin='normal' as={TextField} fullWidth
-              error={touched.PersonalDetails_AliasName_AliasGivenName && errors.PersonalDetails_AliasName_AliasGivenName}
-              helperText={touched.PersonalDetails_AliasName_AliasGivenName && errors.PersonalDetails_AliasName_AliasGivenName}
             />
           </Grid>
           <Grid item xs={12}>
@@ -194,8 +199,8 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
               renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                   {...params}
-                  error={touched['name'] && !!errors['name']}
-                  helperText={errors['name']}
+                  error={touched['PersonalDetails_PlaceBirthCountry'] && !!errors['PersonalDetails_PlaceBirthCountry']}
+                  helperText={errors['PersonalDetails_PlaceBirthCountry']}
                   label="Country of Birth *"
                   variant="outlined"
                 />
@@ -212,24 +217,13 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
                 renderInput={(params: AutocompleteRenderInputParams) => (
                   <TextField
                     {...params}
-                    error={touched['name'] && !!errors['name']}
-                    helperText={errors['name']}
-                    label="Citizenship"
+                    error={touched['PersonalDetails_Citizenship_Citizenship'] && !!errors['PersonalDetails_Citizenship_Citizenship']}
+                    helperText={errors['PersonalDetails_Citizenship_Citizenship']}
+                    label="Citizenship *"
                     variant="outlined"
                   />
                 )}
               />
-            </Grid>
-          <Grid item xs={12} md={6}>
-            <Field
-              type='email'
-              name='email'
-              label='Email *'
-              margin='normal'
-              as={TextField}
-              error={touched.email && errors.email}
-              helperText={touched.email && errors.email}
-            />
             </Grid>
             <Button
               type='submit'

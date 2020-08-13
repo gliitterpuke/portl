@@ -31,26 +31,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  PersonalDetails_Name_GivenName: yup
-    .string()
-    .required('First Name is required')
-    .max(20),
-  PersonalDetails_Name_FamilyName: yup
-    .string()
-    .required('Last Name is required')
-    .max(20),
-    PersonalDetails_AliasName_AliasGivenName: yup
-    .string()
-    .required('Previous First Name is required')
-    .max(20),
-  PersonalDetails_AliasName_AliasFamilyName: yup
-    .string()
-    .required('Previous Last Name is required')
-    .max(20),
-  email: yup
-    .string()
-    .email('Invalid email')
-    .required('Email is required')
+  PersonalDetails_CurrentCOR_Row2_Country: yup.string()
+    .required('Required'),
+  PersonalDetails_CurrentCOR_Row2_Status: yup.string()
+    .required('Required'),
 });
 
 export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -85,9 +69,9 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
               renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                   {...params}
-                  error={touched['name'] && !!errors['name']}
-                  helperText={errors['name']}
-                  label="Country/Territory"
+                  error={touched['PersonalDetails_CurrentCOR_Row2_Country'] && !!errors['PersonalDetails_CurrentCOR_Row2_Country']}
+                  helperText={errors['PersonalDetails_CurrentCOR_Row2_Country']}
+                  label="Country/Territory of Residence*"
                   variant="outlined"
                 />
               )}
@@ -95,9 +79,10 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <FormControl>
-              <InputLabel>Status</InputLabel>
+              <InputLabel>Status *</InputLabel>
               <Field
-                component={Select} style={{ width: 300 }} name="PersonalDetails_ServiceIn_ServiceIn">
+                component={Select} style={{ width: 300 }} name="PersonalDetails_CurrentCOR_Row2_Status"
+                error={touched.PersonalDetails_CurrentCOR_Row2_Status && errors.PersonalDetails_CurrentCOR_Row2_Status}>
                 <MenuItem value={'01'}>Citizen</MenuItem>
                 <MenuItem value={'02'}>Permanent Resident</MenuItem>
                 <MenuItem value={'03'}>Worker</MenuItem>
@@ -112,10 +97,8 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
           </Grid>
           <Grid item xs={12} md={8}>
             <Field
-              name='PersonalDetails_CurrentCOR_Row2_Other' label='Other *'
+              name='PersonalDetails_CurrentCOR_Row2_Other' label='Other'
               margin='normal' as={TextField} fullWidth
-              error={touched.PersonalDetails_CurrentCOR_Row2_Other && errors.PersonalDetails_CurrentCOR_Row2_Other}
-              helperText={touched.PersonalDetails_CurrentCOR_Row2_Other && errors.PersonalDetails_CurrentCOR_Row2_Other}
             />
           </Grid>
           <Grid item xs={12} md={6}>

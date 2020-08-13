@@ -31,26 +31,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  PersonalDetails_Name_GivenName: yup
-    .string()
-    .required('First Name is required')
-    .max(20),
-  PersonalDetails_Name_FamilyName: yup
-    .string()
-    .required('Last Name is required')
-    .max(20),
-    PersonalDetails_AliasName_AliasGivenName: yup
-    .string()
-    .required('Previous First Name is required')
-    .max(20),
-  PersonalDetails_AliasName_AliasFamilyName: yup
-    .string()
-    .required('Previous Last Name is required')
-    .max(20),
-  email: yup
-    .string()
-    .email('Invalid email')
-    .required('Email is required')
+  DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit: yup.string()
+    .required('Purpose of visit required'),
+  DetailsOfVisit_PurposeRow1_HowLongStay_FromDate: yup.string()
+    .required('From date required'),
+  DetailsOfVisit_PurposeRow1_HowLongStay_ToDate: yup.string()
+    .required('To date required'),
+  DetailsOfVisit_PurposeRow1_Funds_Funds: yup.number()
+    .min(10000)
+    .required('Funds available for your trip required'),
+  DetailsOfVisit_Contacts_Row1_Name_Name: yup.string()
+    .required('Name required'),
+  DetailsOfVisit_Contacts_Row1_AddressinCanada_AddressinCanada: yup.string()
+    .required('Address in Canada required'),
 });
 
 export const Qi = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -79,7 +72,8 @@ export const Qi = ({ formData, setFormData, nextStep, prevStep }) => {
             <FormControl>
               <InputLabel>Purpose of Visit *</InputLabel> 
               <Field
-                component={Select} style={{ width: 300 }} name="DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit">
+                component={Select} style={{ width: 300 }} name="DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit"
+                error={touched.DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit && errors.DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit}>
                 <MenuItem value={'pvalue'}>Business</MenuItem> 
                 <MenuItem value={'pvalue'}>Tourism</MenuItem>
                 <MenuItem value={'pvalue'}>Short-Term Studies</MenuItem>
@@ -104,10 +98,12 @@ export const Qi = ({ formData, setFormData, nextStep, prevStep }) => {
           <Typography variant="h6">Trip Dates</Typography>
         </Grid>
         <Grid item xs={12} md={3}>
-            <Field component={KeyboardDatePicker} label="From *" name="DetailsOfVisit_PurposeRow1_HowLongStay_FromDate" />
+            <Field component={KeyboardDatePicker} helperText="From *" name="DetailsOfVisit_PurposeRow1_HowLongStay_FromDate"
+            error={touched.DetailsOfVisit_PurposeRow1_HowLongStay_FromDate && errors.DetailsOfVisit_PurposeRow1_HowLongStay_FromDate} />
         </Grid>
         <Grid item xs={12} md={3}>
-            <Field component={KeyboardDatePicker} label="To *" name="DetailsOfVisit_PurposeRow1_HowLongStay_ToDate" />
+            <Field component={KeyboardDatePicker} helperText="To *" name="DetailsOfVisit_PurposeRow1_HowLongStay_ToDate"
+            error={touched.DetailsOfVisit_PurposeRow1_HowLongStay_ToDate && errors.DetailsOfVisit_PurposeRow1_HowLongStay_ToDate} />
         </Grid>
         <Grid item xs={12} md={6}>
             <Field

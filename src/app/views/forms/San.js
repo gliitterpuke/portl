@@ -31,26 +31,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  PersonalDetails_Name_GivenName: yup
-    .string()
-    .required('First Name is required')
-    .max(20),
-  PersonalDetails_Name_FamilyName: yup
-    .string()
-    .required('Last Name is required')
-    .max(20),
-    PersonalDetails_AliasName_AliasGivenName: yup
-    .string()
-    .required('Previous First Name is required')
-    .max(20),
-  PersonalDetails_AliasName_AliasFamilyName: yup
-    .string()
-    .required('Previous Last Name is required')
-    .max(20),
-  email: yup
-    .string()
-    .email('Invalid email')
-    .required('Email is required')
+  MaritalStatus_SectionA_MaritalStatus: yup.string()
+    .required('Required'),
 });
 
 export const San = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -77,9 +59,10 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
         <Grid container spacing={6}>
             <Grid item xs={12} md={6}>
             <FormControl>
-              <InputLabel>Current Status</InputLabel>
+              <InputLabel>Current Status *</InputLabel>
               <Field
-                component={Select} style={{ width: 300 }} name="PMaritalStatus_SectionA_MaritalStatus">
+                component={Select} style={{ width: 300 }} name="MaritalStatus_SectionA_MaritalStatus"
+                error={touched.MaritalStatus_SectionA_MaritalStatus && errors.MaritalStatus_SectionA_MaritalStatus}>
                 <MenuItem value={'01'}>Married</MenuItem>
                 <MenuItem value={'02'}>Single</MenuItem>
                 <MenuItem value={'03'}>Common-Law</MenuItem>

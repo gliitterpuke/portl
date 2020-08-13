@@ -31,26 +31,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  PersonalDetails_Name_GivenName: yup
-    .string()
-    .required('First Name is required')
-    .max(20),
-  PersonalDetails_Name_FamilyName: yup
-    .string()
-    .required('Last Name is required')
-    .max(20),
-    PersonalDetails_AliasName_AliasGivenName: yup
-    .string()
-    .required('Previous First Name is required')
-    .max(20),
-  PersonalDetails_AliasName_AliasFamilyName: yup
-    .string()
-    .required('Previous Last Name is required')
-    .max(20),
-  email: yup
-    .string()
-    .email('Invalid email')
-    .required('Email is required')
+
 });
 
 export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -76,7 +57,7 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
         </Typography>
         <Grid container spacing={6}>
         <Grid item xs={12}>
-            <FormLabel FormLabel component="legend">Have you had any post secondary education (including university, college, or apprenticeship training)?</FormLabel>
+            <FormLabel FormLabel component="legend">Have you had any post secondary education (including university, college, or apprenticeship training)? *</FormLabel>
             <Field component={RadioGroup} row name="Education_EducationIndicator">
               <FormControlLabel
                 value="Y" control={<Radio />} label="Yes" />
@@ -457,6 +438,63 @@ const countries = [
 ];
 
 const provstate = [
-  { code: 'ON', label: 'Ontario'},
-  { code: 'CA', label: 'California'},
+  { label: 'AL', value: '13' },
+  { label: 'AK', value: '14' },
+  { label: 'AZ', value: '15' },
+  { label: 'AR', value: '16' },
+  { label: 'CA', value: '17' },
+  { label: 'CO', value: '18' },
+  { label: 'CT', value: '19' },
+  { label: 'DE', value: '20' },
+  { label: 'DC', value: '21' },
+  { label: 'FL', value: '22' },
+  { label: 'GA', value: '23' },
+  { label: 'HI', value: '24' },
+  { label: 'ID', value: '25' },
+  { label: 'IL', value: '26' },
+  { label: 'IN', value: '27' },
+  { label: 'IA', value: '28' },
+  { label: 'KS', value: '29' },
+  { label: 'KY', value: '30' },
+  { label: 'LA', value: '31' },
+  { label: 'ME', value: '32' },
+  { label: 'MD', value: '33' },
+  { label: 'MA', value: '34' },
+  { label: 'MI', value: '35' },
+  { label: 'MN', value: '36' },
+  { label: 'MS', value: '37' },
+  { label: 'MO', value: '38' },
+  { label: 'MT', value: '39' },
+  { label: 'NE', value: '40' },
+  { label: 'NV', value: '41' },
+  { label: 'NH', value: '42' },
+  { label: 'NJ', value: '43' },
+  { label: 'NM', value: '44' },
+  { label: 'NY', value: '45' },
+  { label: 'NC', value: '46' },
+  { label: 'ND', value: '47' },
+  { label: 'OH', value: '48' },
+  { label: 'OK', value: '49' },
+  { label: 'OR', value: '50' },
+  { label: 'PA', value: '51' },
+  { label: 'RI', value: '52' },
+  { label: 'SC', value: '53' },
+  { label: 'SD', value: '54' },
+  { label: 'TN', value: '55' },
+  { label: 'TX', value: '56' },
+  { label: 'UT', value: '57' },
+  { label: 'VT', value: '58' },
+  { label: 'VA', value: '59' },
+  { label: 'WA', value: '60' },
+  { label: 'WV', value: '61' },
+  { label: 'WI', value: '62' },
+  { label: 'WY', value: '63' },
+  { label: 'AS', value: '66' },
+  { label: 'FM', value: '67' },
+  { label: 'GU', value: '68' },
+  { label: 'MH', value: '69' },
+  { label: 'MP', value: '70' },
+  { label: 'PW', value: '71' },
+  { label: 'VI', value: '72' },
+  { label: 'PR', value: 'PR' },
 ];
