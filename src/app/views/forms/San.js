@@ -75,7 +75,7 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
             </FormControl>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Field component={KeyboardDatePicker} label="Date of Marriage" name="MaritalStatus_SectionA_DateofMarriage" />
+            <Field as={TextField} type="date" label="Date of Marriage" name="MaritalStatus_SectionA_DateofMarriage" />
           </Grid>
           <Grid item xs={12}><FormLabel component="legend">Name of your current Spouse/Common-law partner</FormLabel></Grid>
           <Grid item xs={12} md={6}>
@@ -158,10 +158,10 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
             </FormControl>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Field component={KeyboardDatePicker} label="From" name="MaritalStatus_SectionA_FromDate" />
+            <Field as={TextField} type="date" label="From" name="MaritalStatus_SectionA_FromDate" />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Field component={KeyboardDatePicker} label="To" name="MaritalStatus_SectionA_ToDate_ToDate" />
+            <Field as={TextField} type="date" label="To" name="MaritalStatus_SectionA_ToDate_ToDate" />
           </Grid>
             <Button
               type='submit' variant='contained' color='primary' 
