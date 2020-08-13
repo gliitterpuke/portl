@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
@@ -52,8 +53,9 @@ const validationSchema = yup.object({
     .required('Email is required')
 });
 
-export const Er = ({ formData, setFormData, nextStep }) => {
+export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
   const classes = useStyles();
+  const [direction, setDirection] = useState('back');
 
   return (
     <>
@@ -61,7 +63,7 @@ export const Er = ({ formData, setFormData, nextStep }) => {
         initialValues={formData}
         onSubmit={values => {
           setFormData(values);
-          nextStep();
+          direction === 'back' ? prevStep() : nextStep();
         }}
         validationSchema={validationSchema}
       >
@@ -300,12 +302,13 @@ export const Er = ({ formData, setFormData, nextStep }) => {
           <Grid item xs={12} md={6}>
             <Field component={KeyboardDatePicker} label="To" name="PersonalDetails_CountryWhereApplying_Row2_ToDate" />
           </Grid>
-
             <Button
-              type='submit'
-              variant='contained'
-              color='primary'
-              className={classes.button}
+              type='submit' variant='contained' color='primary' className={classes.button} onClick={() => setDirection('back')}
+            >
+              Back
+            </Button>
+            <Button
+              type='submit' variant='contained' color='primary' className={classes.button}
             >
               Continue
             </Button>
@@ -316,6 +319,13 @@ export const Er = ({ formData, setFormData, nextStep }) => {
       </Formik>
     </>
   );
+};
+
+Er.propTypes = {
+  formData: PropTypes.object.isRequired,
+  setFormData: PropTypes.func.isRequired,
+  nextStep: PropTypes.func.isRequired,
+  prevStep: PropTypes.func.isRequired
 };
 
 const countries = [

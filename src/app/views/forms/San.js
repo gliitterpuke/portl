@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
@@ -52,8 +53,9 @@ const validationSchema = yup.object({
     .required('Email is required')
 });
 
-export const San = ({ formData, setFormData, nextStep }) => {
+export const San = ({ formData, setFormData, nextStep, prevStep }) => {
   const classes = useStyles();
+  const [direction, setDirection] = useState('back');
 
   return (
     <>
@@ -61,7 +63,7 @@ export const San = ({ formData, setFormData, nextStep }) => {
         initialValues={formData}
         onSubmit={values => {
           setFormData(values);
-          nextStep();
+          direction === 'back' ? prevStep() : nextStep();
         }}
         validationSchema={validationSchema}
       >
@@ -194,6 +196,13 @@ export const San = ({ formData, setFormData, nextStep }) => {
       </Formik>
     </>
   );
+};
+
+San.propTypes = {
+  formData: PropTypes.object.isRequired,
+  setFormData: PropTypes.func.isRequired,
+  nextStep: PropTypes.func.isRequired,
+  prevStep: PropTypes.func.isRequired
 };
 
 const countries = [
