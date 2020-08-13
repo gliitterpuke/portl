@@ -102,10 +102,10 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" label="From" name="PersonalDetails_CurrentCOR_Row2_FromDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_CurrentCOR_Row2_FromDate" />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" label="To" name="PersonalDetails_CurrentCOR_Row2_ToDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_CurrentCOR_Row2_ToDate" />
           </Grid>
 
           <Grid item xs={12}>
@@ -166,10 +166,10 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" label="From" name="PersonalDetails_PreviousCOR_Row2_FromDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_PreviousCOR_Row2_FromDate" />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" label="To" name="PersonalDetails_PreviousCOR_Row2_ToDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_PreviousCOR_Row2_ToDate" />
           </Grid>
 
           <Grid item xs={12} md={6}>
@@ -216,10 +216,10 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" label="From" name="PersonalDetails_PreviousCOR_Row3_FromDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_PreviousCOR_Row3_FromDate" />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" label="To" name="PersonalDetails_PreviousCOR_Row3_ToDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_PreviousCOR_Row3_ToDate" />
           </Grid>
 
           <Grid item xs={12}>
@@ -280,10 +280,10 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" label="From" name="PersonalDetails_CountryWhereApplying_Row2_FromDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_CountryWhereApplying_Row2_FromDate" />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" label="To" name="PersonalDetails_CountryWhereApplying_Row2_ToDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_CountryWhereApplying_Row2_ToDate" />
           </Grid>
           <Grid item xs={12}>
             <Button

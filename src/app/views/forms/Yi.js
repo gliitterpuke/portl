@@ -40,13 +40,13 @@ const validationSchema = yup.object({
     .required('Last Name is required')
     .max(20),
   PersonalDetails_DOBYear: yup.number()
-    .min(1900).max(2020)
+    .min(1900, 'After 1900').max(2020, 'Before 2020')
     .required('Year required'),
   PersonalDetails_DOBMonth: yup.number()
-    .min(1).max(12)
+    .min(1, 'Between January - December').max(12, 'Between January - December')
     .required('Month required'),
   PersonalDetails_DOBDay: yup.number()
-    .min(1).max(31)
+    .min(1, 'Must be a day in a month').max(31, 'Must be a day in a month')
     .required('Day required'),
   PersonalDetails_PlaceBirthCity: yup.string()
     .required('City/Town is required'),

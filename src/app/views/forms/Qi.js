@@ -98,11 +98,11 @@ export const Qi = ({ formData, setFormData, nextStep, prevStep }) => {
           <Typography variant="h6">Trip Dates</Typography>
         </Grid>
         <Grid item xs={12} md={3}>
-            <Field as={TextField} type="date" helperText="From *" name="DetailsOfVisit_PurposeRow1_HowLongStay_FromDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} helperText="From *" name="DetailsOfVisit_PurposeRow1_HowLongStay_FromDate"
             error={touched.DetailsOfVisit_PurposeRow1_HowLongStay_FromDate && errors.DetailsOfVisit_PurposeRow1_HowLongStay_FromDate} />
         </Grid>
         <Grid item xs={12} md={3}>
-            <Field as={TextField} type="date" helperText="To *" name="DetailsOfVisit_PurposeRow1_HowLongStay_ToDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} helperText="To *" name="DetailsOfVisit_PurposeRow1_HowLongStay_ToDate"
             error={touched.DetailsOfVisit_PurposeRow1_HowLongStay_ToDate && errors.DetailsOfVisit_PurposeRow1_HowLongStay_ToDate} />
         </Grid>
         <Grid item xs={12} md={6}>

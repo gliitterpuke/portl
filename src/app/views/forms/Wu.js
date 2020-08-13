@@ -90,11 +90,11 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
             />
         </Grid>
         <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" helperText="Issue Date *" name="MaritalStatus_SectionA_Passport_IssueDate_IssueDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} helperText="Issue Date *" name="MaritalStatus_SectionA_Passport_IssueDate_IssueDate"
             error={touched.MaritalStatus_SectionA_Passport_IssueDate_IssueDate && errors.MaritalStatus_SectionA_Passport_IssueDate_IssueDate} />
         </Grid>
         <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" helperText={"Expiry Date *"} name="MaritalStatus_SectionA_Passport_ExpiryDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} helperText={"Expiry Date *"} name="MaritalStatus_SectionA_Passport_ExpiryDate"
             error={touched.MaritalStatus_SectionA_Passport_ExpiryDate && errors.MaritalStatus_SectionA_Passport_ExpiryDate} />
         </Grid>
         <Grid item xs={12}>
@@ -150,10 +150,10 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
             />
         </Grid>
         <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" label="Issue Date" name="natID_natIDdocs_IssueDate_IssueDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Issue Date" name="natID_natIDdocs_IssueDate_IssueDate" />
         </Grid>
         <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" label="Expiry Date" name="natID_natIDdocs_IssueDate_ExpiryDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Expiry Date" name="natID_natIDdocs_IssueDate_ExpiryDate" />
         </Grid>
         <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
@@ -178,7 +178,7 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
             />
         </Grid>
         <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" label="Expiry Date" name="USCard_usCardDocs_ExpiryDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Expiry Date" name="USCard_usCardDocs_ExpiryDate" />
         </Grid>
             <Grid item xs={12}>
             <Button
