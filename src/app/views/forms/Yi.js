@@ -136,13 +136,13 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <Field
-              name='PersonalDetails_AliasName_AliasFamilyName' label='Previous Last Name *'
+              name='PersonalDetails_AliasName_AliasFamilyName' label='Previous Last Name'
               margin='normal' as={TextField} fullWidth
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <Field
-              name='PersonalDetails_AliasName_AliasGivenName' label='Previous First Name *'
+              name='PersonalDetails_AliasName_AliasGivenName' label='Previous First Name'
               margin='normal' as={TextField} fullWidth
             />
           </Grid>

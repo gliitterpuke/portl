@@ -71,7 +71,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
                   {...params}
                   error={touched['PersonalDetails_CurrentCOR_Row2_Country'] && !!errors['PersonalDetails_CurrentCOR_Row2_Country']}
                   helperText={errors['PersonalDetails_CurrentCOR_Row2_Country']}
-                  label="Country/Territory of Residence*"
+                  label="Country/Territory of Residence *"
                   variant="outlined"
                 />
               )}
@@ -159,7 +159,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
           </Grid>
           <Grid item xs={12} md={8}>
             <Field
-              name='PersonalDetails_PreviousCOR_Row2_Other' label='Other *'
+              name='PersonalDetails_PreviousCOR_Row2_Other' label='Other'
               margin='normal' as={TextField} fullWidth
               error={touched.PersonalDetails_PreviousCOR_Row2_Other && errors.PersonalDetails_PreviousCOR_Row2_Other}
               helperText={touched.PersonalDetails_PreviousCOR_Row2_Other && errors.PersonalDetails_PreviousCOR_Row2_Other}
@@ -209,7 +209,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
           </Grid>
           <Grid item xs={12} md={8}>
             <Field
-              name='PersonalDetails_PreviousCOR_Row3_Other' label='Other *'
+              name='PersonalDetails_PreviousCOR_Row3_Other' label='Other'
               margin='normal' as={TextField} fullWidth
               error={touched.PersonalDetails_PreviousCOR_Row3_Other && errors.PersonalDetails_PreviousCOR_Row3_Other}
               helperText={touched.PersonalDetails_PreviousCOR_Row3_Other && errors.PersonalDetails_PreviousCOR_Row3_Other}
@@ -273,7 +273,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
           </Grid>
           <Grid item xs={12} md={8}>
             <Field
-              name='PersonalDetails_CountryWhereApplying_Row2_Other' label='Other *'
+              name='PersonalDetails_CountryWhereApplying_Row2_Other' label='Other'
               margin='normal' as={TextField} fullWidth
               error={touched.PersonalDetails_PreviousCOR_Row2_Other && errors.PersonalDetails_PreviousCOR_Row2_Other}
               helperText={touched.PersonalDetails_PreviousCOR_Row2_Other && errors.PersonalDetails_PreviousCOR_Row2_Other}

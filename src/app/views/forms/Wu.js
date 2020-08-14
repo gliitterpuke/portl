@@ -138,7 +138,7 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
         
         <Grid item xs={12} md={6}>
             <Field
-              name='natID_natIDdocs_DocNum_DocNum' label='Document Number *'
+              name='natID_natIDdocs_DocNum_DocNum' label='Document Number'
               margin='normal' as={TextField} fullWidth
               error={touched.natID_natIDdocs_DocNum_DocNum && errors.natID_natIDdocs_DocNum_DocNum}
               helperText={touched.natID_natIDdocs_DocNum_DocNum && errors.natID_natIDdocs_DocNum_DocNum}

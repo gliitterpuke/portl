@@ -82,7 +82,7 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           <Grid item xs={12}><FormLabel component="legend">Name of your current Spouse/Common-law partner</FormLabel></Grid>
           <Grid item xs={12} md={6}>
             <Field
-              name='MaritalStatus_SectionA_FamilyName' label='Spouse Last Name *'
+              name='MaritalStatus_SectionA_FamilyName' label='Spouse Last Name'
               margin='normal' as={TextField} fullWidth
               error={touched.MaritalStatus_SectionA_FamilyName && errors.MaritalStatus_SectionA_FamilyName}
               helperText={touched.MaritalStatus_SectionA_FamilyName && errors.MaritalStatus_SectionA_FamilyName}
@@ -90,7 +90,7 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <Field
-              name='MaritalStatus_SectionA_GivenName' label='Spouse First Name *'
+              name='MaritalStatus_SectionA_GivenName' label='Spouse First Name'
               margin='normal' as={TextField} fullWidth
               error={touched.MaritalStatus_SectionA_GivenName && errors.MaritalStatus_SectionA_GivenName}
               helperText={touched.MaritalStatus_SectionA_GivenName && errors.MaritalStatus_SectionA_GivenName}
@@ -111,7 +111,7 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <Field
-              name='MaritalStatus_SectionA_PMFamilyName' label='Previous Spouse Last Name *'
+              name='MaritalStatus_SectionA_PMFamilyName' label='Previous Spouse Last Name'
               margin='normal' as={TextField} fullWidth
               error={touched.MaritalStatus_SectionA_PMFamilyName && errors.MaritalStatus_SectionA_PMFamilyName}
               helperText={touched.MaritalStatus_SectionA_PMFamilyName && errors.MaritalStatus_SectionA_PMFamilyName}
@@ -119,7 +119,7 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <Field
-              name='MaritalStatus_SectionA_PMGivenName_GivenName' label='Previous Spouse First Name *'
+              name='MaritalStatus_SectionA_PMGivenName_GivenName' label='Previous Spouse First Name'
               margin='normal' as={TextField} fullWidth
               error={touched.MaritalStatus_SectionA_PMGivenName_GivenName && errors.MaritalStatus_SectionA_PMGivenName_GivenName}
               helperText={touched.MaritalStatus_SectionA_PMGivenName_GivenName && errors.MaritalStatus_SectionA_PMGivenName_GivenName}
