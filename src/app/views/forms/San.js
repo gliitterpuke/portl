@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 import { Select, RadioGroup } from 'formik-material-ui'
@@ -34,7 +34,9 @@ const validationSchema = yup.object({
   MaritalStatus_SectionA_MaritalStatus: yup.string()
     .required('Required'),
   MaritalStatus_SectionA_PrevSpouse_DOBYear: yup.number()
-    .min(1900, 'After 1900').max(2020, 'Before 2020')
+    .min(1900, 'After 1900').max(2020, 'Before 2020'),
+  MaritalStatus_SectionA_PrevMarriedIndicator: yup.string()
+    .required('Required'),
 });
 
 export const San = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -97,13 +99,16 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormLabel component="legend">Have you previously been married or in a common-law relationship?</FormLabel>
+            <FormLabel component="legend">Have you previously been married or in a common-law relationship? *</FormLabel>
             <Field component={RadioGroup} row name="MaritalStatus_SectionA_PrevMarriedIndicator">
               <FormControlLabel
                 value="Y" control={<Radio />} label="Yes" />
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="MaritalStatus_SectionA_PrevMarriedIndicator" />
+            </div>
           </Grid>
 
           <Grid item xs={12}>

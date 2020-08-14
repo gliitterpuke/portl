@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Text } from 'react';
 import PropTypes from 'prop-types';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-import { Select, RadioGroup } from 'formik-material-ui'
+import { Select, RadioGroup, RadioGroupProps } from 'formik-material-ui'
 import {
   Button,
   FormControlLabel,
@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
   MenuItem,
-  FormControl
+  FormControl,
 } from "@material-ui/core";
 import * as yup from 'yup';
 import {
@@ -21,6 +21,7 @@ import {
     ToggleButtonGroup,
     AutocompleteRenderInputParams,
   } from 'formik-material-ui-lab';
+import { size } from 'lodash';
   
 const useStyles = makeStyles(theme => ({
   button: {
@@ -39,6 +40,10 @@ const validationSchema = yup.object({
   PersonalDetails_Name_FamilyName: yup.string()
     .required('Last Name is required')
     .max(20),
+  PersonalDetails_AliasName_AliasNameIndicator: yup.string()
+    .required('Required'),
+  PersonalDetails_Sex_Sex: yup.string()
+    .required('Gender required'),
   PersonalDetails_DOBYear: yup.number()
     .typeError('Must be between 1900-2020')
     .min(1900).max(2020)
@@ -83,22 +88,26 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
             <FormControl>
               <InputLabel>Service In</InputLabel>
               <Field
-                component={Select} style={{ width: 300 }} name="PersonalDetails_ServiceIn_ServiceIn"
-                error={touched.PersonalDetails_ServiceIn_ServiceIn && errors.PersonalDetails_ServiceIn_ServiceIn}>
+                component={Select} style={{ width: 300 }} name="PersonalDetails_ServiceIn_ServiceIn" >
                 <MenuItem value={'English'}>English</MenuItem>
                 <MenuItem value={'French'}>French</MenuItem>
               </Field>
+              <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="PersonalDetails_ServiceIn_ServiceIn" />
+              </div>    
             </FormControl>
           </Grid>
           <Grid item xs={12} md={6}>
             <FormControl>
               <InputLabel>Visa Type</InputLabel>
               <Field
-                component={Select} style={{ width: 300 }} name="PersonalDetails_VisaType_VisaType"
-                error={touched.PersonalDetails_VisaType_VisaType && errors.PersonalDetails_VisaType_VisaType}>
+                component={Select} style={{ width: 300 }} name="PersonalDetails_VisaType_VisaType" >
                 <MenuItem value={'Business'}>Business</MenuItem>
                 <MenuItem value={'Transit'}>Transit</MenuItem>
               </Field>
+              <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="PersonalDetails_VisaType_VisaType" />
+              </div>    
             </FormControl>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -118,21 +127,18 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormLabel FormLabel component="legend">Have you ever used another name?</FormLabel>
-            <Field required="true" component={RadioGroup} row name="PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator"
-            error={touched.PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator && errors.PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator}
-            helperText={touched.PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator && errors.PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator}>
+            <FormLabel component="legend">Have you ever used another name? *</FormLabel>
+            <Field component={RadioGroup} name="PersonalDetails_AliasName_AliasNameIndicator" row >
               <FormControlLabel
-                value="Y"
-                control={<Radio />}
-                label="Yes"
+                value="Y" control={<Radio />} label="Yes"
               />
               <FormControlLabel
-                value="N"
-                control={<Radio />}
-                label="No"
+                value="N" control={<Radio />} label="No"
               />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="PersonalDetails_AliasName_AliasNameIndicator" />
+            </div>    
           </Grid>
           <Grid item xs={12} md={6}>
             <Field
@@ -158,6 +164,9 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
               <FormControlLabel
                 value="Unspecified" control={<Radio />} label="Another Gender" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="PersonalDetails_Sex_Sex" />
+            </div>
           </Grid>
           <Grid item xs={12} md={2}>
             <Field

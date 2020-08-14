@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 import { CheckboxWithLabel, Select, RadioGroup } from 'formik-material-ui'
@@ -37,6 +37,8 @@ const validationSchema = yup.object({
     .required('City/town is required'),
   ContactInformation_contact_AddressRow2_Country_Country: yup.string()
     .required('Country/territory is required'),
+  ContactInformation_contact_SameAsMailingIndicator: yup.string()
+    .required('Required'),
   ContactInformation_contact_PhoneNumbers_Phone_Type: yup.string()
     .required('Phone type required'),
   ContactInformation_contact_PhoneNumbers_Phone_NumberCountry: yup.number()
@@ -174,13 +176,16 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
             </Typography>
         </Grid>
         <Grid item xs={12}>
-            <FormLabel FormLabel component="legend">Same as mailing address?</FormLabel>
+            <FormLabel FormLabel component="legend">Same as mailing address? *</FormLabel>
             <Field component={RadioGroup} row name="ContactInformation_contact_SameAsMailingIndicator">
               <FormControlLabel
                 value="Y" control={<Radio />} label="Yes" />
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="ContactInformation_contact_SameAsMailingIndicator" />
+            </div>
         </Grid>
         <Grid item xs={12} md={2}>
             <Field

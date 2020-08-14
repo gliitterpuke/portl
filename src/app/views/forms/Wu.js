@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 import { Select, RadioGroup } from 'formik-material-ui'
@@ -42,6 +42,14 @@ const validationSchema = yup.object({
       'MaritalStatus_SectionA_Passport_IssueDate_IssueDate',
       (MaritalStatus_SectionA_Passport_IssueDate_IssueDate, yup) => MaritalStatus_SectionA_Passport_IssueDate_IssueDate && yup.min(MaritalStatus_SectionA_Passport_IssueDate_IssueDate, "End date cannot be before start date"))
     .required('Issue Date Required'),
+  MaritalStatus_SectionA_Passport_TaiwanPIN: yup.string()
+    .required('Required'),
+  MaritalStatus_SectionA_Passport_IsraelPassportIndicator: yup.string()
+    .required('Required'),
+  natID_q1_natIDIndicator: yup.string()
+    .required('Required'),
+  usCard_q1_usCardIndicator: yup.string()
+    .required('Required'),
 });
 
 export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -110,6 +118,9 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="MaritalStatus_SectionA_Passport_TaiwanPIN" />
+            </div>
         </Grid>
         <Grid item xs={12}>
             <FormLabel FormLabel component="legend">For this trip, will you use a National Israeli passport? *</FormLabel>
@@ -119,6 +130,9 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="MaritalStatus_SectionA_Passport_IsraelPassportIndicator" />
+            </div>
         </Grid>
         <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
@@ -126,13 +140,16 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
             </Typography>
         </Grid>
         <Grid item xs={12}>
-            <FormLabel FormLabel component="legend">Do you have a National Identity Document?</FormLabel>
+            <FormLabel FormLabel component="legend">Do you have a National Identity Document? *</FormLabel>
             <Field component={RadioGroup} row name="natID_q1_natIDIndicator">
               <FormControlLabel
                 value="Y" control={<Radio />} label="Yes" />
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="natID_q1_natIDIndicator" />
+            </div>
         </Grid>
         
         <Grid item xs={12} md={6}>
@@ -173,13 +190,16 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
             </Typography>
         </Grid>
         <Grid item xs={12}>
-            <FormLabel FormLabel component="legend">Are you a lawful Permanent Resident of the United States with a valid alien registration card (green card)?</FormLabel>
+            <FormLabel FormLabel component="legend">Are you a lawful Permanent Resident of the United States with a valid alien registration card (green card)? *</FormLabel>
             <Field component={RadioGroup} row name="USCard_q1_usCardIndicator">
               <FormControlLabel
                 value="Y" control={<Radio />} label="Yes" />
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="USCard_q1_usCardIndicator" />
+            </div>
         </Grid>
         <Grid item xs={12} md={6}>
             <Field

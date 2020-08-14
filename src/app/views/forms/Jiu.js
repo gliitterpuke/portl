@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 import { Select, RadioGroup } from 'formik-material-ui'
@@ -31,6 +31,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
+  Education_EducationIndicator: yup.string()
+    .required('Required'),
   Education_Edu_Row1_FromYear: yup.number()
     .min(1900).max(2020),
   Education_Edu_Row1_FromMonth: yup.number()
@@ -71,6 +73,9 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="Education_EducationIndicator" />
+            </div>
         </Grid>
         <Grid item xs={12} md={1}>
             <Field

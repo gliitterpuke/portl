@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 import { Select, RadioGroup, CheckboxWithLabel } from 'formik-material-ui'
@@ -31,7 +31,24 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-
+  BackgroundInfo_Choice: yup.string()
+    .required('Required'),
+  BackgroundInfo2_VisaChoice1: yup.string()
+  .required('Required'),
+  BackgroundInfo2_VisaChoice2: yup.string()
+  .required('Required'),
+  BackgroundInfo2_Details_VisaChoice3: yup.string()
+  .required('Required'),
+  BackgroundInfo3_Choice: yup.string()
+  .required('Required'),
+  BackgroundInfo3_details: yup.string()
+  .required('Required'),
+  Military_Choice: yup.string()
+  .required('Required'),
+  Occupation_Choice: yup.string()
+  .required('Required'),
+  GovPosition_Choice: yup.string()
+  .required('Required'),
 });
 
 export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -74,7 +91,7 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
             </Typography>
         </Grid>
         <Grid item xs={12}>
-        <FormGroup row>
+        <FormGroup>
         <FormLabel FormLabel component="legend">Have you or any family members had, or been in contact with anyone, with tuberculosis within the past 2 years? *</FormLabel>
             {canus.map(opt => (
               <Field
@@ -111,6 +128,9 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="BackgroundInfo2_VisaChoice1" />
+            </div>
         </Grid>
         <Grid item xs={12}>
             <FormLabel FormLabel component="legend">Have you ever been refused a visa/permit, denied entry or been ordered to leave a country? *</FormLabel>
@@ -120,6 +140,9 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="BackgroundInfo2_VisaChoice2" />
+            </div>
         </Grid>
         <Grid item xs={12}>
             <FormLabel FormLabel component="legend">Have you previously applied to live or remain in Canada? *</FormLabel>
@@ -129,6 +152,9 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="BackgroundInfo3_VisaChoice3" />
+            </div>
         </Grid>
         <Grid item xs={12} md={6}>
           <FormLabel component="legend">Please provide details.</FormLabel>
@@ -151,6 +177,9 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="BackgroundInfo3_Choice" />
+            </div>
         </Grid>
         <Grid item xs={12}>
           <FormLabel component="legend">Please provide details.</FormLabel>
@@ -173,6 +202,9 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="Military_Choice" />
+            </div>
         </Grid>
         <Grid item xs={12}>
           <FormLabel component="legend">Please provide the dates of service and countries/territories where you served.</FormLabel>
@@ -196,6 +228,9 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="Occupation_Choice" />
+            </div>
         </Grid>
         <Grid item xs={12}>
             <FormLabel FormLabel component="legend">Have you ever witnessed/participated in the ill treatment of prisoners/civilians, looting/desecration of religious buildings? *</FormLabel>
@@ -205,6 +240,9 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="GovPosition_Choice" />
+            </div>
         </Grid>
           <Grid item xs={12}>
             <Button

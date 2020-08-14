@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 import { Select, RadioGroup } from 'formik-material-ui'
@@ -34,6 +34,10 @@ const validationSchema = yup.object({
   PersonalDetails_CurrentCOR_Row2_Country: yup.string()
     .required('Required'),
   PersonalDetails_CurrentCOR_Row2_Status: yup.string()
+    .required('Required'),
+  PersonalDetails_PCRIndicator: yup.string()
+    .required('Required'),
+  PersonalDetails_SameAsCORIndicator: yup.string()
     .required('Required'),
 });
 
@@ -121,6 +125,9 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="PersonalDetails_PCRIndicator" />
+            </div>
           </Grid>
           <Grid item xs={12} md={6}>
             <Field
@@ -235,6 +242,9 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="PersonalDetails_SameAsCORIndicator" />
+            </div>
           </Grid>
           <Grid item xs={12} md={6}>
             <Field
