@@ -4,17 +4,17 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
-  Button
+  Button,
+  MenuItem
 } from "@material-ui/core";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import { ValidatorForm, TextValidator, SelectValidator } from "react-material-ui-form-validator";
 import { connect } from "react-redux";
 
 class SignUp extends Component {
   state = {
-    username: "",
+    role: "",
     email: "",
     password: "",
-    agreement: ""
   };
 
   handleChange = event => {
@@ -24,9 +24,22 @@ class SignUp extends Component {
     });
   };
 
-  handleFormSubmit = event => {};
+  handleFormSubmit = event => {
+    alert(JSON.stringify(this.state));
+          fetch('http://localhost:8000/api/v1/users', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.state),
+        }).then(response => response.json())
+        .then(response => {
+        
+            console.log(response)
+        });
+  };
   render() {
-    let { username, email, password } = this.state;
+    let { role, email, password } = this.state;
     return (
       <div className="signup flex justify-center w-full h-full-screen">
         <div className="p-8">
@@ -43,17 +56,20 @@ class SignUp extends Component {
               <Grid item lg={7} md={7} sm={7} xs={12}>
                 <div className="p-9 h-full">
                   <ValidatorForm ref="form" onSubmit={this.handleFormSubmit}>
-                    <TextValidator
+                    <SelectValidator
+                      label="Role"
                       className="mb-6 w-full"
+                      name="role"
+                      value={role}
+                      style={{ width: 300 }}
                       variant="outlined"
-                      label="Username"
                       onChange={this.handleChange}
-                      type="text"
-                      name="username"
-                      value={username}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
-                    />
+                    >
+                      <MenuItem value={"client"}>Client</MenuItem>
+                      <MenuItem value={"professional"}>Professional</MenuItem>
+                    </SelectValidator>       
                     <TextValidator
                       className="mb-6 w-full"
                       variant="outlined"
