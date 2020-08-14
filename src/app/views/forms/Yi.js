@@ -153,7 +153,7 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormLabel FormLabel component="legend">Sex</FormLabel>
+            <FormLabel FormLabel component="legend">Sex *</FormLabel>
             <Field component={RadioGroup} row name="PersonalDetails_Sex_Sex">
               <FormControlLabel
                 value="Female" control={<Radio />} label="Female" />

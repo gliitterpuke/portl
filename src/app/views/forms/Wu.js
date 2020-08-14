@@ -48,7 +48,7 @@ const validationSchema = yup.object({
     .required('Required'),
   natID_q1_natIDIndicator: yup.string()
     .required('Required'),
-  usCard_q1_usCardIndicator: yup.string()
+  USCard_q1_usCardIndicator: yup.string()
     .required('Required'),
 });
 
@@ -110,9 +110,7 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
         </Grid>
         <Grid item xs={12}>
             <FormLabel FormLabel component="legend">For this trip, will you use a passport issued by the Ministry of Foreign Affairs in Taiwan that includes your personal identification number? *</FormLabel>
-            <Field component={RadioGroup} row name="MaritalStatus_SectionA_Passport_TaiwanPIN"
-            error={touched.MaritalStatus_SectionA_Passport_TaiwanPIN && errors.MaritalStatus_SectionA_Passport_TaiwanPIN}
-            helperText={touched.MaritalStatus_SectionA_Passport_TaiwanPIN && errors.MaritalStatus_SectionA_Passport_TaiwanPIN}>
+            <Field component={RadioGroup} row name="MaritalStatus_SectionA_Passport_TaiwanPIN">
               <FormControlLabel
                 value="Y" control={<Radio />} label="Yes" />
               <FormControlLabel

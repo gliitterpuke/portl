@@ -118,7 +118,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <FormLabel FormLabel component="legend">Have you lived in any country outside of your country of citizenship or your current country/territory for more than six months in the past 5 years?</FormLabel>
+            <FormLabel FormLabel component="legend">Have you lived in any country outside of your country of citizenship or your current country/territory for more than six months in the past 5 years? *</FormLabel>
             <Field component={RadioGroup} row name="PersonalDetails_PCRIndicator">
               <FormControlLabel
                 value="Y" control={<Radio />} label="Yes" />
@@ -235,7 +235,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep }) => {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <FormLabel FormLabel component="legend">Same as your current country/territory of residence?</FormLabel>
+            <FormLabel FormLabel component="legend">Same as your current country/territory of residence? *</FormLabel>
             <Field component={RadioGroup} row name="PersonalDetails_SameAsCORIndicator">
               <FormControlLabel
                 value="Y" control={<Radio />} label="Yes" />

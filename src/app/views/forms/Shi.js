@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  BackgroundInfo_Choice: yup.string()
+  BackgroundInfo_Choice: yup.array()
     .required('Required'),
   BackgroundInfo2_VisaChoice1: yup.string()
   .required('Required'),
@@ -159,7 +159,7 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
         <Grid item xs={12} md={6}>
           <FormLabel component="legend">Please provide details.</FormLabel>
             <Field
-              name='fieldtype' label='Previous First Name *'
+              name='fieldtype'
               margin='normal' as={TextField} fullWidth
               error={touched.fieldtype && errors.fieldtype}
               helperText={touched.fieldtype && errors.fieldtype}
