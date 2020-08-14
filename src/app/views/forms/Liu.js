@@ -38,10 +38,10 @@ const validationSchema = yup.object({
   ContactInformation_contact_AddressRow2_Country_Country: yup.string()
     .required('Country/territory is required'),
   ContactInformation_contact_PhoneNumbers_Phone_NumberCountry: yup.number()
-    .typeError('Must be an integer')
+    .typeError('Numbers only')
     .required('Country code required'),
   ContactInformation_contact_PhoneNumbers_Phone_IntlNumber_IntlNumber: yup.number()
-    .typeError('Must be an integer')
+    .typeError('Numbers only')
     .required('Phone number required'),
   ContactInformation_contact_PhoneNumbers_FaxEmail_Email: yup.string()
     .email('Invalid email')
@@ -357,7 +357,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         </Grid>
           <Grid item xs={12} md={2}>
             <Field
-              name='ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry' label='Country Code'
+              name='ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry' label='Alternative Country Code'
               margin='normal' as={TextField} fullWidth
               error={touched.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry}
               helperText={touched.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry}
@@ -365,10 +365,10 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         </Grid>
         <Grid item xs={12} md={5}>
             <Field
-              name='ContactInformation_contact_PhoneNumbers_Phone_IntlNumber_IntlNumber' label='Phone Number'
+              name='ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber' label='Alternative Phone Number'
               margin='normal' as={TextField} fullWidth
-              error={touched.ContactInformation_contact_PhoneNumbers_Phone_IntlNumber_IntlNumber && errors.ContactInformation_contact_PhoneNumbers_Phone_IntlNumber_IntlNumber}
-              helperText={touched.ContactInformation_contact_PhoneNumbers_Phone_IntlNumber_IntlNumber && errors.ContactInformation_contact_PhoneNumbers_Phone_IntlNumber_IntlNumber}
+              error={touched.ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber && errors.ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber}
+              helperText={touched.ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber && errors.ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber}
             />
         </Grid>
         <Grid item xs={12} md={2}>
