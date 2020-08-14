@@ -289,7 +289,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         </Grid>
         <Grid item xs={12} md={3}>
             <FormControl>
-              <InputLabel>Type</InputLabel>
+              <InputLabel>Type *</InputLabel>
               <Field
                 component={Select} style={{ width: 200 }} name="ContactInformation_contact_PhoneNumbers_Phone_Type">
                 <MenuItem value={'01'}>Home</MenuItem>
