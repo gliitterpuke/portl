@@ -31,7 +31,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-
+  Education_Edu_Row1_FromYear: yup.number()
+    .min(1900).max(2020),
+  Education_Edu_Row1_FromMonth: yup.number()
+    .min(1).max(12),  
+  Education_Edu_Row1_ToYear: yup.number()
+    .moreThan(yup.ref('Education_Edu_Row1_FromYear'), "Must be after from year"),
+  Education_Edu_Row1_ToMonth: yup.number()
+    .min(1).max(12),  
 });
 
 export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -70,7 +77,6 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Education_Edu_Row1_FromYear' label='YYYY' helperText='From'
               margin='normal' as={TextField} fullWidth
               error={touched.Education_Edu_Row1_FromYear && errors.Education_Edu_Row1_FromYear}
-              helperText={touched.Education_Edu_Row1_FromYear && errors.Education_Edu_Row1_FromYear}
             />
         </Grid>
         <Grid item xs={12} md={1}>
@@ -78,7 +84,6 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Education_Edu_Row1_FromMonth' label='MM' helperText='From'
               margin='normal' as={TextField} fullWidth
               error={touched.Education_Edu_Row1_FromMonth && errors.Education_Edu_Row1_FromMonth}
-              helperText={touched.Education_Edu_Row1_FromMonth && errors.Education_Edu_Row1_FromMonth}
             />
         </Grid>
         <Grid item xs={12} md={5}>
@@ -102,7 +107,6 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Education_Edu_Row1_ToYear' label='YYYY' helperText='To'
               margin='normal' as={TextField} fullWidth
               error={touched.Education_Edu_Row1_ToYear && errors.Education_Edu_Row1_ToYear}
-              helperText={touched.Education_Edu_Row1_ToYear && errors.Education_Edu_Row1_ToYear}
             />
         </Grid>
         <Grid item xs={12} md={1}>
@@ -110,7 +114,6 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Education_Edu_Row1_ToMonth' label='MM' helperText='To'
               margin='normal' as={TextField} fullWidth
               error={touched.Education_Edu_Row1_ToMonth && errors.Education_Edu_Row1_ToMonth}
-              helperText={touched.Education_Edu_Row1_ToMonth && errors.Education_Edu_Row1_ToMonth}
             />
         </Grid>
         <Grid item xs={12} md={6}>

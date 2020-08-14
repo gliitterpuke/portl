@@ -35,9 +35,12 @@ const validationSchema = yup.object({
     .required('Passport number required'),
   MaritalStatus_SectionA_Passport_CountryofIssue_CountryofIssue: yup.string()
     .required('Country/territory of issue required'),
-  MaritalStatus_SectionA_Passport_IssueDate_IssueDate: yup.string()
+  MaritalStatus_SectionA_Passport_IssueDate_IssueDate: yup.date()
     .required('Issue Date Required'),
-  MaritalStatus_SectionA_Passport_ExpiryDate: yup.string()
+  MaritalStatus_SectionA_Passport_ExpiryDate: yup.date()
+    .when(
+      'MaritalStatus_SectionA_Passport_IssueDate_IssueDate',
+      (MaritalStatus_SectionA_Passport_IssueDate_IssueDate, yup) => MaritalStatus_SectionA_Passport_IssueDate_IssueDate && yup.min(MaritalStatus_SectionA_Passport_IssueDate_IssueDate, "End date cannot be before start date"))
     .required('Issue Date Required'),
 });
 
@@ -95,7 +98,8 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
         </Grid>
         <Grid item xs={12} md={6}>
             <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} helperText={"Expiry Date *"} name="MaritalStatus_SectionA_Passport_ExpiryDate"
-            error={touched.MaritalStatus_SectionA_Passport_ExpiryDate && errors.MaritalStatus_SectionA_Passport_ExpiryDate} />
+            error={touched.MaritalStatus_SectionA_Passport_ExpiryDate && errors.MaritalStatus_SectionA_Passport_ExpiryDate}
+            helperText={touched.MaritalStatus_SectionA_Passport_ExpiryDate && errors.MaritalStatus_SectionA_Passport_ExpiryDate} />
         </Grid>
         <Grid item xs={12}>
             <FormLabel FormLabel component="legend">For this trip, will you use a passport issued by the Ministry of Foreign Affairs in Taiwan that includes your personal identification number? *</FormLabel>
@@ -130,6 +134,15 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
               <FormControlLabel
                 value="N" control={<Radio />} label="No" />
             </Field>
+        </Grid>
+        
+        <Grid item xs={12} md={6}>
+            <Field
+              name='natID_natIDdocs_DocNum_DocNum' label='Document Number *'
+              margin='normal' as={TextField} fullWidth
+              error={touched.natID_natIDdocs_DocNum_DocNum && errors.natID_natIDdocs_DocNum_DocNum}
+              helperText={touched.natID_natIDdocs_DocNum_DocNum && errors.natID_natIDdocs_DocNum_DocNum}
+            />
         </Grid>
         <Grid item xs={12} md={6}>
             <Field

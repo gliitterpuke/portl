@@ -33,11 +33,15 @@ const useStyles = makeStyles(theme => ({
 const validationSchema = yup.object({
   DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit: yup.string()
     .required('Purpose of visit required'),
-  DetailsOfVisit_PurposeRow1_HowLongStay_FromDate: yup.string()
+  DetailsOfVisit_PurposeRow1_HowLongStay_FromDate: yup.date()
     .required('From date required'),
-  DetailsOfVisit_PurposeRow1_HowLongStay_ToDate: yup.string()
+  DetailsOfVisit_PurposeRow1_HowLongStay_ToDate: yup.date()
+  .when(
+    'DetailsOfVisit_PurposeRow1_HowLongStay_FromDate',
+    (DetailsOfVisit_PurposeRow1_HowLongStay_FromDate, yup) => DetailsOfVisit_PurposeRow1_HowLongStay_FromDate && yup.min(DetailsOfVisit_PurposeRow1_HowLongStay_FromDate, "End date cannot be before start date"))
     .required('To date required'),
   DetailsOfVisit_PurposeRow1_Funds_Funds: yup.number()
+    .typeError('Minimum of $10,000CAD')
     .min(10000)
     .required('Funds available for your trip required'),
   DetailsOfVisit_Contacts_Row1_Name_Name: yup.string()
@@ -98,11 +102,11 @@ export const Qi = ({ formData, setFormData, nextStep, prevStep }) => {
           <Typography variant="h6">Trip Dates</Typography>
         </Grid>
         <Grid item xs={12} md={3}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} helperText="From *" name="DetailsOfVisit_PurposeRow1_HowLongStay_FromDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From *" name="DetailsOfVisit_PurposeRow1_HowLongStay_FromDate"
             error={touched.DetailsOfVisit_PurposeRow1_HowLongStay_FromDate && errors.DetailsOfVisit_PurposeRow1_HowLongStay_FromDate} />
         </Grid>
         <Grid item xs={12} md={3}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} helperText="To *" name="DetailsOfVisit_PurposeRow1_HowLongStay_ToDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To *" name="DetailsOfVisit_PurposeRow1_HowLongStay_ToDate"
             error={touched.DetailsOfVisit_PurposeRow1_HowLongStay_ToDate && errors.DetailsOfVisit_PurposeRow1_HowLongStay_ToDate} />
         </Grid>
         <Grid item xs={12} md={6}>

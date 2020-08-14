@@ -37,6 +37,8 @@ const validationSchema = yup.object({
   Occupation_OccupationRow1_FromMonth: yup.number()
     .min(1).max(12)  
     .required('From Month required'),
+  Occupation_OccupationRow1_ToYear: yup.number()
+    .moreThan(yup.ref('Occupation_OccupationRow1_FromYear'), "Must be after from year"),
   Occupation_OccupationRow1_Occupation_Occupation: yup.string()
     .required('Current occupation required'),
   Occupation_OccupationRow1_Employer: yup.string()
@@ -85,7 +87,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         </Grid>
         <Grid item xs={12} md={1}>
             <Field
-              name='Occupation_OccupationRow1_FromMonth' label='MM *' helperText='To'
+              name='Occupation_OccupationRow1_FromMonth' label='MM *' helperText='From'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow1_FromMonth && errors.Occupation_OccupationRow1_FromMonth}
             />
@@ -111,7 +113,6 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Occupation_OccupationRow1_ToYear' label='YYYY' helperText='To'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow1_ToYear && errors.Occupation_OccupationRow1_ToYear}
-              helperText={touched.Occupation_OccupationRow1_ToYear && errors.Occupation_OccupationRow1_ToYear}
             />
         </Grid>
         <Grid item xs={12} md={1}>
@@ -119,7 +120,6 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Occupation_OccupationRow1_ToMonth' label='MM' helperText='To'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow1_ToMonth && errors.Occupation_OccupationRow1_ToMonth}
-              helperText={touched.Occupation_OccupationRow1_ToMonth && errors.Occupation_OccupationRow1_ToMonth}
             />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -172,7 +172,6 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Occupation_OccupationRow2_FromYear' label='YYYY' helperText='From'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow2_FromYear && errors.Occupation_OccupationRow2_FromYear}
-              helperText={touched.Occupation_OccupationRow2_FromYear && errors.Occupation_OccupationRow2_FromYear}
             />
         </Grid>
         <Grid item xs={12} md={1}>
@@ -180,7 +179,6 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Occupation_OccupationRow2_FromMonth' label='MM' helperText='From'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow2_FromMonth && errors.Occupation_OccupationRow2_FromMonth}
-              helperText={touched.Occupation_OccupationRow2_FromMonth && errors.Occupation_OccupationRow2_FromMonth}
             />
         </Grid>
         <Grid item xs={12} md={5}>
@@ -204,7 +202,6 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Occupation_OccupationRow2_ToYear' label='YYYY' helperText='To'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow2_ToYear && errors.Occupation_OccupationRow2_ToYear}
-              helperText={touched.Occupation_OccupationRow2_ToYear && errors.Occupation_OccupationRow2_ToYear}
             />
         </Grid>
         <Grid item xs={12} md={1}>
@@ -212,7 +209,6 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Occupation_OccupationRow2_ToMonth' label='MM' helperText='To'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow2_ToMonth && errors.Occupation_OccupationRow2_ToMonth}
-              helperText={touched.Occupation_OccupationRow2_ToMonth && errors.Occupation_OccupationRow2_ToMonth}
             />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -265,7 +261,6 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Occupation_OccupationRow3_FromYear' label='YYYY' helperText='From'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow3_FromYear && errors.Occupation_OccupationRow3_FromYear}
-              helperText={touched.Occupation_OccupationRow3_FromYear && errors.Occupation_OccupationRow3_FromYear}
             />
         </Grid>
         <Grid item xs={12} md={1}>
@@ -273,7 +268,6 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Occupation_OccupationRow3_FromMonth' label='MM' helperText='From'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow3_FromMonth && errors.Occupation_OccupationRow3_FromMonth}
-              helperText={touched.Occupation_OccupationRow3_FromMonth && errors.Occupation_OccupationRow3_FromMonth}
             />
         </Grid>
         <Grid item xs={12} md={5}>
@@ -297,7 +291,6 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Occupation_OccupationRow3_ToYear' label='YYYY' helperText='To'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow3_ToYear && errors.Occupation_OccupationRow3_ToYear}
-              helperText={touched.Occupation_OccupationRow3_ToYear && errors.Occupation_OccupationRow3_ToYear}
             />
         </Grid>
         <Grid item xs={12} md={1}>
@@ -305,7 +298,6 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
               name='Occupation_OccupationRow3_ToMonth' label='MM' helperText='To'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow3_ToMonth && errors.Occupation_OccupationRow3_ToMonth}
-              helperText={touched.Occupation_OccupationRow3_ToMonth && errors.Occupation_OccupationRow3_ToMonth}
             />
         </Grid>
         <Grid item xs={12} md={4}>
