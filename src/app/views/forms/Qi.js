@@ -78,15 +78,15 @@ export const Qi = ({ formData, setFormData, nextStep, prevStep }) => {
               <Field
                 component={Select} style={{ width: 300 }} name="DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit"
                 error={touched.DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit && errors.DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit}>
-                <MenuItem value={'pvalue'}>Business</MenuItem> 
-                <MenuItem value={'pvalue'}>Tourism</MenuItem>
-                <MenuItem value={'pvalue'}>Short-Term Studies</MenuItem>
-                <MenuItem value={'pvalue'}>Returning Student</MenuItem>
-                <MenuItem value={'pvalue'}>Returning Worker</MenuItem>
-                <MenuItem value={'pvalue'}>Super Visa</MenuItem>
-                <MenuItem value={'pvalue'}>Other</MenuItem>
-                <MenuItem value={'pvalue'}>Visit</MenuItem>
-                <MenuItem value={'pvalue'}>Family Visit</MenuItem>
+                <MenuItem value={'01'}>Business</MenuItem> 
+                <MenuItem value={'02'}>Tourism</MenuItem>
+                <MenuItem value={'04'}>Short-Term Studies</MenuItem>
+                <MenuItem value={'05'}>Returning Student</MenuItem>
+                <MenuItem value={'06'}>Returning Worker</MenuItem>
+                <MenuItem value={'07'}>Super Visa</MenuItem>
+                <MenuItem value={'03'}>Other</MenuItem>
+                <MenuItem value={'08'}>Visit</MenuItem>
+                <MenuItem value={'13'}>Family Visit</MenuItem>
               </Field>
             </FormControl>
         </Grid>
