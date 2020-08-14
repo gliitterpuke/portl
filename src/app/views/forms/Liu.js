@@ -37,6 +37,8 @@ const validationSchema = yup.object({
     .required('City/town is required'),
   ContactInformation_contact_AddressRow2_Country_Country: yup.string()
     .required('Country/territory is required'),
+  ContactInformation_contact_PhoneNumbers_Phone_Type: yup.string()
+    .required('Phone type required'),
   ContactInformation_contact_PhoneNumbers_Phone_NumberCountry: yup.number()
     .typeError('Numbers only')
     .required('Country code required'),
