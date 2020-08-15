@@ -26,7 +26,7 @@ class SignUp extends Component {
 
   handleFormSubmit = event => {
     alert(JSON.stringify(this.state));
-          fetch('https://portl.herokuapp.com/api/v1/users', {
+          fetch('https://portl-dev.herokuapp.com/api/v1/users', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

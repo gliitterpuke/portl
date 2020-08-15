@@ -31,9 +31,8 @@ const styles = theme => ({
 
 class SignIn extends Component {
   state = {
-    email: "watson@example.com",
+    username: "watson@example.com",
     password: "testpass",
-    agreement: ""
   };
   handleChange = event => {
     event.persist();
@@ -43,9 +42,22 @@ class SignIn extends Component {
   };
   handleFormSubmit = event => {
     this.props.loginWithEmailAndPassword({ ...this.state });
+    const formBody = Object.keys(this.state).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(this.state[key])).join('&');
+    alert(formBody);
+    fetch('https://portl-dev.herokuapp.com/api/v1/token', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formBody,
+        }).then(response => response.json())
+        .then(response => {
+        
+            console.log(response)
+        });
   };
   render() {
-    let { email, password } = this.state;
+    let { username, password } = this.state;
     let { classes } = this.props;
     return (
       <div className="signup flex justify-center w-full h-full-screen">
@@ -66,8 +78,8 @@ class SignIn extends Component {
                       label="Email"
                       onChange={this.handleChange}
                       type="email"
-                      name="email"
-                      value={email}
+                      name="username"
+                      value={username}
                       validators={["required", "isEmail"]}
                       errorMessages={[
                         "this field is required",
@@ -85,13 +97,6 @@ class SignIn extends Component {
                       validators={["required"]}
                       errorMessages={["this field is required"]}
                     />
-                    <FormControlLabel
-                      className="mb-3"
-                      name="agreement"
-                      onChange={this.handleChange}
-                      control={<Checkbox checked />}
-                      label="I have read and agree to the terms of service."
-                    />
                     <div className="flex flex-wrap items-center mb-4">
                       <div className={classes.wrapper}>
                         <Button
@@ -100,7 +105,7 @@ class SignIn extends Component {
                           disabled={this.props.login.loading}
                           type="submit"
                         >
-                          Sign in to Enter Dashboard
+                          Sign in
                         </Button>
                         {this.props.login.loading && (
                           <CircularProgress
