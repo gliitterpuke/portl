@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import {
   Card,
-  Checkbox,
-  FormControlLabel,
   Grid,
   Button,
   CircularProgress
@@ -42,14 +40,12 @@ class SignIn extends Component {
   };
   handleFormSubmit = event => {
     this.props.loginWithEmailAndPassword({ ...this.state });
-    const formBody = Object.keys(this.state).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(this.state[key])).join('&');
-    alert(formBody);
     fetch('https://portl-dev.herokuapp.com/api/v1/token', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: formBody,
+            body: Object.keys(this.state).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(this.state[key])).join('&'),
         }).then(response => response.json())
         .then(response => {
         

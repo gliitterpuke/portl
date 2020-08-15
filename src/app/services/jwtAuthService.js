@@ -8,7 +8,7 @@ class JwtAuthService {
     userId: "1",
     role: 'ADMIN',
     displayName: "Jason Alexander",
-    email: "jasonalexander@gmail.com",
+    username: "jasonalexander@gmail.com",
     photoURL: "/assets/images/face-6.jpg",
     age: 25,
     token: "faslkhfh423oiu4h4kj432rkj23h432u49ufjaklj423h4jkhkjh"
@@ -18,8 +18,9 @@ class JwtAuthService {
   // Your server will return user object & a Token
   // User should have role property
   // You can define roles in app/auth/authRoles.js
-  loginWithEmailAndPassword = (email, password) => {
+  loginWithEmailAndPassword = (username, password) => {
     return new Promise((resolve, reject) => {
+      axios.get('https://portl-dev.herokuapp.com/api/v1/users')
       setTimeout(() => {
         resolve(this.user);
       }, 1000);
@@ -37,6 +38,7 @@ class JwtAuthService {
   // This method is being used when user already logged in & app is reloaded
   loginWithToken = () => {
     return new Promise((resolve, reject) => {
+      axios.get('https://portl-dev.herokuapp.com/api/v1/users')
       setTimeout(() => {
         resolve(this.user);
       }, 100);

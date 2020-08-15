@@ -8,14 +8,14 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_LOADING = "LOGIN_LOADING";
 export const RESET_PASSWORD = "RESET_PASSWORD";
 
-export function loginWithEmailAndPassword({ email, password }) {
+export function loginWithEmailAndPassword({ username, password }) {
   return dispatch => {
     dispatch({
       type: LOGIN_LOADING
     });
 
     jwtAuthService
-      .loginWithEmailAndPassword(email, password)
+      .loginWithEmailAndPassword(username, password)
       .then(user => {
         dispatch(setUserData(user));
 
@@ -36,18 +36,18 @@ export function loginWithEmailAndPassword({ email, password }) {
   };
 }
 
-export function resetPassword({ email }) {
+export function resetPassword({ username }) {
   return dispatch => {
     dispatch({
-      payload: email,
+      payload: username,
       type: RESET_PASSWORD
     });
   };
 }
 
-export function firebaseLoginEmailPassword({ email, password }) {
+export function firebaseLoginEmailPassword({ username, password }) {
   return dispatch => {
-    FirebaseAuthService.signInWithEmailAndPassword(email, password)
+    FirebaseAuthService.signInWithEmailAndPassword(username, password)
       .then(user => {
         if (user) {
           dispatch(
@@ -55,7 +55,7 @@ export function firebaseLoginEmailPassword({ email, password }) {
               userId: "1",
               role: "ADMIN",
               displayName: "Watson Joyce",
-              email: "watsonjoyce@gmail.com",
+              username: "watsonjoyce@gmail.com",
               photoURL: "/assets/images/face-7.jpg",
               age: 25,
               token: "faslkhfh423oiu4h4kj432rkj23h432u49ufjaklj423h4jkhkjh",
