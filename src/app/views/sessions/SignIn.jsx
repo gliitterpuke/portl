@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
-import qs from "qs";
 import {
   Card,
   Grid,
@@ -14,6 +12,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
 import { loginWithEmailAndPassword } from "../../redux/actions/LoginActions";
+import { loginWithToken } from "../../services/jwtAuthService"
 
 const config = {
   headers: {

@@ -37,17 +37,21 @@ class JwtAuthService {
       // Login successful
       // Save token
       this.setSession(response.data.access_token);
+      this.loginWithToken()
       return response;
     });
   };
-
+  // Save user to localstorage
+  setUser = (user) => {    
+    localStorageService.setItem('auth_user', user);
+  }
   // You need to send http requst with existing token to your server to check token is valid
   // This method is being used when user already logged in & app is reloaded
   loginWithToken = () => {
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
   }
-    return axios.get("https://portl-dev.herokuapp.com/api/v1/users/me", auth)
+    return axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
     .then((response) => {
       // Login successful
       // Save token
@@ -72,13 +76,10 @@ class JwtAuthService {
     }
   };
 
-  // Save user to localstorage
-  setUser = (user) => {    
-    localStorageService.setItem("auth_user", user);
-  }
+
   // Remove user from localstorage
   removeUser = () => {
-    localStorage.removeItem("auth_user");
+    localStorage.removeItem('auth_user');
   }
 }
 
