@@ -30,11 +30,7 @@ const validationSchema = yup.object({
   .required('Required'),
   BackgroundInfo2_VisaChoice2: yup.string()
   .required('Required'),
-  BackgroundInfo2_Details_VisaChoice3: yup.string()
-  .required('Required'),
   BackgroundInfo3_Choice: yup.string()
-  .required('Required'),
-  BackgroundInfo3_details: yup.string()
   .required('Required'),
   Military_Choice: yup.string()
   .required('Required'),
