@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import axios from "axios";
+import qs from "qs";
 import {
   Card,
   Grid,
@@ -13,6 +15,11 @@ import { withRouter } from "react-router-dom";
 
 import { loginWithEmailAndPassword } from "../../redux/actions/LoginActions";
 
+const config = {
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+}
 const styles = theme => ({
   wrapper: {
     position: "relative"
@@ -40,18 +47,8 @@ class SignIn extends Component {
   };
   handleFormSubmit = event => {
     this.props.loginWithEmailAndPassword({ ...this.state });
-    fetch('https://portl-dev.herokuapp.com/api/v1/token', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: Object.keys(this.state).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(this.state[key])).join('&'),
-        }).then(response => response.json())
-        .then(response => {
-        
-            console.log(response)
-        });
-  };
+  }
+  
   render() {
     let { username, password } = this.state;
     let { classes } = this.props;

@@ -1,5 +1,6 @@
 import axios from "axios";
 import localStorageService from "./localStorageService";
+import qs from "qs"
 
 class JwtAuthService {
 
@@ -19,34 +20,39 @@ class JwtAuthService {
   // User should have role property
   // You can define roles in app/auth/authRoles.js
   loginWithEmailAndPassword = (username, password) => {
-    return new Promise((resolve, reject) => {
-      axios.get('https://portl-dev.herokuapp.com/api/v1/users')
-      setTimeout(() => {
-        resolve(this.user);
-      }, 1000);
-    }).then(data => {
+    const requestBody = {
+        username: username,
+        password: password
+      }
+    const config = {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }
+    return axios.post(
+        'https://portl-dev.herokuapp.com/token/',
+        qs.stringify(requestBody),
+        config
+    ).then((response) => {
       // Login successful
       // Save token
-      this.setSession(data.token);
-      // Set user
-      this.setUser(data);
-      return data;
+      this.setSession(response.data.access_token);
+      return response;
     });
   };
 
   // You need to send http requst with existing token to your server to check token is valid
   // This method is being used when user already logged in & app is reloaded
   loginWithToken = () => {
-    return new Promise((resolve, reject) => {
-      axios.get('https://portl-dev.herokuapp.com/api/v1/users')
-      setTimeout(() => {
-        resolve(this.user);
-      }, 100);
-    }).then(data => {
-      // Token is valid
-      this.setSession(data.token);
-      this.setUser(data);
-      return data;
+    const auth = {
+      headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
+  }
+    return axios.get("https://portl-dev.herokuapp.com/api/v1/users/me", auth)
+    .then((response) => {
+      // Login successful
+      // Save token
+      this.setUser(response.data);
+      return response;
     });
   };
 
@@ -56,12 +62,12 @@ class JwtAuthService {
   }
 
   // Set token to all http request header, so you don't need to attach everytime
-  setSession = token => {
-    if (token) {
-      localStorage.setItem("jwt_token", token);
-      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+  setSession = access_token => {
+    if (access_token) {
+      localStorage.setItem('access_token', access_token);
+      axios.defaults.headers.common = {'Authorization': `Bearer ${access_token}`}
     } else {
-      localStorage.removeItem("jwt_token");
+      localStorage.removeItem('access_token');
       delete axios.defaults.headers.common["Authorization"];
     }
   };
