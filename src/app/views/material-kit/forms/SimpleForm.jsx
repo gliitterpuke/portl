@@ -43,10 +43,6 @@ class SimpleForm extends Component {
     // remove rule when it is not needed
     ValidatorForm.removeValidationRule("isPasswordMatch");
   }
-  
-  openEditorDialog = value => {
-    this.setState({ shouldOpenDialog: value });
-  };
 
   handleSubmit = event => {
   const user = localStorageService.getItem("auth_user")
@@ -89,8 +85,6 @@ class SimpleForm extends Component {
       citizenship,
       sex,
     } = this.state;
-    let { shouldOpenDialog, textFieldValue } = this.state;
-    let { boardList = [] } = this.props;
     return (
       <div>
         <ValidatorForm
@@ -199,9 +193,8 @@ class SimpleForm extends Component {
               <Typography variant="h6">Applications</Typography>
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>
-              <Link to={`/forms/wizard`}>
+              <Link to={`/forms/new`}>
               <Card
-                onClick={() => this.openEditorDialog(true)}
                 className="p-6 flex items-center justify-center cursor-pointer h-150px"
                 elevation={3}
               >
