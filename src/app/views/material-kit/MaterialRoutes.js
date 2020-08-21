@@ -10,7 +10,7 @@ const materialRoutes = [
     component: React.lazy(() => import("./forms/AppForm"))
   },
   {
-    path: "/material/buttons",
+    path: "/forms/new",
     component: React.lazy(() => import("./buttons/AppButton"))
   },
   {
