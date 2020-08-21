@@ -1,227 +1,71 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Icon, Button, IconButton, Fab } from "@material-ui/core";
-import { Breadcrumb, SimpleCard } from "matx";
+import React, { Component } from "react";
+import axios from "axios";
+import localStorageService from "../../../services/localStorageService"
+import { Card, Grid } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1)
-  },
-  input: {
-    display: "none"
-  }
-}));
-
-export default function AppButton() {
-  const classes = useStyles();
-
-  return (
+class AppForm extends Component {
+  clickMe = () => {
+    const user = localStorageService.getItem("auth_user")
+    const data = { 
+      program: "trv",
+      status: "CLIENT_ACTION_REQUIRED",
+      is_open: true,
+      client_id: user.id,
+      professional_id: 0
+    }
+    const auth = {
+      headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
+    }
+    axios.post("https://portl-dev.herokuapp.com/api/v1/applications", data, auth).then(result => { 
+      console.log(user)
+      return result
+    })
+    }
+  render() {
+    return(
     <div className="m-sm-30">
-      <div className="mb-sm-30">
-        <Breadcrumb
-          routeSegments={[
-            { name: "Material", path: "/material" },
-            { name: "Buttons" }
-          ]}
-        />
-      </div>
-      <SimpleCard title="contained buttons">
-        <Button variant="contained" className={classes.button}>
-          Default
-        </Button>
-        <Button variant="contained" color="primary" className={classes.button}>
-          Primary
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.button}
-        >
-          Secondary
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          disabled
-          className={classes.button}
-        >
-          Disabled
-        </Button>
-        <Button
-          variant="contained"
-          href="#contained-buttons"
-          className={classes.button}
-        >
-          Link
-        </Button>
-        <input
-          accept="image/*"
-          className={classes.input}
-          id="contained-button-file"
-          multiple
-          type="file"
-        />
-        <label htmlFor="contained-button-file">
-          <Button
-            variant="contained"
-            component="span"
-            className={classes.button}
-          >
-            Upload
-          </Button>
-        </label>
-      </SimpleCard>
-      <div className="py-3" />
-      <SimpleCard title="text buttons">
-        <Button className={classes.button}>Default</Button>
-        <Button color="primary" className={classes.button}>
-          Primary
-        </Button>
-        <Button color="secondary" className={classes.button}>
-          Secondary
-        </Button>
-        <Button disabled className={classes.button}>
-          Disabled
-        </Button>
-        <Button href="#text-buttons" className={classes.button}>
-          Link
-        </Button>
-        <input
-          accept="image/*"
-          className={classes.input}
-          id="text-button-file"
-          multiple
-          type="file"
-        />
-        <label htmlFor="text-button-file">
-          <Button component="span" className={classes.button}>
-            Upload
-          </Button>
-        </label>
-      </SimpleCard>
-      <div className="py-3" />
-      <SimpleCard title="outlined buttons">
-        <Button variant="outlined" className={classes.button}>
-          Default
-        </Button>
-        <Button variant="outlined" color="primary" className={classes.button}>
-          Primary
-        </Button>
-        <Button variant="outlined" color="secondary" className={classes.button}>
-          Secondary
-        </Button>
-        <Button variant="outlined" disabled className={classes.button}>
-          Disabled
-        </Button>
-        <Button
-          variant="outlined"
-          href="#outlined-buttons"
-          className={classes.button}
-        >
-          Link
-        </Button>
-        <input
-          accept="image/*"
-          className={classes.input}
-          id="outlined-button-file"
-          multiple
-          type="file"
-        />
-        <label htmlFor="outlined-button-file">
-          <Button
-            variant="outlined"
-            component="span"
-            className={classes.button}
-          >
-            Upload
-          </Button>
-        </label>
-        <Button variant="outlined" color="inherit" className={classes.button}>
-          Inherit
-        </Button>
-      </SimpleCard>
-      <div className="py-3" />
-      <SimpleCard title="icon buttons">
-        <IconButton className={classes.button} aria-label="Delete">
-          <Icon>delete</Icon>
-        </IconButton>
-        <IconButton
-          className={classes.button}
-          aria-label="Delete"
-          disabled
-          color="primary"
-        >
-          <Icon>delete</Icon>
-        </IconButton>
-        <IconButton
-          color="secondary"
-          className={classes.button}
-          aria-label="Add an alarm"
-        >
-          <Icon>alarm</Icon>
-        </IconButton>
-        <IconButton
-          color="primary"
-          className={classes.button}
-          aria-label="Add to shopping cart"
-        >
-          <Icon>add_shopping_cart</Icon>
-        </IconButton>
-        <input
-          accept="image/*"
-          className={classes.input}
-          id="icon-button-file"
-          type="file"
-        />
-        <label htmlFor="icon-button-file">
-          <IconButton
-            color="primary"
-            className={classes.button}
-            aria-label="Upload picture"
-            component="span"
-          >
-            <Icon>photo_camera</Icon>
-          </IconButton>
-        </label>
-      </SimpleCard>
-      <div className="py-3" />
-      <SimpleCard title="different size buttons">
-        <Fab
-          size="small"
-          color="secondary"
-          aria-label="Add"
-          className={classes.button}
-        >
-          <Icon>add</Icon>
-        </Fab>
-        <Fab
-          size="medium"
-          color="secondary"
-          aria-label="Add"
-          className={classes.button}
-        >
-          <Icon>add</Icon>
-        </Fab>
-        <Fab color="secondary" aria-label="Add" className={classes.button}>
-          <Icon>add</Icon>
-        </Fab>
-      </SimpleCard>
-      <div className="py-3" />
-      <SimpleCard title="outlined buttons">
-        <Fab color="primary" aria-label="Add" className={classes.button}>
-          <Icon>add</Icon>
-        </Fab>
-        <Fab color="secondary" aria-label="Edit" className={classes.button}>
-          <Icon>edit_icon</Icon>
-        </Fab>
-        <Fab variant="extended" aria-label="Delete" className={classes.button}>
-          <Icon className="mr-8">navigation</Icon>
-          Extended
-        </Fab>
-        <Fab disabled aria-label="Delete" className={classes.button}>
-          <Icon>delete</Icon>
-        </Fab>
-      </SimpleCard>
+      <Grid item lg={12} xs={12}>
+        <Link to={`/forms/wizard`}>
+          <Card
+            onClick ={this.clickMe}
+            className="p-6 flex items-center justify-center cursor-pointer h-150px"
+            elevation={3}
+            >
+              <div className="text-primary text-center font-medium text-20">
+              <div>Visitor Visa</div>
+              </div>
+          </Card>
+        </Link>
+      </Grid>
+      <br />
+      <Grid item lg={12} xs={12}>
+        <Link to={`/forms/404`}>
+          <Card
+            className="p-6 flex items-center justify-center cursor-pointer h-150px"
+            elevation={3}
+            >
+              <div className="text-primary text-center font-medium text-20">
+              <div>Study Permit</div>
+              </div>
+          </Card>
+        </Link>
+      </Grid>
+      <br />
+      <Grid item lg={12} xs={12}>
+        <Link to={`/forms/404`}>
+          <Card
+            className="p-6 flex items-center justify-center cursor-pointer h-150px"
+            elevation={3}
+            >
+              <div className="text-primary text-center font-medium text-20">
+              <div>Work Permit</div>
+              </div>
+          </Card>
+        </Link>
+      </Grid>
     </div>
   );
 }
+}
+export default AppForm;
