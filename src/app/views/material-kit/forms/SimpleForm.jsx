@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import axios from "axios"
+import { Link } from "react-router-dom";
 import localStorageService from "../../../services/localStorageService";
 import {
   Button,
@@ -9,7 +10,8 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
-  Checkbox
+  Card,
+  Typography
 } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import "date-fns";
@@ -41,6 +43,10 @@ class SimpleForm extends Component {
     // remove rule when it is not needed
     ValidatorForm.removeValidationRule("isPasswordMatch");
   }
+  
+  openEditorDialog = value => {
+    this.setState({ shouldOpenDialog: value });
+  };
 
   handleSubmit = event => {
   const user = localStorageService.getItem("auth_user")
@@ -83,6 +89,8 @@ class SimpleForm extends Component {
       citizenship,
       sex,
     } = this.state;
+    let { shouldOpenDialog, textFieldValue } = this.state;
+    let { boardList = [] } = this.props;
     return (
       <div>
         <ValidatorForm
@@ -187,6 +195,23 @@ class SimpleForm extends Component {
                 <span className="pl-2 capitalize">Submit</span>
               </Button>
             </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6">Applications</Typography>
+            </Grid>
+            <Grid item lg={4} md={4} sm={12} xs={12}>
+              <Link to={`/forms/wizard`}>
+              <Card
+                onClick={() => this.openEditorDialog(true)}
+                className="p-6 flex items-center justify-center cursor-pointer h-150px"
+                elevation={3}
+              >
+                <div className="text-primary text-center font-medium">
+                  <h1 className="m-0 text-primary font-normal">+</h1>
+                  <div>Create New Application</div>
+                </div>
+              </Card>
+              </Link>
+          </Grid>
           </Grid>
         </ValidatorForm>
       </div>
