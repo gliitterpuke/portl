@@ -309,13 +309,13 @@ export const navigations = [
         name: "Left Sidebar Card",
         path: "/page-layouts/Left-sidebar-card",
         iconText: "L"
-      }
+      },
 
-      // {
-      //   name: "User Profile",
-      //   path: "/page-layouts/user-profile",
-      //   iconText: "U"
-      // }
+      {
+        name: "User Profile",
+        path: "/page-layouts/user-profile",
+        iconText: "U"
+      }
     ]
   },
   {
