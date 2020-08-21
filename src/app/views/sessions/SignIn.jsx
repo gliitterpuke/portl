@@ -12,13 +12,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
 import { loginWithEmailAndPassword } from "../../redux/actions/LoginActions";
-import { loginWithToken } from "../../services/jwtAuthService"
 
-const config = {
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
-  }
-}
 const styles = theme => ({
   wrapper: {
     position: "relative"
@@ -35,8 +29,8 @@ const styles = theme => ({
 
 class SignIn extends Component {
   state = {
-    username: "watson@example.com",
-    password: "testpass",
+    username: "kat@portl.to",
+    password: "test",
   };
   handleChange = event => {
     event.persist();
