@@ -26,7 +26,7 @@ class AppForm extends Component {
     return(
     <div className="m-sm-30">
       <Grid item lg={12} xs={12}>
-        <Link to={`/forms/wizard`}>
+        <Link to={`/application`}>
           <Card
             onClick ={this.clickMe}
             className="p-6 flex items-center justify-center cursor-pointer h-150px"
