@@ -7,7 +7,7 @@ const tester = localStorageService.getItem("auth_user")
 const application_id = tester.applications_as_client[0].blobs[0]
 
 export const getAllInvoice = () => {
-    return axios.get("https://portl-dev.herokuapp.com/api/v1/applications/", auth)
+    return axios.get("https://portl-dev.herokuapp.com/api/v1/blobs/", auth)
 }
 export const getInvoiceById = (id) => {
     return axios.get("/api/invoices", { data: id })
