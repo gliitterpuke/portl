@@ -225,7 +225,7 @@ class HigherOrderComponent extends React.Component {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  <a href="/forms/wizard">Words</a>
+                  <a href="/forms/wizard">The main application form; needs to be validated if completed on a computer</a>
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -236,7 +236,7 @@ class HigherOrderComponent extends React.Component {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Words
+                  Must be completed in the application package for your region
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -247,7 +247,7 @@ class HigherOrderComponent extends React.Component {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Word
+                  Refer to the responsible visa office for your region
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -258,7 +258,7 @@ class HigherOrderComponent extends React.Component {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Words
+                  Complete this form only if you used the services of a representative, or if you are appointing/cancelling a representative.
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -269,7 +269,7 @@ class HigherOrderComponent extends React.Component {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Words
+                  Complete this form <b>only if</b> you authorize Citizenship and Immigration Canada (CIC) and the Canada Border Services Agency (CBSA) to release information to a designated individual.
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -283,11 +283,17 @@ class HigherOrderComponent extends React.Component {
               <Accordion>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.heading}>Photocopy</Typography>
-                <Typography className={classes.secondaryHeading}>Passport Information Page</Typography>
+                <Typography className={classes.secondaryHeading}>Passport/Travel Document Information Page</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Word
+                  Must include:
+                  <ul>
+                    <li>passport number</li>
+                    <li>issuance/expiry dates</li>
+                    <li>photo, name, date and place of birth</li>
+                    <li><i>Your passport must have at least one blank page in addition to the last page</i></li>
+                  </ul>
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -298,7 +304,17 @@ class HigherOrderComponent extends React.Component {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Word
+                  Print your name and date of birth on the back of the two photos which meet the following requirements:
+                  <ul>
+                    <li>The photographs must be identical and taken within the last six months. They may be either black and white or colour.</li>
+                    <li>The photographs must be clear, well defined and taken against a plain white or light-coloured background.</li>
+                    <li>If the photographs are digital, they must not be altered in any way.</li>
+                    <li>Your face must be square to the camera with a neutral expression, neither frowning nor smiling, and with your mouth closed.</li>
+                    <li>You may wear non-tinted prescription glasses as long as your eyes are clearly visible. Make sure that the frame does not cover any part of your eyes. Sunglasses are not acceptable.</li>
+                    <li>A hairpiece or other cosmetic accessory is acceptable if it does not disguise your normal appearance.</li>
+                    <li>If you must wear a head covering for religious reasons, make sure your full facial features are not obscured.</li>
+                  </ul>
+                  <b>Note:</b> If you are required to provide your biometrics, you <i>do not need</i> paper photos.
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -309,7 +325,15 @@ class HigherOrderComponent extends React.Component {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Word
+                  May include:
+                  <ul>
+                    <li>cash, certified cheque, bank draft or money order in an amount large enough to cover all reasonable expenses to be incurred during the stay in Canada</li>
+                    <li>verbal or written statements, which can be confirmed, that satisfy an officer that sufficient financial support from friends and/or family is available and has been arranged to adequately cover all reasonable expenses to be incurred during the stay in Canada.</li>
+                    <li>bank statement(s) or deposit book(s) of applicant (and spouse) that show accumulated savings</li>
+                    <li>applicant's (and spouse's) letter of employment or employment book, providing name of employer, applicant's position/occupation, date employment commenced and annual earnings</li>
+                    <li>host's or family member in Canada (and spouse's) evidence of income: such as previous year Revenue Canada Notice of Assessment indicating annual income; or alternately, letter from employer(s) showing position, date employment commenced and annual earnings</li>
+                    <li>evidence of size of family for host or family member in Canada (to equate earnings with size of family to ensure ability to support long-term visit)</li>
+                  </ul>
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -320,7 +344,29 @@ class HigherOrderComponent extends React.Component {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Word
+                  Refer to the responsible visa office in your region.
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>Document</Typography>
+                <Typography className={classes.secondaryHeading}>Purpose of Travel</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Refer to the responsible office visa in your region.
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>Photocopy</Typography>
+                <Typography className={classes.secondaryHeading}>Current Immigration Status</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  If your country of residence differs from your citizenship, you must provide proof of legal status in your country of residence.
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -331,7 +377,8 @@ class HigherOrderComponent extends React.Component {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Word
+                  For minors travelling alone or with one parent; must come from the non-accompanying parent, or a letter of authorization signed by both parents/legal guardians.
+                  <br/>Refer to the responsible visa office in your region.
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -342,7 +389,7 @@ class HigherOrderComponent extends React.Component {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Word
+                  Refer to the visa specific instructions in your region.
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -359,7 +406,8 @@ class HigherOrderComponent extends React.Component {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography>
-                    Word
+                    Must come from your child/grandchild residing in Canada as a permanent resident or citizenship.
+                    <br/>Must also include their family compositions (spouse/children/other relatives that are financially dependant on them).
                   </Typography>
                 </AccordionDetails>
               </Accordion>
@@ -370,7 +418,14 @@ class HigherOrderComponent extends React.Component {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography>
-                    Word
+                    Proof that child/grandchild meets the minimum necessary income. The following are examples of what can be used:
+                    <ul>
+                      <li>Notice of Assessment (NOA) or T4/T1 for the most recent tax year</li>
+                      <li>Employment Insurance stubs</li>
+                      <li>employment letter including salary and date of hiring</li>
+                      <li>pay stubs</li>
+                      <li>bank statements</li>
+                    </ul>
                   </Typography>
                 </AccordionDetails>
               </Accordion>
@@ -381,7 +436,7 @@ class HigherOrderComponent extends React.Component {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography>
-                    Word
+                    Evidence of the parent/grandparent relationship to the person you wish to visit (copy of birth certificate, baptismal certificate, or other official documentation naming you as the parent/grandparent).
                   </Typography>
                 </AccordionDetails>
               </Accordion>
@@ -392,40 +447,12 @@ class HigherOrderComponent extends React.Component {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography>
-                    Word
-                  </Typography>
-                </AccordionDetails>
-              </Accordion>
-              <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography className={classes.heading}>Document</Typography>
-                  <Typography className={classes.secondaryHeading}>I am an accordion</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography>
-                    Word
-                  </Typography>
-                </AccordionDetails>
-              </Accordion>
-              <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography className={classes.heading}>Document</Typography>
-                  <Typography className={classes.secondaryHeading}>I am an accordion</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography>
-                    Word
-                  </Typography>
-                </AccordionDetails>
-              </Accordion>
-              <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography className={classes.heading}>Document</Typography>
-                  <Typography className={classes.secondaryHeading}>I am an accordion</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography>
-                    Word
+                    Must be from a <b>Canadian</b> medical insurance company and include:
+                    <ul>
+                      <li>valid for at least 1 year from the date of entry</li>
+                      <li>at least $100,000 coverage</li>
+                      <li>have proof that the medical insurance has been paid (quotes aren’t accepted)</li>
+                    </ul>
                   </Typography>
                 </AccordionDetails>
               </Accordion>
