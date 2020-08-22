@@ -35,13 +35,19 @@ const styles = theme => ({
     width: '100%',
   },
   heading: {
-    fontSize: theme.typography.pxToRem(16),
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: 500,
+    flexBasis: '33.33%',
+    flexShrink: 0,
+  },
+  heading1: {
+    fontSize: theme.typography.pxToRem(17),
     fontWeight: 500,
     flexBasis: '33.33%',
     flexShrink: 0,
   },
   secondaryHeading: {
-    fontSize: theme.typography.pxToRem(16),
+    fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
 });
@@ -208,53 +214,222 @@ class HigherOrderComponent extends React.Component {
       <React.Fragment>
       <div className="upload-form m-sm-30">
         <SimpleCard title="Document Checklist">
+        <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography className={classes.heading1}>Forms</Typography>
+            </AccordionSummary>
+              <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>IMM5257</Typography>
+                <Typography className={classes.secondaryHeading}>Application for Temporary Resident Visa</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Words
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+              <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>IMM5707</Typography>
+                <Typography className={classes.secondaryHeading}>Family Information</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Words
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>IMM5409</Typography>
+                <Typography className={classes.secondaryHeading}>Statutory Delcaration of Common-law Union</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Word
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>IMM5476</Typography>
+                <Typography className={classes.secondaryHeading}>Use of a Representative</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Words
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>IMM5475</Typography>
+                <Typography className={classes.secondaryHeading}>Authority to Release Personal Information to a Designated Individual (Optional)</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Words
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          </Accordion>
+          
+
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Form</Typography>
-              <Typography className={classes.secondaryHeading}>Main form title</Typography>
+              <Typography className={classes.heading1}>Documents</Typography>
             </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              <b>IMM5257</b> Testing
-            </Typography>
-          </AccordionDetails>
+              <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>Photocopy</Typography>
+                <Typography className={classes.secondaryHeading}>Passport Information Page</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Word
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>Photo</Typography>
+                <Typography className={classes.secondaryHeading}>Visa application photographs (2)</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Word
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>Proof</Typography>
+                <Typography className={classes.secondaryHeading}>Financial Support</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Word
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>Photocopy</Typography>
+                <Typography className={classes.secondaryHeading}>Marriage License/Certification (if applicable)</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Word
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>Document</Typography>
+                <Typography className={classes.secondaryHeading}>Custody document/Letter of Authorization (if applicable)</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Word
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>Document</Typography>
+                <Typography className={classes.secondaryHeading}>Additional as required by the visa office (if applicable)</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Word
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
           </Accordion>
+
           <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Form</Typography>
-              <Typography className={classes.secondaryHeading}>Yarrrr</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                sit amet blandit leo lobortis eget.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Form</Typography>
-              <Typography className={classes.secondaryHeading}>Yarrrr</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                sit amet blandit leo lobortis eget.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Form</Typography>
-              <Typography className={classes.secondaryHeading}>I am an accordion</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                sit amet blandit leo lobortis eget.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading1}>Super Visa</Typography>
+              </AccordionSummary>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.heading}>Document</Typography>
+                  <Typography className={classes.secondaryHeading}>Letter of Invitation</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Word
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.heading}>Document</Typography>
+                  <Typography className={classes.secondaryHeading}>Proof of Low Income Cut-Off (LICO) Minimum</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Word
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.heading}>Document</Typography>
+                  <Typography className={classes.secondaryHeading}>Proof of relationship</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Word
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.heading}>Document</Typography>
+                  <Typography className={classes.secondaryHeading}>Proof of private medical insurance coverage</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Word
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.heading}>Document</Typography>
+                  <Typography className={classes.secondaryHeading}>I am an accordion</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Word
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.heading}>Document</Typography>
+                  <Typography className={classes.secondaryHeading}>I am an accordion</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Word
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.heading}>Document</Typography>
+                  <Typography className={classes.secondaryHeading}>I am an accordion</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Word
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            </Accordion>
         </SimpleCard>
       </div>
       <div className="upload-form m-sm-30">
@@ -357,7 +532,6 @@ class HigherOrderComponent extends React.Component {
             <TableHead>
               <TableRow>
                 <TableCell className="pl-sm-24">Name</TableCell>
-                <TableCell className="px-0">Program</TableCell>
                 <TableCell className="px-0">Upload</TableCell>
                 <TableCell className="px-0">Update</TableCell>
                 <TableCell className="px-0">Type</TableCell>
