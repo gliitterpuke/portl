@@ -6,7 +6,7 @@ const materialRoutes = [
     component: React.lazy(() => import("./tables/AppTable"))
   },
   {
-    path: "/material/form",
+    path: "/application/new",
     component: React.lazy(() => import("./forms/AppForm"))
   },
   {

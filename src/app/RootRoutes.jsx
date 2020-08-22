@@ -28,7 +28,7 @@ const redirectRoute = [
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/forms/basic" />
+    component: () => <Redirect to="/profile" />
   }
 ];
 

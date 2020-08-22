@@ -225,7 +225,7 @@ class HigherOrderComponent extends React.Component {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  <a href="/forms/wizard">The main application form; needs to be validated if completed on a computer</a>
+                  <a href="/application/trv">The main application form; needs to be validated if completed on a computer</a>
                 </Typography>
               </AccordionDetails>
             </Accordion>
