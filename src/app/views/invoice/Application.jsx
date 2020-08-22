@@ -225,7 +225,7 @@ class HigherOrderComponent extends React.Component {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Words
+                  <a href="/forms/wizard">Words</a>
                 </Typography>
               </AccordionDetails>
             </Accordion>
