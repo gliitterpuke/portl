@@ -545,9 +545,6 @@ class HigherOrderComponent extends React.Component {
                     {invoice.filename}
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left">
-                    {invoice.program}
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left">
                     {invoice.uploaded_at}
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left">
