@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import axios from "axios"
 import { Link } from "react-router-dom";
-import localStorageService from "../../../services/localStorageService";
+import { getAllApps, deleteFile } from "./existing";
 import {
   Button,
   Icon,
@@ -11,11 +11,20 @@ import {
   RadioGroup,
   FormControlLabel,
   Card,
-  Typography
+  Typography,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  IconButton,
+  Divider
 } from "@material-ui/core";
+import { SimpleCard } from "matx";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
+import { parse } from "date-fns";
+import localStorageService from "../../../services/localStorageService"
 
 class SimpleForm extends Component {
   state = {
@@ -26,23 +35,36 @@ class SimpleForm extends Component {
     citizenship: "",
     sex: "",
     relationship_to_owner: "",
-    owner_id: "1"
+    owner_id: "1",
+    appList: []
   };
 
   componentDidMount() {
-    // custom rule will have name 'isPasswordMatch'
-    ValidatorForm.addValidationRule("isPasswordMatch", value => {
-      if (value !== this.state.password) {
-        return false;
-      }
-      return true;
-    });
+    getAllApps().then(res => this.setState({ appList: res.data }));
   }
 
-  componentWillUnmount() {
-    // remove rule when it is not needed
-    ValidatorForm.removeValidationRule("isPasswordMatch");
-  }
+  handeViewClick = applicationId => {
+    this.props.history.push(`/invoice/${applicationId}`);
+    // getInvoiceById(invoiceId).then(res => console.log(res.data));
+  };
+
+  handeDeleteClick = application => {
+    this.setState({ shouldShowConfirmationDialog: true, application });
+  };
+
+  handleConfirmationResponse = () => {
+    let { application } = this.state;
+    deleteFile(application).then(res => {
+      this.setState({
+        appList: res.data,
+        shouldShowConfirmationDialog: false
+      });
+    });
+  };
+
+  handleDialogClose = () => {
+    this.setState({ shouldShowConfirmationDialog: false });
+  };
 
   handleSubmit = event => {
   const user = localStorageService.getItem("auth_user")
@@ -84,6 +106,7 @@ class SimpleForm extends Component {
       birth_date,
       citizenship,
       sex,
+      appList
     } = this.state;
     return (
       <div>
@@ -93,6 +116,9 @@ class SimpleForm extends Component {
           onError={errors => null}
         >
           <Grid container spacing={6}>
+            <Grid item xs={12} lg={10} md={10}>
+              <Typography variant="h6">Profile</Typography>
+            </Grid>
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <TextValidator
                 className="mb-4 w-full"
@@ -189,24 +215,64 @@ class SimpleForm extends Component {
                 <span className="pl-2 capitalize">Submit</span>
               </Button>
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6">Applications</Typography>
-            </Grid>
-            <Grid item lg={4} md={4} sm={12} xs={12}>
-              <Link to={`/forms/new`}>
-              <Card
-                className="p-6 flex items-center justify-center cursor-pointer h-150px"
-                elevation={3}
-              >
-                <div className="text-primary text-center font-medium">
-                  <h1 className="m-0 text-primary font-normal">+</h1>
-                  <div>Create New Application</div>
-                </div>
-              </Card>
-              </Link>
-          </Grid>
           </Grid>
         </ValidatorForm>
+        <br /><br />
+        <Divider/>
+        <br /><br />
+        <Grid container spacing={2}>
+          <Grid item xs={12} lg={10} md={10}>
+            <Typography variant="h6">Applications</Typography>
+          </Grid>
+          <Grid item xs={12} lg={2} md={2}>
+            <Link to={`/forms/new`}>
+              <Button color="primary" variant="contained">
+                <span className="pl-2 capitalize">Create New App</span>
+              </Button>
+            </Link>
+          </Grid>
+        </Grid>
+        <br/><br/>
+          <Table className="min-w-3000">
+            <TableHead>
+              <TableRow>
+                <TableCell className="pl-sm-24">Program</TableCell>
+                <TableCell className="px-0">Created</TableCell>
+                <TableCell className="px-0">Updated</TableCell>
+                <TableCell className="px-0">Status</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {appList.map((application, index) => (
+                <TableRow key={application.id}>
+                  <TableCell className="pl-sm-24 capitalize" align="left">
+                    {application.program}
+                  </TableCell>
+                  <TableCell className="pl-0 capitalize" align="left">
+                    {application.created_at}
+                  </TableCell>
+                  <TableCell className="pl-0 capitalize" align="left">
+                    {application.updated_at}
+                  </TableCell>
+                  <TableCell className="pl-0 capitalize">
+                    {application.status}
+                  </TableCell>
+                  <TableCell className="pl-0">
+                    <IconButton
+                      color="primary"
+                      className="mr-2"
+                      onClick={() => this.handeViewClick(application.id)}
+                    >
+                      <Icon>chevron_right</Icon>
+                    </IconButton>
+                    <IconButton onClick={() => this.handeDeleteClick(application)}>
+                      <Icon color="error">delete</Icon>
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
       </div>
     );
   }
