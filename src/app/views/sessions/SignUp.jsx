@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 
 class SignUp extends Component {
   state = {
-    role: "",
+    role: "client",
     email: "",
     password: "",
   };
@@ -55,21 +55,7 @@ class SignUp extends Component {
               </Grid>
               <Grid item lg={7} md={7} sm={7} xs={12}>
                 <div className="p-9 h-full">
-                  <ValidatorForm ref="form" onSubmit={this.handleFormSubmit}>
-                    <SelectValidator
-                      label="Role"
-                      className="mb-6 w-full"
-                      name="role"
-                      value={role}
-                      style={{ width: 300 }}
-                      variant="outlined"
-                      onChange={this.handleChange}
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
-                    >
-                      <MenuItem value={"client"}>Client</MenuItem>
-                      <MenuItem value={"professional"}>Professional</MenuItem>
-                    </SelectValidator>       
+                  <ValidatorForm ref="form" onSubmit={this.handleFormSubmit}>    
                     <TextValidator
                       className="mb-6 w-full"
                       variant="outlined"
