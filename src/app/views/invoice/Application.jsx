@@ -208,7 +208,7 @@ class HigherOrderComponent extends React.Component {
   };
   render() {
     const { classes } = this.props;
-    let { fileList, filename, dragClass, files, mime_type, tag} = this.state;
+    let { fileList, filename, dragClass, files, type, tag} = this.state;
     let isEmpty = files.length === 0;
     return (
       <React.Fragment>
@@ -578,7 +578,7 @@ class HigherOrderComponent extends React.Component {
                     {invoice.updated_at}
                   </TableCell>
                   <TableCell className="pl-0 capitalize">
-                    {invoice.mime_type}
+                    {invoice.type}
                   </TableCell>
                   <TableCell className="pl-0 capitalize">
                     {invoice.tag}
