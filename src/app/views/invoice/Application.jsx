@@ -22,6 +22,8 @@ import {
   AccordionDetails,
   AccordionSummary,
 } from "@material-ui/core";
+import localStorageService from "../../services/localStorageService";
+import axios from "axios";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { getAllInvoice, deleteFile } from "./AppActions";
 import { Link } from "react-router-dom";
@@ -60,10 +62,11 @@ class HigherOrderComponent extends React.Component {
     dragClass: "",
     files: [],
     statusList: [],
+    tags: "",
   };
   componentDidMount() {
     getAllInvoice().then(res => this.setState({ fileList: res.data }));
-  }
+  };
 
   handeViewClick = invoiceId => {
     this.props.history.push(`/invoice/${invoiceId}`);
@@ -145,20 +148,63 @@ class HigherOrderComponent extends React.Component {
     });
   };
 
+  handleSelectChange = (event) => {
+    this.setState({
+      result: event.target.value
+    })
+  }
+
   uploadSingleFile = index => {
     let allFiles = [...this.state.files];
-    let file = this.state.files[index];
+    let file = this.state.files[0];
+    const auth = {
+      headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
+    }
+    const user = localStorageService.getItem("auth_user")
+    const appid = user.applications_as_client[0].id
+    const tags = this.state.result
+    const filetype = file.file.type.match(/[^\/]+$/)[0]
+    const key = user.id + "/" + appid + "/" + tags + "." + filetype
 
     allFiles[index] = { ...file, uploading: true, error: false };
 
     this.setState({
       files: [...allFiles]
     });
+    axios.get("https://portl-dev.herokuapp.com/api/v1/sign_s3_post/", { params: { key: key, mime_type: file.file.type }}, auth)
+    .then(result => { 
+    console.log(result)
+    const formData = new FormData();
+    formData.append("AWSAccessKeyId", result.data.data.fields.AWSAccessKeyId);
+    formData.append("key", result.data.data.fields.key);
+    formData.append("policy", result.data.data.fields.policy);
+    formData.append("signature", result.data.data.fields.signature);
+    formData.append("Content-Type", file.file.type);
+    formData.append("file", this.state.files[0]);
+
+    const data = {
+      filename: file.file.name, 
+      tag: tags,
+      bucket: "portldump",
+      application_id: appid,
+      mime_type: file.file.type, 
+      url: result.data.url
+    }
+
+    return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data'} })
+    .then((response) => {
+      return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data, auth)
+      .then((response) => {
+        return response;
+      });
+    });
+  })
+
   };
 
   render() {
     const { classes } = this.props;
-    let { fileList, filename, dragClass, files, type, tag} = this.state;
+    let { fileList, filename, dragClass, files, type, tag, tags} = this.state;
     let isEmpty = files.length === 0;
     return (
       <React.Fragment>
@@ -479,7 +525,7 @@ class HigherOrderComponent extends React.Component {
                   {file.type}
                 </Grid>
                 <Grid item lg={3} md={3} sm={12} x={12}>
-                  <Select fullWidth  name="tag" required="true">
+                  <Select fullWidth onClick={this.handleSelectChange} required="true">
                     <MenuItem value="passport">Passport</MenuItem>                
                     <MenuItem value="IMM5707">IMM5707</MenuItem>
                     <MenuItem value="IMM5409">IMM5409</MenuItem>
