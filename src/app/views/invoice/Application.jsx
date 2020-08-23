@@ -145,10 +145,6 @@ class HigherOrderComponent extends React.Component {
     });
   };
 
-  handleAllRemove = () => {
-    this.setState({ files: [] });
-  };
-
   uploadSingleFile = index => {
     let allFiles = [...this.state.files];
     let file = this.state.files[index];
@@ -160,52 +156,6 @@ class HigherOrderComponent extends React.Component {
     });
   };
 
-  uploadAllFile = () => {
-    let allFiles = [];
-
-    this.state.files.map(item => {
-      allFiles.push({
-        ...item,
-        uploading: true,
-        error: false
-      });
-
-      return item;
-    });
-
-    this.setState({
-      files: [...allFiles],
-    });
-  };
-
-  handleSingleCancel = index => {
-    let allFiles = [...this.state.files];
-    let file = this.state.files[index];
-
-    allFiles[index] = { ...file, uploading: false, error: true };
-
-    this.setState({
-      files: [...allFiles]
-    });
-  };
-
-  handleCancelAll = () => {
-    let allFiles = [];
-
-    this.state.files.map(item => {
-      allFiles.push({
-        ...item,
-        uploading: false,
-        error: true
-      });
-
-      return item;
-    });
-
-    this.setState({
-      files: [...allFiles],
-    });
-  };
   render() {
     const { classes } = this.props;
     let { fileList, filename, dragClass, files, type, tag} = this.state;
@@ -213,7 +163,11 @@ class HigherOrderComponent extends React.Component {
     return (
       <React.Fragment>
       <div className="upload-form m-sm-30">
-        <SimpleCard title="Document Checklist">
+        <SimpleCard>
+          <Typography variant="h6">
+            Document Checklist
+          </Typography>
+          <br/>
         <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading1}>Forms</Typography>
@@ -460,8 +414,12 @@ class HigherOrderComponent extends React.Component {
         </SimpleCard>
       </div>
       <div className="upload-form m-sm-30">
-        <SimpleCard title="New File Upload">
+        <SimpleCard >
         <div>
+          <Typography variant="h6">
+            New File Upload
+          </Typography>
+          <br/>
         <ValidatorForm
           ref="form"
           onSubmit={this.handleSubmit}
@@ -480,6 +438,7 @@ class HigherOrderComponent extends React.Component {
             <input
               className="hidden" onChange={this.handleFileSelect} id="upload-single-file" type="file" accept="image/*, application/pdf"
             />
+            <br/><br/>
             <div
               className={`${dragClass} upload-drop-box mb-6 flex justify-center items-center`}
               onDragEnter={this.handleDragStart}
@@ -495,22 +454,13 @@ class HigherOrderComponent extends React.Component {
               )}
             </div>
             <br />
-              <Grid container spacing={2}>
-                <Grid item lg={3} md={3}>
-                  <InputLabel>Type of Document</InputLabel>
-                  <Select variant='outlined' fullWidth InputLabelProps={{ shrink: true }}>
-                    <MenuItem value="passport">Passport</MenuItem>
-                    <MenuItem value="form">Form</MenuItem>
-                    <MenuItem value="something">Something</MenuItem>
-                  </Select>
-                </Grid>
-              </Grid>
             <div className="p-4">
               <Grid container spacing={2}>
                 <Grid item lg={4} md={4}>Name</Grid>
-                <Grid item lg={2} md={2}>Type</Grid>
-                <Grid item lg={2} md={2}>Status</Grid>
-                <Grid item lg={4} md={4}> Actions </Grid>
+                <Grid item lg={3} md={3}>Type</Grid>
+                <Grid item lg={3} md={3}>Document</Grid>
+                <Grid item lg={1} md={1}>Status</Grid>
+                <Grid item lg={1} md={1}> Actions </Grid>
               </Grid>
             </div>
             <Divider></Divider>
@@ -521,24 +471,37 @@ class HigherOrderComponent extends React.Component {
               let { file, uploading, error, } = item;
               return (
             <div className="px-4 py-4" key={file.name}>
-              <Grid container spacing={2} direction="row"
-              >
+              <Grid container spacing={2} direction="row">
                 <Grid item lg={4} md={4} sm={12} xs={12}>
                   {file.name}
                 </Grid>
-                <Grid item lg={4} md={4} sm={12} xs={12}>
+                <Grid item lg={3} md={3} sm={12} xs={12}>
                   {file.type}
                 </Grid>
-                <Grid item lg={2} md={2} sm={12} xs={12}>
-                  {error && <Icon color="error">error</Icon>}
-                  {/* {uploading && <Icon className="text-green">done</Icon>} */}
+                <Grid item lg={3} md={3} sm={12} x={12}>
+                  <Select fullWidth  name="tag" required="true">
+                    <MenuItem value="passport">Passport</MenuItem>                
+                    <MenuItem value="IMM5707">IMM5707</MenuItem>
+                    <MenuItem value="IMM5409">IMM5409</MenuItem>
+                    <MenuItem value="IMM5476">IMM5476</MenuItem>
+                    <MenuItem value="IMM5475">IMM5475</MenuItem>
+                    <MenuItem value="photo">Photos</MenuItem>
+                    <MenuItem value="financials">Proof of Financial Support</MenuItem>
+                    <MenuItem value="marriage">Marriage Documents</MenuItem>
+                    <MenuItem value="purpose">Purpose of Travel</MenuItem>
+                    <MenuItem value="immstatus">Current Immigration Status</MenuItem>
+                    <MenuItem value="custody">Custody Document/Letter of Authorization</MenuItem>
+                    <MenuItem value="other">Other</MenuItem>
+                  </Select>
                 </Grid>
-                <Grid item lg={4} md={4} sm={12} xs={12}>
+                <Grid item lg={1} md={1} sm={12} xs={12}>
+                  {error && <Icon color="error">error</Icon>}
+                  {uploading && <Icon className="text-green">done</Icon>}
+                </Grid>
+                <Grid item lg={1} md={1} sm={12} xs={12}>
                   <div>
                     <Button
-                      size="small"
-                      variant="contained"
-                      color="primary"
+                      size="small" variant="contained" color="primary"
                       onClick={() => this.uploadSingleFile(index)}
                     >
                       Upload
@@ -554,7 +517,7 @@ class HigherOrderComponent extends React.Component {
           </SimpleCard>
 
         <br /><br />
-        <SimpleCard elevation={6} className="w-full overflow-auto" title="Existing Files">
+        <SimpleCard elevation={6} className="w-full" title="Existing Files">
           <Table className="min-w-3000">
             <TableHead>
               <TableRow>
