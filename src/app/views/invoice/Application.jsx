@@ -177,7 +177,7 @@ class HigherOrderComponent extends React.Component {
     formData.append("policy", result.data.data.fields.policy);
     formData.append("signature", result.data.data.fields.signature);
     formData.append("Content-Type", file.file.type);
-    formData.append("file", this.state.files[0]);
+    formData.append("file", file.file);
 
     const data = {
       filename: file.file.name, 
@@ -188,8 +188,9 @@ class HigherOrderComponent extends React.Component {
       url: result.data.url
     }
 
-    return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data'} })
+    return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
     .then((response) => {
+      console.log(response)
       return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data, auth)
       .then((response) => {
         return response;

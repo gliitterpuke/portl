@@ -96,7 +96,7 @@ class FileViewer extends Component {
     formData.append("policy", result.data.data.fields.policy);
     formData.append("signature", result.data.data.fields.signature);
     formData.append("Content-Type", file.file.type);
-    formData.append("file", this.state.files[0]);
+    formData.append("file", file.file);
 
     const data = {
       filename: file.file.name, 
@@ -109,7 +109,7 @@ class FileViewer extends Component {
 
     return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data'} })
     .then((response) => {
-      return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data, auth)
+      return axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.state.id, data, auth)
       .then((response) => {
         return response;
       });
@@ -223,7 +223,7 @@ class FileViewer extends Component {
                   {file.type}
                 </Grid>
                 <Grid item lg={3} md={3} sm={12} x={12}>
-                  <Select fullWidth onClick={this.handleSelectChange} required="true">
+{                  <Select fullWidth onClick={this.handleSelectChange} required="true">
                     <MenuItem value="passport">Passport</MenuItem>                
                     <MenuItem value="IMM5707">IMM5707</MenuItem>
                     <MenuItem value="IMM5409">IMM5409</MenuItem>
@@ -236,7 +236,7 @@ class FileViewer extends Component {
                     <MenuItem value="immstatus">Current Immigration Status</MenuItem>
                     <MenuItem value="custody">Custody Document/Letter of Authorization</MenuItem>
                     <MenuItem value="other">Other</MenuItem>
-                  </Select>
+                  </Select>}
                 </Grid>
                 <Grid item lg={1} md={1} sm={12} xs={12}>
                   {error && <Icon color="error">error</Icon>}
