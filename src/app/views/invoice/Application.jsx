@@ -68,9 +68,9 @@ class HigherOrderComponent extends React.Component {
     getAllInvoice().then(res => this.setState({ fileList: res.data }));
   };
 
-  handeViewClick = invoiceId => {
-    this.props.history.push(`/rawr/${invoiceId}`);
-    getInvoiceById(invoiceId).then(res => console.log(res.data));
+  handeViewClick = fileId => {
+    this.props.history.push(`/rawr/${fileId}`);
+    getInvoiceById(fileId).then(res => console.log(res.data));
   };
 
   handeDeleteClick = efile => {
