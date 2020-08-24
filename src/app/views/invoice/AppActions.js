@@ -10,7 +10,7 @@ export const getAllFiles = () => {
     return axios.get("https://portl-dev.herokuapp.com/api/v1/blobs/", auth)
 }
 export const getFileById = (id) => {
-    return axios.get("https://portl-dev.herokuapp.com/api/v1/blobs/" + blobid, auth)
+    return axios.get("https://portl-dev.herokuapp.com/api/v1/blobs/" + id, auth)
 }
 export const deleteFile = (invoice) => {
     return axios.post("/api/invoices/delete", invoice)
