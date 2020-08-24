@@ -25,7 +25,7 @@ import {
 import localStorageService from "../../services/localStorageService";
 import axios from "axios";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { getAllInvoice, deleteFile } from "./AppActions";
+import { getAllInvoice, deleteFile, getInvoiceById } from "./AppActions";
 import { Link } from "react-router-dom";
 import { ConfirmationDialog } from "matx";
 import { SimpleCard } from "matx";
@@ -69,17 +69,17 @@ class HigherOrderComponent extends React.Component {
   };
 
   handeViewClick = invoiceId => {
-    this.props.history.push(`/invoice/${invoiceId}`);
-    // getInvoiceById(invoiceId).then(res => console.log(res.data));
+    this.props.history.push(`/rawr/${invoiceId}`);
+    getInvoiceById(invoiceId).then(res => console.log(res.data));
   };
 
-  handeDeleteClick = invoice => {
-    this.setState({ shouldShowConfirmationDialog: true, invoice });
+  handeDeleteClick = efile => {
+    this.setState({ shouldShowConfirmationDialog: true, efile });
   };
 
   handleConfirmationResponse = () => {
-    let { invoice } = this.state;
-    deleteFile(invoice).then(res => {
+    let { efile } = this.state;
+    deleteFile(efile).then(res => {
       this.setState({
         fileList: res.data,
         shouldShowConfirmationDialog: false
@@ -575,32 +575,32 @@ class HigherOrderComponent extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {fileList.map((invoice, index) => (
-                <TableRow key={invoice.id}>
+              {fileList.map((efile, index) => (
+                <TableRow key={efile.id}>
                   <TableCell className="pl-sm-24 capitalize" align="left">
-                    {invoice.filename}
+                    {efile.filename}
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left">
-                    {invoice.uploaded_at}
+                    {efile.uploaded_at}
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left">
-                    {invoice.updated_at}
+                    {efile.updated_at}
                   </TableCell>
                   <TableCell className="pl-0 capitalize">
-                    {invoice.type}
+                    {efile.type}
                   </TableCell>
                   <TableCell className="pl-0 capitalize">
-                    {invoice.tag}
+                    {efile.tag}
                   </TableCell>
                   <TableCell className="pl-0">
                     <IconButton
                       color="primary"
                       className="mr-2"
-                      onClick={() => this.handeViewClick(invoice.id)}
+                      onClick={() => this.handeViewClick(efile.id)}
                     >
                       <Icon>chevron_right</Icon>
                     </IconButton>
-                    <IconButton onClick={() => this.handeDeleteClick(invoice)}>
+                    <IconButton onClick={() => this.handeDeleteClick(efile)}>
                       <Icon color="error">delete</Icon>
                     </IconButton>
                   </TableCell>
