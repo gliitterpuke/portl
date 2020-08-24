@@ -16,14 +16,13 @@ import {
   Select,
   MenuItem,
 } from "@material-ui/core";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import { ValidatorForm } from "react-material-ui-form-validator";
 import { Link } from "react-router-dom";
-import { getAllInvoice, deleteFile, getInvoiceById } from "./AppActions";
+import { getInvoiceById } from "./AppActions";
 import { format } from "date-fns";
 import { withRouter } from "react-router-dom";
 import axios from "axios"
 import localStorageService from "../../services/localStorageService"
-import { SimpleCard, ConfirmationDialog } from "matx";
 
 class FileViewer extends Component {
   state = {

@@ -7,7 +7,6 @@ import {
   TableCell,
   TableBody,
   Button,
-  Card,
   Icon,
   IconButton,
   Fab,
@@ -15,9 +14,7 @@ import {
   Typography,
   MenuItem,
   Select,
-  InputLabel,
   Divider,
-  FormControlLabel,
   Accordion,
   AccordionDetails,
   AccordionSummary,
@@ -29,7 +26,7 @@ import { getAllInvoice, deleteFile, getInvoiceById } from "./AppActions";
 import { Link } from "react-router-dom";
 import { ConfirmationDialog } from "matx";
 import { SimpleCard } from "matx";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import { ValidatorForm } from "react-material-ui-form-validator";
 import { withStyles } from "@material-ui/styles"
 
 const styles = theme => ({
