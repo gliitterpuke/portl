@@ -4,20 +4,20 @@ const auth = {
   headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
 }
 const tester = localStorageService.getItem("auth_user")
-const appid = tester.applications_as_client[0].blobs[0].id
+const blobid = tester.applications_as_client[0].blobs[0]
 
-export const getAllInvoice = () => {
+export const getAllFiles = () => {
     return axios.get("https://portl-dev.herokuapp.com/api/v1/blobs/", auth)
 }
-export const getInvoiceById = (id) => {
-    return axios.get("https://portl-dev.herokuapp.com/api/v1/blobs/" + appid, auth)
+export const getFileById = (id) => {
+    return axios.get("https://portl-dev.herokuapp.com/api/v1/blobs/" + blobid, auth)
 }
 export const deleteFile = (invoice) => {
     return axios.post("/api/invoices/delete", invoice)
 }
-export const addInvoice = (invoice) => {
+export const addApplication = (invoice) => {
     return axios.post("/api/invoices/add", invoice)
 }
-export const updateInvoice = (invoice) => {
+export const updateApplication = (invoice) => {
     return axios.post("/api/invoices/update", invoice)
 }

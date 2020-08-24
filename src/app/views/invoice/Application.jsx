@@ -22,7 +22,7 @@ import {
 import localStorageService from "../../services/localStorageService";
 import axios from "axios";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { getAllInvoice, deleteFile, getInvoiceById } from "./AppActions";
+import { getAllFiles, deleteFile } from "./AppActions";
 import { Link } from "react-router-dom";
 import { ConfirmationDialog } from "matx";
 import { SimpleCard } from "matx";
@@ -62,12 +62,12 @@ class HigherOrderComponent extends React.Component {
     tags: "",
   };
   componentDidMount() {
-    getAllInvoice().then(res => this.setState({ fileList: res.data }));
+    getAllFiles().then(res => this.setState({ fileList: res.data }));
   };
 
   handeViewClick = fileId => {
     this.props.history.push(`/rawr/${fileId}`);
-    getInvoiceById(fileId).then(res => console.log(res.data));
+    // getApplicationById(fileId).then(res => console.log(res.data));
   };
 
   handeDeleteClick = efile => {

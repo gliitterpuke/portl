@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 import { ValidatorForm } from "react-material-ui-form-validator";
 import { Link } from "react-router-dom";
-import { getInvoiceById } from "./AppActions";
+import { getFileById } from "./AppActions";
 import { format } from "date-fns";
 import { withRouter } from "react-router-dom";
 import axios from "axios"
@@ -34,7 +34,7 @@ class FileViewer extends Component {
   subTotalCost = 0;
 
   componentDidMount() {
-    getInvoiceById(this.props.match.params.id).then(res => {
+    getFileById(this.props.match.params.id).then(res => {
       this.setState({ ...res.data });
     });
     }
