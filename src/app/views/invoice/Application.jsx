@@ -568,7 +568,11 @@ class HigherOrderComponent extends Component {
           </SimpleCard>
 
         <br /><br />
-        <SimpleCard elevation={6} className="w-full" title="Existing Files">
+        <SimpleCard elevation={6} className="w-full">
+          <Typography variant="h6">
+            Current Files
+          </Typography>
+          <br/>
           <Table className="min-w-3000">
             <TableHead>
               <TableRow>
