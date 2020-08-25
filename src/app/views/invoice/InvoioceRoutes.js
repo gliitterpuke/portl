@@ -1,4 +1,5 @@
 import React from "react";
+import { authRoles } from "../../auth/authRoles";
 
 const invoiceRoutes = [
   {
@@ -10,13 +11,14 @@ const invoiceRoutes = [
     path: "/invoice/edit/:id",
     component: React.lazy(() => import("./InvoiceList"))
   },
-  {
-    path: "/application",
-    component: React.lazy(() => import("./Application"))
-  },
+  //{
+    // path: "/application",
+   //  component: React.lazy(() => import("./Application"))
+ // },
   {
   path: "/rawr/:id",
-  component: React.lazy(() => import("./FileDetails.jsx"))
+  component: React.lazy(() => import("./FileDetails.jsx")),
+  auth: authRoles.client
 },
 
 ];

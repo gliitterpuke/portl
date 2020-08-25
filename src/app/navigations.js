@@ -2,10 +2,10 @@ import { authRoles } from "./auth/authRoles";
 
 export const navigations = [
   {
-    name: "Dashboard/Home",
-    path: "/dashboard/analytics",
+    name: "Home",
+    path: "/profile",
     icon: "dashboard",
-    // auth: authRoles.guest
+    auth: authRoles.client
   },
   {
     name: "CRUD Table",

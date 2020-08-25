@@ -1,9 +1,11 @@
 import React from "react";
+import { authRoles } from "../../auth/authRoles";
 
 const formsRoutes = [
   {
     path: "/profile",
-    component: React.lazy(() => import("../material-kit/forms/SimpleForm"))
+    component: React.lazy(() => import("../material-kit/forms/SimpleForm")),
+    auth: authRoles.client
   },
   {
     path: "/forms/editor",
@@ -15,11 +17,13 @@ const formsRoutes = [
   },
   {
     path: "/trv",
-    component: React.lazy(() => import("./WizardForm"))
+    component: React.lazy(() => import("./WizardForm")),
+    auth: authRoles.client
   },
   {
     path: "/application/:id",
-    component: React.lazy(() => import("../invoice/Application.jsx"))
+    component: React.lazy(() => import("../invoice/Application.jsx")),
+    auth: authRoles.client
   },
 ];
 
