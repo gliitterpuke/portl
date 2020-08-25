@@ -133,11 +133,9 @@ class FileViewer extends Component {
     return (
       <div className="invoice-viewer py-4">
         <div className="viewer_actions px-4 mb-5 flex items-center justify-between">
-          <Link to="/application">
-            <IconButton>
+            <IconButton onClick={() => this.props.history.goBack()}>
               <Icon>arrow_back</Icon>
             </IconButton>
-          </Link>
         </div>
         <div className="m-sm-30">
           <Typography variant="h6">
