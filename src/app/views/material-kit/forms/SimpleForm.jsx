@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import axios from "axios"
 import { Link } from "react-router-dom";
-import { getAllApps, deleteFile } from "./existing";
+import { getAllApps, deleteFile, getApplicationById } from "./existing";
+import { history } from "history";
 import {
   Button,
   Icon,
@@ -28,6 +29,7 @@ import localStorageService from "../../../services/localStorageService"
 
 class SimpleForm extends Component {
   state = {
+    appList: [],
     first_name: "",
     middle_name: "",
     last_name: "",
@@ -36,7 +38,6 @@ class SimpleForm extends Component {
     sex: "",
     relationship_to_owner: "",
     owner_id: "1",
-    appList: []
   };
 
   componentDidMount() {
@@ -44,8 +45,8 @@ class SimpleForm extends Component {
   }
 
   handeViewClick = applicationId => {
-    this.props.history.push(`/invoice/${applicationId}`);
-    // getInvoiceById(invoiceId).then(res => console.log(res.data));
+    this.props.history.push({pathname: `/application/${applicationId}`, state: applicationId });
+    getApplicationById(applicationId).then(res => console.log(res.data));
   };
 
   handeDeleteClick = application => {
@@ -109,6 +110,8 @@ class SimpleForm extends Component {
       appList
     } = this.state;
     return (
+      <div className="m-sm-30">
+        <Card className="px-6 pt-2 pb-4">
       <div>
         <ValidatorForm
           ref="form"
@@ -225,7 +228,7 @@ class SimpleForm extends Component {
             <Typography variant="h6">Applications</Typography>
           </Grid>
           <Grid item xs={12} lg={2} md={2}>
-            <Link to={`/forms/new`}>
+            <Link to={`/application/new`}>
               <Button color="primary" variant="contained">
                 <span className="pl-2 capitalize">Create New App</span>
               </Button>
@@ -273,6 +276,8 @@ class SimpleForm extends Component {
               ))}
             </TableBody>
           </Table>
+      </div>
+      </Card>
       </div>
     );
   }

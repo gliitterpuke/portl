@@ -3,7 +3,7 @@ import React from "react";
 const formsRoutes = [
   {
     path: "/profile",
-    component: React.lazy(() => import("./BasicForm"))
+    component: React.lazy(() => import("../material-kit/forms/SimpleForm"))
   },
   {
     path: "/forms/editor",
@@ -14,9 +14,13 @@ const formsRoutes = [
     component: React.lazy(() => import("./UploadForm"))
   },
   {
-    path: "/application/trv",
+    path: "/trv",
     component: React.lazy(() => import("./WizardForm"))
-  }
+  },
+  {
+    path: "/application/:id",
+    component: React.lazy(() => import("../invoice/Application.jsx"))
+  },
 ];
 
 export default formsRoutes;

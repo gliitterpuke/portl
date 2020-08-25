@@ -20,9 +20,11 @@ import {
   AccordionSummary,
 } from "@material-ui/core";
 import localStorageService from "../../services/localStorageService";
+import { withRouter } from "react-router-dom";
 import axios from "axios";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { getAllFiles, deleteFile } from "./AppActions";
+import { getAllFiles, deleteFile, getFileById } from "./AppActions";
+import { getApplicationById } from "../material-kit/forms/existing";
 import { Link } from "react-router-dom";
 import { ConfirmationDialog } from "matx";
 import { SimpleCard } from "matx";
@@ -51,7 +53,7 @@ const styles = theme => ({
   },
 });
 
-class HigherOrderComponent extends React.Component {
+class HigherOrderComponent extends Component {
   state = {
     fileList: [],
     shouldShowConfirmationDialog: false,
@@ -60,14 +62,19 @@ class HigherOrderComponent extends React.Component {
     files: [],
     statusList: [],
     tags: "",
+    status: ""
   };
   componentDidMount() {
-    getAllFiles().then(res => this.setState({ fileList: res.data }));
-  };
+    getApplicationById(this.props.match.params.id).then(res => {
+      this.setState({ ...res.data });
+    });
+    getAllFiles().then(res => this.setState({ fileList: res.data }))
+    
+    }
 
   handeViewClick = fileId => {
     this.props.history.push(`/rawr/${fileId}`);
-    // getApplicationById(fileId).then(res => console.log(res.data));
+    getFileById(fileId).then(res => console.log(this.props));
   };
 
   handeDeleteClick = efile => {
@@ -158,10 +165,10 @@ class HigherOrderComponent extends React.Component {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
     const user = localStorageService.getItem("auth_user")
-    const appid = user.applications_as_client[0].id
+    const appid = this.state.id
     const tags = this.state.result
     const filetype = file.file.type.match(/[^\/]+$/)[0]
-    const key = user.id + "/" + appid + "/" + tags + "." + filetype
+    const key = this.state.id + "/" + appid + "/" + tags + "." + filetype
 
     allFiles[index] = { ...file, uploading: true, error: false };
 
@@ -202,7 +209,7 @@ class HigherOrderComponent extends React.Component {
 
   render() {
     const { classes } = this.props;
-    let { fileList, filename, dragClass, files, type, tag, tags} = this.state;
+    let { fileList, filename, dragClass, files, type, tag, tags, status} = this.state;
     let isEmpty = files.length === 0;
     return (
       <React.Fragment>
@@ -568,7 +575,7 @@ class HigherOrderComponent extends React.Component {
                 <TableCell className="pl-sm-24">Name</TableCell>
                 <TableCell className="px-0">Upload</TableCell>
                 <TableCell className="px-0">Update</TableCell>
-                <TableCell className="px-0">Type</TableCell>
+                <TableCell className="px-0">Application</TableCell>
                 <TableCell className="px-0">Tag</TableCell>
               </TableRow>
             </TableHead>
@@ -585,7 +592,7 @@ class HigherOrderComponent extends React.Component {
                     {efile.updated_at}
                   </TableCell>
                   <TableCell className="pl-0 capitalize">
-                    {efile.type}
+                    {efile.application_id}
                   </TableCell>
                   <TableCell className="pl-0 capitalize">
                     {efile.tag}
@@ -623,4 +630,4 @@ HigherOrderComponent.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(HigherOrderComponent);
+export default withRouter(withStyles(styles)(HigherOrderComponent));

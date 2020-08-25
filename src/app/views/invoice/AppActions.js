@@ -4,10 +4,9 @@ const auth = {
   headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
 }
 const tester = localStorageService.getItem("auth_user")
-const blobid = tester.applications_as_client[0].blobs[0]
 
 export const getAllFiles = () => {
-    return axios.get("https://portl-dev.herokuapp.com/api/v1/blobs/", auth)
+    return axios.get(`https://portl-dev.herokuapp.com/api/v1/blobs/`, auth)
 }
 export const getFileById = (id) => {
     return axios.get("https://portl-dev.herokuapp.com/api/v1/blobs/" + id, auth)

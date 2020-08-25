@@ -7,7 +7,7 @@ const materialRoutes = [
   },
   {
     path: "/application/new",
-    component: React.lazy(() => import("./forms/AppForm"))
+    component: React.lazy(() => import("./buttons/AppButton"))
   },
   {
     path: "/forms/new",
@@ -56,7 +56,7 @@ const materialRoutes = [
   {
     path: "/material/snackbar",
     component: React.lazy(() => import("./snackbar/AppSnackbar"))
-  }
+  },
 ];
 
 export default materialRoutes;

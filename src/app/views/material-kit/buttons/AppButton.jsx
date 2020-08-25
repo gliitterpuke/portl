@@ -18,15 +18,14 @@ class AppForm extends Component {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
     axios.post("https://portl-dev.herokuapp.com/api/v1/applications", data, auth).then(result => { 
-      console.log(user)
-      return result
+      console.log(result.data.id)
+      this.props.history.push(`/application/${result.data.id}`);
     })
     }
   render() {
     return(
     <div className="m-sm-30">
       <Grid item lg={12} xs={12}>
-        <Link to={`/application`}>
           <Card
             onClick ={this.clickMe}
             className="p-6 flex items-center justify-center cursor-pointer h-150px"
@@ -36,7 +35,6 @@ class AppForm extends Component {
               <div>Visitor Visa</div>
               </div>
           </Card>
-        </Link>
       </Grid>
       <br />
       <Grid item lg={12} xs={12}>
