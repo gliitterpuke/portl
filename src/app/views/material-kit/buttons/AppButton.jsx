@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import localStorageService from "../../../services/localStorageService"
-import { Card, Grid } from "@material-ui/core";
+import { Card, Grid, Icon, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 class AppForm extends Component {
@@ -25,6 +25,11 @@ class AppForm extends Component {
   render() {
     return(
     <div className="m-sm-30">
+      <div className="viewer_actions px-4 mb-5 flex items-center justify-between">
+        <IconButton onClick={() => this.props.history.goBack()}>
+          <Icon>arrow_back</Icon>
+        </IconButton>
+      </div>
       <Grid item lg={12} xs={12}>
           <Card
             onClick ={this.clickMe}
