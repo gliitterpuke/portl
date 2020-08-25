@@ -4,7 +4,6 @@ const auth = {
   headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
 }
 const tester = localStorageService.getItem("auth_user")
-const application_id = tester.applications_as_client[0]
 
 export const getAllApps = () => {
     return axios.get("https://portl-dev.herokuapp.com/api/v1/applications/", auth)

@@ -4,6 +4,7 @@ import axios from "axios"
 import { Link } from "react-router-dom";
 import { getAllApps, deleteFile, getApplicationById } from "./existing";
 import { history } from "history";
+import { loginWithToken } from "../../../services/jwtAuthService";
 import {
   Button,
   Icon,
@@ -41,12 +42,16 @@ class SimpleForm extends Component {
   };
 
   componentDidMount() {
-    getAllApps().then(res => this.setState({ appList: res.data }));
+    const auth = {
+      headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
+    }
+    axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth).then(res => this.setState({ appList: res.data.applications_as_client }));
   }
 
   handeViewClick = applicationId => {
-    this.props.history.push({pathname: `/application/${applicationId}`, state: applicationId });
-    getApplicationById(applicationId).then(res => console.log(res.data));
+    let user = localStorageService.getItem("auth_user")
+    this.props.history.push({pathname: `/application/${applicationId}`, state: user.applications_as_client[applicationId] });
+    getApplicationById(applicationId).then(res => console.log(this.state.appList));
   };
 
   handeDeleteClick = application => {
@@ -100,6 +105,7 @@ class SimpleForm extends Component {
   };
 
   render() {
+    let user = localStorageService.getItem("auth_user")
     let {
       first_name,
       middle_name,
@@ -108,6 +114,7 @@ class SimpleForm extends Component {
       citizenship,
       sex,
       appList
+
     } = this.state;
     return (
       <div className="m-sm-30">
@@ -240,16 +247,20 @@ class SimpleForm extends Component {
             <TableHead>
               <TableRow>
                 <TableCell className="pl-sm-24">Program</TableCell>
+                <TableCell className="px-0">ID</TableCell>
                 <TableCell className="px-0">Created</TableCell>
                 <TableCell className="px-0">Updated</TableCell>
                 <TableCell className="px-0">Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {appList.map((application, index) => (
+              {appList.map((application) => (
                 <TableRow key={application.id}>
                   <TableCell className="pl-sm-24 capitalize" align="left">
                     {application.program}
+                  </TableCell>
+                  <TableCell className="pl-sm-24 capitalize" align="left">
+                    {application.id}
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left">
                     {application.created_at}

@@ -117,7 +117,7 @@ class FileEditor extends Component {
     if (this.props.isNewInvoice)
       addInvoice(tempState).then(() => {
         this.setState({ loading: false });
-        this.props.history.push(`/application/${this.state.id}`);
+        this.props.history.push(`/no/${this.state.id}`);
         this.props.toggleFileEditor();
       });
     else

@@ -4,22 +4,26 @@ import localStorageService from "../../../services/localStorageService"
 import { Card, Grid, Icon, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
+
 class AppForm extends Component {
   clickMe = () => {
-    const user = localStorageService.getItem("auth_user")
+  
     const data = { 
       program: "trv",
       status: "CLIENT_ACTION_REQUIRED",
       is_open: true,
-      client_id: user.id,
+      client_id: localStorageService.getItem("auth_user").id,
       professional_id: 0
     }
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
     axios.post("https://portl-dev.herokuapp.com/api/v1/applications", data, auth).then(result => { 
-      console.log(result.data.id)
-      this.props.history.push(`/application/${result.data.id}`);
+      let user = localStorageService.getItem("auth_user")
+      user.applications_as_client.push(result.data)
+      localStorageService.setItem("auth_user", user)
+      this.props.history.push({pathname: `/application/${result.data.id}`, state: result.data });
+      console.log(localStorageService.getItem("auth_user"))
     })
     }
   render() {

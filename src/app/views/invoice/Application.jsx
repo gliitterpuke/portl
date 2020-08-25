@@ -62,7 +62,8 @@ class HigherOrderComponent extends Component {
     files: [],
     statusList: [],
     tags: "",
-    status: ""
+    status: "",
+    blobs: []
   };
   componentDidMount() {
     getApplicationById(this.props.match.params.id).then(res => {
@@ -73,10 +74,11 @@ class HigherOrderComponent extends Component {
     }
 
   handeViewClick = fileId => {
+    let user = localStorageService.getItem("auth_user")
     this.props.history.push(`/rawr/${fileId}`);
-    getFileById(fileId).then(res => console.log(this.props));
+    getFileById(fileId).then(res => console.log(user));
   };
-
+  // this.props.location.state.some
   handeDeleteClick = efile => {
     this.setState({ shouldShowConfirmationDialog: true, efile });
   };
@@ -164,11 +166,11 @@ class HigherOrderComponent extends Component {
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
-    const user = localStorageService.getItem("auth_user")
+    let user = localStorageService.getItem("auth_user")
     const appid = this.state.id
     const tags = this.state.result
     const filetype = file.file.type.match(/[^\/]+$/)[0]
-    const key = this.state.id + "/" + appid + "/" + tags + "." + filetype
+    const key = user.id + "/" + appid + "/" + tags + "." + filetype
 
     allFiles[index] = { ...file, uploading: true, error: false };
 
@@ -197,9 +199,12 @@ class HigherOrderComponent extends Component {
 
     return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
     .then((response) => {
-      console.log(response)
+      console.log(appid)
       return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data, auth)
       .then((response) => {
+        this.state.blobs.push(response.data)
+        localStorageService.setItem("auth_user", user)
+        console.log(user)
         return response;
       });
     });
@@ -209,8 +214,9 @@ class HigherOrderComponent extends Component {
 
   render() {
     const { classes } = this.props;
-    let { fileList, filename, dragClass, files, type, tag, tags, status} = this.state;
+    let { fileList, filename, dragClass, files, type, tag, tags, status, blobs} = this.state;
     let isEmpty = files.length === 0;
+    let user = localStorageService.getItem("auth_user")
     return (
       <React.Fragment>
       <div className="upload-form m-sm-30">
@@ -584,7 +590,7 @@ class HigherOrderComponent extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {fileList.map((efile, index) => (
+              {this.state.blobs.map((efile) => (
                 <TableRow key={efile.id}>
                   <TableCell className="pl-sm-24 capitalize" align="left">
                     {efile.filename}
