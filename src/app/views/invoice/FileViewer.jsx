@@ -70,6 +70,25 @@ class FileViewer extends Component {
     })
   }
 
+  downloadFile = () => {
+    let file = this.state.files[0];
+    const auth = {
+      headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
+    }
+    let user = localStorageService.getItem("auth_user")
+    const appid = this.props.location.state.application_id
+    const tags = this.props.location.state.tag
+    const mime_type = this.props.location.state.mime_type
+    const filetype = mime_type.match(/[^\/]+$/)[0]
+    const key = user.id + "/" + appid + "/" + tags + "." + filetype
+    axios.get("https://portl-dev.herokuapp.com/api/v1/sign_s3_get/", { params: { bucket: "portldump", key: key }}, auth)
+    .then(result => { 
+    const win = window.open(`${result.data}`);
+    win.focus();
+    // console.log(result.data)
+    })
+  }
+
   uploadSingleFile = index => {
     let allFiles = [...this.state.files];
     let file = this.state.files[0];
@@ -137,10 +156,16 @@ class FileViewer extends Component {
               <Icon>arrow_back</Icon>
             </IconButton>
         </div>
-        <div className="m-sm-30">
+        <div className="m-sm-30 justify-between flex items-center">
           <Typography variant="h6">
             File Information
           </Typography>
+              <Button
+                size="medium" variant="contained" color="primary"
+                onClick={() => this.downloadFile()}
+              >
+              Download
+             </Button>
           </div>
           <Card className="mb-4" elevation={0}>
             <Table>
