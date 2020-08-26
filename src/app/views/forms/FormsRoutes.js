@@ -5,7 +5,6 @@ const formsRoutes = [
   {
     path: "/profile",
     component: React.lazy(() => import("../material-kit/forms/SimpleForm")),
-    auth: authRoles.client
   },
   {
     path: "/forms/editor",
@@ -16,14 +15,12 @@ const formsRoutes = [
     component: React.lazy(() => import("./UploadForm"))
   },
   {
-    path: "/trv",
+    path: "/application/:id/trv",
     component: React.lazy(() => import("./WizardForm")),
-    auth: authRoles.client
   },
   {
     path: "/application/:id",
     component: React.lazy(() => import("../invoice/Application.jsx")),
-    auth: authRoles.client
   },
 ];
 

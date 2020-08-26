@@ -75,7 +75,7 @@ class HigherOrderComponent extends Component {
 
   handeViewClick = fileId => {
     let user = localStorageService.getItem("auth_user")
-    this.props.history.push({ pathname: `${this.state.id}/file/${fileId}`, state: user.applications_as_client });
+    this.props.history.push({ pathname: `${this.state.id}/file/${fileId}`, state: user.client_profile.applications });
     getFileById(fileId).then(res => console.log(this.state));
   };
   // this.props.location.state.some
@@ -228,7 +228,7 @@ class HigherOrderComponent extends Component {
             <br/>
           <Button
             size="medium" variant="contained" color="primary"
-            onClick={() => this.props.history.push({ pathname: `/application/${this.state.id}/trv`, state: user.applications_as_client })}
+            onClick={() => this.props.history.push({ pathname: `/application/${this.state.id}/trv`, state: user.client_profile.applications })}
           >
             TRV
           </Button>

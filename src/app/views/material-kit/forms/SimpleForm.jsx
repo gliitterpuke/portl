@@ -45,12 +45,12 @@ class SimpleForm extends Component {
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
-    axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth).then(res => this.setState({ appList: res.data.applications_as_client }));
+    axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth).then(res => this.setState({ appList: res.data.client_profile.applications }));
   }
 
   handeViewClick = applicationId => {
     let user = localStorageService.getItem("auth_user")
-    this.props.history.push({pathname: `/application/${applicationId}`, state: user.applications_as_client[applicationId] });
+    this.props.history.push({pathname: `/application/${applicationId}`, state: user.client_profile.applications });
     getApplicationById(applicationId).then(res => console.log(this.state.appList));
   };
 
@@ -87,7 +87,7 @@ class SimpleForm extends Component {
     relationship_to_owner: "1",
     owner_id: user.id
   };
-  axios.post("https://portl-dev.herokuapp.com/api/v1/client_profiles/", data, auth).then(result => { 
+  axios.post("https://portl-dev.herokuapp.com/api/v1/client_profile/", data, auth).then(result => { 
     console.log(user)
     return result
    })

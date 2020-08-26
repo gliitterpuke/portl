@@ -9,7 +9,6 @@ const materialRoutes = [
   {
     path: "/application/new",
     component: React.lazy(() => import("./buttons/AppButton")),
-    auth: authRoles.client
   },
   {
     path: "/forms/new",

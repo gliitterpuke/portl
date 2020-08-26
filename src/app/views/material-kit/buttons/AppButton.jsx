@@ -7,22 +7,20 @@ import { Link } from "react-router-dom";
 
 class AppForm extends Component {
   clickMe = () => {
-  
+    let user = localStorageService.getItem("auth_user")
     const data = { 
       program: "trv",
       status: "CLIENT_ACTION_REQUIRED",
-      is_open: true,
-      client_id: localStorageService.getItem("auth_user").id,
-      professional_id: 0
+      client_id: localStorageService.getItem("auth_user").client_profile.id
     }
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
     axios.post("https://portl-dev.herokuapp.com/api/v1/applications", data, auth).then(result => { 
-      let user = localStorageService.getItem("auth_user")
-      user.applications_as_client.push(result.data)
+
+      user.client_profile.applications.push(result.data)
       localStorageService.setItem("auth_user", user)
-      this.props.history.push({pathname: `/application/${result.data.id}`, state: result.data });
+      this.props.history.push({pathname: `/application/${result.data.id}`, state: user.client_profile.applications });
       console.log(localStorageService.getItem("auth_user"))
     })
     }

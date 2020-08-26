@@ -11,14 +11,9 @@ const invoiceRoutes = [
     path: "/invoice/edit/:id",
     component: React.lazy(() => import("./InvoiceList"))
   },
-  //{
-    // path: "/application",
-   //  component: React.lazy(() => import("./Application"))
- // },
   {
   path: "/application/:id/file/:id",
   component: React.lazy(() => import("./FileDetails.jsx")),
-  auth: authRoles.client
 },
 
 ];
