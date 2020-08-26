@@ -2,6 +2,7 @@ import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import NotFound from "./NotFound";
 import ForgotPassword from "./ForgotPassword";
+import RepSignUp from "./RepSignUp";
 
 const settings = {
   activeLayout: "layout1",
@@ -44,6 +45,11 @@ const sessionRoutes = [
   {
     path: "/session/404",
     component: NotFound,
+    settings
+  },
+  {
+    path: "/session/repsignup",
+    component: RepSignUp,
     settings
   }
 ];

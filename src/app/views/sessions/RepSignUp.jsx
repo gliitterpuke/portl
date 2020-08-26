@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import localStorageService from "../../services/localStorageService";
 
-class SignUp extends Component {
+class RepSignUp extends Component {
   state = {
     role: "",
     email: "",
@@ -34,16 +34,16 @@ class SignUp extends Component {
     }
     axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
     .then(result => { 
-    const client = {
+    const professional = {
         first_name: "First Name",
-        middle_name: "",
         last_name: "Last Name",
-        birth_date: "1900-01-01",
-        citizenship: "Citizenship",
-        sex: "Sex",
+        company: "Your Company",
+        occupation: "Consultant",
+        sex: "",
+        max_open_apps: 20,
         owner_id: result.data.id
       }
-    axios.post("https://portl-dev.herokuapp.com/api/v1/client_profiles", client)
+    axios.post("https://portl-dev.herokuapp.com/api/v1/professional_profiles", professional)
       console.log(result.data)
       return result;
     });
@@ -97,7 +97,7 @@ class SignUp extends Component {
                       name="agreement"
                       onChange={this.handleChange}
                       control={<Checkbox />}
-                      label="I have read and agreed to the terms of service."
+                      label="I have read and agree to the terms of service."
                     />
                     <div className="flex items-center">
                       <Button
@@ -117,15 +117,6 @@ class SignUp extends Component {
                       >
                         Sign in
                       </Button>
-                      <span className="mx-2 ml-5">or</span>
-                      <Button
-                        className="capitalize"
-                        onClick={() =>
-                          this.props.history.push("/session/repsignup")
-                        }
-                      >
-                        Rep Sign Up
-                      </Button>
                     </div>
                   </ValidatorForm>
                 </div>
@@ -142,4 +133,4 @@ const mapStateToProps = state => ({
   // setUser: PropTypes.func.isRequired
 });
 
-export default connect(mapStateToProps, {})(SignUp);
+export default connect(mapStateToProps, {})(RepSignUp);
