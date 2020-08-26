@@ -75,8 +75,8 @@ class HigherOrderComponent extends Component {
 
   handeViewClick = fileId => {
     let user = localStorageService.getItem("auth_user")
-    this.props.history.push(`/rawr/${fileId}`);
-    getFileById(fileId).then(res => console.log(user));
+    this.props.history.push({ pathname: `${this.state.id}/file/${fileId}`, state: user.applications_as_client });
+    getFileById(fileId).then(res => console.log(this.state));
   };
   // this.props.location.state.some
   handeDeleteClick = efile => {
@@ -219,6 +219,22 @@ class HigherOrderComponent extends Component {
     let user = localStorageService.getItem("auth_user")
     return (
       <React.Fragment>
+      <div className="upload-form m-sm-30">
+        <SimpleCard>
+          <Typography variant="h6">
+            Fillable Forms
+          </Typography>
+          <div>
+            <br/>
+          <Button
+            size="medium" variant="contained" color="primary"
+            onClick={() => this.props.history.push({ pathname: `/application/${this.state.id}/trv`, state: user.applications_as_client })}
+          >
+            TRV
+          </Button>
+          </div>
+        </SimpleCard>
+      </div>
       <div className="upload-form m-sm-30">
         <SimpleCard>
           <Typography variant="h6">

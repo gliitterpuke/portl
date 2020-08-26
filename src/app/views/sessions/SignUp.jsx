@@ -9,10 +9,12 @@ import {
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator, SelectValidator } from "react-material-ui-form-validator";
 import { connect } from "react-redux";
+import axios from "axios";
+import localStorageService from "../../services/localStorageService";
 
 class SignUp extends Component {
   state = {
-    role: "client",
+    role: "",
     email: "",
     password: "",
   };
@@ -25,19 +27,28 @@ class SignUp extends Component {
   };
 
   handleFormSubmit = event => {
-    alert(JSON.stringify(this.state));
-          fetch('https://portl-dev.herokuapp.com/api/v1/users', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(this.state),
-        }).then(response => response.json())
-        .then(response => {
-        
-            console.log(response)
-        });
+    const signup = {
+      role: this.state.role,
+      email: this.state.email,
+      password: this.state.password
+    }
+    axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
+    .then(result => { 
+    const defaultuser = {
+        first_name: "First Name",
+        middle_name: "",
+        last_name: "Last Name",
+        birth_date: "1900-01-01",
+        citizenship: "Citizenship",
+        sex: "Sex",
+        owner_id: result.data.id
+      }
+    axios.post("https://portl-dev.herokuapp.com/api/v1/client_profiles", defaultuser)
+      console.log(result.data)
+      return result;
+    });
   };
+
   render() {
     let { role, email, password } = this.state;
     return (
