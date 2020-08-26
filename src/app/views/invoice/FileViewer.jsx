@@ -76,16 +76,17 @@ class FileViewer extends Component {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
     let user = localStorageService.getItem("auth_user")
-    const appid = this.props.location.state.application_id
-    const tags = this.props.location.state.tag
-    const mime_type = this.props.location.state.mime_type
+    const appid = this.state.application_id
+    const tags = this.state.tag
+    const mime_type = this.state.mime_type
     const filetype = mime_type.match(/[^\/]+$/)[0]
     const key = user.id + "/" + appid + "/" + tags + "." + filetype
+    //axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
     axios.get("https://portl-dev.herokuapp.com/api/v1/sign_s3_get/", { params: { bucket: "portldump", key: key }}, auth)
     .then(result => { 
     const win = window.open(`${result.data}`);
     win.focus();
-    // console.log(result.data)
+    console.log(this.state)
     })
   }
 
@@ -96,9 +97,10 @@ class FileViewer extends Component {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
     const user = localStorageService.getItem("auth_user")
-    const appid = user.applications_as_client[0].id
-    const tags = this.state.result
-    const filetype = file.file.type.match(/[^\/]+$/)[0]
+    const appid = this.state.application_id
+    const tags = this.state.tag
+    const mime_type = this.state.mime_type
+    const filetype = mime_type.match(/[^\/]+$/)[0]
     const key = user.id + "/" + appid + "/" + tags + "." + filetype
 
     allFiles[index] = { ...file, uploading: true, error: false };
@@ -106,7 +108,7 @@ class FileViewer extends Component {
     this.setState({
       files: [...allFiles]
     });
-    axios.get("https://portl-dev.herokuapp.com/api/v1/sign_s3_post/", { params: { key: key, mime_type: file.file.type }}, auth)
+    axios.get("https://portl-dev.herokuapp.com/api/v1/sign_s3_post/", { params: { key: key, mime_type: mime_type }}, auth)
     .then(result => { 
     console.log(result)
     const formData = new FormData();
@@ -122,7 +124,7 @@ class FileViewer extends Component {
       tag: tags,
       bucket: "portldump",
       application_id: appid,
-      mime_type: file.file.type, 
+      mime_type: mime_type, 
       url: result.data.url
     }
 
@@ -130,6 +132,9 @@ class FileViewer extends Component {
     .then((response) => {
       return axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.state.id, data, auth)
       .then((response) => {
+        // console.log(this.props.location.state)
+        this.props.location.state.push(response.data)
+        localStorageService.setItem("auth_user", user)
         return response;
       });
     });
