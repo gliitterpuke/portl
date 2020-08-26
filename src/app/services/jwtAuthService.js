@@ -5,14 +5,10 @@ import qs from "qs"
 class JwtAuthService {
 
   // Dummy user object just for the demo
-  user = {
-    userId: "1",
-    role: 'ADMIN',
-    displayName: "Jason Alexander",
-    username: "jasonalexander@gmail.com",
-    photoURL: "/assets/images/face-6.jpg",
-    age: 25,
-    token: "faslkhfh423oiu4h4kj432rkj23h432u49ufjaklj423h4jkhkjh"
+  defaultuser = {
+    first_name: "First Name",
+    middle_name: "Middle Name",
+    last_name: "Last Name"
   }
 
   // You need to send http request with email and passsword to your server in this method
