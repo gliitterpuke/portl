@@ -17,6 +17,7 @@ import axios from "axios";
 import localStorageService from "../../services/localStorageService";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { SimpleCard } from 'matx';
   
 const useStyles = makeStyles(theme => ({
   button: {
@@ -73,6 +74,8 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp }) =
       >
         {({ errors, touched }) => (
 
+      <div className="upload-form m-sm-30">
+      <SimpleCard>
       <Form>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Typography variant="h6" gutterBottom>
@@ -253,6 +256,8 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp }) =
           </Grid>
         </MuiPickersUtilsProvider>
         </Form>
+        </SimpleCard>
+        </div>
         )}
       </Formik>
     </>

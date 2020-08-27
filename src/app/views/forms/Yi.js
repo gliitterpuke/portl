@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import { Select, RadioGroup } from 'formik-material-ui'
-import axios from "axios";
-import localStorageService from "../../services/localStorageService";
+// import axios from "axios";
+// import localStorageService from "../../services/localStorageService";
 import {
   Button,
   FormControlLabel,
@@ -15,13 +15,13 @@ import {
   Typography,
   MenuItem,
   FormControl,
+  Card
 } from "@material-ui/core";
 import * as yup from 'yup';
 import {
     Autocomplete,
     AutocompleteRenderInputParams,
 } from 'formik-material-ui-lab';
-import { getApplicationById } from "../forms/FormsRoutes";
 import { SimpleCard } from "matx";
 
 const useStyles = makeStyles(theme => ({
@@ -65,7 +65,7 @@ const validationSchema = yup.object({
     .required('Required'),
 });
 
-export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
+export const Yi = ({ formData, setFormData, nextStep, }) => {
   const classes = useStyles();
 
   return (
@@ -79,6 +79,7 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
         validationSchema={validationSchema}
       >
         {({ errors, touched }) => (
+      <div className="upload-form m-sm-30">
       <SimpleCard>
       <Form>
         <Typography variant="h6" gutterBottom>
@@ -249,6 +250,7 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
           </Grid>
         </Form>
         </SimpleCard>
+        </div>
         )}
       </Formik>
     </>

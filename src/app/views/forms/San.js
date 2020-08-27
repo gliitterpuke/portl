@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { SimpleCard } from 'matx';
   
 const useStyles = makeStyles(theme => ({
   button: {
@@ -49,7 +50,8 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
         validationSchema={validationSchema}
       >
         {({ errors, touched }) => (
-
+      <div className="upload-form m-sm-30">
+      <SimpleCard>
       <Form>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Typography variant="h6" gutterBottom>
@@ -180,6 +182,8 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           </Grid>
         </MuiPickersUtilsProvider>
         </Form>
+        </SimpleCard>
+        </div>
         )}
       </Formik>
     </>

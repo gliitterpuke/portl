@@ -20,10 +20,11 @@ import {
     Autocomplete,
     AutocompleteRenderInputParams,
   } from 'formik-material-ui-lab';
+import { SimpleCard } from 'matx';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import axios from "axios";
-import localStorageService from "../../services/localStorageService"
+// import axios from "axios";
+// import localStorageService from "../../services/localStorageService"
   
 const useStyles = makeStyles(theme => ({
   button: {
@@ -57,7 +58,8 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
         validationSchema={validationSchema}
       >
         {({ errors, touched }) => (
-
+      <div className="upload-form m-sm-30">
+      <SimpleCard>
       <Form>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Typography variant="h6" gutterBottom>
@@ -311,6 +313,8 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
           </Grid>
         </MuiPickersUtilsProvider>
         </Form>
+        </SimpleCard>
+        </div>
         )}
       </Formik>
     </>

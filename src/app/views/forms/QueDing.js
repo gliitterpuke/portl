@@ -5,6 +5,7 @@ import { Button, Typography } from '@material-ui/core';
 import { List, ListItem, ListItemText } from '@material-ui/core/';
 import axios from "axios";
 import localStorageService from "../../services/localStorageService";
+import { SimpleCard } from 'matx';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -52,7 +53,8 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
 }
   return (
     <>
-      <div>
+      <div className="upload-form m-sm-30">
+      <SimpleCard>
         <Typography variant="h6">Confirmation</Typography>
         <List>
           <ListItem>
@@ -89,6 +91,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
             Confirm & Continue
           </Button>
         </div>
+        </SimpleCard>
       </div>
     </>
   );
