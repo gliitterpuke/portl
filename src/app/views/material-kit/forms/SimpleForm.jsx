@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import axios from "axios"
 import { Link } from "react-router-dom";
-import { getAllApps, deleteFile, getApplicationById } from "./existing";
-import { history } from "history";
-import { loginWithToken } from "../../../services/jwtAuthService";
+import { deleteFile, getApplicationById } from "./existing";
+import ClientViewer from "./ClientViewer";
+import ClientEditor from "./ClientEditor";
 import {
   Button,
   Icon,
@@ -46,6 +46,7 @@ class SimpleForm extends Component {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
     axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth).then(res => this.setState({ appList: res.data.client_profile.applications }));
+    this.setState({ showClientEditor: false });
   }
 
   handeViewClick = applicationId => {
@@ -103,132 +104,32 @@ class SimpleForm extends Component {
 
     this.setState({ birth_date });
   };
+  toggleClientEditor = () => {
+    this.setState({
+      showClientEditor: !this.state.showClientEditor,
+    });
+  };
 
   render() {
     let user = localStorageService.getItem("auth_user")
     let {
-      first_name,
-      middle_name,
-      last_name,
-      birth_date,
-      citizenship,
-      sex,
       appList
-
     } = this.state;
     return (
+      <React.Fragment>
       <div className="m-sm-30">
         <Card className="px-6 pt-2 pb-4">
-      <div>
-        <ValidatorForm
-          ref="form"
-          onSubmit={this.handleSubmit}
-          onError={errors => null}
-        >
-          <Grid container spacing={6}>
-            <Grid item xs={12} lg={10} md={10}>
-              <Typography variant="h6">Profile</Typography>
-            </Grid>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
-              <TextValidator
-                className="mb-4 w-full"
-                label="First Name"
-                onChange={this.handleChange}
-                type="text"
-                name="first_name"
-                value={first_name}
-                errorMessages={["this field is required"]}
-              />
-            </Grid>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
-              <TextValidator
-                className="mb-4 w-full"
-                label="Middle Name"
-                onChange={this.handleChange}
-                type="text"
-                name="middle_name"
-                value={middle_name}
-                errorMessages={["this field is required"]}
-              />
-            </Grid>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
-              <TextValidator
-                className="mb-4 w-full"
-                label="Last Name"
-                onChange={this.handleChange}
-                type="text"
-                name="last_name"
-                value={last_name}
-                errorMessages={["this field is required"]}
-              />
-            </Grid>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
-              <TextValidator
-                className="mb-4 w-full"
-                label="Birthday"
-                onChange={this.handleChange}
-                type="date"
-                name="birth_date"
-                value={birth_date}
-                InputLabelProps={{ shrink: true }}
-                errorMessages={["this field is required"]}
-              />
-            </Grid>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
-              <RadioGroup
-                className="mb-4"
-                value={sex}
-                name="sex"
-                onChange={this.handleChange}
-                row
-              >
-                <FormControlLabel
-                  value="Female"
-                  control={<Radio color="secondary" />}
-                  label="Female"
-                  labelPlacement="end"
-                />
-                <FormControlLabel
-                  value="Male"
-                  control={<Radio color="secondary" />}
-                  label="Male"
-                  labelPlacement="end"
-                />
-                <FormControlLabel
-                  value="Unknown"
-                  control={<Radio color="secondary" />}
-                  label="Another"
-                  labelPlacement="end"
-                />
-                <FormControlLabel
-                  value="Unspecified"
-                  control={<Radio color="secondary" />}
-                  label="Unspecified"
-                  labelPlacement="end"
-                />
-              </RadioGroup>
-            </Grid>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
-              <TextValidator
-                className="mb-4 w-full"
-                label="Citizenship"
-                onChange={this.handleChange}
-                type="text"
-                name="citizenship"
-                value={citizenship}
-                errorMessages={["this field is required"]}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <Button color="primary" variant="contained" type="submit">
-                <Icon>send</Icon>
-                <span className="pl-2 capitalize">Submit</span>
-              </Button>
-            </Grid>
-          </Grid>
-        </ValidatorForm>
-        <br /><br />
-        <Divider/>
+      {this.state.showClientEditor ? (
+        <ClientEditor
+          toggleClientEditor={this.toggleClientEditor}
+        />
+      ) : (
+        <ClientViewer toggleClientEditor={this.toggleClientEditor} />
+      )}
+    </Card>
+    </div>
+      <div className="m-sm-30">
+        <Card className="px-6 pt-2 pb-4">
         <br /><br />
         <Grid container spacing={2}>
           <Grid item xs={12} lg={10} md={10}>
@@ -287,9 +188,9 @@ class SimpleForm extends Component {
               ))}
             </TableBody>
           </Table>
-      </div>
       </Card>
       </div>
+      </React.Fragment>
     );
   }
 }
