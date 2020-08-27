@@ -15,8 +15,8 @@ const formsRoutes = [
     component: React.lazy(() => import("./UploadForm"))
   },
   {
-    path: "/application/:id/trv",
-    component: React.lazy(() => import("./WizardForm")),
+    path: "/application/:id/trv/",
+    component: React.lazy(() => import("./UserForm")),
   },
   {
     path: "/application/:id",

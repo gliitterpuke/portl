@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import { Select, RadioGroup } from 'formik-material-ui'
@@ -20,8 +20,10 @@ import * as yup from 'yup';
 import {
     Autocomplete,
     AutocompleteRenderInputParams,
-  } from 'formik-material-ui-lab';
-  
+} from 'formik-material-ui-lab';
+import { getApplicationById } from "../forms/FormsRoutes";
+import { SimpleCard } from "matx";
+
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
@@ -29,9 +31,41 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
+  PersonalDetails_ServiceIn_ServiceIn: yup.string()
+    .required('Required'),
+  PersonalDetails_VisaType_VisaType: yup.string()
+    .required('Required'),
+  PersonalDetails_Name_GivenName: yup.string()
+    .required('First Name is required')
+    .max(20),
+  PersonalDetails_Name_FamilyName: yup.string()
+    .required('Last Name is required')
+    .max(20),
+  PersonalDetails_AliasName_AliasNameIndicator: yup.string()
+    .required('Required'),
+  PersonalDetails_Sex_Sex: yup.string()
+    .required('Gender required'),
+  PersonalDetails_DOBYear: yup.number()
+    .typeError('Must be between 1900-2020')
+    .min(1900).max(2020)
+    .required('Year required'),
+  PersonalDetails_DOBMonth: yup.number()
+    .typeError('Must be a numeric month')
+    .min(1).max(12)
+    .required('Month required'),
+  PersonalDetails_DOBDay: yup.number()
+    .typeError('Must be a day of the month')
+    .min(1).max(31)
+    .required('Day required'),
+  PersonalDetails_PlaceBirthCity: yup.string()
+    .required('City/Town is required'),
+  PersonalDetails_PlaceBirthCountry: yup.string()
+    .required('Country of birth required'),
+  PersonalDetails_Citizenship_Citizenship: yup.string()
+    .required('Required'),
 });
 
-export const Yi = ({ formData, setFormData, nextStep }) => {
+export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
   const classes = useStyles();
 
   return (
@@ -40,25 +74,12 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
         initialValues={formData}
         onSubmit={values => {
           setFormData(values);
-          const tester= localStorageService.getItem("auth_user")
-          const application_id = tester.applications_as_client[0].id
-          const auth = {
-            headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
-          }
-          axios.post("https://portl-dev.herokuapp.com/api/v1/forms/trv/" + application_id, formData, auth)
-            .then(result => { 
-            console.log(result.data)
-            return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", result.data, auth)
-            .then((response) => {
-              return response;
-            });
-          })
           nextStep();
         }}
         validationSchema={validationSchema}
       >
         {({ errors, touched }) => (
-
+      <SimpleCard>
       <Form>
         <Typography variant="h6" gutterBottom>
               Personal Information
@@ -227,6 +248,7 @@ export const Yi = ({ formData, setFormData, nextStep }) => {
             </Grid>
           </Grid>
         </Form>
+        </SimpleCard>
         )}
       </Formik>
     </>

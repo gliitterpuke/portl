@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Typography } from '@material-ui/core';
 import { List, ListItem, ListItemText } from '@material-ui/core/';
+import axios from "axios";
+import localStorageService from "../../services/localStorageService";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -10,7 +12,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const QueDing = ({ formData, prevStep, nextStep }) => {
+export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
   const classes = useStyles();
   const { 
     PersonalDetails_ServiceIn_ServiceIn, 
@@ -30,17 +32,21 @@ export const QueDing = ({ formData, prevStep, nextStep }) => {
  } = formData;
   const handleSubmit = (event) => {
     alert(JSON.stringify(formData));
-          fetch('http://localhost:8000/api/v1/forms/trv/4', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData),
-        }).then(response => response.json())
-        .then(response => {
-        
-            console.log(response)
-        });
+    let user = localStorageService.getItem("auth_user")
+    const auth = {
+      headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
+    }
+    //axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
+    axios.post("https://portl-dev.herokuapp.com/api/v1/forms/trv/" + currentApp, formData, auth)
+      .then(result => { 
+      //console.log(currentApp)
+      return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", result.data, auth)
+      .then((response) => {
+        user.client_profile.applications.push(response.data)
+        localStorageService.setItem("auth_user", user)
+        return response;
+      });
+    })
 
   event.preventDefault();
 }

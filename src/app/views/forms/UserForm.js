@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Yi } from './Yi'; // Personal Info
 import { Er } from './Er'; // Countries
 import { San } from './San' // Marital
@@ -11,8 +11,9 @@ import { Jiu } from './Jiu' // Education
 import { Shi } from './Shi' // Background
 import { QueDing } from './QueDing';
 import { Success } from './Success';
+import { withRouter } from "react-router-dom";
 
-export const UserForm = () => {
+export const UserForm = (props) => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
 PersonalDetails_ServiceIn_ServiceIn: "English",
@@ -192,6 +193,7 @@ GovPosition_Choice: "No"
     case 1:
       return (
         <Yi
+          currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
           nextStep={nextStep}
@@ -200,6 +202,7 @@ GovPosition_Choice: "No"
     case 2:
         return (
           <Er
+            currentApp = {props.location.state}
             formData={formData}
             setFormData={setFormData}
             nextStep={nextStep}
@@ -209,6 +212,7 @@ GovPosition_Choice: "No"
     case 3:
       return (
         <San
+          currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
           nextStep={nextStep}
@@ -218,6 +222,7 @@ GovPosition_Choice: "No"
     case 4:
       return (
         <Si
+          currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
           nextStep={nextStep}
@@ -227,6 +232,7 @@ GovPosition_Choice: "No"
     case 5:
       return (
         <Wu
+          currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
           nextStep={nextStep}
@@ -236,6 +242,7 @@ GovPosition_Choice: "No"
     case 6:
       return (
         <Liu
+          currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
           nextStep={nextStep}
@@ -245,6 +252,7 @@ GovPosition_Choice: "No"
     case 7:
       return (
         <Qi
+          currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
           nextStep={nextStep}
@@ -254,6 +262,7 @@ GovPosition_Choice: "No"
     case 8:
       return (
         <Ba
+          currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
           nextStep={nextStep}
@@ -263,6 +272,7 @@ GovPosition_Choice: "No"
     case 9:
       return (
         <Jiu
+          currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
           nextStep={nextStep}
@@ -272,6 +282,7 @@ GovPosition_Choice: "No"
     case 10:
       return (
         <Shi
+          currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
           nextStep={nextStep}
@@ -280,11 +291,11 @@ GovPosition_Choice: "No"
       );
     case 11:
       return (
-        <QueDing formData={formData} nextStep={nextStep} prevStep={prevStep} />
+        <QueDing currentApp = {props.location.state} formData={formData} nextStep={nextStep} prevStep={prevStep} />
       );
     default:
       return <Success />;
   }
 };
 
-export default UserForm;
+export default withRouter(UserForm);

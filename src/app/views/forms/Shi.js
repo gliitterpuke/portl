@@ -13,7 +13,8 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-
+import axios from "axios";
+import localStorageService from "../../services/localStorageService";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
   
@@ -40,28 +41,32 @@ const validationSchema = yup.object({
   .required('Required'),
 });
 
-export const Shi = ({ formData, setFormData, nextStep, prevStep }) => {
+export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp }) => {
   const classes = useStyles();
   const [setDirection] = useState('back');
 
   return (
     <>
       <Formik
-        initialValues={formData}
+        initialValues={formData, currentApp}
         onSubmit={values => {
           setFormData(values);
           alert(JSON.stringify(values));
-          fetch('http://localhost:8000/api/v1/forms/trv/4', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(values),
-        }).then(response => response.json())
-        .then(response => {
-        
-            console.log(response)
-        });
+          let user = localStorageService.getItem("auth_user")
+          const auth = {
+            headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
+          }
+          //axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
+          axios.post("https://portl-dev.herokuapp.com/api/v1/forms/trv/" + currentApp, formData, auth)
+            .then(result => { 
+            //console.log(currentApp)
+            return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", result.data, auth)
+            .then((response) => {
+              user.client_profile.applications.push(response.data)
+              localStorageService.setItem("auth_user", user)
+              return response;
+            });
+          })
           nextStep();
         }}
         validationSchema={validationSchema}

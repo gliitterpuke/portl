@@ -226,12 +226,12 @@ class HigherOrderComponent extends Component {
           </Typography>
           <div>
             <br/>
-          <Button
-            size="medium" variant="contained" color="primary"
-            onClick={() => this.props.history.push({ pathname: `/application/${this.state.id}/trv`, state: user.client_profile.applications })}
-          >
-            TRV
-          </Button>
+          <Link to={{ pathname: `${this.state.id}/trv/`, state: this.state.id }}>
+            <Button
+              size="medium" variant="contained" color="primary">
+              TRV
+            </Button>
+          </Link>
           </div>
         </SimpleCard>
       </div>
