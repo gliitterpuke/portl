@@ -1,7 +1,7 @@
 import axios from "axios";
 import localStorageService from "./localStorageService";
-import qs from "qs"
-
+import qs from "qs";
+import history from "history.js";
 class JwtAuthService {
 
   // Dummy user object just for the demo
@@ -53,8 +53,14 @@ class JwtAuthService {
       // Save token
       this.setUser(response.data);
       return response;
-    });
-  };
+    })
+    .catch(error => {
+     const {status} = error.response;
+      if(status === 401) {
+        history.push('/sessions/signin')
+    };
+  })
+}
 
   logout = () => {
     this.setSession(null);
