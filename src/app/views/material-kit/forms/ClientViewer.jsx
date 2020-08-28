@@ -12,7 +12,6 @@ const auth = {
   headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
 }
 const user = localStorageService.getItem("auth_user")
-const client = user.client_profile.id
 
 class ClientViewer extends Component {
   state = {};

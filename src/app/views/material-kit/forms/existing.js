@@ -3,11 +3,9 @@ import localStorageService from "../../../services/localStorageService"
 const auth = {
   headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
 }
-const tester = localStorageService.getItem("auth_user")
+const user = localStorageService.getItem("auth_user")
+//const client = user.client_profile.id
 
-export const getAllApps = () => {
-    return axios.get("https://portl-dev.herokuapp.com/api/v1/applications/", auth)
-}
 export const getApplicationById = (id) => {
     return axios.get("https://portl-dev.herokuapp.com/api/v1/applications/" + id, auth)
 }
@@ -18,5 +16,8 @@ export const updateInvoice = (invoice) => {
     return axios.post("/api/invoices/update", invoice)
 }
 export const addInvoice = (invoice) => {
+    return axios.post("/api/invoices/add", invoice)
+}
+export const addProfile = (invoice) => {
     return axios.post("/api/invoices/add", invoice)
 }

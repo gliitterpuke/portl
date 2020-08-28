@@ -23,8 +23,8 @@ import localStorageService from "../../services/localStorageService";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { getAllFiles, deleteFile, getFileById } from "./AppActions";
-import { getApplicationById } from "../material-kit/forms/existing";
+import { getFileById } from "./AppActions";
+import { parseJSON } from "date-fns";
 import { Link } from "react-router-dom";
 import { ConfirmationDialog } from "matx";
 import { SimpleCard } from "matx";
@@ -91,7 +91,10 @@ class HigherOrderComponent extends Component {
 
   handleConfirmationResponse = () => {
     let { efile } = this.state;
-    deleteFile(efile).then(res => {
+    let data = { filename: "DELETED", application_id: null }
+    let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
+    let blobstate = state.blobs.find (blobs => blobs.id === this.props.location.state.id)
+    axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.props.location.state.id, data).then(res => {
       this.setState({
         fileList: res.data,
         shouldShowConfirmationDialog: false
@@ -603,10 +606,10 @@ class HigherOrderComponent extends Component {
             <TableHead>
               <TableRow>
                 <TableCell className="pl-sm-24">Name</TableCell>
-                <TableCell className="px-0">Upload</TableCell>
-                <TableCell className="px-0">Update</TableCell>
-                <TableCell className="px-0">Application</TableCell>
-                <TableCell className="px-0">Tag</TableCell>
+                <TableCell className="px-0">Uploaded</TableCell>
+                <TableCell className="px-0">Updated</TableCell>
+                <TableCell className="px-0">Document</TableCell>
+                <TableCell className="px-0" width="150px">Edit/Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -616,13 +619,10 @@ class HigherOrderComponent extends Component {
                     {efile.filename}
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left">
-                    {efile.uploaded_at}
+                    {parseJSON(efile.uploaded_at).toString().replace(RegExp("GMT.*"), "")}
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left">
-                    {efile.updated_at}
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize">
-                    {efile.application_id}
+                    {parseJSON(efile.updated_at).toString().replace(RegExp("GMT.*"), "")}
                   </TableCell>
                   <TableCell className="pl-0 capitalize">
                     {efile.tag}

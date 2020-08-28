@@ -17,9 +17,8 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { ValidatorForm } from "react-material-ui-form-validator";
-import { Link } from "react-router-dom";
 import { getFileById } from "./AppActions";
-import { format } from "date-fns";
+import { parseJSON } from "date-fns";
 import { withRouter } from "react-router-dom";
 import axios from "axios"
 import localStorageService from "../../services/localStorageService"
@@ -132,10 +131,12 @@ class FileViewer extends Component {
     .then((response) => {
       return axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.props.location.state.id, data, auth)
       .then((response) => {
-        let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
+        let state = user.client_profile.applications.find (application => application.id === this.props.location.state.application_id);
         let blobstate = state.blobs.find (blobs => blobs.id === this.props.location.state.id)
-        blobstate.push(response.data)
+        let newname = state.blobs.find (blobs => blobs.filename === this.props.location.state.filename)
+        //blobstate.push(response.data)
         localStorageService.setItem("auth_user", user)
+        console.log(newname)
         return response;
       });
     });
@@ -178,9 +179,9 @@ class FileViewer extends Component {
               <TableHead>
                 <TableRow>
                   <TableCell className="pl-sm-24">Name</TableCell>
-                  <TableCell className="px-0">Uploaded On</TableCell>
-                  <TableCell className="px-0">Updated On</TableCell>
-                  <TableCell className="px-0">Tags</TableCell>
+                  <TableCell className="px-0">Uploaded</TableCell>
+                  <TableCell className="px-0">Updated</TableCell>
+                  <TableCell className="px-0">Document</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -189,10 +190,10 @@ class FileViewer extends Component {
                         {filename}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {uploaded_at}
+                        {parseJSON(uploaded_at).toString().replace(RegExp("GMT.*"), "")}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {updated_at}
+                        {parseJSON(updated_at).toString().replace(RegExp("GMT.*"), "")}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
                         {tag}
@@ -242,6 +243,7 @@ class FileViewer extends Component {
 
             {files.map((item, index) => {
               let { file, uploading, error, } = item;
+              let { type, tag } = this.state
               return (
             <div className="px-4 py-4" key={file.name}>
               <Grid container spacing={2} direction="row">
@@ -249,23 +251,10 @@ class FileViewer extends Component {
                   {file.name}
                 </Grid>
                 <Grid item lg={3} md={3} sm={12} xs={12}>
-                  {file.type}
+                  {type}
                 </Grid>
                 <Grid item lg={3} md={3} sm={12} x={12}>
-{                  <Select fullWidth onClick={this.handleSelectChange} required="true">
-                    <MenuItem value="passport">Passport</MenuItem>                
-                    <MenuItem value="IMM5707">IMM5707</MenuItem>
-                    <MenuItem value="IMM5409">IMM5409</MenuItem>
-                    <MenuItem value="IMM5476">IMM5476</MenuItem>
-                    <MenuItem value="IMM5475">IMM5475</MenuItem>
-                    <MenuItem value="photo">Photos</MenuItem>
-                    <MenuItem value="financials">Proof of Financial Support</MenuItem>
-                    <MenuItem value="marriage">Marriage Documents</MenuItem>
-                    <MenuItem value="purpose">Purpose of Travel</MenuItem>
-                    <MenuItem value="immstatus">Current Immigration Status</MenuItem>
-                    <MenuItem value="custody">Custody Document/Letter of Authorization</MenuItem>
-                    <MenuItem value="other">Other</MenuItem>
-                  </Select>}
+                  {tag}
                 </Grid>
                 <Grid item lg={1} md={1} sm={12} xs={12}>
                   {error && <Icon color="error">error</Icon>}

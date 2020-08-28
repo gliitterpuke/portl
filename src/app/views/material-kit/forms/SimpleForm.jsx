@@ -19,7 +19,7 @@ import {
   Divider
 } from "@material-ui/core";
 import { SimpleCard } from "matx";
-import { parse } from "date-fns";
+import { parseJSON } from "date-fns";
 import localStorageService from "../../../services/localStorageService"
 
 const auth = {
@@ -145,13 +145,13 @@ class SimpleForm extends Component {
                     {application.id}
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left">
-                    {application.created_at}
+                    {parseJSON(application.created_at).toString().replace(RegExp("GMT.*"), "")}
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left">
-                    {application.updated_at}
+                    {parseJSON(application.updated_at).toString().replace(RegExp("GMT.*"), "")}
                   </TableCell>
                   <TableCell className="pl-0 capitalize">
-                    {application.status}
+                    {application.status.replace("CLIENT_ACTION_REQUIRED", "In Progress")}
                   </TableCell>
                   <TableCell className="pl-0">
                     <IconButton
