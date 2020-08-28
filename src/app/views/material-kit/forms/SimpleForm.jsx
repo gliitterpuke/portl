@@ -1,17 +1,13 @@
 import React, { Component } from "react";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import axios from "axios"
 import { Link } from "react-router-dom";
-import { deleteFile, getApplicationById } from "./existing";
+import { deleteFile } from "./existing";
 import ClientViewer from "./ClientViewer";
 import ClientEditor from "./ClientEditor";
 import {
   Button,
   Icon,
   Grid,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
   Card,
   Typography,
   Table,
@@ -23,37 +19,27 @@ import {
   Divider
 } from "@material-ui/core";
 import { SimpleCard } from "matx";
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import "date-fns";
 import { parse } from "date-fns";
 import localStorageService from "../../../services/localStorageService"
 
+const auth = {
+  headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
+}
+let user = localStorageService.getItem("auth_user")
 class SimpleForm extends Component {
   state = {
     appList: [],
-    first_name: "",
-    middle_name: "",
-    last_name: "",
-    birth_date: "",
-    citizenship: "",
-    sex: "",
-    relationship_to_owner: "",
-    owner_id: "1",
   };
 
   componentDidMount() {
-    const auth = {
-      headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
-    }
     axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth).then(res => this.setState({ appList: res.data.client_profile.applications }));
     this.setState({ showClientEditor: false });
   }
 
   handeViewClick = applicationId => {
-    let user = localStorageService.getItem("auth_user")
-    this.props.history.push({pathname: `/application/${applicationId}`, state: user.client_profile.applications });
-    getApplicationById(applicationId).then(res => console.log(this.state.appList));
-  };
+    let state = user.client_profile.applications.find (application => application.id === applicationId);
+    this.props.history.push({pathname: `/application/${applicationId}`, state: state });
+  }
 
   handeDeleteClick = application => {
     this.setState({ shouldShowConfirmationDialog: true, application });
@@ -74,10 +60,6 @@ class SimpleForm extends Component {
   };
 
   handleSubmit = event => {
-  const user = localStorageService.getItem("auth_user")
-  const auth = {
-    headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
-  }
   const data = {
     first_name: this.state.first_name,
     middle_name: this.state.middle_name,
@@ -111,7 +93,6 @@ class SimpleForm extends Component {
   };
 
   render() {
-    let user = localStorageService.getItem("auth_user")
     let {
       appList
     } = this.state;

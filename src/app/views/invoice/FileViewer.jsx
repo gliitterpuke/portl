@@ -130,10 +130,11 @@ class FileViewer extends Component {
 
     return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data'} })
     .then((response) => {
-      return axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.state.id, data, auth)
+      return axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.props.location.state.id, data, auth)
       .then((response) => {
-        // console.log(this.props.location.state)
-        this.props.location.state.push(response.data)
+        let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
+        let blobstate = state.blobs.find (blobs => blobs.id === this.props.location.state.id)
+        blobstate.push(response.data)
         localStorageService.setItem("auth_user", user)
         return response;
       });

@@ -31,6 +31,11 @@ import { SimpleCard } from "matx";
 import { ValidatorForm } from "react-material-ui-form-validator";
 import { withStyles } from "@material-ui/styles"
 
+const auth = {
+  headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
+}
+let user = localStorageService.getItem("auth_user")
+
 const styles = theme => ({
   root: {
     width: '100%',
@@ -66,17 +71,18 @@ class HigherOrderComponent extends Component {
     blobs: []
   };
   componentDidMount() {
-    getApplicationById(this.props.match.params.id).then(res => {
-      this.setState({ ...res.data });
+    return axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth).then(res => {
+      this.setState({ ...res.data })
+      console.log(this.props.location.state)
     });
-    getAllFiles().then(res => this.setState({ fileList: res.data }))
     
     }
 
   handeViewClick = fileId => {
-    let user = localStorageService.getItem("auth_user")
-    this.props.history.push({ pathname: `${this.state.id}/file/${fileId}`, state: user.client_profile.applications });
-    getFileById(fileId).then(res => console.log(this.state));
+    let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
+    let blobstate = state.blobs.find (blobs => blobs.id === fileId)
+    this.props.history.push({ pathname: `${state.id}/file/${fileId}`, state: blobstate });
+    getFileById(fileId).then(res => console.log(blobstate));
   };
   // this.props.location.state.some
   handeDeleteClick = efile => {
@@ -162,12 +168,8 @@ class HigherOrderComponent extends Component {
 
   uploadSingleFile = index => {
     let allFiles = [...this.state.files];
-    let file = this.state.files[0];
-    const auth = {
-      headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
-    }
-    let user = localStorageService.getItem("auth_user")
-    const appid = this.state.id
+    let file = this.state.files[index];
+    const appid = this.props.location.state.id
     const tags = this.state.result
     const filetype = file.file.type.match(/[^\/]+$/)[0]
     const key = user.id + "/" + appid + "/" + tags + "." + filetype
@@ -202,10 +204,11 @@ class HigherOrderComponent extends Component {
       console.log(appid)
       return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data, auth)
       .then((response) => {
-        this.state.blobs.push(response.data)
-        localStorageService.setItem("auth_user", user)
-        console.log(user)
-        return response;
+        let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
+          state.blobs.push(response.data)
+          localStorageService.setItem("auth_user", user) 
+          console.log(user)
+          return response;
       });
     });
   })
@@ -214,9 +217,10 @@ class HigherOrderComponent extends Component {
 
   render() {
     const { classes } = this.props;
-    let { fileList, filename, dragClass, files, type, tag, tags, status, blobs} = this.state;
+    let { dragClass, files } = this.state;
     let isEmpty = files.length === 0;
-    let user = localStorageService.getItem("auth_user")
+    let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
+
     return (
       <React.Fragment>
       <div className="upload-form m-sm-30">
@@ -226,7 +230,7 @@ class HigherOrderComponent extends Component {
           </Typography>
           <div>
             <br/>
-          <Link to={{ pathname: `${this.state.id}/trv/`, state: this.state.id }}>
+          <Link to={{ pathname: `${this.props.location.state.id}/trv/`, state: state }}>
             <Button
               size="medium" variant="contained" color="primary">
               TRV
@@ -606,7 +610,7 @@ class HigherOrderComponent extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.state.blobs.map((efile) => (
+              {this.props.location.state.blobs.map((efile) => (
                 <TableRow key={efile.id}>
                   <TableCell className="pl-sm-24 capitalize" align="left">
                     {efile.filename}

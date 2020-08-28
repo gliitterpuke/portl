@@ -15,7 +15,10 @@ const invoiceRoutes = [
   path: "/application/:id/file/:id",
   component: React.lazy(() => import("./FileDetails.jsx")),
 },
-
+{
+  path: "/invoice/:id",
+  component: React.lazy(() => import("./InvoiceDetails"))
+},
 ];
 
 export default invoiceRoutes;
