@@ -4,7 +4,7 @@ export const navigations = [
   {
     name: "Home",
     path: "/profile",
-    icon: "dashboard",
+    icon: "house",
   },
   {
     name: "Chat",

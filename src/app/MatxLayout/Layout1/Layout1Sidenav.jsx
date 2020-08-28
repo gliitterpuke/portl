@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { Switch, Icon, MenuItem, Tooltip, IconButton } from "@material-ui/core";
+import { Switch, Icon, MenuItem, Tooltip, IconButton, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import { connect } from "react-redux";
@@ -104,54 +104,11 @@ class Layout1Sidenav extends Component {
     let { user } = this.props;
     return (
       <div className="sidenav__user">
-        <div className="username-photo">
-          <img src={user.photoURL} alt="user" />
-        </div>
         <div className="ml-4">
           <span className="username">
             {/* <Icon>lock</Icon> */}
-            {user.displayName}
+            {user.first_name}
           </span>
-          <div className="user__menu">
-            <MatxMenu
-              menuButton={
-                <Tooltip title="Settings">
-                  <IconButtonWhite
-                    aria-label="Delete"
-                    className=""
-                    size="small"
-                  >
-                    <IconSmall> settings </IconSmall>
-                  </IconButtonWhite>
-                </Tooltip>
-              }
-            >
-              <MenuItem className="flex items-center">
-                <Icon> home </Icon>
-                <span className="pl-4"> Home </span>
-              </MenuItem>
-              <MenuItem className="flex items-center">
-                <Icon> settings </Icon>
-                <span className="pl-4"> Account Setting </span>
-              </MenuItem>
-            </MatxMenu>
-
-            <Tooltip title="Profile">
-              <IconButtonWhite aria-label="Delete" className="" size="small">
-                <IconSmall>person</IconSmall>
-              </IconButtonWhite>
-            </Tooltip>
-            <Tooltip title="Sign out">
-              <IconButtonWhite
-                aria-label="Delete"
-                className=""
-                size="small"
-                onClick={this.handleSignOut}
-              >
-                <IconSmall>exit_to_app</IconSmall>
-              </IconButtonWhite>
-            </Tooltip>
-          </div>
         </div>
       </div>
     );

@@ -26,7 +26,7 @@ export const MatxLayoutSettings = {
 
   secondarySidebar: {
     show: false,
-    open: true,
+    open: false,
     theme: "slatedark3" // View all valid theme colors inside MatxTheme/themeColors.js
   },
   // Footer options

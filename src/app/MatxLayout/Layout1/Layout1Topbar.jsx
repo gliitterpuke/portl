@@ -1,16 +1,12 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { Icon, IconButton, MenuItem } from "@material-ui/core";
+import { Icon, IconButton, MenuItem, Tooltip } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { setLayoutSettings } from "app/redux/actions/LayoutActions";
 import { logoutUser } from "app/redux/actions/UserActions";
 import PropTypes from "prop-types";
-import { MatxMenu, MatxSearchBox } from "matx";
 import { isMdScreen, classList } from "utils";
-import NotificationBar from "../SharedCompoents/NotificationBar";
-import { Link } from "react-router-dom";
-import ShoppingCart from "../SharedCompoents/ShoppingCart";
 
 const styles = theme => ({
   topbar: {
@@ -30,6 +26,18 @@ const styles = theme => ({
   }
 });
 
+const IconButtonWhite = withStyles(theme => ({
+  root: {
+    backgroundColor: "transparent",
+    padding: "5px"
+  }
+}))(IconButton);
+
+const IconSmall = withStyles(() => ({
+  root: {
+    fontSize: "1rem"
+  }
+}))(Icon);
 class Layout1Topbar extends Component {
   state = {};
 
@@ -79,64 +87,19 @@ class Layout1Topbar extends Component {
               >
                 <Icon>menu</Icon>
               </IconButton>
-
-              <div className="hide-on-mobile">
-                <IconButton>
-                  <Icon>mail_outline</Icon>
-                </IconButton>
-
-                <IconButton>
-                  <Icon>web_asset</Icon>
-                </IconButton>
-
-                <IconButton>
-                  <Icon>star_outline</Icon>
-                </IconButton>
-              </div>
             </div>
             <div className="flex items-center">
-              <MatxSearchBox />
-
-              <NotificationBar />
-
-              <ShoppingCart></ShoppingCart>
-
-              <MatxMenu
-                menuButton={
-                  <img
-                    className="mx-2 align-middle circular-image-small cursor-pointer"
-                    src="/assets/images/face-6.jpg"
-                    alt="user"
-                  />
-                }
-              >
-                <MenuItem>
-                  <Link className={classes.menuItem} to="/">
-                    <Icon> home </Icon>
-                    <span className="pl-4"> Home </span>
-                  </Link>
-                </MenuItem>
-                <MenuItem>
-                  {/* <Link
-                    className={classes.menuItem}
-                    to="/page-layouts/user-profile"
-                  > */}
-                  <Icon> person </Icon>
-                  <span className="pl-4"> Profile </span>
-                  {/* </Link> */}
-                </MenuItem>
-                <MenuItem className={classes.menuItem}>
-                  <Icon> settings </Icon>
-                  <span className="pl-4"> Settings </span>
-                </MenuItem>
-                <MenuItem
+              <Tooltip title="Sign out">
+                <IconButtonWhite
+                  aria-label="Delete"
+                  label ="Logout"
+                  className=""
+                  size="small"
                   onClick={this.handleSignOut}
-                  className={classes.menuItem}
                 >
-                  <Icon> power_settings_new </Icon>
-                  <span className="pl-4"> Logout </span>
-                </MenuItem>
-              </MatxMenu>
+                  <IconSmall>exit_to_app</IconSmall>
+                </IconButtonWhite>
+              </Tooltip>
             </div>
           </div>
         </div>
