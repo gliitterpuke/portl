@@ -7,7 +7,6 @@ import materialRoutes from "./views/material-kit/MaterialRoutes";
 import invoiceRoutes from "./views/invoice/InvoioceRoutes";
 import formsRoutes from "./views/forms/FormsRoutes";
 import chatRoutes from "./views/chat-box/ChatRoutes";
-import pageLayoutRoutes from "./views/page-layouts/PageLayoutRoutees";
 import ListRoute from "./views/list/ListRoute";
 
 
@@ -33,7 +32,6 @@ const routes = [
   ...invoiceRoutes,
   ...formsRoutes,
   ...chatRoutes,
-  ...pageLayoutRoutes,
   ...otherRoutes,
   ...ListRoute,
   ...redirectRoute,
