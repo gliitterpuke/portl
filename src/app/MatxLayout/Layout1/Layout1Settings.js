@@ -1,6 +1,7 @@
 const Layout1Settings = {
   leftSidebar: {
     show: true,
+    open: false,
     mode: 'full', // full, close, compact, mobile,
     theme: 'slateDark3', // View all valid theme colors inside MatxTheme/themeColors.js
     // bgOpacity: .96, // 0 ~ 1
