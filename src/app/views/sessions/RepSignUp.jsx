@@ -44,6 +44,7 @@ class RepSignUp extends Component {
         owner_id: result.data.id
       }
     axios.post("https://portl-dev.herokuapp.com/api/v1/professional_profiles", professional)
+    this.props.history.push(`/session/signin`)
       console.log(result.data)
       return result;
     });
