@@ -40,7 +40,7 @@ class RepSignUp extends Component {
         company: "",
         occupation: "",
         sex: "",
-        max_processing_budget: 20,
+        max_open_apps: 20,
         owner_id: result.data.id
       }
     axios.post("https://portl-dev.herokuapp.com/api/v1/professional_profiles", professional)

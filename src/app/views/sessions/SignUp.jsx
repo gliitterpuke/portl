@@ -35,12 +35,12 @@ class SignUp extends Component {
     axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
     .then(result => { 
     const client = {
-        first_name: "First Name",
+        first_name: "",
         middle_name: "",
-        last_name: "Last Name",
-        birth_date: "1900-01-01",
-        citizenship: "Citizenship",
-        sex: "Sex",
+        last_name: "",
+        birth_date: "2000-01-01",
+        citizenship: "",
+        sex: "",
         owner_id: result.data.id
       }
     axios.post("https://portl-dev.herokuapp.com/api/v1/client_profiles", client)
