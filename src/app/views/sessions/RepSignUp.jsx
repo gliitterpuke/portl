@@ -34,6 +34,7 @@ class RepSignUp extends Component {
     }
     axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
     .then(result => { 
+      alert('Sign up successful - please log in to continue')
     const professional = {
         first_name: "",
         last_name: "",
@@ -47,7 +48,13 @@ class RepSignUp extends Component {
     this.props.history.push(`/session/signin`)
       console.log(result.data)
       return result;
-    });
+    })
+    .catch(error => {
+      const {status} = error.response;
+       if(status === 400) {
+         alert('Email is already registered')
+     };
+   });
   };
 
   render() {

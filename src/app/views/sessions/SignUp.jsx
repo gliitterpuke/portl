@@ -11,6 +11,7 @@ import { ValidatorForm, TextValidator, SelectValidator } from "react-material-ui
 import { connect } from "react-redux";
 import axios from "axios";
 import localStorageService from "../../services/localStorageService";
+import history from "history.js";
 
 class SignUp extends Component {
   state = {
@@ -26,6 +27,7 @@ class SignUp extends Component {
     });
   };
 
+
   handleFormSubmit = event => {
     const signup = {
       role: this.state.role,
@@ -34,6 +36,7 @@ class SignUp extends Component {
     }
     axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
     .then(result => { 
+      alert('Sign up successful - please log in to continue')
     const client = {
         first_name: "First Name",
         middle_name: "",
@@ -47,7 +50,13 @@ class SignUp extends Component {
     this.props.history.push(`/session/signin`)
       console.log(result.data)
       return result;
-    });
+    })
+    .catch(error => {
+      const {status} = error.response;
+       if(status === 400) {
+         alert('Email is already registered')
+     };
+   });
   };
 
   render() {
