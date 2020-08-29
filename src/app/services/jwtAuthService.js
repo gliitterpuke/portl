@@ -54,12 +54,12 @@ class JwtAuthService {
       this.setUser(response.data);
       return response;
     })
-    .catch(error => {
-     const {status} = error.response;
-      if(status === 401) {
-        history.push('/sessions/signin')
-    };
-  })
+     // .catch(error => {
+     // const {status} = error.response;
+      //  if(status === 401) {
+       //   history.push('/sessions/signin')
+     // };
+    //})
 }
 
   logout = () => {

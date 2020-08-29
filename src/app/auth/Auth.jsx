@@ -12,12 +12,18 @@ import history from "history.js";
 const checkJwtAuth = async setUserData => {
   // You need to send token to your server to check token is valid
   // modify loginWithToken method in jwtService
-  let user = await jwtAuthService.loginWithToken();
-  if (user) setUserData(user);
-  else
-    history.push({
-      pathname: "/session/signin"
-    });
+  let user = await jwtAuthService.loginWithToken()      
+  .then((response) => {
+    this.setUser(response.data);
+    return response;
+  })
+    .catch(error => {
+    const {status} = error.response;
+      if(status === 401) {
+        history.push('/session/signin')
+    };
+  })
+
   return user;
 };
 

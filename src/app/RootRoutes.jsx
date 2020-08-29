@@ -26,6 +26,13 @@ const errorRoute = [
   }
 ];
 
+const signinRoute = [
+  {
+    path: "/session/signin",
+    component: () => <Redirect to="/session/signin" />
+  }
+];
+
 const routes = [
   ...sessionRoutes,
   ...materialRoutes,
@@ -35,7 +42,8 @@ const routes = [
   ...otherRoutes,
   ...ListRoute,
   ...redirectRoute,
-  ...errorRoute
+  ...errorRoute,
+  ...signinRoute
 ];
 
 export default routes;
