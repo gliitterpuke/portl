@@ -14,7 +14,7 @@ import axios from "axios";
 import localStorageService from "../../../services/localStorageService"
 
 let user = localStorageService.getItem("auth_user")
-const client = user.client_profile.id
+
 const auth = {
   headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
 };
@@ -40,6 +40,7 @@ class ClientEditor extends Component {
     this.setState({ loading: true });
     let tempState = this.state;
     delete tempState.loading;
+    const client = user.client_profile.id
     return axios.put("https://portl-dev.herokuapp.com/api/v1/client_profiles/" + client, this.state, auth).then(() => {
     // localStorageService.setItem("auth_user", response.data)
     this.setState({ loading: false });
