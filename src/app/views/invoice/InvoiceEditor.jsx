@@ -117,7 +117,7 @@ class InvoiceEditor extends Component {
     if (this.props.isNewInvoice)
       addInvoice(tempState).then(() => {
         this.setState({ loading: false });
-        this.props.history.push(`/invoice/${this.state.id}`);
+        this.props.history.push(`/rawr/${this.state.id}`);
         this.props.toggleInvoiceEditor();
       });
     else
