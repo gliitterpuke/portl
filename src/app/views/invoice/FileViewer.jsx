@@ -80,8 +80,8 @@ class FileViewer extends Component {
     const mime_type = this.state.mime_type
     const filetype = mime_type.match(/[^\/]+$/)[0]
     const key = user.id + "/" + appid + "/" + tags + "." + filetype
-    //axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
-    axios.get("https://portl-dev.herokuapp.com/api/v1/sign_s3_get/", { params: { bucket: "portldump", key: key }}, auth)
+    //axios.get("http://localhost:8000/api/v1/users/me/", auth)
+    axios.get("http://localhost:8000/api/v1/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
     .then(result => { 
     const win = window.open(`${result.data}`);
     win.focus();
@@ -107,7 +107,7 @@ class FileViewer extends Component {
     this.setState({
       files: [...allFiles]
     });
-    axios.get("https://portl-dev.herokuapp.com/api/v1/sign_s3_post/", { params: { key: key, mime_type: mime_type }}, auth)
+    axios.get("http://localhost:8000/api/v1/sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
     .then(result => { 
     console.log(result)
     const formData = new FormData();
@@ -129,7 +129,7 @@ class FileViewer extends Component {
 
     return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data'} })
     .then((response) => {
-      return axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.props.location.state.id, data, auth)
+      return axios.put("http://localhost:8000/api/v1/blobs/" + this.props.location.state.id, data, auth)
       .then((response) => {
         let state = user.client_profile.applications.find (application => application.id === this.props.location.state.application_id);
         let blobstate = state.blobs.find (blobs => blobs.id === this.props.location.state.id)

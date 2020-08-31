@@ -21,7 +21,6 @@ import {
 import { SimpleCard } from "matx";
 import { parseJSON } from "date-fns";
 import localStorageService from "../../../services/localStorageService"
-
 const auth = {
   headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
 }
@@ -32,7 +31,7 @@ class SimpleForm extends Component {
   };
 
   componentDidMount() {
-    axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth).then(res => this.setState({ appList: res.data.client_profile.applications }));
+    axios.get("http://localhost:8000/api/v1/users/me/", auth).then(res => this.setState({ appList: res.data.client_profile.applications }));
     this.setState({ showClientEditor: false });
   }
 
@@ -58,23 +57,6 @@ class SimpleForm extends Component {
   handleDialogClose = () => {
     this.setState({ shouldShowConfirmationDialog: false });
   };
-
-  handleSubmit = event => {
-  const data = {
-    first_name: this.state.first_name,
-    middle_name: this.state.middle_name,
-    last_name: this.state.last_name,
-    birth_date: this.state.birth_date,
-    citizenship: this.state.citizenship,
-    sex: this.state.sex,
-    relationship_to_owner: "1",
-    owner_id: user.id
-  };
-  axios.post("https://portl-dev.herokuapp.com/api/v1/client_profile/", data, auth).then(result => { 
-    console.log(user)
-    return result
-   })
-  }
 
   handleChange = event => {
     event.persist();

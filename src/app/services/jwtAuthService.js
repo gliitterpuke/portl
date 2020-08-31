@@ -15,6 +15,7 @@ class JwtAuthService {
   // Your server will return user object & a Token
   // User should have role property
   // You can define roles in app/auth/authRoles.js
+  
   loginWithEmailAndPassword = (username, password) => {
     const requestBody = {
         username: username,
@@ -25,18 +26,26 @@ class JwtAuthService {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }
+    function sleep (time) {
+      return new Promise((resolve) => setTimeout(resolve, time));
+    }
     return axios.post(
-        'https://portl-dev.herokuapp.com/token/',
+        'http://localhost:8000/token/',
         qs.stringify(requestBody),
         config
     ).then((response) => {
-      // Login successful
-      // Save token
+      console.log(response)
       this.setSession(response.data.access_token);
-      this.loginWithToken()
-      return response;
+//      return axios.get("http://localhost:8000/api/v1/users/me/", 
+//      {headers: {Authorization:"Bearer " + localStorage.getItem("access_token")}},
+//      )
+//    }).then(data => {
+      // Token is valid
+      this.setUser(response.data.data);
+      console.log(response.data.data)
     });
   };
+  
   // Save user to localstorage
   setUser = (user) => {    
     localStorageService.setItem('auth_user', user);
@@ -47,19 +56,18 @@ class JwtAuthService {
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
   }
-    return axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
+    function sleep (time) {
+      return new Promise((resolve) => setTimeout(resolve, time));
+    }
+      return axios.get("http://localhost:8000/api/v1/users/me/", auth)
     .then((response) => {
-      // Login successful
-      // Save token
-      this.setUser(response.data);
+      console.log(response)
+      this.setUser(response.data)
       return response;
     })
-     // .catch(error => {
-     // const {status} = error.response;
-      //  if(status === 401) {
-       //   history.push('/sessions/signin')
-     // };
-    //})
+     .catch(error => {
+      history.push('/session/signin')
+    });
 }
 
   logout = () => {

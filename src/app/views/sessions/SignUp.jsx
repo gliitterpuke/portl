@@ -30,33 +30,33 @@ class SignUp extends Component {
 
   handleFormSubmit = event => {
     const signup = {
-      role: this.state.role,
+      role: "client",
       email: this.state.email,
       password: this.state.password
     }
-    axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
+    axios.post("http://localhost:8000/api/v1/users/", signup)
     .then(result => { 
       alert('Sign up successful - please log in to continue')
     const client = {
         first_name: "First Name",
-        middle_name: "",
+        middle_name: "Middle Name",
         last_name: "Last Name",
         birth_date: "1900-01-01",
-        citizenship: "Citizenship",
         sex: "Sex",
-        owner_id: result.data.id
+        owner_id: result.data.id,
+        country_id: 1
       }
-    axios.post("https://portl-dev.herokuapp.com/api/v1/client_profiles", client)
+    axios.post("http://127.0.0.1:8000/api/v1/clients/", client)
     this.props.history.push(`/session/signin`)
       console.log(result.data)
       return result;
     })
-    .catch(error => {
-      const {status} = error.response;
-       if(status === 400) {
-         alert('Email is already registered')
-     };
-   });
+//    .catch(error => {
+//      const {status} = error.response;
+//       if(status === 400) {
+//         alert('Email is already registered')
+//     };
+//   });
   };
 
   render() {

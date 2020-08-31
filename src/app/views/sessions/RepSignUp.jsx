@@ -32,7 +32,7 @@ class RepSignUp extends Component {
       email: this.state.email,
       password: this.state.password
     }
-    axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
+    axios.post("http://localhost:8000/api/v1/users/", signup)
     .then(result => { 
       alert('Sign up successful - please log in to continue')
     const professional = {
@@ -41,10 +41,12 @@ class RepSignUp extends Component {
         company: "",
         occupation: "",
         sex: "",
-        max_open_apps: 20,
+        max_processing_budget: 200,
+        country_id: 1,
+        service_languages: [1],
         owner_id: result.data.id
       }
-    axios.post("https://portl-dev.herokuapp.com/api/v1/professional_profiles", professional)
+    axios.post("http://localhost:8000/api/v1/professionals", professional)
     this.props.history.push(`/session/signin`)
       console.log(result.data)
       return result;

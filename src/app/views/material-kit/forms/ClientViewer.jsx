@@ -14,10 +14,12 @@ const auth = {
 const user = localStorageService.getItem("auth_user")
 
 class ClientViewer extends Component {
-  state = {};
+  state = {
+    country_id: user.client_profile.citizen_of.name
+  };
 
   componentDidMount() {
-    return axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth).then(res => {
+    return axios.get("http://localhost:8000/api/v1/users/me/", auth).then(res => {
       this.setState({ ...res.data.client_profile });
     });
   }
@@ -28,7 +30,7 @@ class ClientViewer extends Component {
       middle_name,
       last_name,
       birth_date,
-      citizenship,
+      country_id,
       sex,
       relationship_to_owner,
       owner_id,
@@ -78,7 +80,7 @@ class ClientViewer extends Component {
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>Citizenship</strong>
                 </h5>
-                <p> {citizenship} </p>
+                <p> {country_id} </p>
               </Grid>
             </Grid>
             <div />

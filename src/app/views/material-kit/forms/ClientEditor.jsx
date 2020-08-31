@@ -11,26 +11,36 @@ import {
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
-import localStorageService from "../../../services/localStorageService"
+import localStorageService from "../../../services/localStorageService";
 
 let user = localStorageService.getItem("auth_user")
-
 const auth = {
   headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
 };
 
 class ClientEditor extends Component {
+  _isMounted = false;
   state = {
-    first_name: "",
-    middle_name: "",
-    last_name: "",
-    birth_date: "",
-    citizenship: "",
-    sex: "",
+    first_name: user.client_profile.first_name,
+    middle_name: user.client_profile.middle_name,
+    last_name: user.client_profile.last_name,
+    birth_date: user.client_profile.birth_date,
+    country_id: 1,
+    sex: user.client_profile.sex,
     owner_id: user.id,
+    client: user.client_profile.id,
     loading: false
   };
 
+  async componentDidMount() {
+    this._isMounted = true;
+    await axios.get("http://localhost:8000/api/v1/users/me/", auth).then(res => {
+      this.setState({ ...res.data.client_profile });
+    });
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
   handleChange = event => {
     event.persist();
     this.setState({ [event.target.name]: event.target.value });
@@ -40,8 +50,7 @@ class ClientEditor extends Component {
     this.setState({ loading: true });
     let tempState = this.state;
     delete tempState.loading;
-    const client = user.client_profile.id
-    return axios.put("https://portl-dev.herokuapp.com/api/v1/client_profiles/" + client, this.state, auth).then(() => {
+    return axios.put("http://localhost:8000/api/v1/clients/" + user.client_profile.id, this.state, auth).then(() => {
     // localStorageService.setItem("auth_user", response.data)
     this.setState({ loading: false });
     this.props.toggleClientEditor();
@@ -55,7 +64,7 @@ class ClientEditor extends Component {
       middle_name,
       last_name,
       birth_date,
-      citizenship,
+      country_id,
       sex,
       owner_id,
     } = this.state;
@@ -177,8 +186,8 @@ class ClientEditor extends Component {
                 label="Citizenship"
                 onChange={this.handleChange}
                 type="text"
-                name="citizenship"
-                value={citizenship}
+                name="country_id"
+                value={country_id}
                 errorMessages={["this field is required"]}
               />
             </Grid>

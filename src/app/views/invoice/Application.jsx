@@ -28,8 +28,10 @@ import { parseJSON } from "date-fns";
 import { Link } from "react-router-dom";
 import { ConfirmationDialog } from "matx";
 import { SimpleCard } from "matx";
-import { ValidatorForm } from "react-material-ui-form-validator";
+import { ValidatorForm, SelectValidator } from "react-material-ui-form-validator";
 import { withStyles } from "@material-ui/styles"
+import jwtAuthService from "../../services/jwtAuthService";
+import history from "../../../history"
 
 const auth = {
   headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
@@ -71,13 +73,26 @@ class HigherOrderComponent extends Component {
     blobs: []
   };
   componentDidMount() {
-    return axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth).then(res => {
+    return axios.get("http://localhost:8000/api/v1/users/me/", auth).then(res => {
       this.setState({ ...res.data })
       console.log(this.props.location.state)
     });
     
     }
-
+    checkJwtAuth = async setUserData => {
+      // You need to send token to your server to check token is valid
+      // modify loginWithToken method in jwtService
+      let user = await jwtAuthService.loginWithToken()      
+      .then((response) => {
+        this.setUser(response.data);
+        return response;
+      })
+        .catch(error => {
+        const {status} = error.response;
+          if(status === 401) {
+            history.push('/session/signin')
+        }});
+      }
   handeViewClick = fileId => {
     let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
     let blobstate = state.blobs.find (blobs => blobs.id === fileId)
@@ -94,7 +109,7 @@ class HigherOrderComponent extends Component {
     let data = { filename: "DELETED", application_id: null }
     let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
     let blobstate = state.blobs.find (blobs => blobs.id === this.props.location.state.id)
-    axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.props.location.state.id, data).then(res => {
+    axios.put("http://localhost:8000/api/v1/blobs/" + this.props.location.state.id, data).then(res => {
       this.setState({
         fileList: res.data,
         shouldShowConfirmationDialog: false
@@ -182,7 +197,7 @@ class HigherOrderComponent extends Component {
     this.setState({
       files: [...allFiles]
     });
-    axios.get("https://portl-dev.herokuapp.com/api/v1/sign_s3_post/", { params: { key: key, mime_type: file.file.type }}, auth)
+    axios.get("http://localhost:8000/api/v1/sign-s3-post/", { params: { key: key, mime_type: file.file.type }}, auth)
     .then(result => { 
     console.log(result)
     const formData = new FormData();
@@ -205,7 +220,7 @@ class HigherOrderComponent extends Component {
     return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
     .then((response) => {
       console.log(appid)
-      return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data, auth)
+      return axios.post("http://localhost:8000/api/v1/blobs/", data, auth)
       .then((response) => {
         let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
           state.blobs.push(response.data)
@@ -502,7 +517,7 @@ class HigherOrderComponent extends Component {
           <br/>
         <ValidatorForm
           ref="form"
-          onSubmit={this.handleSubmit}
+          onSubmit={this.uploadSingleFile}
           onError={errors => null}
         >
             <label htmlFor="upload-single-file">
@@ -559,7 +574,7 @@ class HigherOrderComponent extends Component {
                   {file.type}
                 </Grid>
                 <Grid item lg={3} md={3} sm={12} x={12}>
-                  <Select fullWidth onClick={this.handleSelectChange} required="true">
+                  <SelectValidator fullWidth onClick={this.handleSelectChange} required="true">
                     <MenuItem value="passport">Passport</MenuItem>                
                     <MenuItem value="IMM5707">IMM5707</MenuItem>
                     <MenuItem value="IMM5409">IMM5409</MenuItem>
@@ -572,7 +587,7 @@ class HigherOrderComponent extends Component {
                     <MenuItem value="immstatus">Current Immigration Status</MenuItem>
                     <MenuItem value="custody">Custody Document/Letter of Authorization</MenuItem>
                     <MenuItem value="other">Other</MenuItem>
-                  </Select>
+                  </SelectValidator>
                 </Grid>
                 <Grid item lg={1} md={1} sm={12} xs={12}>
                   {error && <Icon color="error">error</Icon>}

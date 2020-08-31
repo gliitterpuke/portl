@@ -9,21 +9,18 @@ import localStorageService from "../services/localStorageService";
 // import firebaseAuthService from "../services/firebase/firebaseAuthService";
 import history from "history.js";
 
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 const checkJwtAuth = async setUserData => {
-  // You need to send token to your server to check token is valid
-  // modify loginWithToken method in jwtService
-  let user = await jwtAuthService.loginWithToken()      
-  .then((response) => {
-    this.setUser(response.data);
-    return response;
+ 
+  let user = sleep(500).then(() => {jwtAuthService.loginWithToken();
   })
-    .catch(error => {
-    const {status} = error.response;
-      if(status === 401) {
-        history.push('/session/signin')
-    };
-  })
-
+  if (user) setUserData(user);
+  else
+    history.push({
+      pathname: "/session/signin"
+    });
   return user;
 };
 
