@@ -3,15 +3,20 @@ import axios from "axios";
 import localStorageService from "../../../services/localStorageService"
 import { Card, Grid, Icon, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import history from "../../../../history"
 
 let user = localStorageService.getItem("auth_user")
+
+//if (!localStorage.getItem("access_token")) {
+//  history.push('/session/signin');
+//  console.log(localStorage)
+//  }
 class AppForm extends Component {
   clickMe = () => {
     const data = { 
       product_id: 1,
-     // status: "CLIENT_ACTION_REQUIRED",
       language_id: 1,
-      client_id: localStorageService.getItem("auth_user").client_profile.id
+      client_id: user.client_profile.id
     }
 
     axios.post("http://localhost:8000/api/v1/applications", data).then(result => { 
@@ -19,7 +24,7 @@ class AppForm extends Component {
       localStorageService.setItem("auth_user", user)
       let state = user.client_profile.applications.find (application => application.id === result.data.id);
       this.props.history.push({pathname: `/application/${result.data.id}`, state: state });
-      console.log(localStorageService.getItem("auth_user"))
+      console.log(user)
     })
     }
   render() {

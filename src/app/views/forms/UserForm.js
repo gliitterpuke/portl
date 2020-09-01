@@ -12,6 +12,12 @@ import { Shi } from './Shi' // Background
 import { QueDing } from './QueDing';
 import { Success } from './Success';
 import { withRouter } from "react-router-dom";
+import history from "../../../history"
+
+//if (!localStorage.getItem("access_token")) {
+//  history.push('/session/signin');
+//  console.log(localStorage)
+//  }
 
 export const UserForm = (props) => {
   const [step, setStep] = useState(1);

@@ -20,23 +20,22 @@ import {
   AccordionSummary,
 } from "@material-ui/core";
 import localStorageService from "../../services/localStorageService";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import axios from "axios";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { getFileById } from "./AppActions";
 import { parseJSON } from "date-fns";
-import { Link } from "react-router-dom";
-import { ConfirmationDialog } from "matx";
-import { SimpleCard } from "matx";
+import { ConfirmationDialog, SimpleCard } from "matx";
 import { ValidatorForm, SelectValidator } from "react-material-ui-form-validator";
 import { withStyles } from "@material-ui/styles"
-import jwtAuthService from "../../services/jwtAuthService";
 import history from "../../../history"
 
-const auth = {
-  headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
-}
 let user = localStorageService.getItem("auth_user")
+
+//if (!localStorage.getItem("access_token")) {
+//  history.push('/session/signin');
+//  console.log(localStorage)
+//  }
 
 const styles = theme => ({
   root: {
@@ -73,26 +72,10 @@ class HigherOrderComponent extends Component {
     blobs: []
   };
   componentDidMount() {
-    return axios.get("http://localhost:8000/api/v1/users/me/", auth).then(res => {
-      this.setState({ ...res.data })
+      this.setState({ ...user })
       console.log(this.props.location.state)
-    });
+    };
     
-    }
-    checkJwtAuth = async setUserData => {
-      // You need to send token to your server to check token is valid
-      // modify loginWithToken method in jwtService
-      let user = await jwtAuthService.loginWithToken()      
-      .then((response) => {
-        this.setUser(response.data);
-        return response;
-      })
-        .catch(error => {
-        const {status} = error.response;
-          if(status === 401) {
-            history.push('/session/signin')
-        }});
-      }
   handeViewClick = fileId => {
     let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
     let blobstate = state.blobs.find (blobs => blobs.id === fileId)
@@ -197,7 +180,7 @@ class HigherOrderComponent extends Component {
     this.setState({
       files: [...allFiles]
     });
-    axios.get("http://localhost:8000/api/v1/sign-s3-post/", { params: { key: key, mime_type: file.file.type }}, auth)
+    axios.get("http://localhost:8000/api/v1/sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
     .then(result => { 
     console.log(result)
     const formData = new FormData();
@@ -220,7 +203,7 @@ class HigherOrderComponent extends Component {
     return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
     .then((response) => {
       console.log(appid)
-      return axios.post("http://localhost:8000/api/v1/blobs/", data, auth)
+      return axios.post("http://localhost:8000/api/v1/blobs/", data)
       .then((response) => {
         let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
           state.blobs.push(response.data)

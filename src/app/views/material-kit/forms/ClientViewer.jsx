@@ -7,21 +7,23 @@ import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import localStorageService from "../../../services/localStorageService"
+import history from "../../../../history"
 
-const auth = {
-  headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
-}
 const user = localStorageService.getItem("auth_user")
 
+//if (!localStorage.getItem("access_token")) {
+//  history.push('/session/signin');
+//  console.log(localStorage)
+//  }
+  
 class ClientViewer extends Component {
   state = {
-    country_id: user.client_profile.citizen_of.name
+    citizenship: user.client_profile.citizen_of.name
   };
 
   componentDidMount() {
-    return axios.get("http://localhost:8000/api/v1/users/me/", auth).then(res => {
-      this.setState({ ...res.data.client_profile });
-    });
+    this.setState({ ...user.client_profile });
+      console.log(localStorage)
   }
 
   render() {
@@ -30,7 +32,7 @@ class ClientViewer extends Component {
       middle_name,
       last_name,
       birth_date,
-      country_id,
+      citizenship,
       sex,
       relationship_to_owner,
       owner_id,
@@ -80,7 +82,7 @@ class ClientViewer extends Component {
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>Citizenship</strong>
                 </h5>
-                <p> {country_id} </p>
+                <p> {citizenship} </p>
               </Grid>
             </Grid>
             <div />

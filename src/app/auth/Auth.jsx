@@ -6,16 +6,10 @@ import { setUserData } from "../redux/actions/UserActions";
 import { getNavigationByUser } from "../redux/actions/NavigationAction";
 import jwtAuthService from "../services/jwtAuthService";
 import localStorageService from "../services/localStorageService";
-// import firebaseAuthService from "../services/firebase/firebaseAuthService";
 import history from "history.js";
 
-function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
 const checkJwtAuth = async setUserData => {
- 
-  let user = sleep(500).then(() => {jwtAuthService.loginWithToken();
-  })
+  let user = await jwtAuthService.loginWithToken();
   if (user) setUserData(user);
   else
     history.push({
@@ -24,23 +18,15 @@ const checkJwtAuth = async setUserData => {
   return user;
 };
 
-// const checkFirebaseAuth = () => {
-//   firebaseAuthService.checkAuthStatus(user => {
-//     if (user) {
-//       console.log(user.uid);
-//       console.log(user.email);
-//       console.log(user.emailVerified);
-//     } else {
-//       console.log("not logged in");
-//     }
-//   });
-// };
-
 const Auth = ({ children, setUserData, getNavigationByUser }) => {
   setUserData(localStorageService.getItem("auth_user"));
 
   useEffect(() => {
     checkJwtAuth(setUserData);
+    if (!localStorage.getItem("access_token")) {
+      history.push('/session/signin');
+      console.log(localStorage)
+      }
     getNavigationByUser();
   }, [setUserData, getNavigationByUser]);
 

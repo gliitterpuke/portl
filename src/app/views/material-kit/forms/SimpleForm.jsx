@@ -21,18 +21,24 @@ import {
 import { SimpleCard } from "matx";
 import { parseJSON } from "date-fns";
 import localStorageService from "../../../services/localStorageService"
-const auth = {
-  headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
-}
+import history from "../../../../history"
+
 let user = localStorageService.getItem("auth_user")
+
+//if (!localStorage.getItem("access_token")) {
+//  history.push('/session/signin');
+//  console.log(localStorage)
+//  }
+
 class SimpleForm extends Component {
   state = {
     appList: [],
   };
 
   componentDidMount() {
-    axios.get("http://localhost:8000/api/v1/users/me/", auth).then(res => this.setState({ appList: res.data.client_profile.applications }));
+    this.setState({ appList: user.client_profile.applications });
     this.setState({ showClientEditor: false });
+    console.log(localStorage)
   }
 
   handeViewClick = applicationId => {
@@ -121,7 +127,7 @@ class SimpleForm extends Component {
               {appList.map((application) => (
                 <TableRow key={application.id}>
                   <TableCell className="pl-sm-24 capitalize" align="left">
-                    {application.program}
+                    {application.product.name}
                   </TableCell>
                   <TableCell className="pl-sm-24 capitalize" align="left">
                     {application.id}

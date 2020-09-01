@@ -22,6 +22,14 @@ import { parseJSON } from "date-fns";
 import { withRouter } from "react-router-dom";
 import axios from "axios"
 import localStorageService from "../../services/localStorageService"
+import history from "../../../history"
+
+let user = localStorageService.getItem("auth_user")
+
+//if (!localStorage.getItem("access_token")) {
+//  history.push('/session/signin');
+//  console.log(localStorage)
+//  }
 
 class FileViewer extends Component {
   state = {
@@ -30,7 +38,6 @@ class FileViewer extends Component {
     dragClass: "",
     files: [],
   };
-  subTotalCost = 0;
 
   componentDidMount() {
     getFileById(this.props.match.params.id).then(res => {
@@ -144,7 +151,6 @@ class FileViewer extends Component {
 }
 
   render() {
-    this.subTotalCost = 0;
     let {
       filename,
       updated_at,
