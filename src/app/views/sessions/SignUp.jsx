@@ -34,7 +34,7 @@ class SignUp extends Component {
       email: this.state.email,
       password: this.state.password
     }
-    axios.post("http://localhost:8000/api/v1/users/", signup)
+    axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
     .then(result => { 
       alert('Sign up successful - please log in to continue')
     const client = {
@@ -44,9 +44,9 @@ class SignUp extends Component {
         birth_date: "1900-01-01",
         sex: "Sex",
         owner_id: result.data.id,
-        country_id: 1
+        country_code: 158
       }
-    axios.post("http://127.0.0.1:8000/api/v1/clients/", client)
+    axios.post("https://portl-dev.herokuapp.com/api/v1/clients/", client)
     this.props.history.push(`/session/signin`)
       console.log(result.data)
       return result;
