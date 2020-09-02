@@ -42,8 +42,11 @@ class SimpleForm extends Component {
   }
 
   handeViewClick = applicationId => {
-    let state = user.client_profile.applications.find (application => application.id === applicationId);
-    this.props.history.push({pathname: `/application/${applicationId}`, state: state });
+    let user = localStorageService.getItem("auth_user")
+    let secondstate = user.client_profile.applications.find (application => application.id == applicationId);
+    console.log(applicationId)
+    console.log(secondstate)
+    this.props.history.push({pathname: `/application/${applicationId}`, state: secondstate.id });
   }
 
   handeDeleteClick = application => {
@@ -52,13 +55,15 @@ class SimpleForm extends Component {
 
   handleConfirmationResponse = () => {
     let { application } = this.state;
-    let data = { status: "CLIENT_ACTION_REQUIRED" }
+    let status = "PROFESSIONAL_ACTION_REQUIRED"
  //   let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.id); 
     this.setState({
       shouldShowConfirmationDialog: false
     });
     console.log(application.id)
-    axios.put(`https://portl-dev.herokuapp.com/api/v1/applications/${application.id}/close?=status=CLIENT_ACTION_REQUIRED`).then(res => {
+    axios.put(`https://portl-dev.herokuapp.com/api/v1/applications/${application.id}/close`, null, { params: {
+      status
+    }}).then(res => {
       user.client_profile.applications[application.id] = res.data
       localStorageService.setItem("auth_user", user)
       console.log(user.client_profile.applications[application.id])
@@ -89,11 +94,9 @@ class SimpleForm extends Component {
   };
 
   render() {
-    let {
-      appList
-    } = this.state;
     let user = localStorageService.getItem("auth_user")
     let state = user.client_profile.applications
+    console.log(localStorageService.getItem("auth_user").client_profile.applications)
 
     return (
       <React.Fragment>

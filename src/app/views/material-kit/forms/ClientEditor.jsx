@@ -33,7 +33,7 @@ class ClientEditor extends Component {
     last_name: user.client_profile.last_name,
     birth_date: user.client_profile.birth_date,
     citizenship: user.client_profile.citizen_of.name,
-    country_id: user.client_profile.citizen_of.id,
+    country_code: user.client_profile.citizen_of.code,
     sex: user.client_profile.sex,
     owner_id: user.id,
     client: user.client_profile.id,
@@ -66,7 +66,7 @@ class ClientEditor extends Component {
       middle_name,
       last_name,
       birth_date,
-      country_id,
+      country_code,
       sex,
       owner_id,
     } = this.state;
@@ -188,8 +188,8 @@ class ClientEditor extends Component {
                 label="Citizenship"
                 onChange={this.handleChange}
                 type="text"
-                name="country_id"
-                value={country_id}
+                name="country_code"
+                value={country_code}
                 errorMessages={["this field is required"]}
               />
             </Grid>

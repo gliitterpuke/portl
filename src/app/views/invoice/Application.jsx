@@ -72,13 +72,14 @@ class HigherOrderComponent extends Component {
   };
   componentDidMount() {
       this.setState({ ...user })
-      console.log(this.props.location.state)
+      console.log(this.props.location)
     };
     
   handeViewClick = fileId => {
-    let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
-    let blobstate = state.blobs.find (blobs => blobs.id === fileId)
-    this.props.history.push({ pathname: `${state.id}/file/${fileId}`, state: blobstate });
+    let secondstate = user.client_profile.applications.find (application => application.id === this.props.location.state);
+    console.log(this.props.location)
+    let blobstate = secondstate.blobs.find (blobs => blobs.id === fileId)
+    this.props.history.push({ pathname: `${secondstate}/file/${fileId}`, state: blobstate });
     getFileById(fileId).then(res => console.log(blobstate));
   };
   // this.props.location.state.some
@@ -89,7 +90,7 @@ class HigherOrderComponent extends Component {
   handleConfirmationResponse = () => {
     let { efile } = this.state;
     let data = { filename: "DELETED", application_id: null }
-    let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.id);    
+    let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state);    
     let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
     console.log(blobs)
     this.setState({
@@ -172,9 +173,10 @@ class HigherOrderComponent extends Component {
   }
 
   uploadSingleFile = index => {
+    let user = localStorageService.getItem("auth_user")
     let allFiles = [...this.state.files];
     let file = this.state.files[index];
-    const appid = this.props.location.state.id
+    const appid = this.props.location.state
     const tags = this.state.result
     const filetype = file.file.type.match(/[^\/]+$/)[0]
     const key = user.id + "/" + appid + "/" + tags + "." + filetype
@@ -209,14 +211,20 @@ class HigherOrderComponent extends Component {
       console.log(appid)
       return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data)
       .then((response) => {
-        let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
+        let state = user.client_profile.applications.find (application => application.id === this.props.location.state);
           state.blobs.push(response.data)
           localStorageService.setItem("auth_user", user) 
           console.log(user)
           this.forceUpdate()
           return response;
       });
-    });
+    })
+    .catch(error => {
+      const {status} = error.response;
+       if(status === 400) {
+         alert('Please refresh and try again')
+     };
+   })
   })
 
   };
@@ -226,8 +234,9 @@ class HigherOrderComponent extends Component {
     let { dragClass, files } = this.state;
     let isEmpty = files.length === 0;
     let user = localStorageService.getItem("auth_user")
-    let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
-
+    console.log(this.props.location)
+    let state = user.client_profile.applications.find (application => application.id === this.props.location.state);
+    
     return (
       <React.Fragment>
       <div className="upload-form m-sm-30">
@@ -237,7 +246,7 @@ class HigherOrderComponent extends Component {
           </Typography>
           <div>
             <br/>
-          <Link to={{ pathname: `${this.props.location.state.id}/trv/`, state: state }}>
+          <Link to={{ pathname: `${this.props.location.state}/trv/`, state: state }}>
             <Button
               size="medium" variant="contained" color="primary">
               TRV

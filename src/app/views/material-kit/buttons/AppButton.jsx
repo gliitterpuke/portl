@@ -20,11 +20,12 @@ class AppForm extends Component {
     }
 
     axios.post("https://portl-dev.herokuapp.com/api/v1/applications/", data).then(result => { 
+      let user = localStorageService.getItem("auth_user")
       user.client_profile.applications.push(result.data)
       localStorageService.setItem("auth_user", user)
-      let state = user.client_profile.applications.find (application => application.id === result.data.id);
-      this.props.history.push({pathname: `/application/${result.data.id}`, state: state });
-      console.log(state)
+      let secondstate = user.client_profile.applications.find (application => application.id === result.data.id);
+      this.props.history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
+      console.log(secondstate)
     })
     }
   render() {

@@ -51,12 +51,12 @@ class SignUp extends Component {
       console.log(result.data)
       return result;
     })
-//    .catch(error => {
-//      const {status} = error.response;
-//       if(status === 400) {
-//         alert('Email is already registered')
-//     };
-//   });
+    .catch(error => {
+      const {status} = error.response;
+       if(status === 400) {
+         alert('Email is already registered')
+     };
+   });
   };
 
   render() {
