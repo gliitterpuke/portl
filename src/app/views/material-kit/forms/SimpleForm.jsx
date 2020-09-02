@@ -18,7 +18,7 @@ import {
   IconButton,
   Divider
 } from "@material-ui/core";
-import { SimpleCard } from "matx";
+import { ConfirmationDialog } from "matx";
 import { parseJSON } from "date-fns";
 import localStorageService from "../../../services/localStorageService"
 import history from "../../../../history"
@@ -52,11 +52,18 @@ class SimpleForm extends Component {
 
   handleConfirmationResponse = () => {
     let { application } = this.state;
-    deleteFile(application).then(res => {
-      this.setState({
-        appList: res.data,
-        shouldShowConfirmationDialog: false
-      });
+    let data = { status: "CLIENT_ACTION_REQUIRED" }
+ //   let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.id); 
+    this.setState({
+      shouldShowConfirmationDialog: false
+    });
+    console.log(application.id)
+    axios.put(`https://portl-dev.herokuapp.com/api/v1/applications/${application.id}/close?=status=CLIENT_ACTION_REQUIRED`).then(res => {
+      user.client_profile.applications[application.id] = res.data
+      localStorageService.setItem("auth_user", user)
+      console.log(user.client_profile.applications[application.id])
+      this.forceUpdate()
+
     });
   };
 
@@ -78,12 +85,16 @@ class SimpleForm extends Component {
     this.setState({
       showClientEditor: !this.state.showClientEditor,
     });
+//    this.forceUpdate()
   };
 
   render() {
     let {
       appList
     } = this.state;
+    let user = localStorageService.getItem("auth_user")
+    let state = user.client_profile.applications
+
     return (
       <React.Fragment>
       <div className="m-sm-30">
@@ -124,7 +135,7 @@ class SimpleForm extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {appList.map((application) => (
+              {state.map((application) => (
                 <TableRow key={application.id}>
                   <TableCell className="pl-sm-24 capitalize" align="left">
                     {application.product.name}
@@ -158,6 +169,12 @@ class SimpleForm extends Component {
             </TableBody>
           </Table>
       </Card>
+        <ConfirmationDialog
+          open={this.state.shouldShowConfirmationDialog}
+          onConfirmDialogClose={this.handleDialogClose}
+          onYesClick={this.handleConfirmationResponse}
+          text="Are you sure to delete?"
+        />
       </div>
       </React.Fragment>
     );

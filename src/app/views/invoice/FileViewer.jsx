@@ -40,9 +40,9 @@ class FileViewer extends Component {
   };
 
   componentDidMount() {
-    getFileById(this.props.match.params.id).then(res => {
-      this.setState({ ...res.data });
-    });
+    let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.application_id);
+    let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
+      this.setState({ ...user.client_profile.applications[state].blobs[blobs] });
     }
   
    handleFileSelect = event => {
@@ -87,8 +87,8 @@ class FileViewer extends Component {
     const mime_type = this.state.mime_type
     const filetype = mime_type.match(/[^\/]+$/)[0]
     const key = user.id + "/" + appid + "/" + tags + "." + filetype
-    //axios.get("http://localhost:8000/api/v1/users/me/", auth)
-    axios.get("http://localhost:8000/api/v1/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+    //axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
+    axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
     .then(result => { 
     const win = window.open(`${result.data}`);
     win.focus();
@@ -114,7 +114,7 @@ class FileViewer extends Component {
     this.setState({
       files: [...allFiles]
     });
-    axios.get("http://localhost:8000/api/v1/sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
+    axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
     .then(result => { 
     console.log(result)
     const formData = new FormData();
@@ -136,14 +136,14 @@ class FileViewer extends Component {
 
     return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data'} })
     .then((response) => {
-      return axios.put("http://localhost:8000/api/v1/blobs/" + this.props.location.state.id, data, auth)
+      return axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.props.location.state.id, data, auth)
       .then((response) => {
-        let state = user.client_profile.applications.find (application => application.id === this.props.location.state.application_id);
-        let blobstate = state.blobs.find (blobs => blobs.id === this.props.location.state.id)
-        let newname = state.blobs.find (blobs => blobs.filename === this.props.location.state.filename)
-        //blobstate.push(response.data)
+        let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.application_id);
+        let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
+        user.client_profile.applications[state].blobs[blobs] = response.data
         localStorageService.setItem("auth_user", user)
-        console.log(newname)
+        this.forceUpdate()
+        console.log(localStorageService.getItem("auth_user").client_profile.applications[state])
         return response;
       });
     });
@@ -153,14 +153,13 @@ class FileViewer extends Component {
   render() {
     let {
       filename,
-      updated_at,
-      uploaded_at,
-      tag,
-      dragClass, 
       files,
       fileList,
       isEmpty
     } = this.state;
+    let user = localStorageService.getItem("auth_user")
+    let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.application_id);
+    let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
 
     return (
       <div className="invoice-viewer py-4">
@@ -191,18 +190,18 @@ class FileViewer extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                    <TableRow key={filename}>
+                    <TableRow key={user.client_profile.applications[state].blobs[blobs].filename}>
                       <TableCell className="pl-sm-24 capitalize" align="left">
-                        {filename}
+                        {user.client_profile.applications[state].blobs[blobs].filename}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {parseJSON(uploaded_at).toString().replace(RegExp("GMT.*"), "")}
+                        {parseJSON(user.client_profile.applications[state].blobs[blobs].uploaded_at).toString().replace(RegExp("GMT.*"), "")}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {parseJSON(updated_at).toString().replace(RegExp("GMT.*"), "")}
+                        {parseJSON(user.client_profile.applications[state].blobs[blobs].updated_at).toString().replace(RegExp("GMT.*"), "")}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {tag}
+                        {user.client_profile.applications[state].blobs[blobs].tag}
                       </TableCell>
                     </TableRow>
               </TableBody>

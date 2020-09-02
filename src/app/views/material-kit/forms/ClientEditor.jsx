@@ -22,6 +22,11 @@ let user = localStorageService.getItem("auth_user")
 //  }
 
 class ClientEditor extends Component {
+  componentDidMount() {
+    this.setState({ ...this.state })
+      console.log(user)
+  }
+  
   state = {
     first_name: user.client_profile.first_name,
     middle_name: user.client_profile.middle_name,
@@ -34,7 +39,7 @@ class ClientEditor extends Component {
     client: user.client_profile.id,
     loading: false
   };
-
+  
   handleChange = event => {
     event.persist();
     this.setState({ [event.target.name]: event.target.value });
@@ -44,11 +49,13 @@ class ClientEditor extends Component {
     this.setState({ loading: true });
     let tempState = this.state;
     delete tempState.loading;
-    return axios.put("http://localhost:8000/api/v1/clients/" + user.client_profile.id, this.state).then((response) => {
+    return axios.put("https://portl-dev.herokuapp.com/api/v1/clients/" + user.client_profile.id, this.state).then((response) => {
       console.log(response)
-     localStorageService.setItem("auth_user", response.data)
+    user.client_profile = response.data
+    localStorageService.setItem("auth_user", user)
     this.setState({ loading: false });
-    this.props.toggleClientEditor();
+    this.props.toggleClientEditor()
+    console.log(user)
     });
   }
   

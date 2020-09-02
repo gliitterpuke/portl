@@ -50,10 +50,10 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
             headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
           }
           //axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
-          axios.post(`http://localhost:8000/api/v1/forms/imm5257/${user.client_profile.id}/` + currentApp.id, formData, auth)
+          axios.post(`https://portl-dev.herokuapp.com/api/v1/forms/imm5257/${user.client_profile.id}/` + currentApp.id, formData, auth)
             .then(result => { 
             //console.log(currentApp)
-            return axios.post("http://localhost:8000/api/v1/blobs/", result.data, auth)
+            return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", result.data, auth)
             .then((response) => {
               user.client_profile.applications.push(response.data)
               localStorageService.setItem("auth_user", user)

@@ -13,7 +13,6 @@ import {
   Grid,
   Typography,
   MenuItem,
-  Select,
   Divider,
   Accordion,
   AccordionDetails,
@@ -90,13 +89,18 @@ class HigherOrderComponent extends Component {
   handleConfirmationResponse = () => {
     let { efile } = this.state;
     let data = { filename: "DELETED", application_id: null }
-    let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
-    let blobstate = state.blobs.find (blobs => blobs.id === this.props.location.state.id)
-    axios.put("http://localhost:8000/api/v1/blobs/" + this.props.location.state.id, data).then(res => {
-      this.setState({
-        fileList: res.data,
-        shouldShowConfirmationDialog: false
-      });
+    let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.id);    
+    let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
+    console.log(blobs)
+    this.setState({
+      shouldShowConfirmationDialog: false
+    });
+    axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + efile.id, data).then(res => {
+      user.client_profile.applications[state].blobs[blobs] = res.data
+      localStorageService.setItem("auth_user", user)
+      console.log(user.client_profile.applications[state])
+      this.forceUpdate()
+
     });
   };
 
@@ -180,7 +184,7 @@ class HigherOrderComponent extends Component {
     this.setState({
       files: [...allFiles]
     });
-    axios.get("http://localhost:8000/api/v1/sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
+    axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
     .then(result => { 
     console.log(result)
     const formData = new FormData();
@@ -203,12 +207,13 @@ class HigherOrderComponent extends Component {
     return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
     .then((response) => {
       console.log(appid)
-      return axios.post("http://localhost:8000/api/v1/blobs/", data)
+      return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data)
       .then((response) => {
         let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
           state.blobs.push(response.data)
           localStorageService.setItem("auth_user", user) 
           console.log(user)
+          this.forceUpdate()
           return response;
       });
     });
@@ -220,6 +225,7 @@ class HigherOrderComponent extends Component {
     const { classes } = this.props;
     let { dragClass, files } = this.state;
     let isEmpty = files.length === 0;
+    let user = localStorageService.getItem("auth_user")
     let state = user.client_profile.applications.find (application => application.id === this.props.location.state.id);
 
     return (
@@ -257,7 +263,7 @@ class HigherOrderComponent extends Component {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  <a href="/application/trv">The main application form; needs to be validated if completed on a computer</a>
+                  The main application form; needs to be validated if completed on a computer.
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -308,7 +314,7 @@ class HigherOrderComponent extends Component {
           </Accordion>
           
 
-          <Accordion>
+        <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography className={classes.heading1}>Documents</Typography>
             </AccordionSummary>
@@ -427,7 +433,7 @@ class HigherOrderComponent extends Component {
             </Accordion>
           </Accordion>
 
-          <Accordion>
+        <Accordion>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.heading1}>Super Visa</Typography>
               </AccordionSummary>
@@ -611,7 +617,7 @@ class HigherOrderComponent extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.props.location.state.blobs.map((efile) => (
+              {state.blobs.map((efile) => (
                 <TableRow key={efile.id}>
                   <TableCell className="pl-sm-24 capitalize" align="left">
                     {efile.filename}

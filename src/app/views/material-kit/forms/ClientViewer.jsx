@@ -9,7 +9,7 @@ import axios from "axios";
 import localStorageService from "../../../services/localStorageService"
 import history from "../../../../history"
 
-const user = localStorageService.getItem("auth_user")
+let user = localStorageService.getItem("auth_user")
 
 //if (!localStorage.getItem("access_token")) {
 //  history.push('/session/signin');
@@ -18,25 +18,16 @@ const user = localStorageService.getItem("auth_user")
   
 class ClientViewer extends Component {
   state = {
-    citizenship: user.client_profile.citizen_of.name
   };
 
+
   componentDidMount() {
-    this.setState({ ...user.client_profile });
-      console.log(localStorage)
+    this.setState({ ...user.client_profile })
+      console.log(user)
   }
 
   render() {
-    let {
-      first_name,
-      middle_name,
-      last_name,
-      birth_date,
-      citizenship,
-      sex,
-      relationship_to_owner,
-      owner_id,
-    } = this.state;
+    let user = localStorageService.getItem("auth_user")
 
     return (
       <div className="invoice-viewer py-4">
@@ -60,29 +51,29 @@ class ClientViewer extends Component {
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>First Name</strong>
                 </h5>
-                <p> {first_name} </p>
+                <p> {user.client_profile.first_name} </p>
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>Middle Name</strong>
                 </h5>
-                <p> {middle_name} </p>
+                <p> {user.client_profile.middle_name} </p>
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>Last Name</strong>
                 </h5>
-                <p> {last_name} </p>
+                <p> {user.client_profile.last_name} </p>
               </Grid>
               <Grid item xs={12} md={6}>
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>Birth Date</strong>
                 </h5>
-                <p> {birth_date} </p>
+                <p> {user.client_profile.birth_date} </p>
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>Sex</strong>
                 </h5>
-                <p> {sex} </p>
+                <p> {user.client_profile.sex} </p>
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>Citizenship</strong>
                 </h5>
-                <p> {citizenship} </p>
+                <p> {user.client_profile.citizen_of.name} </p>
               </Grid>
             </Grid>
             <div />

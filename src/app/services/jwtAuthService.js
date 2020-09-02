@@ -30,13 +30,13 @@ class JwtAuthService {
       return new Promise((resolve) => setTimeout(resolve, time));
     }
     return axios.post(
-        'http://localhost:8000/token/',
+        'https://portl-dev.herokuapp.com/token/',
         qs.stringify(requestBody),
         config
     ).then((response) => {
       console.log(response)
       this.setSession(response.data.access_token);
-//      return axios.get("http://localhost:8000/api/v1/users/me/", 
+//      return axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", 
 //      {headers: {Authorization:"Bearer " + localStorage.getItem("access_token")}},
 //      )
 //    }).then(data => {
@@ -59,7 +59,7 @@ class JwtAuthService {
     function sleep (time) {
       return new Promise((resolve) => setTimeout(resolve, time));
     }
-      return axios.get("http://localhost:8000/api/v1/users/me/", auth)
+      return axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
     .then((response) => {
       console.log(response)
       this.setUser(response.data)
