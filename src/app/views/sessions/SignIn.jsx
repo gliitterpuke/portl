@@ -10,8 +10,11 @@ import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
+import axios from "axios";
+import localStorageService from "../../services/localStorageService";
 
 import { loginWithEmailAndPassword } from "../../redux/actions/LoginActions";
+let user = localStorageService.getItem("auth_user")
 
 const styles = theme => ({
   wrapper: {
@@ -42,7 +45,56 @@ class SignIn extends Component {
     this.props.loginWithEmailAndPassword({ ...this.state })
     console.log(localStorage);
   }
-  
+  clickMe = () => {
+    const isolang = { 
+      code: "eng",
+      name: "English"
+    }
+    const isocountries = {
+      code: 158,
+      name: "Taiwan"
+    }
+    const isocurrency ={
+      code: 124,
+      name: "Canadian Dollar"
+    }
+    const producttype = {
+      name: "Visa"
+    }
+    const product = {
+      name: "Temporary Resident Visa",
+      code: "TRV",
+      price: 200,
+      processing_cost: 1,
+      country_code: 158,
+      currency_code: 124,
+      product_type_id: 1
+    }
+    const form = {
+      name: "imm5257",
+      xml_template_key: "templates/imm5257.xml",
+      pdf_template_key: "blanks/imm5257.pdf",
+      bucket: "portldump",
+      product_id: 1
+    }
+    return axios.post("https://portl-dev.herokuapp.com/api/v1/iso/languages/", isolang)
+    .then(result => { 
+    console.log(result)
+    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/countries/", isocountries)})
+    .then(result => { 
+    console.log(result)
+    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/currencies/", isocurrency)})
+    .then(result => { 
+    console.log(result)
+    axios.post("https://portl-dev.herokuapp.com/api/v1/product-types/", producttype)})
+    .then(result => { 
+    console.log(result)
+    axios.post("https://portl-dev.herokuapp.com/api/v1/products/", product)})
+    .then(result => { 
+    console.log(result)
+    axios.post("https://portl-dev.herokuapp.com/api/v1/form-metadata/", form)})
+    }
+
   render() {
     let { username, password } = this.state;
     let { classes } = this.props;
@@ -118,6 +170,12 @@ class SignIn extends Component {
                       }
                     >
                       Forgot password?
+                    </Button>
+                    <Button
+                      className="text-primary"
+                      onClick ={this.clickMe}
+                    >
+                      Base
                     </Button>
                   </ValidatorForm>
                 </div>
