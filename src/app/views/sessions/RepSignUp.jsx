@@ -35,12 +35,13 @@ class RepSignUp extends Component {
     axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
     .then(result => { 
     const professional = {
-        first_name: "",
-        last_name: "",
-        company: "",
-        occupation: "",
-        sex: "",
+        first_name: "First Name",
+        last_name: "Last Name",
+        company: "Your Company",
+        occupation: "Your Role",
+        sex: "Unspecified",
         max_processing_budget: 1000,
+        payout_account: "Account goes here",
         country_code: 158,
         service_languages: [ "eng" ],
         owner_id: result.data.id
