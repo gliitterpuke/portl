@@ -64,7 +64,8 @@ class SignIn extends Component {
     const product = {
       name: "Temporary Resident Visa",
       code: "TRV",
-      price: 200,
+      total_price: 200,
+      platform_fee: 100,
       processing_cost: 1,
       country_code: 158,
       currency_code: 124,
