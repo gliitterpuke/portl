@@ -1,9 +1,16 @@
 import React from "react";
+import { authRoles } from "../../auth/authRoles";
 
 const formsRoutes = [
   {
     path: "/profile",
     component: React.lazy(() => import("../material-kit/forms/SimpleForm")),
+    auth: authRoles.client
+  },
+  {
+    path: "/professional",
+    component: React.lazy(() => import("../material-kit/forms/ProfessionalForm.jsx")),
+    auth: authRoles.professional
   },
   {
     path: "/forms/editor",

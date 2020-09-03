@@ -2,6 +2,7 @@ import jwtAuthService from "../../services/jwtAuthService";
 import FirebaseAuthService from "../../services/firebase/firebaseAuthService";
 import { setUserData } from "./UserActions";
 import history from "history.js";
+import localStorageService from "../../services/localStorageService"
 
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
@@ -18,10 +19,16 @@ export function loginWithEmailAndPassword({ username, password }) {
       .loginWithEmailAndPassword(username, password)
       .then(user => {
         dispatch(setUserData(user));
-
+        let newuser = localStorageService.getItem("auth_user")
+        if (newuser.role === "client") {
         history.push({
-          pathname: "/"
-        });
+          pathname: "/profile"
+        })
+        } else if (newuser.role === "professional") {
+        history.push({
+          pathname: "/professional"
+        })
+        }
 
         return dispatch({
           type: LOGIN_SUCCESS

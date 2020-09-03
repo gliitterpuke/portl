@@ -1,5 +1,6 @@
 import React from "react";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import localStorageService from "./services/localStorageService";
 
 import sessionRoutes from "./views/sessions/SessionRoutes";
 
@@ -12,24 +13,19 @@ import ListRoute from "./views/list/ListRoute";
 
 import otherRoutes from "./views/others/OtherRoutes";
 
+
+let user = localStorageService.getItem("auth_user")
 const redirectRoute = [
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/profile" />
+    component: () => <Redirect to="/session/signin" />
   }
 ];
 
 const errorRoute = [
   {
     component: () => <Redirect to="/session/404" />
-  }
-];
-
-const signinRoute = [
-  {
-    path: "/session/signin",
-    component: () => <Redirect to="/session/signin" />
   }
 ];
 
@@ -43,7 +39,6 @@ const routes = [
   ...ListRoute,
   ...redirectRoute,
   ...errorRoute,
-  ...signinRoute
 ];
 
 export default routes;

@@ -34,7 +34,6 @@ class RepSignUp extends Component {
     }
     axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
     .then(result => { 
-      alert('Sign up successful - please log in to continue')
     const professional = {
         first_name: "",
         last_name: "",
@@ -46,18 +45,21 @@ class RepSignUp extends Component {
         service_languages: [ "eng" ],
         owner_id: result.data.id
       }
-    axios.post("https://portl-dev.herokuapp.com/api/v1/professionals", professional)
-    this.props.history.push(`/session/signin`)
-      console.log(result.data)
-      return result;
+      axios.post("https://portl-dev.herokuapp.com/api/v1/professionals", professional)
     })
-    .catch(error => {
-      const {status} = error.response;
-       if(status === 400) {
-         alert('Email is already registered')
-     };
-   });
-  };
+      .then(result => {
+        axios.post(`https://portl-dev.herokuapp.com/api/v1/send-activation-email/${this.state.email}`)
+        alert('Sign up successful - please check your email for your verification email!')
+        this.props.history.push(`/session/signin`)
+          return result;
+        })
+    //    .catch(error => {
+    //      const {status} = error.response;
+    //       if(status === 400) {
+    //         alert('Email is already registered')
+    //     };
+    //   });
+      };
 
   render() {
     let { role, email, password } = this.state;

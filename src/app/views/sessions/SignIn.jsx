@@ -32,7 +32,7 @@ const styles = theme => ({
 
 class SignIn extends Component {
   state = {
-    username: "kat@portl.to",
+    username: "katherinewwang@gmail.com",
     password: "test",
   };
   handleChange = event => {
@@ -79,20 +79,15 @@ class SignIn extends Component {
       product_id: 1
     }
     return axios.post("https://portl-dev.herokuapp.com/api/v1/iso/languages/", isolang)
-    .then(result => { 
-    console.log(result)
+    .then(() => { 
     axios.post("https://portl-dev.herokuapp.com/api/v1/iso/countries/", isocountries)})
-    .then(result => { 
-    console.log(result)
+    .then(() => { 
     axios.post("https://portl-dev.herokuapp.com/api/v1/iso/currencies/", isocurrency)})
-    .then(result => { 
-    console.log(result)
+    .then(() => { 
     axios.post("https://portl-dev.herokuapp.com/api/v1/product-types/", producttype)})
-    .then(result => { 
-    console.log(result)
+    .then(() => { 
     axios.post("https://portl-dev.herokuapp.com/api/v1/products/", product)})
-    .then(result => { 
-    console.log(result)
+    .then(() => { 
     axios.post("https://portl-dev.herokuapp.com/api/v1/form-metadata/", form)})
     }
 

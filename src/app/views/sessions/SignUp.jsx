@@ -36,7 +36,6 @@ class SignUp extends Component {
     }
     axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
     .then(result => { 
-      alert('Sign up successful - please log in to continue')
     const client = {
         first_name: "First Name",
         middle_name: "Middle Name",
@@ -47,16 +46,19 @@ class SignUp extends Component {
         country_code: 158
       }
     axios.post("https://portl-dev.herokuapp.com/api/v1/clients/", client)
+    })
+    .then(result => {
+    axios.post(`https://portl-dev.herokuapp.com/api/v1/send-activation-email/${this.state.email}`)
+    alert('Sign up successful - please check your email for your verification email!')
     this.props.history.push(`/session/signin`)
-      console.log(result.data)
       return result;
     })
-    .catch(error => {
-      const {status} = error.response;
-       if(status === 400) {
-         alert('Email is already registered')
-     };
-   });
+//    .catch(error => {
+//      const {status} = error.response;
+//       if(status === 400) {
+//         alert('Email is already registered')
+//     };
+//   });
   };
 
   render() {
