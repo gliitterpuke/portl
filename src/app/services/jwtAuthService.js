@@ -77,9 +77,10 @@ class JwtAuthService {
       return response;
     })
      .catch(error => {
-      console.log(window.location.href)
-      if (window.location.href.indexOf("/session/forgot-password/") > -1) {
-        history.push('/sessions/forgot-password')
+      const getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
+      if (window.location.href.match("/session/forgot-password")) {
+        console.log(getLastItem(window.location.href))
+      //  history.push(getLastItem(window.location.href))
       }
 //      else 
 //       console.log(window.location.href)

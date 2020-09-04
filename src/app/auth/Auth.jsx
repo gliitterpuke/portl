@@ -10,9 +10,9 @@ import history from "history.js";
 
 const checkJwtAuth = async setUserData => {
   let user = await jwtAuthService.loginWithToken();
-  if (window.location.href.match("http://localhost:8000/session/forgot-password/")) {
-    alert("found?")
-    history.push('/sessions/forgot-password')
+  const getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
+  if (window.location.href.match("/session/forgot-password")) {
+    history.push(getLastItem(window.location.href))
   }
 //  else if (user) setUserData(user);
 //  console.log(window.location.href)
@@ -27,14 +27,14 @@ const Auth = ({ children, setUserData, getNavigationByUser }) => {
 
   useEffect(() => {
     checkJwtAuth(setUserData);
-    if (window.location.href.match("http://localhost:8000/session/forgot-password/")) {
-      alert("found?")
-      history.push('/sessions/forgot-password')
+    const getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
+    if (window.location.href.match("/session/forgot-password")) {
+      history.push(getLastItem(window.location.href))
     }
- //   else if (!localStorage.getItem("access_token")) {
- //     history.push('/session/signin');
- //     console.log(localStorage)
- //     }
+    else if (!localStorage.getItem("access_token")) {
+      history.push('/session/signin');
+      console.log(localStorage)
+      }
     getNavigationByUser();
   }, [setUserData, getNavigationByUser]);
 

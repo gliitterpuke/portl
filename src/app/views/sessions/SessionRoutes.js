@@ -42,7 +42,8 @@ const sessionRoutes = [
   {
     path: "/session/forgot-password",
     component: ForgotPassword,
-    settings
+    settings,
+    exact: true
   },
   {
     path: "/session/forgot-password/:token",

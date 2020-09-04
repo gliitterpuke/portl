@@ -19,7 +19,8 @@ class ForgotPassword extends Component {
     });
   };
   handleFormSubmit = () => {
-    axios.post(`https://portl-dev.herokuapp.com/api/v1/send-activation-email/` + JSON.stringify(this.state))
+    axios.post(`https://portl-dev.herokuapp.com/api/v1/send-password-reset-email/` + JSON.stringify(this.state))
+    alert("Success! Please check your email for further instructions")
   };
   render() {
     let { email } = this.state;
