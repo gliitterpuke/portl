@@ -42,7 +42,6 @@ class JwtAuthService {
 //    }).then(data => {
       // Token is valid
       this.setUser(response.data.data);
-      console.log(localStorageService.getItem("auth_user"))
     })
     .then(() => { 
       let newuser = localStorageService.getItem("auth_user")
@@ -78,7 +77,13 @@ class JwtAuthService {
       return response;
     })
      .catch(error => {
-      history.push('/session/signin')
+      console.log(window.location.href)
+      if (window.location.href.indexOf("/session/forgot-password/") > -1) {
+        history.push('/sessions/forgot-password')
+      }
+//      else 
+//       console.log(window.location.href)
+//      history.push('/session/signin')
     });
 }
 

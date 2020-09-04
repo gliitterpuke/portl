@@ -4,6 +4,7 @@ import NotFound from "./NotFound";
 import ForgotPassword from "./ForgotPassword";
 import RepSignUp from "./RepSignUp";
 import RepSignIn from "./RepSignIn";
+import ResetPassword from "./ResetPassword"
 
 const settings = {
   activeLayout: "layout1",
@@ -41,6 +42,11 @@ const sessionRoutes = [
   {
     path: "/session/forgot-password",
     component: ForgotPassword,
+    settings
+  },
+  {
+    path: "/session/forgot-password/:token",
+    component: ResetPassword,
     settings
   },
   {

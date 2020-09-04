@@ -4,12 +4,13 @@ import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
+import axios from "axios";
 
 import { resetPassword } from "../../redux/actions/LoginActions";
 
 class ForgotPassword extends Component {
   state = {
-    email: "watson@example.com"
+    email: "katherinewwang@gmail.com"
   };
   handleChange = event => {
     event.persist();
@@ -18,7 +19,7 @@ class ForgotPassword extends Component {
     });
   };
   handleFormSubmit = () => {
-    this.props.resetPassword({ ...this.state });
+    axios.post(`https://portl-dev.herokuapp.com/api/v1/send-activation-email/` + JSON.stringify(this.state))
   };
   render() {
     let { email } = this.state;

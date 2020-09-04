@@ -10,11 +10,15 @@ import history from "history.js";
 
 const checkJwtAuth = async setUserData => {
   let user = await jwtAuthService.loginWithToken();
-  if (user) setUserData(user);
-  else
-    history.push({
-      pathname: "/session/signin"
-    });
+  if (window.location.href.match("http://localhost:8000/session/forgot-password/")) {
+    alert("found?")
+    history.push('/sessions/forgot-password')
+  }
+//  else if (user) setUserData(user);
+//  console.log(window.location.href)
+//    history.push({
+//      pathname: "/session/signin"
+//    });
   return user;
 };
 
@@ -23,10 +27,14 @@ const Auth = ({ children, setUserData, getNavigationByUser }) => {
 
   useEffect(() => {
     checkJwtAuth(setUserData);
-    if (!localStorage.getItem("access_token")) {
-      history.push('/session/signin');
-      console.log(localStorage)
-      }
+    if (window.location.href.match("http://localhost:8000/session/forgot-password/")) {
+      alert("found?")
+      history.push('/sessions/forgot-password')
+    }
+ //   else if (!localStorage.getItem("access_token")) {
+ //     history.push('/session/signin');
+ //     console.log(localStorage)
+ //     }
     getNavigationByUser();
   }, [setUserData, getNavigationByUser]);
 
