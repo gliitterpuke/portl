@@ -28,6 +28,7 @@ const formsRoutes = [
   {
     path: "/application/:id",
     component: React.lazy(() => import("../invoice/Application.jsx")),
+    exact: true,
     auth: authRoles.client
   },
 ];

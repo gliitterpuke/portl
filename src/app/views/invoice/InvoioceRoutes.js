@@ -5,10 +5,12 @@ const invoiceRoutes = [
   {
     path: "/application/:id/file/:id",
     component: React.lazy(() => import("./FileViewer.jsx")),
+    exact: true,
   },
   {
     path: "/applications/:id",
     component: React.lazy(() => import("../Applications/ProfessionalApplication.jsx")),
+    exact: true,
     auth: authRoles.professional
   },
   {
@@ -26,6 +28,7 @@ const invoiceRoutes = [
   {
     path: "/applications/:id/files/:id",
     component: React.lazy(() => import("../Applications/ProfessionalFileViewer.jsx")),
+    exact: true,
     auth: authRoles.professional
   },
 ];
