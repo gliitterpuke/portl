@@ -14,7 +14,7 @@ import localStorageService from "../../services/localStorageService";
 
 class RepSignUp extends Component {
   state = {
-    role: "",
+    role: "professional",
     email: "",
     password: "",
   };
