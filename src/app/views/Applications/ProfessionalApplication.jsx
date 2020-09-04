@@ -72,14 +72,14 @@ class HigherOrderComponent extends Component {
   };
   componentDidMount() {
       this.setState({ ...user })
-      console.log(this.props.location)
+      console.log(this.props)
     };
     
   handeViewClick = fileId => {
     let secondstate = user.professional_profile.applications.find (application => application.id === this.props.location.state);
     console.log(this.props.location)
     let blobstate = secondstate.blobs.find (blobs => blobs.id === fileId)
-    this.props.history.push({ pathname: `${secondstate.id}/files/${fileId}`, state: blobstate });
+    this.props.history.push({ pathname: `${secondstate.id}/files/${fileId}`, state: blobstate, id: secondstate.client_id });
     getFileById(fileId).then(res => console.log(blobstate));
   };
   // this.props.location.state.some
@@ -174,12 +174,13 @@ class HigherOrderComponent extends Component {
 
   uploadSingleFile = index => {
     let user = localStorageService.getItem("auth_user")
+    let state = user.professional_profile.applications.find (application => application.id === this.props.location.state)
     let allFiles = [...this.state.files];
     let file = this.state.files[index];
     const appid = this.props.location.state
     const tags = this.state.result
     const filetype = file.file.type.match(/[^\/]+$/)[0]
-    const key = user.id + "/" + appid + "/" + tags + "." + filetype
+    const key = state.client_id + "/" + appid + "/" + tags + "." + filetype
 
     allFiles[index] = { ...file, uploading: true, error: false };
 
@@ -235,26 +236,11 @@ class HigherOrderComponent extends Component {
     let isEmpty = files.length === 0;
     let user = localStorageService.getItem("auth_user")
     console.log(this.props.location)
-    let state = user.professional_profile.applications.find (application => application.id === this.props.location.state);
-    
+    let test = user.professional_profile.applications.find (application => application.id === this.props.location.state);
+    console.log(test)
+
     return (
       <React.Fragment>
-      <div className="upload-form m-sm-30">
-        <SimpleCard>
-          <Typography variant="h6">
-            Fillable Forms
-          </Typography>
-          <div>
-            <br/>
-          <Link to={{ pathname: `${this.props.location.state}/trv/`, state: state }}>
-            <Button
-              size="medium" variant="contained" color="primary">
-              TRV
-            </Button>
-          </Link>
-          </div>
-        </SimpleCard>
-      </div>
       <div className="upload-form m-sm-30">
         <SimpleCard>
           <Typography variant="h6">
@@ -507,6 +493,54 @@ class HigherOrderComponent extends Component {
         </SimpleCard>
       </div>
       <div className="upload-form m-sm-30">
+      <SimpleCard elevation={6} className="w-full">
+          <Typography variant="h6">
+            Current Files
+          </Typography>
+          <br/>
+          <Table className="min-w-3000">
+            <TableHead>
+              <TableRow>
+                <TableCell className="pl-sm-24">Name</TableCell>
+                <TableCell className="px-0">Uploaded</TableCell>
+                <TableCell className="px-0">Updated</TableCell>
+                <TableCell className="px-0">Document</TableCell>
+                <TableCell className="px-0" width="150px">Edit/Delete</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {test.blobs.map((efile) => (
+                <TableRow key={efile.id}>
+                  <TableCell className="pl-sm-24 capitalize" align="left">
+                    {efile.filename}
+                  </TableCell>
+                  <TableCell className="pl-0 capitalize" align="left">
+                    {parseJSON(efile.uploaded_at).toString().replace(RegExp("GMT.*"), "")}
+                  </TableCell>
+                  <TableCell className="pl-0 capitalize" align="left">
+                    {parseJSON(efile.updated_at).toString().replace(RegExp("GMT.*"), "")}
+                  </TableCell>
+                  <TableCell className="pl-0 capitalize">
+                    {efile.tag}
+                  </TableCell>
+                  <TableCell className="pl-0">
+                    <IconButton
+                      color="primary"
+                      className="mr-2"
+                      onClick={() => this.handeViewClick(efile.id)}
+                    >
+                      <Icon>chevron_right</Icon>
+                    </IconButton>
+                    <IconButton onClick={() => this.handeDeleteClick(efile)}>
+                      <Icon color="error">delete</Icon>
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </SimpleCard>
+        <br/><br/>
         <SimpleCard >
         <div>
           <Typography variant="h6">
@@ -610,53 +644,7 @@ class HigherOrderComponent extends Component {
           </SimpleCard>
 
         <br /><br />
-        <SimpleCard elevation={6} className="w-full">
-          <Typography variant="h6">
-            Current Files
-          </Typography>
-          <br/>
-          <Table className="min-w-3000">
-            <TableHead>
-              <TableRow>
-                <TableCell className="pl-sm-24">Name</TableCell>
-                <TableCell className="px-0">Uploaded</TableCell>
-                <TableCell className="px-0">Updated</TableCell>
-                <TableCell className="px-0">Document</TableCell>
-                <TableCell className="px-0" width="150px">Edit/Delete</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {state.blobs.map((efile) => (
-                <TableRow key={efile.id}>
-                  <TableCell className="pl-sm-24 capitalize" align="left">
-                    {efile.filename}
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left">
-                    {parseJSON(efile.uploaded_at).toString().replace(RegExp("GMT.*"), "")}
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left">
-                    {parseJSON(efile.updated_at).toString().replace(RegExp("GMT.*"), "")}
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize">
-                    {efile.tag}
-                  </TableCell>
-                  <TableCell className="pl-0">
-                    <IconButton
-                      color="primary"
-                      className="mr-2"
-                      onClick={() => this.handeViewClick(efile.id)}
-                    >
-                      <Icon>chevron_right</Icon>
-                    </IconButton>
-                    <IconButton onClick={() => this.handeDeleteClick(efile)}>
-                      <Icon color="error">delete</Icon>
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </SimpleCard>
+
         <ConfirmationDialog
           open={this.state.shouldShowConfirmationDialog}
           onConfirmDialogClose={this.handleDialogClose}

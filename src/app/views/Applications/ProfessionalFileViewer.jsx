@@ -84,13 +84,13 @@ class ProfessionalFileViewer extends Component {
     const tags = this.state.tag
     const mime_type = this.state.mime_type
     const filetype = mime_type.match(/[^\/]+$/)[0]
-    const key = user.id + "/" + appid + "/" + tags + "." + filetype
+    const key = this.props.location.id + "/" + appid + "/" + tags + "." + filetype
     //axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
     axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
     .then(result => { 
     const win = window.open(`${result.data}`);
     win.focus();
-    console.log(this.state)
+    console.log(this.props.location)
     })
   }
 
@@ -105,7 +105,7 @@ class ProfessionalFileViewer extends Component {
     const tags = this.state.tag
     const mime_type = this.state.mime_type
     const filetype = mime_type.match(/[^\/]+$/)[0]
-    const key = user.id + "/" + appid + "/" + tags + "." + filetype
+    const key = this.props.location.id + "/" + appid + "/" + tags + "." + filetype
 
     allFiles[index] = { ...file, uploading: true, error: false };
 
@@ -143,7 +143,13 @@ class ProfessionalFileViewer extends Component {
         this.forceUpdate()
         console.log(localStorageService.getItem("auth_user").professional_profile.applications[state])
         return response;
-      });
+      })
+      .catch(error => {
+        const {status} = error.response;
+         if(status === 400) {
+           alert('Files must be the same type')
+       };
+     });
     });
   })
 }
