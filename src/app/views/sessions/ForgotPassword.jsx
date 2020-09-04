@@ -19,7 +19,8 @@ class ForgotPassword extends Component {
     });
   };
   handleFormSubmit = () => {
-    axios.post(`https://portl-dev.herokuapp.com/api/v1/send-password-reset-email/` + JSON.stringify(this.state))
+    let email = this.state.email
+    axios.post(`https://portl-dev.herokuapp.com/api/v1/send-password-reset-email/` + email)
     alert("Success! Please check your email for further instructions")
   };
   render() {
@@ -54,7 +55,7 @@ class ForgotPassword extends Component {
                     />
                     <div className="flex items-center">
                       <Button variant="contained" color="primary" type="submit">
-                        Reset Password
+                        Send Password Reset
                       </Button>
                       <span className="ml-4 mr-2">or</span>
                       <Button

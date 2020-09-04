@@ -28,10 +28,10 @@ class ResetPassword extends Component {
   handleFormSubmit = event => {
     const getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
     const token = getLastItem(this.props.location.pathname)
-    const data = { password: this.state.password }
     axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", {headers: {'Authorization': `Bearer ${token}`}})
     .then((res) => {
         console.log(res)
+        const data = { email: res.data.email, password: this.state.password }
         axios.put("https://portl-dev.herokuapp.com/api/v1/users/" + res.data.id, data)
         alert("Success! Use your new password to sign in")
         history.push("/session/signin")
@@ -40,7 +40,7 @@ class ResetPassword extends Component {
         alert('Fail')
    });
   };
-  
+
   render() {
     let { password } = this.state;
 
@@ -78,7 +78,7 @@ class ResetPassword extends Component {
                         color="primary"
                         type="submit"
                       >
-                        Sign up
+                        Reset Password
                       </Button>
                       <span className="mx-2 ml-5">or</span>
                       <Button
