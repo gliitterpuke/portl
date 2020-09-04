@@ -55,7 +55,7 @@ class SimpleForm extends Component {
 
   handleConfirmationResponse = () => {
     let { application } = this.state;
-    let status = "PROFESSIONAL_ACTION_REQUIRED"
+    let status = user.client_profile.applications[application.id].status
  //   let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.id); 
     this.setState({
       shouldShowConfirmationDialog: false

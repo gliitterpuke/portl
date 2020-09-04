@@ -3,22 +3,31 @@ import { authRoles } from "../../auth/authRoles";
 
 const invoiceRoutes = [
   {
-    path: "/invoice/list",
-    exact: true,
-    component: React.lazy(() => import("./InvoiceList"))
+    path: "/application/:id/file/:id",
+    component: React.lazy(() => import("./FileViewer.jsx")),
   },
   {
-    path: "/invoice/edit/:id",
-    component: React.lazy(() => import("./InvoiceList"))
+    path: "/applications/:id",
+    component: React.lazy(() => import("../Applications/ProfessionalApplication.jsx")),
+    auth: authRoles.professional
   },
   {
-  path: "/application/:id/file/:id",
-  component: React.lazy(() => import("./FileDetails.jsx")),
-},
-{
-  path: "/invoice/:id",
-  component: React.lazy(() => import("./InvoiceDetails"))
-},
+    path: "/payment",
+    component: React.lazy(() => import("./PaymentTest"))
+  },
+  {
+    path: "/checkout",
+    component: React.lazy(() => import("./pages/index.js"))
+  },
+  {
+    path: "/payment2",
+    component: React.lazy(() => import("./Payment2"))
+  },
+  {
+    path: "/applications/:id/files/:id",
+    component: React.lazy(() => import("../Applications/ProfessionalFileViewer.jsx")),
+    auth: authRoles.professional
+  },
 ];
 
 export default invoiceRoutes;

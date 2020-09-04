@@ -22,7 +22,7 @@ import localStorageService from "../../services/localStorageService";
 import { withRouter, Link } from "react-router-dom";
 import axios from "axios";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { getFileById } from "./AppActions";
+import { getFileById } from "../invoice/AppActions";
 import { parseJSON } from "date-fns";
 import { ConfirmationDialog, SimpleCard } from "matx";
 import { ValidatorForm, SelectValidator } from "react-material-ui-form-validator";
@@ -76,10 +76,10 @@ class HigherOrderComponent extends Component {
     };
     
   handeViewClick = fileId => {
-    let secondstate = user.client_profile.applications.find (application => application.id === this.props.location.state);
+    let secondstate = user.professional_profile.applications.find (application => application.id === this.props.location.state);
     console.log(this.props.location)
     let blobstate = secondstate.blobs.find (blobs => blobs.id === fileId)
-    this.props.history.push({ pathname: `${secondstate.id}/file/${fileId}`, state: blobstate });
+    this.props.history.push({ pathname: `${secondstate.id}/files/${fileId}`, state: blobstate });
     getFileById(fileId).then(res => console.log(blobstate));
   };
   // this.props.location.state.some
@@ -90,16 +90,16 @@ class HigherOrderComponent extends Component {
   handleConfirmationResponse = () => {
     let { efile } = this.state;
     let data = { filename: "DELETED", application_id: null }
-    let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state);    
-    let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
+    let state = user.professional_profile.applications.findIndex (application => application.id === this.props.location.state);    
+    let blobs = user.professional_profile.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
     console.log(blobs)
     this.setState({
       shouldShowConfirmationDialog: false
     });
     axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + efile.id, data).then(res => {
-      user.client_profile.applications[state].blobs[blobs] = res.data
+      user.professional_profile.applications[state].blobs[blobs] = res.data
       localStorageService.setItem("auth_user", user)
-      console.log(user.client_profile.applications[state])
+      console.log(user.professional_profile.applications[state])
       this.forceUpdate()
 
     });
@@ -211,7 +211,7 @@ class HigherOrderComponent extends Component {
       console.log(appid)
       return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data)
       .then((response) => {
-        let state = user.client_profile.applications.find (application => application.id === this.props.location.state);
+        let state = user.professional_profile.applications.find (application => application.id === this.props.location.state);
           state.blobs.push(response.data)
           localStorageService.setItem("auth_user", user) 
           console.log(user)
@@ -235,7 +235,7 @@ class HigherOrderComponent extends Component {
     let isEmpty = files.length === 0;
     let user = localStorageService.getItem("auth_user")
     console.log(this.props.location)
-    let state = user.client_profile.applications.find (application => application.id === this.props.location.state);
+    let state = user.professional_profile.applications.find (application => application.id === this.props.location.state);
     
     return (
       <React.Fragment>

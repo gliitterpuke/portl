@@ -46,7 +46,7 @@ class ProfessionalForm extends Component {
     let secondstate = user.professional_profile.applications.find (application => application.id == applicationId);
     console.log(applicationId)
     console.log(secondstate)
-    this.props.history.push({pathname: `/application/${applicationId}`, state: secondstate.id });
+    this.props.history.push({pathname: `/applications/${applicationId}`, state: secondstate.id });
   }
 
   handeDeleteClick = application => {
@@ -117,13 +117,6 @@ class ProfessionalForm extends Component {
         <Grid container spacing={2}>
           <Grid item xs={12} lg={10} md={10}>
             <Typography variant="h6">Applications</Typography>
-          </Grid>
-          <Grid item xs={12} lg={2} md={2}>
-            <Link to={`/application/new`}>
-              <Button color="primary" variant="contained">
-                <span className="pl-2 capitalize">Create New App</span>
-              </Button>
-            </Link>
           </Grid>
         </Grid>
         <br/><br/>

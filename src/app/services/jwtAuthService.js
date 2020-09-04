@@ -43,7 +43,7 @@ class JwtAuthService {
       // Token is valid
       this.setUser(response.data.data);
       console.log(localStorageService.getItem("auth_user"))
-    });
+    })
   };
   
   // Save user to localstorage

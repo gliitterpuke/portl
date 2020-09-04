@@ -23,10 +23,12 @@ const formsRoutes = [
   {
     path: "/application/:id/trv/",
     component: React.lazy(() => import("./UserForm")),
+    auth: authRoles.client
   },
   {
     path: "/application/:id",
     component: React.lazy(() => import("../invoice/Application.jsx")),
+    auth: authRoles.client
   },
 ];
 
