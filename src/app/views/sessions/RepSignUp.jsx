@@ -11,7 +11,17 @@ import { ValidatorForm, TextValidator, SelectValidator } from "react-material-ui
 import { connect } from "react-redux";
 import axios from "axios";
 import localStorageService from "../../services/localStorageService";
+import history from "../../../history"
 
+let user = localStorageService.getItem('auth_user')
+if (!localStorage.getItem("access_token")) {
+}
+else if(user.role === "client") {
+  history.push('/profile')
+}
+else if (user.role === "professional") {
+  history.push('/professional')
+}
 class RepSignUp extends Component {
   state = {
     role: "professional",

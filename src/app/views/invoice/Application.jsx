@@ -27,14 +27,8 @@ import { parseJSON } from "date-fns";
 import { ConfirmationDialog, SimpleCard } from "matx";
 import { ValidatorForm, SelectValidator } from "react-material-ui-form-validator";
 import { withStyles } from "@material-ui/styles"
-import history from "../../../history"
 
 let user = localStorageService.getItem("auth_user")
-
-//if (!localStorage.getItem("access_token")) {
-//  history.push('/session/signin');
-//  console.log(localStorage)
-//  }
 
 const styles = theme => ({
   root: {
@@ -82,7 +76,6 @@ class HigherOrderComponent extends Component {
     this.props.history.push({ pathname: `${secondstate.id}/file/${fileId}`, state: blobstate });
     getFileById(fileId).then(res => console.log(blobstate));
   };
-  // this.props.location.state.some
   handeDeleteClick = efile => {
     this.setState({ shouldShowConfirmationDialog: true, efile });
   };

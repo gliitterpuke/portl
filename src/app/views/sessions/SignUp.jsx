@@ -13,6 +13,15 @@ import axios from "axios";
 import localStorageService from "../../services/localStorageService";
 import history from "history.js";
 
+let user = localStorageService.getItem('auth_user')
+if (!localStorage.getItem("access_token")) {
+}
+else if(user.role === "client") {
+  history.push('/profile')
+}
+else if (user.role === "professional") {
+  history.push('/professional')
+}
 class SignUp extends Component {
   state = {
     role: "",

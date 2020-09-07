@@ -7,7 +7,18 @@ import { withRouter } from "react-router-dom";
 import axios from "axios";
 
 import { resetPassword } from "../../redux/actions/LoginActions";
+import localStorageService from "../../services/localStorageService";
+import history from "../../../history";
 
+let user = localStorageService.getItem('auth_user')
+if (!localStorage.getItem("access_token")) {
+}
+else if(user.role === "client") {
+  history.push('/profile')
+}
+else if (user.role === "professional") {
+  history.push('/professional')
+}
 class ForgotPassword extends Component {
   state = {
     email: "katherinewwang@gmail.com"

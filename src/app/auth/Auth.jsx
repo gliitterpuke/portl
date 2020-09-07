@@ -19,6 +19,7 @@ const checkJwtAuth = async setUserData => {
     history.push('/session/signin');
     console.log(localStorage)
     }
+  else {}
   return user;
 };
 
@@ -32,6 +33,7 @@ const Auth = ({ children, setUserData, getNavigationByUser }) => {
       history.push(getLastItem(window.location.href))
     }
     else if (!localStorage.getItem("access_token")) {
+      console.log(localStorage.getItem("access_token"))
       history.push('/session/signin');
       console.log(localStorage)
       }

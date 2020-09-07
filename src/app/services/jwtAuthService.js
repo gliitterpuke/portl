@@ -62,11 +62,14 @@ class JwtAuthService {
       return response;
     })
      .catch(error => {
+      const {status} = error.response;
       const getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
       if (window.location.href.match("/session/forgot-password")) {
         console.log(getLastItem(window.location.href))
       }
-
+      else if(status === 401) {
+        history.push('/session/signin')
+      };
     });
 }
 

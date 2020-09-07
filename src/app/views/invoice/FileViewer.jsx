@@ -13,23 +13,14 @@ import {
   Typography,
   Fab,
   Grid,
-  Select,
-  MenuItem,
 } from "@material-ui/core";
 import { ValidatorForm } from "react-material-ui-form-validator";
-import { getFileById } from "./AppActions";
 import { parseJSON } from "date-fns";
 import { withRouter } from "react-router-dom";
 import axios from "axios"
 import localStorageService from "../../services/localStorageService"
-import history from "../../../history"
 
 let user = localStorageService.getItem("auth_user")
-
-//if (!localStorage.getItem("access_token")) {
-//  history.push('/session/signin');
-//  console.log(localStorage)
-//  }
 
 class FileViewer extends Component {
   state = {
@@ -87,7 +78,6 @@ class FileViewer extends Component {
     const mime_type = this.state.mime_type
     const filetype = mime_type.match(/[^\/]+$/)[0]
     const key = user.id + "/" + appid + "/" + tags + "." + filetype
-    //axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
     axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
     .then(result => { 
     const win = window.open(`${result.data}`);
@@ -152,9 +142,7 @@ class FileViewer extends Component {
 
   render() {
     let {
-      filename,
       files,
-      fileList,
       isEmpty
     } = this.state;
     let user = localStorageService.getItem("auth_user")

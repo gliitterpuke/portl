@@ -12,9 +12,19 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import localStorageService from "../../services/localStorageService";
+import history from "../../../history"
 
 import { loginWithEmailAndPassword } from "../../redux/actions/LoginActions";
-let user = localStorageService.getItem("auth_user")
+
+let user = localStorageService.getItem('auth_user')
+if (!localStorage.getItem("access_token")) {
+}
+else if(user.role === "client") {
+  history.push('/profile')
+}
+else if (user.role === "professional") {
+  history.push('/professional')
+}
 
 const styles = theme => ({
   wrapper: {
