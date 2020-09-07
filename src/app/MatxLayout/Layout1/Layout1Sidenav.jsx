@@ -34,16 +34,20 @@ const IconSmall = withStyles(() => ({
 
 class Layout1Sidenav extends Component {
   state = {
-    hidden: false
+    hidden: true
   };
 
   componentDidMount() {
     // CLOSE SIDENAV ON ROUTE CHANGE ON MOBILE
     this.unlistenRouteChange = this.props.history.listen((location, action) => {
       if (isMdScreen()) {
-        this.updateSidebarMode({ mode: "compact" });
+        this.updateSidebarMode({ mode: "close" });
       }
     });
+
+    setTimeout(() => {
+      this.setState({ hidden: false });
+    }, 400);
   }
 
   componentWillUnmount() {
@@ -86,6 +90,7 @@ class Layout1Sidenav extends Component {
     // Open Brand component file to replace logo and text
     <Brand>
       <Switch
+        className="sidenav__toggle show-on-pc"
         onChange={this.handleSidenavToggle}
         checked={
           !(this.props.settings.layout1Settings.leftSidebar.mode === "full")
