@@ -4,13 +4,6 @@ import qs from "qs";
 import history from "history.js";
 class JwtAuthService {
 
-  // Dummy user object just for the demo
-  defaultuser = {
-    first_name: "First Name",
-    middle_name: "Middle Name",
-    last_name: "Last Name"
-  }
-
   // You need to send http request with email and passsword to your server in this method
   // Your server will return user object & a Token
   // User should have role property
@@ -26,9 +19,6 @@ class JwtAuthService {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }
-    function sleep (time) {
-      return new Promise((resolve) => setTimeout(resolve, time));
-    }
     return axios.post(
         'https://portl-dev.herokuapp.com/token/',
         qs.stringify(requestBody),
@@ -36,11 +26,6 @@ class JwtAuthService {
     ).then((response) => {
       console.log(response)
       this.setSession(response.data.access_token);
-//      return axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", 
-//      {headers: {Authorization:"Bearer " + localStorage.getItem("access_token")}},
-//      )
-//    }).then(data => {
-      // Token is valid
       this.setUser(response.data.data);
     })
     .then(() => { 
@@ -80,11 +65,8 @@ class JwtAuthService {
       const getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
       if (window.location.href.match("/session/forgot-password")) {
         console.log(getLastItem(window.location.href))
-      //  history.push(getLastItem(window.location.href))
       }
-//      else 
-//       console.log(window.location.href)
-//      history.push('/session/signin')
+
     });
 }
 

@@ -7,12 +7,12 @@ import {
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import localStorageService from "../../../services/localStorageService"
-let user = localStorageService.getItem("auth_user")
+import history from "../../../../history"
 
-//if (!localStorage.getItem("access_token")) {
-//  history.push('/session/signin');
-//  console.log(localStorage)
-//  }
+let user = localStorageService.getItem("auth_user")
+if (user.role === "client") {
+  history.push('/profile')
+}
   
 class ProfessionalViewer extends Component {
   state = {

@@ -11,24 +11,14 @@ import history from "history.js";
 const checkJwtAuth = async setUserData => {
   let user = await jwtAuthService.loginWithToken();
   const getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
+
   if (window.location.href.match("/session/forgot-password")) {
     history.push(getLastItem(window.location.href))
   }
-  let newuser = localStorageService.getItem("auth_user")
-  if (newuser.role === "client") {
-  history.push({
-    pathname: "/profile"
-  })
-  } else if (newuser.role === "professional") {
-  history.push({
-    pathname: "/professional"
-  })
-  }
-//  else if (user) setUserData(user);
-//  console.log(window.location.href)
-//    history.push({
-//      pathname: "/session/signin"
-//    });
+  else if (!localStorage.getItem("access_token")) {
+    history.push('/session/signin');
+    console.log(localStorage)
+    }
   return user;
 };
 

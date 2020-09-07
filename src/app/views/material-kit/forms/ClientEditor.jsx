@@ -15,12 +15,9 @@ import localStorageService from "../../../services/localStorageService";
 import history from "../../../../history"
 
 let user = localStorageService.getItem("auth_user")
-
-//if (!localStorage.getItem("access_token")) {
-//  history.push('/session/signin');
-//  console.log(localStorage)
-//  }
-
+if (user.role === "professional") {
+  history.push('/professional')
+}
 class ClientEditor extends Component {
   componentDidMount() {
     this.setState({ ...this.state })

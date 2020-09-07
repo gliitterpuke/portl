@@ -15,11 +15,9 @@ import localStorageService from "../../../services/localStorageService";
 import history from "../../../../history"
 
 let user = localStorageService.getItem("auth_user")
-
-//if (!localStorage.getItem("access_token")) {
-//  history.push('/session/signin');
-//  console.log(localStorage)
-//  }
+if (user.role === "client") {
+  history.push('/profile')
+}
 
 class ProfessionalEditor extends Component {
   componentDidMount() {
