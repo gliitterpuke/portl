@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 const validationSchema = yup.object({
   MaritalStatus_SectionA_PassportNum_PassportNum: yup.string()
     .required('Passport number required'),
-  MaritalStatus_SectionA_Passport_CountryofIssue_CountryofIssue: yup.string()
+  pcoi: yup.string()
     .required('Country/territory of issue required'),
   MaritalStatus_SectionA_Passport_IssueDate_IssueDate: yup.date()
     .required('Issue Date Required'),
@@ -45,8 +45,32 @@ const validationSchema = yup.object({
     .required('Required'),
   natID_q1_natIDIndicator: yup.string()
     .required('Required'),
+  natID_natIDdocs_DocNum_DocNum: yup.string()
+    .when("natID_q1_natIDIndicator", {
+      is: "Y", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  nidcoi: yup.string()
+    .when("natID_q1_natIDIndicator", {
+      is: "Y", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  natID_natIDdocs_IssueDate_IssueDate: yup.date()
+    .when("natID_q1_natIDIndicator", {
+      is: "Y", then: yup.date().required( "Required" ),
+      otherwise: yup.date() }),
+  natID_natIDdocs_ExpiryDate: yup.date()
+    .when("natID_q1_natIDIndicator", {
+      is: "Y", then: yup.date().required( "Required" ),
+      otherwise: yup.date() }),
   USCard_q1_usCardIndicator: yup.string()
     .required('Required'),
+  USCard_usCarddocs_DocNum_DocNum: yup.string()
+    .when("USCard_q1_usCardIndicato", {
+      is: "Y", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  USCard_usCardDocs_ExpiryDate: yup.date()
+    .when("USCard_q1_usCardIndicato", {
+      is: "Y", then: yup.date().required( "Required" ),
+      otherwise: yup.date() }),
 });
 
 export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -58,12 +82,14 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
       <Formik
         initialValues={formData}
         onSubmit={values => {
-          setFormData(values);
+          var MaritalStatus_SectionA_Passport_CountryofIssue_CountryofIssue = values.pcoi.value
+          var natID_natIDdocs_CountryofIssue_CountryofIssue = values.nidcoi.value
+          setFormData({...values, MaritalStatus_SectionA_Passport_CountryofIssue_CountryofIssue, natID_natIDdocs_CountryofIssue_CountryofIssue});
           direction === 'back' ? prevStep() : nextStep();
         }}
         validationSchema={validationSchema}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, values }) => (
 
       <div className="upload-form m-sm-30">
       <SimpleCard>
@@ -83,7 +109,7 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
         </Grid>
         <Grid item xs={12} md={6}>
             <Field
-              name="MaritalStatus_SectionA_Passport_CountryofIssue_CountryofIssue"
+              name="pcoi"
               component={Autocomplete}
               options={ct}
               getOptionLabel={(option: label) => option.label}
@@ -91,8 +117,8 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
               renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                   {...params}
-                  error={touched['MaritalStatus_SectionA_Passport_CountryofIssue_CountryofIssue'] && !!errors['MaritalStatus_SectionA_Passport_CountryofIssue_CountryofIssue']}
-                  helperText={errors['MaritalStatus_SectionA_Passport_CountryofIssue_CountryofIssue']}
+                  error={touched['pcoi'] && !!errors['pcoi']}
+                  helperText={errors['pcoi']}
                   label="Country/Territory of Issue *"
                   variant="outlined"
                 />
@@ -149,6 +175,7 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
             </div>
         </Grid>
         
+        {values.natID_q1_natIDIndicator === "Y" && (
         <Grid item xs={12} md={6}>
             <Field
               name='natID_natIDdocs_DocNum_DocNum' label='Document Number'
@@ -157,9 +184,11 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
               helperText={touched.natID_natIDdocs_DocNum_DocNum && errors.natID_natIDdocs_DocNum_DocNum}
             />
         </Grid>
+        )}
+        {values.natID_q1_natIDIndicator === "Y" && (
         <Grid item xs={12} md={6}>
             <Field
-              name="natID_natIDdocs_CountryofIssue_CountryofIssue"
+              name="nidcoi"
               component={Autocomplete}
               options={ct}
               getOptionLabel={(option: label) => option.label}
@@ -167,20 +196,31 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
               renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                   {...params}
-                  error={touched['natID_natIDdocs_CountryofIssue_CountryofIssue'] && !!errors['natID_natIDdocs_CountryofIssue_CountryofIssue']}
-                  helperText={errors['natID_natIDdocs_CountryofIssue_CountryofIssue']}
+                  error={touched['nidcoi'] && !!errors['nidcoi']}
+                  helperText={errors['nidcoi']}
                   label="Country/Territory of Issue"
                   variant="outlined"
                 />
               )}
             />
         </Grid>
+        )}
+        {values.natID_q1_natIDIndicator === "Y" && (
         <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Issue Date" name="natID_natIDdocs_IssueDate_IssueDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Issue Date" name="natID_natIDdocs_IssueDate_IssueDate"
+              error={touched.natID_natIDdocs_IssueDate_IssueDate && errors.natID_natIDdocs_IssueDate_IssueDate}
+              helperText={touched.natID_natIDdocs_IssueDate_IssueDate && errors.natID_natIDdocs_IssueDate_IssueDate} />
         </Grid>
+        )}
+        {values.natID_q1_natIDIndicator === "Y" && (
         <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Expiry Date" name="natID_natIDdocs_IssueDate_ExpiryDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Expiry Date" name="natID_natIDdocs_IssueDate_ExpiryDate"
+              error={touched.natID_natIDdocs_IssueDate_ExpiryDate && errors.natID_natIDdocs_IssueDate_ExpiryDate}
+              helperText={touched.natID_natIDdocs_IssueDate_ExpiryDate && errors.natID_natIDdocs_IssueDate_ExpiryDate} />
         </Grid>
+        )}
+
+        
         <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
               US Identification
@@ -198,6 +238,7 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
                 <ErrorMessage name="USCard_q1_usCardIndicator" />
             </div>
         </Grid>
+        {values.USCard_q1_usCardIndicator === "Y" && (
         <Grid item xs={12} md={6}>
             <Field
               name='USCard_usCarddocs_DocNum_DocNum' label='PR Card Number'
@@ -206,9 +247,14 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
               helperText={touched.USCard_usCarddocs_DocNum_DocNum && errors.USCard_usCarddocs_DocNum_DocNum}
             />
         </Grid>
+        )}
+        {values.USCard_q1_usCardIndicator === "Y" && (
         <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Expiry Date" name="USCard_usCardDocs_ExpiryDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Expiry Date" name="USCard_usCardDocs_ExpiryDate" 
+              error={touched.USCard_usCardDocs_ExpiryDate && errors.USCard_usCardDocs_ExpiryDate}
+              helperText={touched.USCard_usCardDocs_ExpiryDate && errors.USCard_usCardDocs_ExpiryDate} />
         </Grid>
+        )}
             <Grid item xs={12}>
             <Button
                 type='submit' variant='contained' color='secondary' 

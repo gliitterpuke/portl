@@ -30,12 +30,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang: yup.string()
-    .required('Required'),
-  MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate: yup.string()
-    .required('Required'),
-  MaritalStatus_SectionA_Languages_LanguageTest: yup.string()
-    .required('Required')
+  // natlang: yup.string()
+  //   .required('Required'),
+  // MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate: yup.string()
+  //   .required('Required'),
+  // MaritalStatus_SectionA_Languages_languages_lov: yup.string()
+  //   .when("MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate", {
+  //     is: "Both", then: yup.string().required( "Required" ),
+  //     otherwise: yup.string() }),
+  // MaritalStatus_SectionA_Languages_LanguageTest: yup.string()
+  //   .required('Required')
 });
 
 export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -47,12 +51,13 @@ export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
       <Formik
         initialValues={formData}
         onSubmit={values => {
-          setFormData(values);
+          var MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang = values.natlang.value
+          setFormData({...values, MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang});
           direction === 'back' ? prevStep() : nextStep();
         }}
         validationSchema={validationSchema}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, values }) => (
       <div className="upload-form m-sm-30">
       <SimpleCard>
       <Form>
@@ -64,7 +69,7 @@ export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
         <Grid item xs={12} md={6}>
             <FormLabel component="legend">Native language/Mother tongue *</FormLabel>
             <Field
-              name="MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang"
+              name="natlang"
               component={Autocomplete}
               options={languages}
               getOptionLabel={(option: label) => option.label}
@@ -72,8 +77,8 @@ export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
               renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                   {...params}
-                  error={touched['MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang'] && !!errors['MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang']}
-                  helperText={errors['MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang']}
+                  error={touched['natlang'] && !!errors['natlang']}
+                  helperText={errors['natlang']}
                   label="Language"
                   variant="outlined"
                 />
@@ -93,6 +98,7 @@ export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
               </Field>
             </FormControl>
           </Grid>
+          {values.MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate === "Both" && (
           <Grid item xs={12} md={8}>
             <Field
               name='MaritalStatus_SectionA_Languages_languages_lov' label="Language you're most comfortable in"
@@ -101,6 +107,7 @@ export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
               helperText={touched.MaritalStatus_SectionA_Languages_languages_lov && errors.MaritalStatus_SectionA_Languages_languages_lov}
             />
           </Grid>
+          )}
           <Grid item xs={12}>
           <FormLabel FormLabel component="legend">Have you taken a test from a designated testing agency to determine your English/French proficiency? *</FormLabel>
             <Field component={RadioGroup} row name="MaritalStatus_SectionA_Languages_LanguageTest">

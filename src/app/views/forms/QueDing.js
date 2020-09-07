@@ -93,6 +93,55 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
     USCard_q1_usCardIndicator,
     USCard_usCarddocs_DocNum_DocNum,
     USCard_usCardDocs_ExpiryDate,
+    ContactInformation_contact_AddressRow1_POBox_POBox,
+    ContactInformation_contact_AddressRow1_Apt_AptUnit,
+    ContactInformation_contact_AddressRow1_StreetNum_StreetNum,
+    ContactInformation_contact_AddressRow1_Streetname_Streetname,
+    ContactInformation_contact_AddressRow2_CityTow_CityTown,
+    cmct,
+    cmps,
+    ContactInformation_contact_AddressRow2_Country_Country,
+    ContactInformation_contact_AddressRow2_ProvinceState_ProvinceState,
+    ContactInformation_contact_AddressRow2_PostalCode_PostalCode,
+    ContactInformation_contact_AddressRow2_District,
+    ContactInformation_contact_SameAsMailingIndicator,
+    ContactInformation_contact_ResidentialAddressRow1_AptUnit_AptUnit,
+    ContactInformation_contact_ResidentialAddressRow1_StreetNum_StreetNum,
+    ContactInformation_contact_ResidentialAddressRow1_StreetName_Streetname,
+    ContactInformation_contact_ResidentialAddressRow1_CityTown_CityTown,
+    ract,
+    raps,
+    ContactInformation_contact_ResidentialAddressRow2_Country_Country,
+    ContactInformation_contact_ResidentialAddressRow2_ProvinceState_ProvinceState,
+    ContactInformation_contact_ResidentialAddressRow2_PostalCode_PostalCode,
+    ContactInformation_contact_ResidentialAddressRow2_District,
+    PhoneLoc,
+    ContactInformation_contact_PhoneNumbers_Phone_Type,
+    ContactInformation_contact_PhoneNumbers_Phone_CanadaUS,
+    ContactInformation_contact_PhoneNumbers_Phone_Other,
+    ContactInformation_contact_PhoneNumbers_Phone_NumberExt,
+    ContactInformation_contact_PhoneNumbers_Phone_NumberCountry,
+    ANumber,
+    ContactInformation_contact_PhoneNumbers_Phone_ActualNumber,
+    ContactInformation_contact_PhoneNumbers_Phone_IntlNumber_IntlNumber,
+    PhoneLoc2,
+    ContactInformation_contact_PhoneNumbers_AltPhone_Type,
+    ContactInformation_contact_PhoneNumbers_AltPhone_CanadaUS,
+    ContactInformation_contact_PhoneNumbers_AltPhone_Other,
+    ContactInformation_contact_PhoneNumbers_AltPhone_NumberExt,
+    ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry,
+    AANumber,
+    ContactInformation_contact_PhoneNumbers_AltPhone_ActualNumber,
+    ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber,
+    FaxLoc,
+    ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_CanadaUS,
+    ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_Other,
+    ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberExt,
+    ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry,
+    FANumber,
+    ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_ActualNumber,
+    ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_IntlNumber_IntlNumber,
+    ContactInformation_contact_PhoneNumbers_FaxEmail_Email,
     DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit,
     DetailsOfVisit_PurposeRow1_Other,
     DetailsOfVisit_PurposeRow1_HowLongStay_FromDate,
@@ -233,6 +282,45 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
   USCard_q1_usCardIndicator,
   USCard_usCarddocs_DocNum_DocNum,
   USCard_usCardDocs_ExpiryDate,
+  ContactInformation_contact_AddressRow1_POBox_POBox,
+  ContactInformation_contact_AddressRow1_Apt_AptUnit,
+  ContactInformation_contact_AddressRow1_StreetNum_StreetNum,
+  ContactInformation_contact_AddressRow1_Streetname_Streetname,
+  ContactInformation_contact_AddressRow2_CityTow_CityTown,
+  ContactInformation_contact_AddressRow2_Country_Country,
+  ContactInformation_contact_AddressRow2_ProvinceState_ProvinceState,
+  ContactInformation_contact_AddressRow2_PostalCode_PostalCode,
+  ContactInformation_contact_AddressRow2_District,
+  ContactInformation_contact_SameAsMailingIndicator,
+  ContactInformation_contact_ResidentialAddressRow1_AptUnit_AptUnit,
+  ContactInformation_contact_ResidentialAddressRow1_StreetNum_StreetNum,
+  ContactInformation_contact_ResidentialAddressRow1_StreetName_Streetname,
+  ContactInformation_contact_ResidentialAddressRow1_CityTown_CityTown,
+  ContactInformation_contact_ResidentialAddressRow2_Country_Country,
+  ContactInformation_contact_ResidentialAddressRow2_ProvinceState_ProvinceState,
+  ContactInformation_contact_ResidentialAddressRow2_PostalCode_PostalCode,
+  ContactInformation_contact_ResidentialAddressRow2_District,
+  ContactInformation_contact_PhoneNumbers_Phone_Type,
+  ContactInformation_contact_PhoneNumbers_Phone_CanadaUS,
+  ContactInformation_contact_PhoneNumbers_Phone_Other,
+  ContactInformation_contact_PhoneNumbers_Phone_NumberExt,
+  ContactInformation_contact_PhoneNumbers_Phone_NumberCountry,
+  ContactInformation_contact_PhoneNumbers_Phone_ActualNumber,
+  ContactInformation_contact_PhoneNumbers_Phone_IntlNumber_IntlNumber,
+  ContactInformation_contact_PhoneNumbers_AltPhone_Type,
+  ContactInformation_contact_PhoneNumbers_AltPhone_CanadaUS,
+  ContactInformation_contact_PhoneNumbers_AltPhone_Other,
+  ContactInformation_contact_PhoneNumbers_AltPhone_NumberExt,
+  ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry,
+  ContactInformation_contact_PhoneNumbers_AltPhone_ActualNumber,
+  ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber,
+  ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_CanadaUS,
+  ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_Other,
+  ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberExt,
+  ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry,
+  ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_ActualNumber,
+  ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_IntlNumber_IntlNumber,
+  ContactInformation_contact_PhoneNumbers_FaxEmail_Email,
   DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit,
   DetailsOfVisit_PurposeRow1_Other,
   DetailsOfVisit_PurposeRow1_HowLongStay_FromDate,
@@ -301,7 +389,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
     //axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
-    axios.post("https://portl-dev.herokuapp.com/api/v1/forms/trv/" + currentApp, test, auth)
+    axios.post("https://portl-dev.herokuapp.com/api/v1/forms/trv/" + currentApp.id, test, auth)
       .then(result => { 
       //console.log(currentApp)
       return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", result.data, auth)
@@ -655,7 +743,183 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
           </Grid>
           )}
 
-          {/* WHERE SIX WILL GO */}
+          <br />
+          <Grid item xs={12} lg={12}>
+            <h4>Current Mailing Address</h4>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>P.O. Box</h5> {ContactInformation_contact_AddressRow1_POBox_POBox}
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Apt/Unit</h5> {ContactInformation_contact_AddressRow1_Apt_AptUnit}
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Street Number</h5> {ContactInformation_contact_AddressRow1_StreetNum_StreetNum}
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Street Name</h5> {ContactInformation_contact_AddressRow1_Streetname_Streetname}
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>City/Town</h5> {ContactInformation_contact_AddressRow2_CityTow_CityTown}
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Country</h5> {cmct.label}
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Province/State</h5> {cmps.label}
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Postal Code</h5> {ContactInformation_contact_AddressRow2_PostalCode_PostalCode}
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>District</h5> {ContactInformation_contact_AddressRow2_District}
+          </Grid>
+
+          <br />
+          <Grid item xs={12} lg={12}>
+            <h4>Residential Address</h4>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Same as Mailing Address?</h5> {ContactInformation_contact_SameAsMailingIndicator}
+          </Grid>
+          {ContactInformation_contact_SameAsMailingIndicator === "N" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Apt/Unit</h5> {ContactInformation_contact_ResidentialAddressRow1_AptUnit_AptUnit}
+          </Grid>
+          )}
+          {ContactInformation_contact_SameAsMailingIndicator === "N" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Street Number</h5> {ContactInformation_contact_ResidentialAddressRow1_StreetNum_StreetNum}
+          </Grid>
+          )}
+          {ContactInformation_contact_SameAsMailingIndicator === "N" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Street Name</h5> {ContactInformation_contact_ResidentialAddressRow1_StreetName_Streetname}
+          </Grid>
+          )}
+          {ContactInformation_contact_SameAsMailingIndicator === "N" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>City/Town</h5> {ContactInformation_contact_ResidentialAddressRow1_CityTown_CityTown}
+          </Grid>
+          )}
+          {ContactInformation_contact_SameAsMailingIndicator === "N" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Country</h5> {ract.label}
+          </Grid>
+          )}
+          {ContactInformation_contact_SameAsMailingIndicator === "N" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Province/State</h5> {raps.label}
+          </Grid>
+          )}
+          {ContactInformation_contact_SameAsMailingIndicator === "N" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Postal Code</h5> {ContactInformation_contact_ResidentialAddressRow2_PostalCode_PostalCode}
+          </Grid>
+          )}
+          {ContactInformation_contact_SameAsMailingIndicator === "N" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>District</h5> {ContactInformation_contact_ResidentialAddressRow2_District}
+          </Grid>
+          )}
+
+          <br />
+          <Grid item xs={12} lg={12}>
+            <h4>Phone Number</h4>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Phone Type</h5> {ContactInformation_contact_PhoneNumbers_Phone_Type}
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Area</h5> {PhoneLoc.replace('CU', 'Can/US')}
+          </Grid>
+          {PhoneLoc === "CU" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Country Code</h5> {ContactInformation_contact_PhoneNumbers_Phone_NumberCountry}
+          </Grid>
+          )}
+          {PhoneLoc === "CU" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Number</h5> {ANumber}
+          </Grid>
+          )}
+          {PhoneLoc === "CU" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Extension</h5> {ContactInformation_contact_PhoneNumbers_Phone_NumberExt}
+          </Grid>
+          )}
+          {PhoneLoc === "Other" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Number</h5> {ContactInformation_contact_PhoneNumbers_Phone_IntlNumber_IntlNumber}
+          </Grid>
+          )}
+
+          <br />
+          <Grid item xs={12} lg={12}>
+            <h4>Alternative Phone Number</h4>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Phone Type</h5> {ContactInformation_contact_PhoneNumbers_AltPhone_Type}
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Area</h5> {PhoneLoc2.replace('CU', 'Can/US')}
+          </Grid>
+          {PhoneLoc2 === "CU" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Country Code</h5> {ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry}
+          </Grid>
+          )}
+          {PhoneLoc2 === "CU" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Number</h5> {AANumber}
+          </Grid>
+          )}
+          {PhoneLoc2 === "CU" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Extension</h5> {ContactInformation_contact_PhoneNumbers_AltPhone_NumberExt}
+          </Grid>
+          )}
+          {PhoneLoc2 === "Other" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Number</h5> {ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber}
+          </Grid>
+          )}  
+
+          <br />
+          <Grid item xs={12} lg={12}>
+            <h4>Fax</h4>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Area</h5> {FaxLoc.replace('CU', 'Can/US')}
+          </Grid>
+          {FaxLoc === "CU" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Country Code</h5> {ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry}
+          </Grid>
+          )}
+          {FaxLoc === "CU" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Number</h5> {FANumber}
+          </Grid>
+          )}
+          {FaxLoc === "CU" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Extension</h5> {ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberExt}
+          </Grid>
+          )}
+          {FaxLoc === "Other" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Number</h5> {ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_IntlNumber_IntlNumber}
+          </Grid>
+          )}  
+
+          <br />
+          <Grid item xs={12} lg={12}>
+            <h4>Email</h4>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Email</h5> {ContactInformation_contact_PhoneNumbers_FaxEmail_Email}
+          </Grid>
 
           <br />
           <Grid item xs={12} lg={12}>

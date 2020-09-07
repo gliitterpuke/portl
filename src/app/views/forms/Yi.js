@@ -31,7 +31,54 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-
+  PersonalDetails_ServiceIn_ServiceIn: yup.string()	
+    .required('Required'),	
+  PersonalDetails_VisaType_VisaType: yup.string()	
+    .required('Required'),	
+  PersonalDetails_Name_GivenName: yup.string()	
+    .required('First Name is required')	
+    .max(20),	
+  PersonalDetails_Name_FamilyName: yup.string()	
+    .required('Last Name is required')	
+    .max(20),	
+  PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator: yup.string()	
+    .required('Required'),
+  PersonalDetails_AliasName_AliasFamilyName: yup.string()
+    .when("PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator", {
+      is: "Y",
+      then: yup.string().required(
+        "Required"
+      ),
+      otherwise: yup.string()
+    }),
+  PersonalDetails_AliasName_AliasGivenName: yup.string()
+    .when("PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator", {
+      is: "Y",
+      then: yup.string().required(
+        "Required"
+      ),
+      otherwise: yup.string()
+    }),
+  PersonalDetails_Sex_Sex: yup.string()	
+    .required('Gender required'),	
+  PersonalDetails_DOBYear: yup.number()	
+    .typeError('Must be between 1900-2020')	
+    .min(1900).max(2020)	
+    .required('Year required'),	
+  PersonalDetails_DOBMonth: yup.number()	
+    .typeError('Must be a numeric month')	
+    .min(1).max(12)	
+    .required('Month required'),	
+  PersonalDetails_DOBDay: yup.number()	
+    .typeError('Must be a day of the month')	
+    .min(1).max(31)	
+    .required('Day required'),	
+  PersonalDetails_PlaceBirthCity: yup.string()	
+    .required('City/Town is required'),	
+  PBC: yup.string()	
+    .required('Country of birth required'),	
+  citizenship: yup.string()	
+    .required('Required'),	
 });
 
 export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
@@ -40,31 +87,29 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
   return (
     <>
       <Formik
-        initialValues={formData, currentApp}
+        initialValues={formData}
         onSubmit={values => {
-          setFormData(values);
-          alert(JSON.stringify(currentApp));
+          var PersonalDetails_PlaceBirthCountry = values.PBC.value
+          var PersonalDetails_Citizenship_Citizenship = values.citizenship.value
+          setFormData({...values, PersonalDetails_PlaceBirthCountry, PersonalDetails_Citizenship_Citizenship});
+          alert(PersonalDetails_Citizenship_Citizenship);
           console.log(JSON.stringify(currentApp))
-          let user = localStorageService.getItem("auth_user")
-          const auth = {
-            headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
-          }
-          //axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
-          axios.post(`https://portl-dev.herokuapp.com/api/v1/forms/imm5257/${user.client_profile.id}/` + currentApp.id, formData, auth)
-            .then(result => { 
+ //         let user = localStorageService.getItem("auth_user")
+ //         axios.post(`https://portl-dev.herokuapp.com/api/v1/forms/imm5257/${user.client_profile.id}/` + currentApp.id, formData, auth)
+ //           .then(result => { 
             //console.log(currentApp)
-            return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", result.data, auth)
-            .then((response) => {
-              user.client_profile.applications.push(response.data)
-              localStorageService.setItem("auth_user", user)
-              return response;
-            });
-          })
+ //           return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", result.data, auth)
+ //           .then((response) => {
+ //             user.client_profile.applications.push(response.data)
+ //             localStorageService.setItem("auth_user", user)
+ //             return response;
+ //           });
+ //         })
           nextStep();
         }}
         validationSchema={validationSchema}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, values }) => (
       <div className="upload-form m-sm-30">
       <SimpleCard>
       <Form>
@@ -116,7 +161,7 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
           </Grid>
           <Grid item xs={12}>
             <FormLabel component="legend">Have you ever used another name? *</FormLabel>
-            <Field component={RadioGroup} name="PersonalDetails_AliasName_AliasNameIndicator" row >
+            <Field component={RadioGroup} name="PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator" row >
               <FormControlLabel
                 value="Y" control={<Radio />} label="Yes"
               />
@@ -125,21 +170,29 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
               />
             </Field>
             <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
-                <ErrorMessage name="PersonalDetails_AliasName_AliasNameIndicator" />
+                <ErrorMessage name="PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator" />
             </div>    
           </Grid>
+          {values.PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator == "Y" && (
           <Grid item xs={12} md={6}>
             <Field
-              name='PersonalDetails_AliasName_AliasFamilyName' label='Previous Last Name'
+              name='PersonalDetails_AliasName_AliasFamilyName' label='Previous Last Name *'
               margin='normal' as={TextField} fullWidth
+              error={touched.PersonalDetails_AliasName_AliasFamilyName && errors.PersonalDetails_AliasName_AliasFamilyName}
+              helperText={touched.PersonalDetails_AliasName_AliasFamilyName && errors.PersonalDetails_AliasName_AliasFamilyName}
             />
           </Grid>
+          )}
+          {values.PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator == "Y" && (
           <Grid item xs={12} md={6}>
             <Field
-              name='PersonalDetails_AliasName_AliasGivenName' label='Previous First Name'
+              name='PersonalDetails_AliasName_AliasGivenName' label='Previous First Name *'
               margin='normal' as={TextField} fullWidth
+              error={touched.PersonalDetails_AliasName_AliasGivenName && errors.PersonalDetails_AliasName_AliasGivenName}
+              helperText={touched.PersonalDetails_AliasName_AliasGivenName && errors.PersonalDetails_AliasName_AliasGivenName}
             />
           </Grid>
+          )}
           <Grid item xs={12}>
             <FormLabel FormLabel component="legend">Sex *</FormLabel>
             <Field component={RadioGroup} row name="PersonalDetails_Sex_Sex">
@@ -191,7 +244,7 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
           </Grid>
             <Grid item xs={12} md={6}>
             <Field
-              name="PersonalDetails_PlaceBirthCountry"
+              name="PBC"
               component={Autocomplete}
               options={countries}
               getOptionLabel={(option: label) => option.label}
@@ -199,8 +252,8 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
               renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                   {...params}
-                  error={touched['PersonalDetails_PlaceBirthCountry'] && !!errors['PersonalDetails_PlaceBirthCountry']}
-                  helperText={errors['PersonalDetails_PlaceBirthCountry']}
+                  error={touched['PBC'] && !!errors['PBC']}
+                  helperText={errors['PBC']}
                   label="Country of Birth *"
                   variant="outlined"
                 />
@@ -209,7 +262,7 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <Field
-                name="PersonalDetails_Citizenship_Citizenship"
+                name="citizenship"
                 component={Autocomplete}
                 options={citizenship}
                 getOptionLabel={(option: label) => option.label}
@@ -217,8 +270,8 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
                 renderInput={(params: AutocompleteRenderInputParams) => (
                   <TextField
                     {...params}
-                    error={touched['PersonalDetails_Citizenship_Citizenship'] && !!errors['PersonalDetails_Citizenship_Citizenship']}
-                    helperText={errors['PersonalDetails_Citizenship_Citizenship']}
+                    error={touched['citizenship'] && !!errors['citizenship']}
+                    helperText={errors['citizenship']}
                     label="Citizenship *"
                     variant="outlined"
                   />

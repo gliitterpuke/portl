@@ -26,6 +26,10 @@ const useStyles = makeStyles(theme => ({
 const validationSchema = yup.object({
   DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit: yup.string()
     .required('Purpose of visit required'),
+  DetailsOfVisit_PurposeRow1_Other: yup.string()
+    .when("DetailsOfVisit_PurposeRow1_PurposeOfVisit", {
+      is: "03", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
   DetailsOfVisit_PurposeRow1_HowLongStay_FromDate: yup.date()
     .required('From date required'),
   DetailsOfVisit_PurposeRow1_HowLongStay_ToDate: yup.date()
@@ -57,15 +61,19 @@ export const Qi = ({ formData, setFormData, nextStep, prevStep }) => {
         }}
         validationSchema={validationSchema}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, values }) => (
 
       <div className="upload-form m-sm-30">
       <SimpleCard>
       <Form>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Typography variant="h6" gutterBottom>
+      <Grid container spacing={6}>
+        <Grid item xs={12} md={6}>
+          <Typography variant="h6" gutterBottom>
               Details of Visit
-        </Typography>
+          </Typography>
+          </Grid>
+        </Grid>
         <Grid container spacing={6}>
         <Grid item xs={12} md={6}>
             <FormControl>
@@ -85,6 +93,7 @@ export const Qi = ({ formData, setFormData, nextStep, prevStep }) => {
               </Field>
             </FormControl>
         </Grid>
+        {values.DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit === "03" && (
         <Grid item xs={12} md={6}>
             <Field
               name='DetailsOfVisit_PurposeRow1_Other' label='Other'
@@ -93,6 +102,7 @@ export const Qi = ({ formData, setFormData, nextStep, prevStep }) => {
               helperText={touched.DetailsOfVisit_PurposeRow1_Other && errors.DetailsOfVisit_PurposeRow1_Other}
             />
         </Grid>
+        )}
         <Grid item xs={12}>
           <Typography variant="h6">Trip Dates</Typography>
         </Grid>

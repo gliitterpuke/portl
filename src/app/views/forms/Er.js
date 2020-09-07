@@ -33,14 +33,85 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  PersonalDetails_CurrentCOR_Row2_Country: yup.string()
+  ctr: yup.string()
     .required('Required'),
   PersonalDetails_CurrentCOR_Row2_Status: yup.string()
     .required('Required'),
+  PersonalDetails_CurrentCOR_Row2_Other: yup.string()
+    .when("PersonalDetails_CurrentCOR_Row2_Status", {
+      is: "06", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+      // double check the field below
+  PersonalDetails_CurrentCOR_Row2_FromDate: yup.date()
+    .required( "Required" ),
   PersonalDetails_PCRIndicator: yup.string()
     .required('Required'),
+  pct: yup.string()
+    .when("PersonalDetails_PCRIndicator", {
+      is: "Y", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  PersonalDetails_PreviousCOR_Row2_Status: yup.string()
+    .when("PersonalDetails_PCRIndicator", {
+      is: "Y", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  PersonalDetails_PreviousCOR_Row2_Other: yup.string()
+    .when("PersonalDetails_PreviousCOR_Row2_Status", {
+      is: "06", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  PersonalDetails_PreviousCOR_Row2_FromDate: yup.date()
+    .when("PersonalDetails_PCRIndicator", {
+      is: "Y", then: yup.date().required( "Required" ),
+      otherwise: yup.date() }),
+  PersonalDetails_PreviousCOR_Row2_ToDate: yup.date()
+    .when("PersonalDetails_PCRIndicator", {
+      is: "Y", then: yup.date().required( "Required" ),
+      otherwise: yup.date() }),
+  PCR2: yup.string()
+    .when("PersonalDetails_PCRIndicator", {
+      is: "Y", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  pct2: yup.string()
+    .when("PCR2", {
+      is: "Y", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  PersonalDetails_PreviousCOR_Row3_Status: yup.string()
+    .when("PCR2", {
+      is: "Y", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  PersonalDetails_PreviousCOR_Row3_Other: yup.string()
+    .when("PersonalDetails_PreviousCOR_Row3_Status", {
+      is: "06", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  PersonalDetails_PreviousCOR_Row3_FromDate: yup.date()
+    .when("PCR2", {
+      is: "Y", then: yup.date().required( "Required" ),
+      otherwise: yup.date() }),
+  PersonalDetails_PreviousCOR_Row3_ToDate: yup.date()
+    .when("PCR2", {
+      is: "Y", then: yup.date().required( "Required" ),
+      otherwise: yup.date() }),
   PersonalDetails_SameAsCORIndicator: yup.string()
     .required('Required'),
+  cwa: yup.string()
+    .when("PersonalDetails_SameAsCORIndicator", {
+      is: "N", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  PersonalDetails_CountryWhereApplying_Row2_Status: yup.string()
+    .when("PersonalDetails_SameAsCORIndicator", {
+      is: "N", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  PersonalDetails_CountryWhereApplying_Row2_Other: yup.string()
+    .when("PersonalDetails_CountryWhereApplying_Row2_Status", {
+      is: "06", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  PersonalDetails_CountryWhereApplying_Row2_FromDate: yup.date()
+    .when("PersonalDetails_SameAsCORIndicator", {
+      is: "N", then: yup.date().required( "Required" ),
+      otherwise: yup.date() }),
+  PersonalDetails_CountryWhereApplying_Row2_ToDate: yup.date()
+    .when("PersonalDetails_SameAsCORIndicator", {
+      is: "N", then: yup.date().required( "Required" ),
+      otherwise: yup.date() }),
 });
 
 export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) => {
@@ -52,12 +123,17 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
       <Formik
         initialValues={formData}
         onSubmit={values => {
-          setFormData(values);
+          var PersonalDetails_CurrentCOR_Row2_Country = values.ctr.value
+          var PersonalDetails_PreviousCOR_Row2_Country = values.pct.value
+          var PersonalDetails_PreviousCOR_Row3_Country = values.pct2.value
+          var PersonalDetails_CountryWhereApplying_Row2_Country = values.cwa.value
+          setFormData({...values, PersonalDetails_CurrentCOR_Row2_Country, PersonalDetails_PreviousCOR_Row2_Country, 
+            PersonalDetails_PreviousCOR_Row3_Country, PersonalDetails_CountryWhereApplying_Row2_Country});
           direction === 'back' ? prevStep() : nextStep();
         }}
         validationSchema={validationSchema}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, values }) => (
       <div className="upload-form m-sm-30">
       <SimpleCard>
       <Form>
@@ -68,7 +144,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
         <Grid container spacing={6}>
           <Grid item xs={12} md={6}>
             <Field
-              name="PersonalDetails_CurrentCOR_Row2_Country"
+              name="ctr"
               component={Autocomplete}
               options={countries}
               getOptionLabel={(option: any) => option.label}
@@ -76,8 +152,8 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
               renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                   {...params}
-                  error={touched['PersonalDetails_CurrentCOR_Row2_Country'] && !!errors['PersonalDetails_CurrentCOR_Row2_Country']}
-                  helperText={errors['PersonalDetails_CurrentCOR_Row2_Country']}
+                  error={touched['ctr'] && !!errors['ctr']}
+                  helperText={errors['ctr']}
                   label="Country/Territory of Residence *"
                   variant="outlined"
                 />
@@ -100,19 +176,28 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
                 <MenuItem value={'08'}>Refugee Claimant</MenuItem>
                 <MenuItem value={'09'}>Foreign National</MenuItem>
               </Field>
+              <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="PersonalDetails_CurrentCOR_Row2_Status" />
+              </div>
             </FormControl>
           </Grid>
+          {values.PersonalDetails_CurrentCOR_Row2_Status === "06" && (
           <Grid item xs={12} md={8}>
             <Field
               name='PersonalDetails_CurrentCOR_Row2_Other' label='Other'
               margin='normal' as={TextField} fullWidth
             />
           </Grid>
+          )}
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_CurrentCOR_Row2_FromDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_CurrentCOR_Row2_FromDate"
+              error={touched.PersonalDetails_CurrentCOR_Row2_FromDate && errors.PersonalDetails_CurrentCOR_Row2_FromDate}
+              helperText={touched.PersonalDetails_CurrentCOR_Row2_FromDate && errors.PersonalDetails_CurrentCOR_Row2_FromDate} />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_CurrentCOR_Row2_ToDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_CurrentCOR_Row2_ToDate"
+              error={touched.PersonalDetails_CurrentCOR_Row2_ToDate && errors.PersonalDetails_CurrentCOR_Row2_ToDate}
+              helperText={touched.PersonalDetails_CurrentCOR_Row2_ToDate && errors.PersonalDetails_CurrentCOR_Row2_ToDate} />
           </Grid>
 
           <Grid item xs={12}>
@@ -132,9 +217,10 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
                 <ErrorMessage name="PersonalDetails_PCRIndicator" />
             </div>
           </Grid>
+          {values.PersonalDetails_PCRIndicator === "Y" && (
           <Grid item xs={12} md={6}>
             <Field
-              name="PersonalDetails_PreviousCOR_Row2_Country"
+              name="pct"
               component={Autocomplete}
               options={countries}
               getOptionLabel={(option: label) => option.label}
@@ -142,14 +228,16 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
               renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                   {...params}
-                  error={touched['PersonalDetails_PreviousCOR_Row2_Country'] && !!errors['PersonalDetails_PreviousCOR_Row2_Country']}
-                  helperText={errors['PersonalDetails_PreviousCOR_Row2_Country']}
+                  error={touched['pct'] && !!errors['pct']}
+                  helperText={errors['pct']}
                   label="Previous Country"
                   variant="outlined"
                 />
               )}
             />
           </Grid>
+          )}
+          {values.PersonalDetails_PCRIndicator === "Y" && (
           <Grid item xs={12} md={6}>
             <FormControl>
               <InputLabel>Status</InputLabel>
@@ -166,7 +254,12 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
                 <MenuItem value={'09'}>Foreign National</MenuItem>
               </Field>
             </FormControl>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="PersonalDetails_PreviousCOR_Row2_Status" />
+            </div>
           </Grid>
+          )}
+          {values.PersonalDetails_PreviousCOR_Row2_Status === "06" && (
           <Grid item xs={12} md={8}>
             <Field
               name='PersonalDetails_PreviousCOR_Row2_Other' label='Other'
@@ -175,16 +268,40 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
               helperText={touched.PersonalDetails_PreviousCOR_Row2_Other && errors.PersonalDetails_PreviousCOR_Row2_Other}
             />
           </Grid>
+          )}
+          {values.PersonalDetails_PCRIndicator === "Y" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_PreviousCOR_Row2_FromDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_PreviousCOR_Row2_FromDate"
+              error={touched.PersonalDetails_PreviousCOR_Row2_FromDate && errors.PersonalDetails_PreviousCOR_Row2_FromDate}
+              helperText={touched.PersonalDetails_PreviousCOR_Row2_FromDate && errors.PersonalDetails_PreviousCOR_Row2_FromDate} />
           </Grid>
+          )}
+          {values.PersonalDetails_PCRIndicator === "Y" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_PreviousCOR_Row2_ToDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_PreviousCOR_Row2_ToDate"
+              error={touched.PersonalDetails_PreviousCOR_Row2_ToDate && errors.PersonalDetails_PreviousCOR_Row2_ToDate}
+              helperText={touched.PersonalDetails_PreviousCOR_Row2_ToDate && errors.PersonalDetails_PreviousCOR_Row2_ToDate} />
           </Grid>
+          )}
 
+          {values.PersonalDetails_PCRIndicator === "Y" && (
+          <Grid item xs={12}>
+            <FormLabel FormLabel component="legend">Do you have another country you'd wish to list?</FormLabel>
+            <Field component={RadioGroup} row name="PCR2">
+              <FormControlLabel
+                value="Y" control={<Radio />} label="Yes" />
+              <FormControlLabel
+                value="N" control={<Radio />} label="No" />
+            </Field>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="PCR2" />
+            </div>
+          </Grid>
+          )}
+          {values.PCR2 === "Y" && (
           <Grid item xs={12} md={6}>
             <Field
-              name="PersonalDetails_PreviousCOR_Row3_Country"
+              name="pct2"
               component={Autocomplete}
               options={countries}
               getOptionLabel={(option: label) => option.label}
@@ -192,14 +309,16 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
               renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                   {...params}
-                  error={touched['PersonalDetails_PreviousCOR_Row3_Country'] && !!errors['PersonalDetails_PreviousCOR_Row3_Country']}
-                  helperText={errors['PersonalDetails_PreviousCOR_Row3_Country']}
+                  error={touched['pct2'] && !!errors['pct2']}
+                  helperText={errors['pct2']}
                   label="Previous Country"
                   variant="outlined"
                 />
               )}
             />
           </Grid>
+          )}
+          {values.PCR2 === "Y" && (
           <Grid item xs={12} md={6}>
             <FormControl>
               <InputLabel>Status</InputLabel>
@@ -216,7 +335,12 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
                 <MenuItem value={'09'}>Foreign National</MenuItem>
               </Field>
             </FormControl>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="PersonalDetails_PreviousCOR_Row3_Status" />
+            </div>
           </Grid>
+          )}
+          {values.PersonalDetails_PreviousCOR_Row3_Status === "06" && (
           <Grid item xs={12} md={8}>
             <Field
               name='PersonalDetails_PreviousCOR_Row3_Other' label='Other'
@@ -225,12 +349,21 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
               helperText={touched.PersonalDetails_PreviousCOR_Row3_Other && errors.PersonalDetails_PreviousCOR_Row3_Other}
             />
           </Grid>
+          )}
+          {values.PCR2 === "Y" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_PreviousCOR_Row3_FromDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_PreviousCOR_Row3_FromDate"              
+              error={touched.PersonalDetails_PreviousCOR_Row3_FromDate && errors.PersonalDetails_PreviousCOR_Row3_FromDate}
+              helperText={touched.PersonalDetails_PreviousCOR_Row3_FromDate && errors.PersonalDetails_PreviousCOR_Row3_FromDate} />
           </Grid>
+          )}
+          {values.PCR2 === "Y" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_PreviousCOR_Row3_ToDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_PreviousCOR_Row3_ToDate"
+              error={touched.PersonalDetails_PreviousCOR_Row3_ToDate && errors.PersonalDetails_PreviousCOR_Row3_ToDate}
+              helperText={touched.PersonalDetails_PreviousCOR_Row3_ToDate && errors.PersonalDetails_PreviousCOR_Row3_ToDate} />
           </Grid>
+          )}
 
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
@@ -249,9 +382,10 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
                 <ErrorMessage name="PersonalDetails_SameAsCORIndicator" />
             </div>
           </Grid>
+          {values.PersonalDetails_SameAsCORIndicator === "N" && (
           <Grid item xs={12} md={6}>
             <Field
-              name="PersonalDetails_CountryWhereApplying_Row2_Country"
+              name="cwa"
               component={Autocomplete}
               options={countries}
               getOptionLabel={(option: label) => option.label}
@@ -259,14 +393,16 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
               renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                   {...params}
-                  error={touched['PersonalDetails_CountryWhereApplying_Row2_Country'] && !!errors['PersonalDetails_CountryWhereApplying_Row2_Country']}
-                  helperText={errors['PersonalDetails_CountryWhereApplying_Row2_Country']}
+                  error={touched['cwa'] && !!errors['cwa']}
+                  helperText={errors['cwa']}
                   label="Previous Country"
                   variant="outlined"
                 />
               )}
             />
           </Grid>
+          )}
+          {values.PersonalDetails_SameAsCORIndicator === "N" && (
           <Grid item xs={12} md={6}>
             <FormControl>
               <InputLabel>Status</InputLabel>
@@ -283,21 +419,34 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
                 <MenuItem value={'09'}>Foreign National</MenuItem>
               </Field>
             </FormControl>
+            <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="PersonalDetails_CountryWhereApplying_Row2_Status" />
+            </div>
           </Grid>
+          )}
+          {values.PersonalDetails_CountryWhereApplying_Row2_Status === "06" && (
           <Grid item xs={12} md={8}>
             <Field
-              name='PersonalDetails_CountryWhereApplying_Row2_Other' label='Other'
+              name='PersonalDetails_CountryWhereApplying_Row2_Other' label='Other *'
               margin='normal' as={TextField} fullWidth
-              error={touched.PersonalDetails_PreviousCOR_Row2_Other && errors.PersonalDetails_PreviousCOR_Row2_Other}
-              helperText={touched.PersonalDetails_PreviousCOR_Row2_Other && errors.PersonalDetails_PreviousCOR_Row2_Other}
+              error={touched.PersonalDetails_CountryWhereApplying_Row2_Other && errors.ersonalDetails_CountryWhereApplying_Row2_Other}
+              helperText={touched.PersonalDetails_CountryWhereApplying_Row2_Other && errors.ersonalDetails_CountryWhereApplying_Row2_Other}
             />
           </Grid>
+          )}
+          {values.PersonalDetails_SameAsCORIndicator === "N" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_CountryWhereApplying_Row2_FromDate" />
-          </Grid>
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_CountryWhereApplying_Row2_FromDate"
+              error={touched.PersonalDetails_CountryWhereApplying_Row2_FromDate && errors.PersonalDetails_CountryWhereApplying_Row2_FromDate}
+              helperText={touched.PersonalDetails_CountryWhereApplying_Row2_FromDate && errors.PersonalDetails_CountryWhereApplying_Row2_FromDate} />
+          </Grid>)}
+          {values.PersonalDetails_SameAsCORIndicator === "N" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_CountryWhereApplying_Row2_ToDate" />
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_CountryWhereApplying_Row2_ToDate"
+              error={touched.PersonalDetails_CountryWhereApplying_Row2_ToDate && errors.PersonalDetails_CountryWhereApplying_Row2_ToDate}
+              helperText={touched.PersonalDetails_CountryWhereApplying_Row2_ToDate && errors.PersonalDetails_CountryWhereApplying_Row2_ToDate} />
           </Grid>
+          )}
           <Grid item xs={12}>
             <Button
                 type='submit' variant='contained' color='secondary' 
