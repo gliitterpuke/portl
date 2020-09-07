@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
+import localStorageService from "app/services/localStorageService";
 
 const styles = theme => ({
   flexCenter: {
@@ -20,6 +21,18 @@ const styles = theme => ({
 
 class NotFound extends Component {
   state = {};
+  clickMe = () => {
+    let user = localStorageService.getItem('auth_user')
+    if (user.role === "client") {
+      this.props.history.push('/profile')
+    }
+    else if (user.role === "professional") {
+      this.props.history.push('/professional')
+    }
+    else {
+      this.props.history.push('/session/signin')
+    }
+  }
 
   render() {
     const { classes } = this.props;
@@ -35,9 +48,9 @@ class NotFound extends Component {
             className="capitalize"
             variant="contained"
             color="primary"
-            onClick={() => this.props.history.push("/")}
+            onClick={this.clickMe}
           >
-            Back to Dashboard
+            Back
           </Button>
         </div>
       </div>
