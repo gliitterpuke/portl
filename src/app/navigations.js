@@ -22,7 +22,7 @@ export const navigations = [
   },
   {
     name: "Pricing",
-    icon: "chat",
+    icon: "assignment",
     path: "/others/pricing",
     
   },
