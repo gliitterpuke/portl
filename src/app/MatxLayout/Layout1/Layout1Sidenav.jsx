@@ -104,13 +104,10 @@ class Layout1Sidenav extends Component {
     let { user } = this.props;
     return (
       <div className="sidenav__user">
-        <div className="username-photo">
-          <img src={user.photoURL} alt="user" />
-        </div>
         <div className="ml-4">
           <span className="username">
             {/* <Icon>lock</Icon> */}
-            {user.displayName}
+            {user.first_name}
           </span>
           <div className="user__menu">
             <MatxMenu
