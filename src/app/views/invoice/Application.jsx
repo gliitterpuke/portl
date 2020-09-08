@@ -70,11 +70,12 @@ class HigherOrderComponent extends Component {
     };
     
   handeViewClick = fileId => {
+    let user = localStorageService.getItem('auth_user')
     let secondstate = user.client_profile.applications.find (application => application.id === this.props.location.state);
     console.log(this.props.location)
+    console.log(secondstate)
     let blobstate = secondstate.blobs.find (blobs => blobs.id === fileId)
     this.props.history.push({ pathname: `${secondstate.id}/file/${fileId}`, state: blobstate });
-    getFileById(fileId).then(res => console.log(blobstate));
   };
   handeDeleteClick = efile => {
     this.setState({ shouldShowConfirmationDialog: true, efile });

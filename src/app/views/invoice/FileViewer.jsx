@@ -92,7 +92,6 @@ class FileViewer extends Component {
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
-    console.log(this.state)
     const user = localStorageService.getItem("auth_user")
     const appid = this.state.application_id
     const tags = this.state.tag
