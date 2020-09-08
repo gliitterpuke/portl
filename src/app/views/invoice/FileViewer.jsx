@@ -93,7 +93,7 @@ class FileViewer extends Component {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
     const user = localStorageService.getItem("auth_user")
-    const appid = this.state.application_id
+    const appid = this.state.application.id
     const tags = this.state.tag
     const mime_type = this.state.mime_type
     const filetype = mime_type.match(/[^\/]+$/)[0]
