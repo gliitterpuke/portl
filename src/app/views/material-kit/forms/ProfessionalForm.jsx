@@ -99,7 +99,7 @@ class ProfessionalForm extends Component {
     return (
       <React.Fragment>
       <div className="m-sm-30">
-        <Card className="px-6 pt-2 pb-4">
+      <Card elevation={6} className="pricing__card px-6 pt-2 pb-4">
       {this.state.showProfessionalEditor ? (
         <ProfessionalEditor
           toggleProfessionalEditor={this.toggleProfessionalEditor}
@@ -110,7 +110,7 @@ class ProfessionalForm extends Component {
     </Card>
     </div>
       <div className="m-sm-30">
-        <Card className="px-6 pt-2 pb-4">
+      <Card elevation={6} className="pricing__card px-6 pt-2 pb-4">
         <br /><br />
         <Grid container spacing={2}>
           <Grid item xs={12} lg={10} md={10}>

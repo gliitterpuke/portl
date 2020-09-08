@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios"
 import { Link } from "react-router-dom";
-import { deleteFile } from "./existing";
 import ClientViewer from "./ClientViewer";
 import ClientEditor from "./ClientEditor";
 import {
@@ -16,7 +15,6 @@ import {
   TableCell,
   TableBody,
   IconButton,
-  Divider
 } from "@material-ui/core";
 import { ConfirmationDialog } from "matx";
 import { parseJSON } from "date-fns";
@@ -35,14 +33,11 @@ class SimpleForm extends Component {
   componentDidMount() {
     this.setState({ appList: user.client_profile.applications });
     this.setState({ showClientEditor: false });
-    console.log(localStorage)
   }
 
   handeViewClick = applicationId => {
     let user = localStorageService.getItem("auth_user")
     let secondstate = user.client_profile.applications.find (application => application.id == applicationId);
-    console.log(applicationId)
-    console.log(secondstate)
     this.props.history.push({pathname: `/application/${applicationId}`, state: secondstate.id });
   }
 
@@ -52,19 +47,17 @@ class SimpleForm extends Component {
 
   handleConfirmationResponse = () => {
     let { application } = this.state;
-    let status = user.client_profile.applications[application.id].status
- //   let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.id); 
+    console.log(application)
+    let status = application.status
     this.setState({
       shouldShowConfirmationDialog: false
     });
-    console.log(application.id)
     axios.put(`https://portl-dev.herokuapp.com/api/v1/applications/${application.id}/close`, null, { params: {
       status
     }}).then(res => {
       user.client_profile.applications[application.id] = res.data
       localStorageService.setItem("auth_user", user)
-      console.log(user.client_profile.applications[application.id])
-      this.forceUpdate()
+      window.location.reload()
 
     });
   };
@@ -79,7 +72,6 @@ class SimpleForm extends Component {
   };
 
   handleDateChange = birth_date => {
-    // console.log(date);
 
     this.setState({ birth_date });
   };
@@ -93,12 +85,11 @@ class SimpleForm extends Component {
   render() {
     let user = localStorageService.getItem("auth_user")
     let state = user.client_profile.applications
-    console.log(localStorageService.getItem("auth_user").client_profile.applications)
 
     return (
       <React.Fragment>
       <div className="m-sm-30">
-        <Card className="px-6 pt-2 pb-4">
+        <Card elevation={6} className="pricing__card px-6 pt-2 pb-4">
       {this.state.showClientEditor ? (
         <ClientEditor
           toggleClientEditor={this.toggleClientEditor}
@@ -109,7 +100,7 @@ class SimpleForm extends Component {
     </Card>
     </div>
       <div className="m-sm-30">
-        <Card className="px-6 pt-2 pb-4">
+        <Card elevation={6} className="pricing__card px-6 pt-2 pb-4">
         <br /><br />
         <Grid container spacing={2}>
           <Grid item xs={12} lg={10} md={10}>

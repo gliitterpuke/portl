@@ -3,7 +3,12 @@ import {
   Button,
   Grid,
   Typography,
-  FormLabel
+  FormLabel,
+  Table,
+  TableHead,
+  TableCell,
+  TableRow,
+  TableBody
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import localStorageService from "../../../services/localStorageService"
@@ -26,6 +31,8 @@ class ProfessionalViewer extends Component {
 
   render() {
     let user = localStorageService.getItem("auth_user")
+    let state= user.professional_profile.service_languages
+    let coo = user.professional_profile.country_of_operation
 
     return (
       <div className="invoice-viewer py-4">
@@ -112,10 +119,24 @@ class ProfessionalViewer extends Component {
                 <p> {user.professional_profile.country_of_operation.name} </p>
               </Grid>
               <Grid item xs={12} md={4}>
-                <h5 className="font-normal mb-4 capitalize">
-                  <strong>Service Languages</strong>
-                </h5>
-                <p> {user.professional_profile.service_languages.name} </p>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell className="font-normal mb-4 capitalize">
+                        <strong><h5>Service Languages</h5></strong>
+                        </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {state.map((lang) => (
+                      <TableRow key={lang.id}>
+                        <TableCell className="pl-sm-24 capitalize" align="left">
+                          {lang.name}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </Grid>
             </Grid>
             <div />
