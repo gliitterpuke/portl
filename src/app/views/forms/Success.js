@@ -1,9 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { SimpleCard } from 'matx';
 
 const useStyles = makeStyles(theme => ({
   textCenter: {
-    textAlign: 'center'
+    textAlign: 'center',
+    display: 'flex',
+    margin: 0,
   }
 }));
 
@@ -11,7 +14,9 @@ export const Success = () => {
   const classes = useStyles();
   return (
     <div className={classes.textCenter}>
-      <h1>Thank You For Your Submission</h1>
-      <p>You will get an email with further instructions</p>
+      <SimpleCard>
+      <h3>Thank You For Your Submission</h3>
+      <p>Your representative has been notified and will review your application shortly.</p>
+      </SimpleCard>
     </div>
   )}
