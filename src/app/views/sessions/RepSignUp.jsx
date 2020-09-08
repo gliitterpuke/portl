@@ -45,13 +45,13 @@ class RepSignUp extends Component {
     axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
     .then(result => { 
     const professional = {
-        first_name: "First Name",
-        last_name: "Last Name",
-        company: "Your Company",
-        occupation: "Your Role",
-        sex: "Unspecified",
+        first_name: "John",
+        last_name: "Smith",
+        company: "Acme Corporation",
+        occupation: "Representative",
+        sex: "Male",
         max_processing_budget: 1000,
-        payout_account: "Account goes here",
+        payout_account: "123456789",
         country_code: 158,
         service_languages: [ "eng", "chi", "fre" ],
         owner_id: result.data.id
@@ -64,12 +64,12 @@ class RepSignUp extends Component {
         this.props.history.push(`/session/signin`)
           return result;
         })
-    //    .catch(error => {
-    //      const {status} = error.response;
-    //       if(status === 400) {
-    //         alert('Email is already registered')
-    //     };
-    //   });
+       .catch(error => {
+         const {status} = error.response;
+          if(status === 400) {
+            alert('Email is already registered')
+        };
+      });
       };
 
   render() {

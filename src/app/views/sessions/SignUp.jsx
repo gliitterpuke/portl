@@ -46,11 +46,11 @@ class SignUp extends Component {
     axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
     .then(result => { 
     const client = {
-        first_name: "First Name",
-        middle_name: "Middle Name",
-        last_name: "Last Name",
-        birth_date: "1900-01-01",
-        sex: "Sex",
+        first_name: "Jane",
+        middle_name: "Marie",
+        last_name: "Smith",
+        birth_date: "1950-01-01",
+        sex: "Female",
         owner_id: result.data.id,
         country_code: 158
       }
@@ -62,12 +62,12 @@ class SignUp extends Component {
     this.props.history.push(`/session/signin`)
       return result;
     })
-//    .catch(error => {
-//      const {status} = error.response;
-//       if(status === 400) {
-//         alert('Email is already registered')
-//     };
-//   });
+   .catch(error => {
+     const {status} = error.response;
+      if(status === 400) {
+        alert('Email is already registered')
+    };
+  });
   };
 
   render() {
