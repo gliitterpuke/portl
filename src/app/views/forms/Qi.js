@@ -96,7 +96,7 @@ export const Qi = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.DetailsOfVisit_PurposeRow1_PurposeOfVisit_PurposeOfVisit === "03" && (
         <Grid item xs={12} md={6}>
             <Field
-              name='DetailsOfVisit_PurposeRow1_Other' label='Other'
+              name='DetailsOfVisit_PurposeRow1_Other' label='Other *'
               margin='normal' as={TextField} fullWidth
               error={touched.DetailsOfVisit_PurposeRow1_Other && errors.DetailsOfVisit_PurposeRow1_Other}
               helperText={touched.DetailsOfVisit_PurposeRow1_Other && errors.DetailsOfVisit_PurposeRow1_Other}

@@ -91,7 +91,7 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp }) =
             </Typography>
         </Grid>
         <Grid item xs={12}>
-        <FormGroup>
+        <FormGroup row>
         <FormLabel FormLabel component="legend">Have you or any family members had, or been in contact with anyone, with tuberculosis within the past 2 years? *</FormLabel>
             {canus.map(opt => (
               <Field

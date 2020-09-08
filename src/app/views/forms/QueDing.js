@@ -124,6 +124,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
     ANumber,
     ContactInformation_contact_PhoneNumbers_Phone_ActualNumber,
     ContactInformation_contact_PhoneNumbers_Phone_IntlNumber_IntlNumber,
+    altphone,
     PhoneLoc2,
     ContactInformation_contact_PhoneNumbers_AltPhone_Type,
     ContactInformation_contact_PhoneNumbers_AltPhone_CanadaUS,
@@ -133,6 +134,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
     AANumber,
     ContactInformation_contact_PhoneNumbers_AltPhone_ActualNumber,
     ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber,
+    faxnum,
     FaxLoc,
     ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_CanadaUS,
     ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_Other,
@@ -410,7 +412,8 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
             <h4>Application</h4>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
-            <h5>Service Language</h5> {PersonalDetails_ServiceIn_ServiceIn}
+            <h5>Service Language</h5> {PersonalDetails_ServiceIn_ServiceIn
+            .replace('01', 'English').replace('02', 'French')}
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <h5>Type of Visa</h5> {PersonalDetails_VisaType_VisaType}
@@ -779,9 +782,16 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
           <Grid item xs={12} md={6} lg={3}>
             <h5>Country</h5> {cmct.label}
           </Grid>
+          {cmct.label === "Canada" && (
           <Grid item xs={12} md={6} lg={3}>
             <h5>Province/State</h5> {cmps.label}
           </Grid>
+          )}
+          {cmct.label === "United States of America" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Province/State</h5> {cmps.label}
+          </Grid>
+          )}
           <Grid item xs={12} md={6} lg={3}>
             <h5>Postal Code</h5> {ContactInformation_contact_AddressRow2_PostalCode_PostalCode}
           </Grid>
@@ -821,7 +831,12 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
             <h5>Country</h5> {ract.label}
           </Grid>
           )}
-          {ContactInformation_contact_SameAsMailingIndicator === "N" && (
+          {ract.label === "Canada" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Province/State</h5> {raps.label}
+          </Grid>
+          )}
+          {ract.label === "United States of America" && (
           <Grid item xs={12} md={6} lg={3}>
             <h5>Province/State</h5> {raps.label}
           </Grid>
@@ -870,14 +885,18 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
           )}
 
           <br />
+          {altphone === "Y" && (
           <Grid item xs={12} lg={12}>
             <h4>Alternative Phone Number</h4>
           </Grid>
+          )}
+          {altphone === "Y" && (
           <Grid item xs={12} md={6} lg={3}>
             <h5>Phone Type</h5> 
             {ContactInformation_contact_PhoneNumbers_AltPhone_Type
             .replace('01', 'Home').replace('02', 'Cell').replace('03', 'Business')}
           </Grid>
+          )}
           <Grid item xs={12} md={6} lg={3}>
             <h5>Area</h5> {PhoneLoc2.replace('CU', 'Can/US')}
           </Grid>
@@ -903,12 +922,16 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
           )}  
 
           <br />
+          {faxnum === "Y" && (
           <Grid item xs={12} lg={12}>
             <h4>Fax</h4>
           </Grid>
+          )}
+          {faxnum === "Y" && (
           <Grid item xs={12} md={6} lg={3}>
             <h5>Area</h5> {FaxLoc.replace('CU', 'Can/US')}
           </Grid>
+          )}
           {FaxLoc === "CU" && (
           <Grid item xs={12} md={6} lg={3}>
             <h5>Country Code</h5> {ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry}
@@ -1007,9 +1030,16 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
           <Grid item xs={12} md={6} lg={3}>
             <h5>Country</h5> {occct.label}
           </Grid>
+          {occct.label === "Canada" && (
           <Grid item xs={12} md={6} lg={3}>
             <h5>Province/State</h5> {occps.label}
           </Grid>
+          )}
+          {occct.label === "United States of America" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Province/State</h5> {occps.label}
+          </Grid>
+          )}
 
           {PrevOcc === "Y" && (
           <Grid item xs={12} lg={12}>
@@ -1046,7 +1076,12 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
             <h5>Country</h5> {occ2ct.label}
           </Grid>
           )}
-          {PrevOcc === "Y" && (
+          {occ2ct.label === "Canada" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Province/State</h5> {occ2ps.label}
+          </Grid>
+          )}
+          {occ2ct.label === "United States of America" && (
           <Grid item xs={12} md={6} lg={3}>
             <h5>Province/State</h5> {occ2ps.label}
           </Grid>
@@ -1087,7 +1122,12 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
             <h5>Country</h5> {occ3ct.label}
           </Grid>
           )}
-          {PrevOcc === "Y" && (
+          {occ3ct.label === "Canada" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Province/State</h5> {occ3ps.label}
+          </Grid>
+          )}
+          {occ3ct.label === "United States of America" && (
           <Grid item xs={12} md={6} lg={3}>
             <h5>Province/State</h5> {occ3ps.label}
           </Grid>
@@ -1130,7 +1170,12 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
             <h5>Country</h5> {educt.label}
           </Grid>
           )}
-          {Education_EducationIndicator === "Y" && (
+          {educt.label === "Canada" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Province/State</h5> {edups.label}
+          </Grid>
+          )}
+          {educt.label === "United States of America" && (
           <Grid item xs={12} md={6} lg={3}>
             <h5>Province/State</h5> {edups.label}
           </Grid>

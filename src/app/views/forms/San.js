@@ -121,14 +121,14 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           </Grid>
           {values.MaritalStatus_SectionA_MaritalStatus === "01" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Date of Marriage" name="MaritalStatus_SectionA_DateofMarriage"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Date of Marriage/Relationship *" name="MaritalStatus_SectionA_DateofMarriage"
               error={touched.MaritalStatus_SectionA_DateofMarriage && errors.MaritalStatus_SectionA_DateofMarriage}
               helperText={touched.MaritalStatus_SectionA_DateofMarriage && errors.MaritalStatus_SectionA_DateofMarriage} />
           </Grid>
           )}
           {values.MaritalStatus_SectionA_MaritalStatus ===  "03" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Date of Marriage" name="MaritalStatus_SectionA_DateofMarriage"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Date of Marriage/Relationship *" name="MaritalStatus_SectionA_DateofMarriage"
               error={touched.MaritalStatus_SectionA_DateofMarriage && errors.MaritalStatus_SectionA_DateofMarriage}
               helperText={touched.MaritalStatus_SectionA_DateofMarriage && errors.MaritalStatus_SectionA_DateofMarriage} />
           </Grid>
@@ -142,7 +142,7 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           {values.MaritalStatus_SectionA_MaritalStatus === "01" && (
           <Grid item xs={12} md={6}>
             <Field
-              name='MaritalStatus_SectionA_FamilyName' label='Spouse Last Name'
+              name='MaritalStatus_SectionA_FamilyName' label='Spouse Last Name *'
               margin='normal' as={TextField} fullWidth
               error={touched.MaritalStatus_SectionA_FamilyName && errors.MaritalStatus_SectionA_FamilyName}
               helperText={touched.MaritalStatus_SectionA_FamilyName && errors.MaritalStatus_SectionA_FamilyName}
@@ -152,7 +152,7 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           {values.MaritalStatus_SectionA_MaritalStatus ===  "03" && (
           <Grid item xs={12} md={6}>
             <Field
-              name='MaritalStatus_SectionA_FamilyName' label='Spouse Last Name'
+              name='MaritalStatus_SectionA_FamilyName' label='Spouse Last Name *'
               margin='normal' as={TextField} fullWidth
               error={touched.MaritalStatus_SectionA_FamilyName && errors.MaritalStatus_SectionA_FamilyName}
               helperText={touched.MaritalStatus_SectionA_FamilyName && errors.MaritalStatus_SectionA_FamilyName}
@@ -200,7 +200,7 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           {values.MaritalStatus_SectionA_PrevMarriedIndicator === "Y" && (
           <Grid item xs={12} md={6}>
             <Field
-              name='MaritalStatus_SectionA_PMFamilyName' label='Previous Spouse Last Name'
+              name='MaritalStatus_SectionA_PMFamilyName' label='Previous Spouse Last Name *'
               margin='normal' as={TextField} fullWidth
               error={touched.MaritalStatus_SectionA_PMFamilyName && errors.MaritalStatus_SectionA_PMFamilyName}
               helperText={touched.MaritalStatus_SectionA_PMFamilyName && errors.MaritalStatus_SectionA_PMFamilyName}
@@ -220,7 +220,7 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           {values.MaritalStatus_SectionA_PrevMarriedIndicator === "Y" && (
           <Grid item xs={12} md={2}>
             <Field
-              name='MaritalStatus_SectionA_PrevSpouse_DOBYear' label='YYYY'
+              name='MaritalStatus_SectionA_PrevSpouse_DOBYear' label='YYYY *'
               margin='normal' as={TextField} fullWidth
               error={touched.MaritalStatus_SectionA_PrevSpouse_DOBYear && errors.MaritalStatus_SectionA_PrevSpouse_DOBYear}
               helperText={touched.MaritalStatus_SectionA_PrevSpouse_DOBYear && errors.MaritalStatus_SectionA_PrevSpouse_DOBYear}
@@ -230,7 +230,7 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           {values.MaritalStatus_SectionA_PrevMarriedIndicator === "Y" && (
           <Grid item xs={12} md={2}>
             <Field
-              name='MaritalStatus_SectionA_PrevSpouse_DOBMonth' label='MM'
+              name='MaritalStatus_SectionA_PrevSpouse_DOBMonth' label='MM *'
               margin='normal' as={TextField} fullWidth
               error={touched.MaritalStatus_SectionA_PrevSpouse_DOBMonth && errors.MaritalStatus_SectionA_PrevSpouse_DOBMonth}
               helperText={touched.MaritalStatus_SectionA_PrevSpouse_DOBMonth && errors.MaritalStatus_SectionA_PrevSpouse_DOBMonth}
@@ -240,7 +240,7 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           {values.MaritalStatus_SectionA_PrevMarriedIndicator === "Y" && (
           <Grid item xs={12} md={2}>
             <Field
-              name='MaritalStatus_SectionA_PrevSpouse_DOBDay' label='DD'
+              name='MaritalStatus_SectionA_PrevSpouse_DOBDay' label='DD *'
               margin='normal' as={TextField} fullWidth
               error={touched.MaritalStatus_SectionA_PrevSpouse_DOBDay && errors.MaritalStatus_SectionA_PrevSpouse_DOBDay}
               helperText={touched.MaritalStatus_SectionA_PrevSpouse_DOBDay && errors.MaritalStatus_SectionA_PrevSpouse_DOBDay}
@@ -250,7 +250,7 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           {values.MaritalStatus_SectionA_PrevMarriedIndicator === "Y" && (
           <Grid item xs={12} md={6}>
             <FormControl>
-              <InputLabel>Type of Relationship</InputLabel>
+              <InputLabel>Type of Relationship *</InputLabel>
               <Field
                 component={Select} style={{ width: 300 }} name="MaritalStatus_SectionA_TypeOfRelationship">
                 <MenuItem value={'03'}>Common-Law</MenuItem>
@@ -264,14 +264,14 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
           )}
           {values.MaritalStatus_SectionA_PrevMarriedIndicator === "Y" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="MaritalStatus_SectionA_FromDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From *" name="MaritalStatus_SectionA_FromDate"
               error={touched.MaritalStatus_SectionA_FromDate && errors.MaritalStatus_SectionA_FromDate}
               helperText={touched.MaritalStatus_SectionA_FromDate && errors.MaritalStatus_SectionA_FromDate} />
           </Grid>
           )}
           {values.MaritalStatus_SectionA_PrevMarriedIndicator === "Y" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="MaritalStatus_SectionA_ToDate_ToDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To *" name="MaritalStatus_SectionA_ToDate_ToDate"
               error={touched.MaritalStatus_SectionA_ToDate_ToDate && errors.MaritalStatus_SectionA_ToDate_ToDate}
               helperText={touched.MaritalStatus_SectionA_ToDate_ToDate && errors.MaritalStatus_SectionA_ToDate_ToDate} />
           </Grid>

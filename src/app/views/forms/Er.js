@@ -184,13 +184,13 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
           {values.PersonalDetails_CurrentCOR_Row2_Status === "06" && (
           <Grid item xs={12} md={8}>
             <Field
-              name='PersonalDetails_CurrentCOR_Row2_Other' label='Other'
+              name='PersonalDetails_CurrentCOR_Row2_Other' label='Other *'
               margin='normal' as={TextField} fullWidth
             />
           </Grid>
           )}
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_CurrentCOR_Row2_FromDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From *" name="PersonalDetails_CurrentCOR_Row2_FromDate"
               error={touched.PersonalDetails_CurrentCOR_Row2_FromDate && errors.PersonalDetails_CurrentCOR_Row2_FromDate}
               helperText={touched.PersonalDetails_CurrentCOR_Row2_FromDate && errors.PersonalDetails_CurrentCOR_Row2_FromDate} />
           </Grid>
@@ -230,7 +230,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
                   {...params}
                   error={touched['pct'] && !!errors['pct']}
                   helperText={errors['pct']}
-                  label="Previous Country"
+                  label="Previous Country *"
                   variant="outlined"
                 />
               )}
@@ -240,7 +240,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
           {values.PersonalDetails_PCRIndicator === "Y" && (
           <Grid item xs={12} md={6}>
             <FormControl>
-              <InputLabel>Status</InputLabel>
+              <InputLabel>Status *</InputLabel>
               <Field
                 component={Select} style={{ width: 300 }} name="PersonalDetails_PreviousCOR_Row2_Status">
                 <MenuItem value={'01'}>Citizen</MenuItem>
@@ -262,7 +262,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
           {values.PersonalDetails_PreviousCOR_Row2_Status === "06" && (
           <Grid item xs={12} md={8}>
             <Field
-              name='PersonalDetails_PreviousCOR_Row2_Other' label='Other'
+              name='PersonalDetails_PreviousCOR_Row2_Other' label='Other *'
               margin='normal' as={TextField} fullWidth
               error={touched.PersonalDetails_PreviousCOR_Row2_Other && errors.PersonalDetails_PreviousCOR_Row2_Other}
               helperText={touched.PersonalDetails_PreviousCOR_Row2_Other && errors.PersonalDetails_PreviousCOR_Row2_Other}
@@ -271,14 +271,14 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
           )}
           {values.PersonalDetails_PCRIndicator === "Y" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_PreviousCOR_Row2_FromDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From *" name="PersonalDetails_PreviousCOR_Row2_FromDate"
               error={touched.PersonalDetails_PreviousCOR_Row2_FromDate && errors.PersonalDetails_PreviousCOR_Row2_FromDate}
               helperText={touched.PersonalDetails_PreviousCOR_Row2_FromDate && errors.PersonalDetails_PreviousCOR_Row2_FromDate} />
           </Grid>
           )}
           {values.PersonalDetails_PCRIndicator === "Y" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_PreviousCOR_Row2_ToDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To *" name="PersonalDetails_PreviousCOR_Row2_ToDate"
               error={touched.PersonalDetails_PreviousCOR_Row2_ToDate && errors.PersonalDetails_PreviousCOR_Row2_ToDate}
               helperText={touched.PersonalDetails_PreviousCOR_Row2_ToDate && errors.PersonalDetails_PreviousCOR_Row2_ToDate} />
           </Grid>
@@ -311,7 +311,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
                   {...params}
                   error={touched['pct2'] && !!errors['pct2']}
                   helperText={errors['pct2']}
-                  label="Previous Country"
+                  label="Previous Country *"
                   variant="outlined"
                 />
               )}
@@ -321,7 +321,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
           {values.PCR2 === "Y" && (
           <Grid item xs={12} md={6}>
             <FormControl>
-              <InputLabel>Status</InputLabel>
+              <InputLabel>Status *</InputLabel>
               <Field
                 component={Select} style={{ width: 300 }} name="PersonalDetails_PreviousCOR_Row3_Status">
                 <MenuItem value={'01'}>Citizen</MenuItem>
@@ -343,7 +343,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
           {values.PersonalDetails_PreviousCOR_Row3_Status === "06" && (
           <Grid item xs={12} md={8}>
             <Field
-              name='PersonalDetails_PreviousCOR_Row3_Other' label='Other'
+              name='PersonalDetails_PreviousCOR_Row3_Other' label='Other *'
               margin='normal' as={TextField} fullWidth
               error={touched.PersonalDetails_PreviousCOR_Row3_Other && errors.PersonalDetails_PreviousCOR_Row3_Other}
               helperText={touched.PersonalDetails_PreviousCOR_Row3_Other && errors.PersonalDetails_PreviousCOR_Row3_Other}
@@ -352,14 +352,14 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
           )}
           {values.PCR2 === "Y" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_PreviousCOR_Row3_FromDate"              
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From *" name="PersonalDetails_PreviousCOR_Row3_FromDate"              
               error={touched.PersonalDetails_PreviousCOR_Row3_FromDate && errors.PersonalDetails_PreviousCOR_Row3_FromDate}
               helperText={touched.PersonalDetails_PreviousCOR_Row3_FromDate && errors.PersonalDetails_PreviousCOR_Row3_FromDate} />
           </Grid>
           )}
           {values.PCR2 === "Y" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To" name="PersonalDetails_PreviousCOR_Row3_ToDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="To *" name="PersonalDetails_PreviousCOR_Row3_ToDate"
               error={touched.PersonalDetails_PreviousCOR_Row3_ToDate && errors.PersonalDetails_PreviousCOR_Row3_ToDate}
               helperText={touched.PersonalDetails_PreviousCOR_Row3_ToDate && errors.PersonalDetails_PreviousCOR_Row3_ToDate} />
           </Grid>
@@ -395,7 +395,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
                   {...params}
                   error={touched['cwa'] && !!errors['cwa']}
                   helperText={errors['cwa']}
-                  label="Previous Country"
+                  label="Previous Country *"
                   variant="outlined"
                 />
               )}
@@ -405,7 +405,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
           {values.PersonalDetails_SameAsCORIndicator === "N" && (
           <Grid item xs={12} md={6}>
             <FormControl>
-              <InputLabel>Status</InputLabel>
+              <InputLabel>Status *</InputLabel>
               <Field
                 component={Select} style={{ width: 300 }} name="PersonalDetails_CountryWhereApplying_Row2_Status">
                 <MenuItem value={'01'}>Citizen</MenuItem>
@@ -436,7 +436,7 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp }) =>
           )}
           {values.PersonalDetails_SameAsCORIndicator === "N" && (
           <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From" name="PersonalDetails_CountryWhereApplying_Row2_FromDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="From *" name="PersonalDetails_CountryWhereApplying_Row2_FromDate"
               error={touched.PersonalDetails_CountryWhereApplying_Row2_FromDate && errors.PersonalDetails_CountryWhereApplying_Row2_FromDate}
               helperText={touched.PersonalDetails_CountryWhereApplying_Row2_FromDate && errors.PersonalDetails_CountryWhereApplying_Row2_FromDate} />
           </Grid>)}

@@ -227,6 +227,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
               )}
             />
         </Grid>
+        {values.occct.label === "Canada" && (
         <Grid item xs={12} md={3}>
             <Field
               name="occps"
@@ -239,12 +240,33 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
                   {...params}
                   error={touched['occps'] && !!errors['occps']}
                   helperText={errors['occps']}
-                  label="Province/State"
+                  label="Province/State *"
                   variant="outlined"
                 />
               )}
             />
         </Grid>
+        )}
+        {values.occct.label === "United States of America" && (
+        <Grid item xs={12} md={3}>
+            <Field
+              name="occps"
+              component={Autocomplete}
+              options={provstate}
+              getOptionLabel={(option: label) => option.label}
+              style={{ width: 200 }}
+              renderInput={(params: AutocompleteRenderInputParams) => (
+                <TextField
+                  {...params}
+                  error={touched['occps'] && !!errors['occps']}
+                  helperText={errors['occps']}
+                  label="Province/State *"
+                  variant="outlined"
+                />
+              )}
+            />
+        </Grid>
+        )}
 
         <Grid item xs={12}>
           <FormLabel component="legend">Do you have any older occupations to list? *</FormLabel>
@@ -261,7 +283,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc === "Y" && (
         <Grid item xs={12} md={1}>
             <Field
-              name='Occupation_OccupationRow2_FromYear' label='YYYY' helperText='From'
+              name='Occupation_OccupationRow2_FromYear' label='YYYY' helperText='From *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow2_FromYear && errors.Occupation_OccupationRow2_FromYear}
             />
@@ -270,7 +292,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc === "Y" && (
         <Grid item xs={12} md={1}>
             <Field
-              name='Occupation_OccupationRow2_FromMonth' label='MM' helperText='From'
+              name='Occupation_OccupationRow2_FromMonth' label='MM' helperText='From *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow2_FromMonth && errors.Occupation_OccupationRow2_FromMonth}
             />
@@ -279,7 +301,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc === "Y" && (
         <Grid item xs={12} md={5}>
             <Field
-              name='Occupation_OccupationRow2_Occupation_Occupation' label='Previous Occupation'
+              name='Occupation_OccupationRow2_Occupation_Occupation' label='Previous Occupation *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow2_Occupation_Occupation && errors.Occupation_OccupationRow2_Occupation_Occupation}
               helperText={touched.Occupation_OccupationRow2_Occupation_Occupation && errors.Occupation_OccupationRow2_Occupation_Occupation}
@@ -289,7 +311,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc === "Y" && (
         <Grid item xs={12} md={5}>
             <Field
-              name='Occupation_OccupationRow2_Employer' label='Previous Employer/Institution'
+              name='Occupation_OccupationRow2_Employer' label='Previous Employer/Institution *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow2_Employer && errors.Occupation_OccupationRow2_Employer}
               helperText={touched.Occupation_OccupationRow2_Employer && errors.Occupation_OccupationRow2_Employer}
@@ -299,7 +321,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc === "Y" && (
         <Grid item xs={12} md={1}>
             <Field
-              name='Occupation_OccupationRow2_ToYear' label='YYYY' helperText='To'
+              name='Occupation_OccupationRow2_ToYear' label='YYYY' helperText='To *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow2_ToYear && errors.Occupation_OccupationRow2_ToYear}
             />
@@ -308,7 +330,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc === "Y" && (
         <Grid item xs={12} md={1}>
             <Field
-              name='Occupation_OccupationRow2_ToMonth' label='MM' helperText='To'
+              name='Occupation_OccupationRow2_ToMonth' label='MM' helperText='To *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow2_ToMonth && errors.Occupation_OccupationRow2_ToMonth}
             />
@@ -317,7 +339,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc === "Y" && (
         <Grid item xs={12} md={4}>
             <Field
-              name='Occupation_OccupationRow2_CityTown_CityTown' label='City/Town'
+              name='Occupation_OccupationRow2_CityTown_CityTown' label='City/Town *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow2_CityTown_CityTown && errors.Occupation_OccupationRow2_CityTown_CityTown}
               helperText={touched.Occupation_OccupationRow2_CityTown_CityTown && errors.Occupation_OccupationRow2_CityTown_CityTown}
@@ -337,14 +359,14 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
                   {...params}
                   error={touched['occ2ct'] && !!errors['occ2ct']}
                   helperText={errors['occ2ct']}
-                  label="Country/Territory"
+                  label="Country/Territory *"
                   variant="outlined"
                 />
               )}
             />
         </Grid>
         )}
-        {values.PrevOcc === "Y" && (
+        {values.occ2ct.label === "Canada" && (
         <Grid item xs={12} md={3}>
             <Field
               name="occ2ps"
@@ -357,7 +379,27 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
                   {...params}
                   error={touched['occ2ps'] && !!errors['occ2ps']}
                   helperText={errors['occ2ps']}
-                  label="Province/State"
+                  label="Province/State *"
+                  variant="outlined"
+                />
+              )}
+            />
+        </Grid>
+        )}
+        {values.occ2ct.label === "United States of America" && (
+        <Grid item xs={12} md={3}>
+            <Field
+              name="occ2ps"
+              component={Autocomplete}
+              options={provstate}
+              getOptionLabel={(option: label) => option.label}
+              style={{ width: 200 }}
+              renderInput={(params: AutocompleteRenderInputParams) => (
+                <TextField
+                  {...params}
+                  error={touched['occ2ps'] && !!errors['occ2ps']}
+                  helperText={errors['occ2ps']}
+                  label="Province/State *"
                   variant="outlined"
                 />
               )}
@@ -382,7 +424,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc2 === "Y" && (  
         <Grid item xs={12} md={1}>
             <Field
-              name='Occupation_OccupationRow3_FromYear' label='YYYY' helperText='From'
+              name='Occupation_OccupationRow3_FromYear' label='YYYY' helperText='From *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow3_FromYear && errors.Occupation_OccupationRow3_FromYear}
             />
@@ -391,7 +433,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc2 === "Y" && ( 
         <Grid item xs={12} md={1}>
             <Field
-              name='Occupation_OccupationRow3_FromMonth' label='MM' helperText='From'
+              name='Occupation_OccupationRow3_FromMonth' label='MM' helperText='From *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow3_FromMonth && errors.Occupation_OccupationRow3_FromMonth}
             />
@@ -400,7 +442,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc2 === "Y" && ( 
         <Grid item xs={12} md={5}>
             <Field
-              name='Occupation_OccupationRow3_Occupation_Occupation' label='Previous Occupation'
+              name='Occupation_OccupationRow3_Occupation_Occupation' label='Previous Occupation *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow3_Occupation_Occupation && errors.Occupation_OccupationRow3_Occupation_Occupation}
               helperText={touched.Occupation_OccupationRow3_Occupation_Occupation && errors.Occupation_OccupationRow3_Occupation_Occupation}
@@ -410,7 +452,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc2 === "Y" && ( 
         <Grid item xs={12} md={5}>
             <Field
-              name='Occupation_OccupationRow3_Employer' label='Previous Employer/Facility/Institution'
+              name='Occupation_OccupationRow3_Employer' label='Previous Employer/Facility/Institution *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow3_Employer && errors.Occupation_OccupationRow3_Employer}
               helperText={touched.Occupation_OccupationRow3_Employer && errors.Occupation_OccupationRow3_Employer}
@@ -420,7 +462,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc2 === "Y" && ( 
         <Grid item xs={12} md={1}>
             <Field
-              name='Occupation_OccupationRow3_ToYear' label='YYYY' helperText='To'
+              name='Occupation_OccupationRow3_ToYear' label='YYYY' helperText='To *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow3_ToYear && errors.Occupation_OccupationRow3_ToYear}
             />
@@ -429,7 +471,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc2 === "Y" && ( 
         <Grid item xs={12} md={1}>
             <Field
-              name='Occupation_OccupationRow3_ToMonth' label='MM' helperText='To'
+              name='Occupation_OccupationRow3_ToMonth' label='MM' helperText='To *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow3_ToMonth && errors.Occupation_OccupationRow3_ToMonth}
             />
@@ -438,7 +480,7 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PrevOcc2 === "Y" && ( 
         <Grid item xs={12} md={4}>
             <Field
-              name='Occupation_OccupationRow3_CityTown_CityTown' label='City/Town'
+              name='Occupation_OccupationRow3_CityTown_CityTown' label='City/Town *'
               margin='normal' as={TextField} fullWidth
               error={touched.Occupation_OccupationRow3_CityTown_CityTown && errors.Occupation_OccupationRow3_CityTown_CityTown}
               helperText={touched.Occupation_OccupationRow3_CityTown_CityTown && errors.Occupation_OccupationRow3_CityTown_CityTown}
@@ -458,14 +500,14 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
                   {...params}
                   error={touched['occ3ct'] && !!errors['occ3ct']}
                   helperText={errors['occ3ct']}
-                  label="Country/Territory"
+                  label="Country/Territory *"
                   variant="outlined"
                 />
               )}
             />
         </Grid>
         )}
-        {values.PrevOcc2 === "Y" && ( 
+        {values.occ3ct.label === "Canada" && ( 
         <Grid item xs={12} md={3}>
             <Field
               name="occ3ps"
@@ -478,7 +520,27 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep }) => {
                   {...params}
                   error={touched['occ3ps'] && !!errors['occ3ps']}
                   helperText={errors['occ3ps']}
-                  label="Province/State"
+                  label="Province/State *"
+                  variant="outlined"
+                />
+              )}
+            />
+        </Grid>
+        )}
+        {values.occ3ct.label === "United States of America" && ( 
+        <Grid item xs={12} md={3}>
+            <Field
+              name="occ3ps"
+              component={Autocomplete}
+              options={provstate}
+              getOptionLabel={(option: label) => option.label}
+              style={{ width: 200 }}
+              renderInput={(params: AutocompleteRenderInputParams) => (
+                <TextField
+                  {...params}
+                  error={touched['occ3ps'] && !!errors['occ3ps']}
+                  helperText={errors['occ3ps']}
+                  label="Province/State *"
                   variant="outlined"
                 />
               )}

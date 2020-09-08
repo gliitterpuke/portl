@@ -42,15 +42,15 @@ const validationSchema = yup.object({
     .required('Required'),
   ContactInformation_contact_ResidentialAddressRow1_StreetName_Streetname: yup.string()
     .when("ContactInformation_contact_SameAsMailingIndicator", {
-      is: "Y", then: yup.string().required( "Required" ),
+      is: "N", then: yup.string().required( "Required" ),
       otherwise: yup.string() }),
   ContactInformation_contact_ResidentialAddressRow1_CityTown_CityTown: yup.string()
     .when("ContactInformation_contact_SameAsMailingIndicator", {
-      is: "Y", then: yup.string().required( "Required" ),
+      is: "N", then: yup.string().required( "Required" ),
       otherwise: yup.string() }),
   ract: yup.string()
     .when("ContactInformation_contact_SameAsMailingIndicator", {
-      is: "Y", then: yup.string().required( "Required" ),
+      is: "N", then: yup.string().required( "Required" ),
       otherwise: yup.string() }),
   PhoneLoc: yup.string()
     .required('Required'),
@@ -67,8 +67,12 @@ const validationSchema = yup.object({
     .when("PhoneLoc", {
       is: "Other", then: yup.number().required( "Required" ),
       otherwise: yup.number() }),
-  PhoneLoc2: yup.string()
+  altphone: yup.string()
     .required('Required'),
+  PhoneLoc2: yup.string()
+    .when("altphone", {
+      is: "Y", then: yup.string().required('Required'),
+      otherwise: yup.string()}),
   AANumber: yup.number()
     .when("PhoneLoc2", {
       is: "CU", then: yup.number().required( "Required" ),
@@ -77,8 +81,12 @@ const validationSchema = yup.object({
     .when("PhoneLoc2", {
       is: "Other", then: yup.number().required( "Required" ),
       otherwise: yup.number() }),
-  FaxLoc: yup.string()
+  faxnum: yup.string()
     .required('Required'),
+  FaxLoc: yup.string()
+    .when("faxnum", {
+      is: "Y", then: yup.string().required('Required'),
+      otherwise: yup.string()}),
   FANumber: yup.number()
     .when("FaxLoc", {
       is: "CU", then: yup.number().required( "Required" ),
@@ -231,6 +239,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
               )}
             />
         </Grid>
+        {values.cmct.label === "Canada" && (
         <Grid item xs={12} md={4}>
             <Field
               name="cmps"
@@ -243,12 +252,33 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
                   {...params}
                   error={touched['cmps'] && !!errors['cmps']}
                   helperText={errors['cmps']}
-                  label="Province/State"
+                  label="Province/State *"
                   variant="outlined"
                 />
               )}
             />
         </Grid>
+        )}
+        {values.cmct.label === "United States of America" && (
+        <Grid item xs={12} md={4}>
+            <Field
+              name="cmps"
+              component={Autocomplete}
+              options={provstate}
+              getOptionLabel={(option: label) => option.label}
+              style={{ width: 300 }}
+              renderInput={(params: AutocompleteRenderInputParams) => (
+                <TextField
+                  {...params}
+                  error={touched['cmps'] && !!errors['cmps']}
+                  helperText={errors['cmps']}
+                  label="Province/State *"
+                  variant="outlined"
+                />
+              )}
+            />
+        </Grid>
+        )}
         <Grid item xs={12} md={4}>
             <Field
               name='ContactInformation_contact_AddressRow2_PostalCode_PostalCode' label='Postal Code'
@@ -285,7 +315,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
                 <ErrorMessage name="ContactInformation_contact_SameAsMailingIndicator" />
             </div>
         </Grid>
-        {values.ContactInformation_contact_SameAsMailingIndicator === "Y" && (
+        {values.ContactInformation_contact_SameAsMailingIndicator === "N" && (
         <Grid item xs={12} md={2}>
             <Field
               name='ContactInformation_contact_ResidentialAddressRow1_AptUnit_AptUnit' label='Apt/Unit'
@@ -295,7 +325,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
             />
         </Grid>
         )}
-        {values.ContactInformation_contact_SameAsMailingIndicator === "Y" && (
+        {values.ContactInformation_contact_SameAsMailingIndicator === "N" && (
         <Grid item xs={12} md={2}>
             <Field
               name='ContactInformation_contact_ResidentialAddressRow1_StreetNum_StreetNum' label='Street Number'
@@ -305,7 +335,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
             />
         </Grid>
         )}
-        {values.ContactInformation_contact_SameAsMailingIndicator === "Y" && (
+        {values.ContactInformation_contact_SameAsMailingIndicator === "N" && (
         <Grid item xs={12} md={6}>
             <Field
               name='ContactInformation_contact_ResidentialAddressRow1_StreetName_Streetname' label='Street Name *'
@@ -315,7 +345,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
             />
         </Grid>
         )}
-        {values.ContactInformation_contact_SameAsMailingIndicator === "Y" && (
+        {values.ContactInformation_contact_SameAsMailingIndicator === "N" && (
         <Grid item xs={12} md={6}>
             <Field
               name='ContactInformation_contact_ResidentialAddressRow1_CityTown_CityTown' label='City/Town *'
@@ -325,7 +355,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
             />
         </Grid>
         )}
-        {values.ContactInformation_contact_SameAsMailingIndicator === "Y" && (
+        {values.ContactInformation_contact_SameAsMailingIndicator === "N" && (
         <Grid item xs={12} md={6}>
             <Field
               name="ract"
@@ -345,7 +375,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
             />
         </Grid>
         )}
-        {values.ContactInformation_contact_SameAsMailingIndicator === "Y" && (
+        {values.ract.label === "Canada" && (
         <Grid item xs={12} md={4}>
             <Field
               name="raps"
@@ -358,14 +388,34 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
                   {...params}
                   error={touched['raps'] && !!errors['raps']}
                   helperText={errors['raps']}
-                  label="Province/State"
+                  label="Province/State *"
                   variant="outlined"
                 />
               )}
             />
         </Grid>
         )}
-        {values.ContactInformation_contact_SameAsMailingIndicator === "Y" && (
+        {values.ract.label === "United States of America" && (
+        <Grid item xs={12} md={4}>
+            <Field
+              name="raps"
+              component={Autocomplete}
+              options={provstate}
+              getOptionLabel={(option: label) => option.label}
+              style={{ width: 300 }}
+              renderInput={(params: AutocompleteRenderInputParams) => (
+                <TextField
+                  {...params}
+                  error={touched['raps'] && !!errors['raps']}
+                  helperText={errors['raps']}
+                  label="Province/State *"
+                  variant="outlined"
+                />
+              )}
+            />
+        </Grid>
+        )}
+        {values.ContactInformation_contact_SameAsMailingIndicator === "N" && (
         <Grid item xs={12} md={4}>
             <Field
               name='ContactInformation_contact_ResidentialAddressRow2_PostalCode_PostalCode' label='Postal Code'
@@ -375,7 +425,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
             />
         </Grid>
         )}
-        {values.ContactInformation_contact_SameAsMailingIndicator === "Y" && (
+        {values.ContactInformation_contact_SameAsMailingIndicator === "N" && (
         <Grid item xs={12} md={6}>
             <Field
               name='ContactInformation_contact_ResidentialAddressRow2_District' label='District'
@@ -480,7 +530,21 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         </Grid>
         )}
       </Grid>
+      <br/>
+      <Grid item xs={12}>
+        <FormLabel FormLabel component="legend">Do you have an alternative number? *</FormLabel>
+        <Field component={RadioGroup} row name="altphone">
+          <FormControlLabel
+            value="Y" control={<Radio />} label="Yes" />
+          <FormControlLabel
+            value="N" control={<Radio />} label="No" />
+        </Field>
+        <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+            <ErrorMessage name="altphone" />
+        </div>
+      </Grid>
       <br />
+      {values.altphone === "Y" && (
       <Grid container={6}>
         <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
@@ -497,7 +561,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         </Grid>
         <Grid item xs={12} md={3}>
             <FormControl>
-              <InputLabel>Type</InputLabel>
+              <InputLabel>Type *</InputLabel>
               <Field
                 component={Select} style={{ width: 200 }} name="ContactInformation_contact_PhoneNumbers_AltPhone_Type">
                 <MenuItem value={'01'}>Home</MenuItem>
@@ -509,7 +573,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PhoneLoc2 === "CU" && (
           <Grid item xs={12} md={2}>
             <Field
-              name='ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry' label='Alternative Country Code'
+              name='ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry' label='Alternative Country Code *'
               margin='normal' as={TextField} fullWidth
               error={touched.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry}
               helperText={touched.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry}
@@ -519,7 +583,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PhoneLoc2 === "Other" && (
           <Grid item xs={12} md={2}>
             <Field
-              name='ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry' label='Alternative Country Code'
+              name='ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry' label='Alternative Country Code *'
               margin='normal' as={TextField} fullWidth
               error={touched.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry}
               helperText={touched.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry}
@@ -529,7 +593,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PhoneLoc2 === "CU" && (
         <Grid item xs={12} md={5}>
             <Field
-              name='AANumber' label='Alternative Phone Number'
+              name='AANumber' label='Alternative Phone Number *'
               margin='normal' as={TextField} fullWidth
               error={touched.AANumber && errors.AANumber}
               helperText={touched.AANumber && errors.AANumber}
@@ -539,7 +603,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.PhoneLoc2 === "Other" && (
         <Grid item xs={12} md={5}>
             <Field
-              name='ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber' label='Alternative Phone Number'
+              name='ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber' label='Alternative Phone Number *'
               margin='normal' as={TextField} fullWidth
               error={touched.ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber && errors.ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber}
               helperText={touched.ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber && errors.ContactInformation_contact_PhoneNumbers_AltPhone_IntlNumber_IntlNumber}
@@ -567,7 +631,22 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         </Grid>
         )}
       </Grid>
+      )}
+      <br/>
+      <Grid item xs={12}>
+        <FormLabel FormLabel component="legend">Do you have a fax number? *</FormLabel>
+        <Field component={RadioGroup} row name="faxnum">
+          <FormControlLabel
+            value="Y" control={<Radio />} label="Yes" />
+          <FormControlLabel
+            value="N" control={<Radio />} label="No" />
+        </Field>
+        <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+            <ErrorMessage name="faxnum" />
+        </div>
+      </Grid>
       <br />
+      {values.faxnum === "Y" && (
       <Grid container={6}>
         <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
@@ -585,7 +664,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.FaxLoc === "CU" && (
         <Grid item xs={12} md={6}>
             <Field
-              name='ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry' label='Country Code'
+              name='ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry' label='Country Code *'
               margin='normal' as={TextField} fullWidth
               error={touched.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry}
               helperText={touched.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry}
@@ -595,7 +674,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.FaxLoc === "Other" && (
         <Grid item xs={12} md={6}>
             <Field
-              name='ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry' label='Country Code'
+              name='ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry' label='Country Code *'
               margin='normal' as={TextField} fullWidth
               error={touched.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry}
               helperText={touched.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry}
@@ -605,7 +684,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.FaxLoc === "CU" && (
         <Grid item xs={12} md={6}>
             <Field
-              name='FANumber' label='Phone Number'
+              name='FANumber' label='Phone Number *'
               margin='normal' as={TextField} fullWidth
               error={touched.FANumber && errors.FANumber}
               helperText={touched.FANumber && errors.FANumber}
@@ -615,7 +694,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.FaxLoc === "Other" && (
         <Grid item xs={12} md={6}>
             <Field
-              name='ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_IntlNumber_IntlNumber' label='Phone Number'
+              name='ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_IntlNumber_IntlNumber' label='Phone Number *'
               margin='normal' as={TextField} fullWidth
               error={touched.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_IntlNumber_IntlNumber && errors.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_IntlNumber_IntlNumber}
               helperText={touched.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_IntlNumber_IntlNumber && errors.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_IntlNumber_IntlNumber}
@@ -643,6 +722,7 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
         </Grid>
         )}
       </Grid>
+      )}
       <br />
       <Grid container={6}>
         <Grid item xs={12}>

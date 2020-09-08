@@ -92,19 +92,6 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
           var PersonalDetails_PlaceBirthCountry = values.PBC.value
           var PersonalDetails_Citizenship_Citizenship = values.citizenship.value
           setFormData({...values, PersonalDetails_PlaceBirthCountry, PersonalDetails_Citizenship_Citizenship});
-          alert(PersonalDetails_Citizenship_Citizenship);
-          console.log(JSON.stringify(currentApp))
- //         let user = localStorageService.getItem("auth_user")
- //         axios.post(`https://portl-dev.herokuapp.com/api/v1/forms/imm5257/${user.client_profile.id}/` + currentApp.id, formData, auth)
- //           .then(result => { 
-            //console.log(currentApp)
- //           return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", result.data, auth)
- //           .then((response) => {
- //             user.client_profile.applications.push(response.data)
- //             localStorageService.setItem("auth_user", user)
- //             return response;
- //           });
- //         })
           nextStep();
         }}
         validationSchema={validationSchema}
@@ -122,8 +109,8 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
               <InputLabel>Service In</InputLabel>
               <Field
                 component={Select} style={{ width: 300 }} name="PersonalDetails_ServiceIn_ServiceIn" >
-                <MenuItem value={'English'}>English</MenuItem>
-                <MenuItem value={'French'}>French</MenuItem>
+                <MenuItem value={'01'}>English</MenuItem>
+                <MenuItem value={'02'}>French</MenuItem>
               </Field>
               <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
                 <ErrorMessage name="PersonalDetails_ServiceIn_ServiceIn" />
@@ -135,7 +122,7 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
               <InputLabel>Visa Type</InputLabel>
               <Field
                 component={Select} style={{ width: 300 }} name="PersonalDetails_VisaType_VisaType" >
-                <MenuItem value={'Business'}>Business</MenuItem>
+                <MenuItem value={'VisitorVisa'}>Visit</MenuItem>
                 <MenuItem value={'Transit'}>Transit</MenuItem>
               </Field>
               <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>

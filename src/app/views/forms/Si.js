@@ -30,16 +30,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  // natlang: yup.string()
-  //   .required('Required'),
-  // MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate: yup.string()
-  //   .required('Required'),
-  // MaritalStatus_SectionA_Languages_languages_lov: yup.string()
-  //   .when("MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate", {
-  //     is: "Both", then: yup.string().required( "Required" ),
-  //     otherwise: yup.string() }),
-  // MaritalStatus_SectionA_Languages_LanguageTest: yup.string()
-  //   .required('Required')
+  natlang: yup.string()
+    .required('Required'),
+  MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate: yup.string()
+    .required('Required'),
+  MaritalStatus_SectionA_Languages_languages_lov: yup.string()
+    .when("MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate", {
+      is: "Both", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  MaritalStatus_SectionA_Languages_LanguageTest: yup.string()
+    .required('Required')
 });
 
 export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -101,7 +101,7 @@ export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
           {values.MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate === "Both" && (
           <Grid item xs={12} md={8}>
             <Field
-              name='MaritalStatus_SectionA_Languages_languages_lov' label="Language you're most comfortable in"
+              name='MaritalStatus_SectionA_Languages_languages_lov' label="Language you're most comfortable in *"
               margin='normal' as={TextField} fullWidth
               error={touched.MaritalStatus_SectionA_Languages_languages_lov && errors.MaritalStatus_SectionA_Languages_languages_lov}
               helperText={touched.MaritalStatus_SectionA_Languages_languages_lov && errors.MaritalStatus_SectionA_Languages_languages_lov}

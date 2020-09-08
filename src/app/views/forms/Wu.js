@@ -64,11 +64,11 @@ const validationSchema = yup.object({
   USCard_q1_usCardIndicator: yup.string()
     .required('Required'),
   USCard_usCarddocs_DocNum_DocNum: yup.string()
-    .when("USCard_q1_usCardIndicato", {
+    .when("USCard_q1_usCardIndicator", {
       is: "Y", then: yup.string().required( "Required" ),
       otherwise: yup.string() }),
   USCard_usCardDocs_ExpiryDate: yup.date()
-    .when("USCard_q1_usCardIndicato", {
+    .when("USCard_q1_usCardIndicator", {
       is: "Y", then: yup.date().required( "Required" ),
       otherwise: yup.date() }),
 });
@@ -178,7 +178,7 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.natID_q1_natIDIndicator === "Y" && (
         <Grid item xs={12} md={6}>
             <Field
-              name='natID_natIDdocs_DocNum_DocNum' label='Document Number'
+              name='natID_natIDdocs_DocNum_DocNum' label='Document Number *'
               margin='normal' as={TextField} fullWidth
               error={touched.natID_natIDdocs_DocNum_DocNum && errors.natID_natIDdocs_DocNum_DocNum}
               helperText={touched.natID_natIDdocs_DocNum_DocNum && errors.natID_natIDdocs_DocNum_DocNum}
@@ -198,7 +198,7 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
                   {...params}
                   error={touched['nidcoi'] && !!errors['nidcoi']}
                   helperText={errors['nidcoi']}
-                  label="Country/Territory of Issue"
+                  label="Country/Territory of Issue *"
                   variant="outlined"
                 />
               )}
@@ -207,14 +207,14 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
         )}
         {values.natID_q1_natIDIndicator === "Y" && (
         <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Issue Date" name="natID_natIDdocs_IssueDate_IssueDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Issue Date *" name="natID_natIDdocs_IssueDate_IssueDate"
               error={touched.natID_natIDdocs_IssueDate_IssueDate && errors.natID_natIDdocs_IssueDate_IssueDate}
               helperText={touched.natID_natIDdocs_IssueDate_IssueDate && errors.natID_natIDdocs_IssueDate_IssueDate} />
         </Grid>
         )}
         {values.natID_q1_natIDIndicator === "Y" && (
         <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Expiry Date" name="natID_natIDdocs_IssueDate_ExpiryDate"
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Expiry Date *" name="natID_natIDdocs_IssueDate_ExpiryDate"
               error={touched.natID_natIDdocs_IssueDate_ExpiryDate && errors.natID_natIDdocs_IssueDate_ExpiryDate}
               helperText={touched.natID_natIDdocs_IssueDate_ExpiryDate && errors.natID_natIDdocs_IssueDate_ExpiryDate} />
         </Grid>
@@ -241,7 +241,7 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.USCard_q1_usCardIndicator === "Y" && (
         <Grid item xs={12} md={6}>
             <Field
-              name='USCard_usCarddocs_DocNum_DocNum' label='PR Card Number'
+              name='USCard_usCarddocs_DocNum_DocNum' label='PR Card Number *'
               margin='normal' as={TextField} fullWidth
               error={touched.USCard_usCarddocs_DocNum_DocNum && errors.USCard_usCarddocs_DocNum_DocNum}
               helperText={touched.USCard_usCarddocs_DocNum_DocNum && errors.USCard_usCarddocs_DocNum_DocNum}
@@ -250,7 +250,7 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep }) => {
         )}
         {values.USCard_q1_usCardIndicator === "Y" && (
         <Grid item xs={12} md={6}>
-            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Expiry Date" name="USCard_usCardDocs_ExpiryDate" 
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Expiry Date *" name="USCard_usCardDocs_ExpiryDate" 
               error={touched.USCard_usCardDocs_ExpiryDate && errors.USCard_usCardDocs_ExpiryDate}
               helperText={touched.USCard_usCardDocs_ExpiryDate && errors.USCard_usCardDocs_ExpiryDate} />
         </Grid>

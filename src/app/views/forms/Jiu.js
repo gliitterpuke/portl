@@ -101,7 +101,7 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.Education_EducationIndicator === "Y" && (
         <Grid item xs={12} md={1}>
             <Field
-              name='Education_Edu_Row1_FromYear' label='YYYY' helperText='From'
+              name='Education_Edu_Row1_FromYear' label='YYYY' helperText='From *'
               margin='normal' as={TextField} fullWidth
               error={touched.Education_Edu_Row1_FromYear && errors.Education_Edu_Row1_FromYear}
             />
@@ -110,7 +110,7 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.Education_EducationIndicator === "Y" && (
         <Grid item xs={12} md={1}>
             <Field
-              name='Education_Edu_Row1_FromMonth' label='MM' helperText='From'
+              name='Education_Edu_Row1_FromMonth' label='MM' helperText='From *'
               margin='normal' as={TextField} fullWidth
               error={touched.Education_Edu_Row1_FromMonth && errors.Education_Edu_Row1_FromMonth}
             />
@@ -119,7 +119,7 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.Education_EducationIndicator === "Y" && (
         <Grid item xs={12} md={5}>
             <Field
-              name='Education_Edu_Row1_FieldOfStudy' label='Field of Study'
+              name='Education_Edu_Row1_FieldOfStudy' label='Field of Study *'
               margin='normal' as={TextField} fullWidth
               error={touched.Education_Edu_Row1_FieldOfStudy && errors.Education_Edu_Row1_FieldOfStudy}
               helperText={touched.Education_Edu_Row1_FieldOfStudy && errors.Education_Edu_Row1_FieldOfStudy}
@@ -129,7 +129,7 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.Education_EducationIndicator === "Y" && (
         <Grid item xs={12} md={5}>
             <Field
-              name='Education_Edu_Row1_School' label='Name of School/Facility'
+              name='Education_Edu_Row1_School' label='Name of School/Facility *'
               margin='normal' as={TextField} fullWidth
               error={touched.Education_Edu_Row1_School && errors.Education_Edu_Row1_School}
               helperText={touched.Education_Edu_Row1_School && errors.Education_Edu_Row1_School}
@@ -157,7 +157,7 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
         {values.Education_EducationIndicator === "Y" && (
         <Grid item xs={12} md={6}>
             <Field
-              name='Education_Edu_Row1_CityTown' label='City/Town'
+              name='Education_Edu_Row1_CityTown' label='City/Town *'
               margin='normal' as={TextField} fullWidth
               error={touched.Education_Edu_Row1_CityTown && errors.Education_Edu_Row1_CityTown}
               helperText={touched.Education_Edu_Row1_CityTown && errors.Education_Edu_Row1_CityTown}
@@ -177,14 +177,14 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
                   {...params}
                   error={touched['educt'] && !!errors['educt']}
                   helperText={errors['educt']}
-                  label="Country/Territory"
+                  label="Country/Territory *"
                   variant="outlined"
                 />
               )}
             />
         </Grid>
         )}
-        {values.Education_EducationIndicator === "Y" && (
+        {values.educt.label === "Canada" && (
         <Grid item xs={12} md={3}>
             <Field
               name="edups"
@@ -197,7 +197,27 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep }) => {
                   {...params}
                   error={touched['edups'] && !!errors['edups']}
                   helperText={errors['edups']}
-                  label="Province/State"
+                  label="Province/State *"
+                  variant="outlined"
+                />
+              )}
+            />
+        </Grid>
+        )}
+        {values.educt.label === "United States of America" && (
+        <Grid item xs={12} md={3}>
+            <Field
+              name="edups"
+              component={Autocomplete}
+              options={provstate}
+              getOptionLabel={(option: label) => option.label}
+              style={{ width: 200 }}
+              renderInput={(params: AutocompleteRenderInputParams) => (
+                <TextField
+                  {...params}
+                  error={touched['edups'] && !!errors['edups']}
+                  helperText={errors['edups']}
+                  label="Province/State *"
                   variant="outlined"
                 />
               )}
