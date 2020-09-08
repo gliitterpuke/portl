@@ -53,7 +53,7 @@ class RepSignUp extends Component {
         max_processing_budget: 1000,
         payout_account: "Account goes here",
         country_code: 158,
-        service_languages: [ "eng" ],
+        service_languages: [ "eng", "chi", "fre" ],
         owner_id: result.data.id
       }
       axios.post("https://portl-dev.herokuapp.com/api/v1/professionals", professional)

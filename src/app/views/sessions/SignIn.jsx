@@ -60,7 +60,23 @@ class SignIn extends Component {
       code: "eng",
       name: "English"
     }
-    const isocountries = {
+    const isolang2 = { 
+      code: "chi",
+      name: "Chinese"
+    }
+    const isolang3 = { 
+      code: "fre",
+      name: "French"
+    }
+    const isoct = {
+      code: 156,
+      name: "China"
+    }
+    const isoct2 = {
+      code: 356,
+      name: "India"
+    }
+    const isoct3 = {
       code: 158,
       name: "Taiwan"
     }
@@ -90,7 +106,15 @@ class SignIn extends Component {
     }
     return axios.post("https://portl-dev.herokuapp.com/api/v1/iso/languages/", isolang)
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/countries/", isocountries)})
+    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/languages/", isolang2)})
+    .then(() => { 
+    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/languages/", isolang3)})
+    .then(() => { 
+    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/countries/", isoct)})
+    .then(() => { 
+    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/countries/", isoct2)})
+    .then(() => { 
+    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/countries/", isoct3)})
     .then(() => { 
     axios.post("https://portl-dev.herokuapp.com/api/v1/iso/currencies/", isocurrency)})
     .then(() => { 
