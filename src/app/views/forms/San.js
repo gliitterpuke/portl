@@ -119,17 +119,27 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
                 <ErrorMessage name="MaritalStatus_SectionA_MaritalStatus" />
             </div>
           </Grid>
-          {values.MaritalStatus_SectionA_MaritalStatus === "01" | values.MaritalStatus_SectionA_MaritalStatus ===  "03" && (
+          {values.MaritalStatus_SectionA_MaritalStatus === "01" && (
           <Grid item xs={12} md={6}>
             <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Date of Marriage" name="MaritalStatus_SectionA_DateofMarriage"
               error={touched.MaritalStatus_SectionA_DateofMarriage && errors.MaritalStatus_SectionA_DateofMarriage}
               helperText={touched.MaritalStatus_SectionA_DateofMarriage && errors.MaritalStatus_SectionA_DateofMarriage} />
           </Grid>
           )}
-          {values.MaritalStatus_SectionA_MaritalStatus === "01" | values.MaritalStatus_SectionA_MaritalStatus ===  "03" && (
+          {values.MaritalStatus_SectionA_MaritalStatus ===  "03" && (
+          <Grid item xs={12} md={6}>
+            <Field as={TextField} type="date" InputLabelProps={{ shrink: true }} label="Date of Marriage" name="MaritalStatus_SectionA_DateofMarriage"
+              error={touched.MaritalStatus_SectionA_DateofMarriage && errors.MaritalStatus_SectionA_DateofMarriage}
+              helperText={touched.MaritalStatus_SectionA_DateofMarriage && errors.MaritalStatus_SectionA_DateofMarriage} />
+          </Grid>
+          )}
+          {values.MaritalStatus_SectionA_MaritalStatus === "01" && (
           <Grid item xs={12}><FormLabel component="legend">Name of your current Spouse/Common-law partner</FormLabel></Grid>
           )}
-          {values.MaritalStatus_SectionA_MaritalStatus === "01" | values.MaritalStatus_SectionA_MaritalStatus ===  "03" && (
+          {values.MaritalStatus_SectionA_MaritalStatus ===  "03" && (
+          <Grid item xs={12}><FormLabel component="legend">Name of your current Spouse/Common-law partner</FormLabel></Grid>
+          )}
+          {values.MaritalStatus_SectionA_MaritalStatus === "01" && (
           <Grid item xs={12} md={6}>
             <Field
               name='MaritalStatus_SectionA_FamilyName' label='Spouse Last Name'
@@ -139,7 +149,27 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
             />
           </Grid>
           )}
-          {values.MaritalStatus_SectionA_MaritalStatus === "01" | values.MaritalStatus_SectionA_MaritalStatus ===  "03" && (
+          {values.MaritalStatus_SectionA_MaritalStatus ===  "03" && (
+          <Grid item xs={12} md={6}>
+            <Field
+              name='MaritalStatus_SectionA_FamilyName' label='Spouse Last Name'
+              margin='normal' as={TextField} fullWidth
+              error={touched.MaritalStatus_SectionA_FamilyName && errors.MaritalStatus_SectionA_FamilyName}
+              helperText={touched.MaritalStatus_SectionA_FamilyName && errors.MaritalStatus_SectionA_FamilyName}
+            />
+          </Grid>
+          )}
+          {values.MaritalStatus_SectionA_MaritalStatus === "01" && (
+          <Grid item xs={12} md={6}>
+            <Field
+              name='MaritalStatus_SectionA_GivenName' label='Spouse First Name'
+              margin='normal' as={TextField} fullWidth
+              error={touched.MaritalStatus_SectionA_GivenName && errors.MaritalStatus_SectionA_GivenName}
+              helperText={touched.MaritalStatus_SectionA_GivenName && errors.MaritalStatus_SectionA_GivenName}
+            />
+          </Grid>
+          )}
+          {values.MaritalStatus_SectionA_MaritalStatus ===  "03" && (
           <Grid item xs={12} md={6}>
             <Field
               name='MaritalStatus_SectionA_GivenName' label='Spouse First Name'

@@ -419,7 +419,17 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
             </div>
         </Grid>
 
-        {values.PhoneLoc === "CU" | values.PhoneLoc === "Other" && (
+        {values.PhoneLoc === "CU" && (
+        <Grid item xs={12} md={2}>
+            <Field
+              name='ContactInformation_contact_PhoneNumbers_Phone_NumberCountry' label='Country Code *'
+              margin='normal' as={TextField} fullWidth
+              error={touched.ContactInformation_contact_PhoneNumbers_Phone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_Phone_NumberCountry}
+              helperText={touched.ContactInformation_contact_PhoneNumbers_Phone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_Phone_NumberCountry}
+            />
+        </Grid>
+        )}
+        {values.PhoneLoc === "Other" && (
         <Grid item xs={12} md={2}>
             <Field
               name='ContactInformation_contact_PhoneNumbers_Phone_NumberCountry' label='Country Code *'
@@ -449,7 +459,17 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
             />
         </Grid>
         )}
-        {(values.PhoneLoc === "CU" | values.PhoneLoc === "Other") && (
+        {values.PhoneLoc === "CU" && (
+        <Grid item xs={12} md={2}>
+            <Field
+              name='ContactInformation_contact_PhoneNumbers_Phone_NumberExt' label='Ext'
+              margin='normal' as={TextField} fullWidth
+              error={touched.ContactInformation_contact_PhoneNumbers_Phone_NumberExt && errors.ContactInformation_contact_PhoneNumbers_Phone_NumberExt}
+              helperText={touched.ContactInformation_contact_PhoneNumbers_Phone_NumberExt && errors.ContactInformation_contact_PhoneNumbers_Phone_NumberExt}
+            />
+        </Grid>
+        )}
+        {values.PhoneLoc === "Other" && (
         <Grid item xs={12} md={2}>
             <Field
               name='ContactInformation_contact_PhoneNumbers_Phone_NumberExt' label='Ext'
@@ -486,7 +506,17 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
               </Field>
             </FormControl>
         </Grid>
-        {values.PhoneLoc2 === "CU" | values.PhoneLoc2 === "Other" && (
+        {values.PhoneLoc2 === "CU" && (
+          <Grid item xs={12} md={2}>
+            <Field
+              name='ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry' label='Alternative Country Code'
+              margin='normal' as={TextField} fullWidth
+              error={touched.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry}
+              helperText={touched.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry}
+            />
+        </Grid>
+        )}
+        {values.PhoneLoc2 === "Other" && (
           <Grid item xs={12} md={2}>
             <Field
               name='ContactInformation_contact_PhoneNumbers_AltPhone_NumberCountry' label='Alternative Country Code'
@@ -516,7 +546,17 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
             />
         </Grid>
         )}
-        {values.PhoneLoc2 === "CU" | values.PhoneLoc2 === "Other" && (
+        {values.PhoneLoc2 === "CU" && (
+        <Grid item xs={12} md={2}>
+            <Field
+              name='ContactInformation_contact_PhoneNumbers_AltPhone_NumberExt' label='Ext'
+              margin='normal' as={TextField} fullWidth
+              error={touched.ContactInformation_contact_PhoneNumbers_AltPhone_NumberExt && errors.ContactInformation_contact_PhoneNumbers_AltPhone_NumberExt}
+              helperText={touched.ContactInformation_contact_PhoneNumbers_AltPhone_NumberExt && errors.ContactInformation_contact_PhoneNumbers_AltPhone_NumberExt}
+            />
+        </Grid>
+        )}
+        {values.PhoneLoc2 === "Other" && (
         <Grid item xs={12} md={2}>
             <Field
               name='ContactInformation_contact_PhoneNumbers_AltPhone_NumberExt' label='Ext'
@@ -542,7 +582,17 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
                 value="Other" control={<Radio />} label="Other" />
             </Field>
         </Grid>
-        {values.FaxLoc === "CU" | values.FaxLoc === "Other" && (
+        {values.FaxLoc === "CU" && (
+        <Grid item xs={12} md={6}>
+            <Field
+              name='ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry' label='Country Code'
+              margin='normal' as={TextField} fullWidth
+              error={touched.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry}
+              helperText={touched.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry && errors.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry}
+            />
+        </Grid>
+        )}
+        {values.FaxLoc === "Other" && (
         <Grid item xs={12} md={6}>
             <Field
               name='ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberCountry' label='Country Code'
@@ -572,7 +622,17 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep }) => {
             />
         </Grid>
         )}
-        {values.FaxLoc === "CU" | values.FaxLoc === "Other" && (
+        {values.FaxLoc === "CU" && (
+        <Grid item xs={12} md={6}>
+            <Field
+              name='ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberExt' label='Ext'
+              margin='normal' as={TextField} fullWidth
+              error={touched.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberExt && errors.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberExt}
+              helperText={touched.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberExt && errors.ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberExt}
+            />
+        </Grid>
+        )}
+        {values.FaxLoc === "Other" && (
         <Grid item xs={12} md={6}>
             <Field
               name='ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_NumberExt' label='Ext'
@@ -943,17 +1003,3 @@ const provstate = [
   { label: 'VI', value: '72' },
   { label: 'PR', value: 'PR' },
 ];
-
-const canus = [
-  {
-    label: "Can/US",
-    value: "1"
-  },
-];
-
-const other = [
-  {
-    label: "Other",
-    value: "1"
-  },
-]

@@ -214,7 +214,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
     GovPosition_Choice, 
  } = formData;
  
- const test = {
+ const payload = {
   PersonalDetails_ServiceIn_ServiceIn,
   PersonalDetails_VisaType_VisaType,
   PersonalDetails_Name_FamilyName,
@@ -388,8 +388,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
-    //axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
-    axios.post("https://portl-dev.herokuapp.com/api/v1/forms/trv/" + currentApp.id, test, auth)
+    axios.post(`https://portl-dev.herokuapp.com/api/v1/forms/imm5257/${user.id}/` + currentApp.id, payload, auth)
       .then(result => { 
       //console.log(currentApp)
       return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", result.data, auth)
@@ -598,17 +597,32 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
             .replace('01', 'Married').replace('02', 'Single').replace('03', 'Common-Law').replace('04', 'Divorced')
             .replace('05', 'Legally Separated').replace('06', 'Widowed').replace('09', 'Annulled Marriage').replace('00', 'Unknown')}
           </Grid>
-          {MaritalStatus_SectionA_MaritalStatus === "01" | MaritalStatus_SectionA_MaritalStatus ===  "03" && (
+          {MaritalStatus_SectionA_MaritalStatus === "01" && (
           <Grid item xs={12} md={6} lg={3}>
             <h5>Date of Marriage</h5> {MaritalStatus_SectionA_DateofMarriage}
           </Grid>
           )}
-          {MaritalStatus_SectionA_MaritalStatus === "01" | MaritalStatus_SectionA_MaritalStatus ===  "03" && (
+          {MaritalStatus_SectionA_MaritalStatus ===  "03" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Date of Marriage</h5> {MaritalStatus_SectionA_DateofMarriage}
+          </Grid>
+          )}
+          {MaritalStatus_SectionA_MaritalStatus === "01" && (
           <Grid item xs={12} md={6} lg={3}>
             <h5>Spouse's First Name</h5> {MaritalStatus_SectionA_GivenName}
           </Grid>
           )}
-          {MaritalStatus_SectionA_MaritalStatus === "01" | MaritalStatus_SectionA_MaritalStatus ===  "03" && (
+          {MaritalStatus_SectionA_MaritalStatus ===  "03" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Spouse's First Name</h5> {MaritalStatus_SectionA_GivenName}
+          </Grid>
+          )}
+          {MaritalStatus_SectionA_MaritalStatus === "01" && (
+          <Grid item xs={12} md={6} lg={3}>
+            <h5>Spouse's Last Name</h5> {MaritalStatus_SectionA_FamilyName}
+          </Grid>
+          )}
+          {MaritalStatus_SectionA_MaritalStatus ===  "03" && (
           <Grid item xs={12} md={6} lg={3}>
             <h5>Spouse's Last Name</h5> {MaritalStatus_SectionA_FamilyName}
           </Grid>
@@ -828,7 +842,8 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
             <h4>Phone Number</h4>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
-            <h5>Phone Type</h5> {ContactInformation_contact_PhoneNumbers_Phone_Type}
+            <h5>Phone Type</h5> {ContactInformation_contact_PhoneNumbers_Phone_Type
+            .replace('01', 'Home').replace('02', 'Cell').replace('03', 'Business')}
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <h5>Area</h5> {PhoneLoc.replace('CU', 'Can/US')}
@@ -859,7 +874,9 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
             <h4>Alternative Phone Number</h4>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
-            <h5>Phone Type</h5> {ContactInformation_contact_PhoneNumbers_AltPhone_Type}
+            <h5>Phone Type</h5> 
+            {ContactInformation_contact_PhoneNumbers_AltPhone_Type
+            .replace('01', 'Home').replace('02', 'Cell').replace('03', 'Business')}
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <h5>Area</h5> {PhoneLoc2.replace('CU', 'Can/US')}
@@ -1211,8 +1228,9 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
             variant='contained'
             className={classes.button}
             onClick={() => handleSubmit()}
+            onClick={() => nextStep()}
           >
-            Confirm & Continue
+            Confirm & Submit
           </Button>
         </div>
         </SimpleCard>

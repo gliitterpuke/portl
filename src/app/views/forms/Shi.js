@@ -13,8 +13,6 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import axios from "axios";
-import localStorageService from "../../services/localStorageService";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { SimpleCard } from 'matx';
@@ -43,10 +41,6 @@ const validationSchema = yup.object({
     //make either visas1-3
   BackgroundInfo2_Details_refusedDetails: yup.string()
     .when("BackgroundInfo2_VisaChoice1", {
-      is: "Y", then: yup.string().required( "Required" ),
-      otherwise: yup.string() }),
-  BackgroundInfo2_Details_refusedDetails: yup.string()
-    .when("BackgroundInfo2_VisaChoice2", {
       is: "Y", then: yup.string().required( "Required" ),
       otherwise: yup.string() }),
   BackgroundInfo3_Choice: yup.string()
@@ -171,7 +165,29 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp }) =
                 <ErrorMessage name="BackgroundInfo2_Details_VisaChoice3" />
             </div>
         </Grid>
-        {values.BackgroundInfo2_VisaChoice1 === "Y" | values.BackgroundInfo2_VisaChoice2 === "Y" | values.BackgroundInfo3_VisaChoice3 === "Y"  && (
+        {values.BackgroundInfo2_VisaChoice1 === "Y"  && (
+        <Grid item xs={12} md={6}>
+          <FormLabel component="legend">Please provide details.</FormLabel>
+            <Field
+              name='BackgroundInfo2_Details_refusedDetails'
+              margin='normal' as={TextField} fullWidth
+              error={touched.BackgroundInfo2_Details_refusedDetails && errors.BackgroundInfo2_Details_refusedDetails}
+              helperText={touched.BackgroundInfo2_Details_refusedDetails && errors.BackgroundInfo2_Details_refusedDetails}
+            />
+          </Grid>
+        )}
+        {values.BackgroundInfo2_VisaChoice2 === "Y"  && (
+        <Grid item xs={12} md={6}>
+          <FormLabel component="legend">Please provide details.</FormLabel>
+            <Field
+              name='BackgroundInfo2_Details_refusedDetails'
+              margin='normal' as={TextField} fullWidth
+              error={touched.BackgroundInfo2_Details_refusedDetails && errors.BackgroundInfo2_Details_refusedDetails}
+              helperText={touched.BackgroundInfo2_Details_refusedDetails && errors.BackgroundInfo2_Details_refusedDetails}
+            />
+          </Grid>
+        )}
+        {values.BackgroundInfo3_VisaChoice3 === "Y"  && (
         <Grid item xs={12} md={6}>
           <FormLabel component="legend">Please provide details.</FormLabel>
             <Field
