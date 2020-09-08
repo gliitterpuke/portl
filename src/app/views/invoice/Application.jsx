@@ -199,7 +199,12 @@ class HigherOrderComponent extends Component {
       url: result.data.url
     }
 
-    return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+    return fetch(result.data.data.url, {
+      method: 'post',
+      body: formData,
+      // headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    // axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
     .then((response) => {
       console.log(appid)
       return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data)
