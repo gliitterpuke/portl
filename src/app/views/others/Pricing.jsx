@@ -1,7 +1,10 @@
 import React from "react";
 import { Card, Grid, Button } from "@material-ui/core";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Pricing = () => {
+
   return (
     <div className="pricing m-sm-30 position-relative">
 
@@ -30,14 +33,16 @@ const Pricing = () => {
               </div>
 
               <div className="mb-6">
-                <p className="mt-0">Complete CRM service</p>
-                <p>100GB disk space</p>
-                <p className="mb-0">upto 5 users</p>
+                <p className="mt-0">Business</p>
+                <p>Tourism</p>
+                <p className="mb-0">Super Visas</p>
               </div>
-
+              
+              <Link to={`/trv`}>
               <Button variant="contained" color="primary" className="uppercase">
-                Sign up
+                Get started
               </Button>
+              </Link>
             </Card>
           </Grid>
           <Grid item lg={3} md={3} sm={3} xs={12}>
@@ -54,13 +59,13 @@ const Pricing = () => {
               </div>
 
               <div className="mb-6">
-                <p className="mt-0">Complete CRM service</p>
-                <p>10000GB disk space</p>
-                <p className="mb-0">upto 15 users</p>
+                <p className="mt-0">Post-secondary education</p>
+                <p>Work while studying</p>
+                <p className="mb-0">Extensions available</p>
               </div>
 
               <Button variant="contained" color="primary" className="uppercase">
-                Sign up
+                Get started
               </Button>
             </Card>
           </Grid>
@@ -78,13 +83,13 @@ const Pricing = () => {
               </div>
 
               <div className="mb-6">
-                <p className="mt-0">Complete CRM service</p>
-                <p>10TB disk space</p>
-                <p className="mb-0">upto 100 users</p>
+                <p className="mt-0">For skilled immigrants</p>
+                <p>Settle permanently</p>
+                <p className="mb-0">Filler</p>
               </div>
 
               <Button variant="contained" color="primary" className="uppercase">
-                Sign up
+                Get Started
               </Button>
             </Card>
           </Grid>
@@ -97,18 +102,18 @@ const Pricing = () => {
               />
               <div className="mb-4">
                 <h5>Work Permit</h5>
-                <h1>$75</h1>
+                <h1>$200</h1>
                 <small className="text-muted">Add-ons available</small>
               </div>
 
               <div className="mb-6">
-                <p className="mt-0">Complete CRM service</p>
-                <p>100GB disk space</p>
-                <p className="mb-0">upto 5 users</p>
+                <p className="mt-0">Flexibility</p>
+                <p>Work in Canada</p>
+                <p className="mb-0">Filler</p>
               </div>
 
               <Button variant="contained" color="primary" className="uppercase">
-                Sign up
+                Get Started
               </Button>
             </Card>
           </Grid>

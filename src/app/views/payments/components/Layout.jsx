@@ -12,7 +12,7 @@ import { loadStripe } from "@stripe/stripe-js";
 // of fraud as customers browse your website.
 // Note: This is why we are adding it to a Layout component.
 
-const stripePromise = loadStripe('sk_test_51HN3fDEkWn13hvdteKrXXlfSireUu3f1ShNeHXD1393ArFiAiOW3YmLGl2Aa4fBIAc5KB11ww7HDYs4ZbdMixGhr00f0wyGVAC');
+const stripePromise = loadStripe('pk_test_51HN3fDEkWn13hvdtsBsDuCuRXcXIfHUEVLLPWv8aH4jmuhFtq6sVFoZ2RhYuvarJZRGjwHMxAUQaoTOnPG979jm700fh6xP0Do', {stripeAccount: 'acct_1HPVPSCMMK6Kdzgg'});
 
 // TIP
 // call loadStripe outside of a component

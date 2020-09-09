@@ -14,12 +14,8 @@ const invoiceRoutes = [
     auth: authRoles.professional
   },
   {
-    path: "/payment",
+    path: "/trv",
     component: React.lazy(() => import("../payments/pages/index"))
-  },
-  {
-    path: "/payment2",
-    component: React.lazy(() => import("../payments/stripedemo"))
   },
   {
     path: "/applications/:id/files/:id",

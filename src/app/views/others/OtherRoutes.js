@@ -2,7 +2,7 @@ import React from 'react';
 
 const otherRoutes = [
   {
-    path: "/others/pricing",
+    path: "/products",
     component: React.lazy(() => import("./Pricing"))
   }
 ];

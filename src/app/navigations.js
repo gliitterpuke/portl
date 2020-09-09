@@ -20,24 +20,38 @@ export const navigations = [
     path: "/chat",
     
   },
-  {
-    name: "Prodcuts",
-    icon: "assignment",
-    path: "/products",
-    auth: authRoles.client,
-  },
-  {
-    name: "Pricing",
-    icon: "dollar",
-    path: "/Payment",
-    auth: authRoles.client,
-    exact: true,
-  },
-  {
-    name: "Payment 2",
-    icon: "dollar",
-    path: "/Payment2",
-    auth: authRoles.client,
-    exact: true,
-  },
+  // {
+  //   name: "Prodcuts",
+  //   icon: "assignment",
+  //   path: "/products",
+  //   auth: authRoles.client,
+  // },
+  // {
+  //   name: "Pricing",
+  //   icon: "payment",
+  //   path: "/trv",
+  //   auth: authRoles.client,
+  //   exact: true,
+  // },
+  // {
+  //   name: "Pricing",
+  //   icon: "dollar",
+  //   path: "/study",
+  //   auth: authRoles.client,
+  //   exact: true,
+  // },
+  // {
+  //   name: "Pricing",
+  //   icon: "dollar",
+  //   path: "/ee",
+  //   auth: authRoles.client,
+  //   exact: true,
+  // },
+  // {
+  //   name: "Pricing",
+  //   icon: "dollar",
+  //   path: "/work",
+  //   auth: authRoles.client,
+  //   exact: true,
+  // },
 ];
