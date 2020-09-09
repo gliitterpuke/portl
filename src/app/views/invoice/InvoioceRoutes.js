@@ -15,15 +15,11 @@ const invoiceRoutes = [
   },
   {
     path: "/payment",
-    component: React.lazy(() => import("./PaymentTest"))
-  },
-  {
-    path: "/checkout",
-    component: React.lazy(() => import("./pages/index.js"))
+    component: React.lazy(() => import("../payments/pages/index"))
   },
   {
     path: "/payment2",
-    component: React.lazy(() => import("./Payment2"))
+    component: React.lazy(() => import("../payments/stripedemo"))
   },
   {
     path: "/applications/:id/files/:id",

@@ -21,9 +21,23 @@ export const navigations = [
     
   },
   {
-    name: "Pricing",
+    name: "Prodcuts",
     icon: "assignment",
-    path: "/others/pricing",
-    
+    path: "/products",
+    auth: authRoles.client,
+  },
+  {
+    name: "Pricing",
+    icon: "dollar",
+    path: "/Payment",
+    auth: authRoles.client,
+    exact: true,
+  },
+  {
+    name: "Payment 2",
+    icon: "dollar",
+    path: "/Payment2",
+    auth: authRoles.client,
+    exact: true,
   },
 ];
