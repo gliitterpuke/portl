@@ -81,7 +81,7 @@ class SignIn extends Component {
       name: "Taiwan"
     }
     const isocurrency ={
-      code: 124,
+      code: "cad",
       name: "Canadian Dollar"
     }
     const producttype = {
