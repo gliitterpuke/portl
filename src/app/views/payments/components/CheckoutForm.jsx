@@ -9,6 +9,9 @@ import BillingDetailsFields from "./prebuilt/BillingDetailsFields";
 import SubmitButton from "./prebuilt/SubmitButton";
 import CheckoutError from "./prebuilt/CheckoutError";
 
+import history from "../../../../history";
+import localStorageService from "../../../services/localStorageService";
+
 const CardElementContainer = styled.div`
   height: 40px;
   display: flex;
@@ -54,7 +57,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
     const cardElement = elements.getElement("card");
 
     try {
-      const { data: clientSecret } = await axios.post("https://portl-dev.herokuapp.com/api/v1/create-payment-intent", {
+      const { data: client_secret } = await axios.post("https://portl-dev.herokuapp.com/api/v1/create-payment-intent", {
         product_id: 1,
         professional_id: 1
       });
@@ -71,7 +74,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
         return;
       }
 
-      const { error } = await stripe.confirmCardPayment(clientSecret, {
+      const { error } = await stripe.confirmCardPayment(client_secret, {
         payment_method: paymentMethodReq.paymentMethod.id
       });
 
@@ -80,7 +83,20 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
         setProcessingTo(false);
         return;
       }
-
+      // const data = { 
+      //   product_id: 1,
+      //   language_code: "eng",
+      //   client_id: user.client_profile.id
+      // }
+  
+      // axios.post("https://portl-dev.herokuapp.com/api/v1/applications/", data).then(result => { 
+      //   let user = localStorageService.getItem("auth_user")
+      //   user.client_profile.applications.push(result.data)
+      //   localStorageService.setItem("auth_user", user)
+      //   let secondstate = user.client_profile.applications.find (application => application.id === result.data.id);
+      //   history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
+      //   console.log(secondstate)
+      // })
       onSuccessfulCheckout();
     } catch (err) {
       setCheckoutError(err.message);

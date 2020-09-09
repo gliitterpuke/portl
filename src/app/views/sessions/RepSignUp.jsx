@@ -51,7 +51,7 @@ class RepSignUp extends Component {
         occupation: "Representative",
         sex: "Male",
         max_processing_budget: 1000,
-        payout_account: "123456789",
+        payout_account: "acct_1HPKtVB8Swfgzb2d",
         country_code: 158,
         service_languages: [ "eng", "chi", "fre" ],
         owner_id: result.data.id
