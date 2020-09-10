@@ -24,11 +24,6 @@ import localStorageService from "../../services/localStorageService"
 
 let user = localStorageService.getItem("auth_user")
 
-//if (!localStorage.getItem("access_token")) {
-//  history.push('/session/signin');
-//  console.log(localStorage)
-//  }
-
 class ProfessionalFileViewer extends Component {
   state = {
     fileList: [],
@@ -85,7 +80,7 @@ class ProfessionalFileViewer extends Component {
     const mime_type = this.state.mime_type
     const filetype = mime_type.match(/[^\/]+$/)[0]
     const key = this.props.location.id + "/" + appid + "/" + tags + "." + filetype
-    //axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
+
     axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
     .then(result => { 
     const win = window.open(`${result.data}`);
@@ -132,7 +127,11 @@ class ProfessionalFileViewer extends Component {
       url: result.data.url
     }
 
-    return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data'} })
+    return fetch(result.data.data.url, {
+      method: 'put',
+      body: formData,
+      headers: { 'Content-Type': 'multipart/form-data'}
+    })
     .then((response) => {
       return axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.props.location.state.id, data, auth)
       .then((response) => {

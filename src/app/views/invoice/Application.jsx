@@ -66,14 +66,11 @@ class HigherOrderComponent extends Component {
   };
   componentDidMount() {
       this.setState({ ...user })
-      console.log(this.props.location)
     };
     
   handeViewClick = fileId => {
     let user = localStorageService.getItem('auth_user')
     let secondstate = user.client_profile.applications.find (application => application.id === this.props.location.state);
-    console.log(this.props.location)
-    console.log(secondstate)
     let blobstate = secondstate.blobs.find (blobs => blobs.id === fileId)
     this.props.history.push({ pathname: `${secondstate.id}/file/${fileId}`, state: blobstate });
   };
@@ -86,14 +83,12 @@ class HigherOrderComponent extends Component {
     let data = { filename: "DELETED", application_id: null }
     let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state);    
     let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
-    console.log(blobs)
     this.setState({
       shouldShowConfirmationDialog: false
     });
     axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + efile.id, data).then(res => {
       user.client_profile.applications[state].blobs[blobs] = res.data
       localStorageService.setItem("auth_user", user)
-      console.log(user.client_profile.applications[state])
       this.forceUpdate()
 
     });
@@ -182,7 +177,6 @@ class HigherOrderComponent extends Component {
     });
     axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
     .then(result => { 
-    console.log(result)
     const formData = new FormData();
     formData.append("AWSAccessKeyId", result.data.data.fields.AWSAccessKeyId);
     formData.append("key", result.data.data.fields.key);
@@ -205,13 +199,12 @@ class HigherOrderComponent extends Component {
       body: formData,
     })
     .then((response) => {
-      console.log(appid)
       return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data)
       .then((response) => {
+        alert('File successfully uploaded')
         let state = user.client_profile.applications.find (application => application.id === this.props.location.state);
           state.blobs.push(response.data)
           localStorageService.setItem("auth_user", user) 
-          console.log(user)
           this.forceUpdate()
           return response;
       });
@@ -231,7 +224,6 @@ class HigherOrderComponent extends Component {
     let { dragClass, files } = this.state;
     let isEmpty = files.length === 0;
     let user = localStorageService.getItem("auth_user")
-    console.log(this.props.location)
     let state = user.client_profile.applications.find (application => application.id === this.props.location.state);
     
     return (

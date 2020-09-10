@@ -82,7 +82,6 @@ class FileViewer extends Component {
     .then(result => { 
     const win = window.open(`${result.data}`);
     win.focus();
-    console.log(this.state)
     })
   }
 
@@ -106,7 +105,6 @@ class FileViewer extends Component {
     });
     axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
     .then(result => { 
-    console.log(result)
     const formData = new FormData();
     formData.append("AWSAccessKeyId", result.data.data.fields.AWSAccessKeyId);
     formData.append("key", result.data.data.fields.key);
@@ -124,7 +122,11 @@ class FileViewer extends Component {
       url: result.data.url
     }
 
-    return axios.post(result.data.data.url, formData, { headers: { 'Content-Type': 'multipart/form-data'} })
+    return fetch(result.data.data.url, {
+      method: 'put',
+      body: formData,
+      headers: { 'Content-Type': 'multipart/form-data'}
+    })
     .then((response) => {
       return axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.props.location.state.id, data, auth)
       .then((response) => {
@@ -133,7 +135,6 @@ class FileViewer extends Component {
         user.client_profile.applications[state].blobs[blobs] = response.data
         localStorageService.setItem("auth_user", user)
         this.forceUpdate()
-        console.log(localStorageService.getItem("auth_user").client_profile.applications[state])
         return response;
       });
     });
