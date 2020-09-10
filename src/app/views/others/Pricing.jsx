@@ -2,12 +2,15 @@ import React from "react";
 import { Card, Grid, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { Breadcrumb } from "matx";
 
 const Pricing = () => {
 
   return (
     <div className="pricing m-sm-30 position-relative">
-
+        <div className="mb-sm-30">
+          <Breadcrumb routeSegments={[{ name: "Pricing" }]} />
+        </div>
       <div className="w-full text-center mb-11">
         <h3 className="m-0 font-medium">
           Choose the right plan for you
@@ -64,9 +67,11 @@ const Pricing = () => {
                 <p className="mb-0">Extensions available</p>
               </div>
 
+              <Link to={`/study`}>
               <Button variant="contained" color="primary" className="uppercase">
                 Get started
               </Button>
+              </Link>
             </Card>
           </Grid>
           <Grid item lg={3} md={3} sm={3} xs={12}>
@@ -88,9 +93,11 @@ const Pricing = () => {
                 <p className="mb-0">Filler</p>
               </div>
 
+              <Link to ={`/ee`}>
               <Button variant="contained" color="primary" className="uppercase">
                 Get Started
               </Button>
+              </Link>
             </Card>
           </Grid>
           <Grid item lg={3} md={3} sm={3} xs={12}>
@@ -112,9 +119,11 @@ const Pricing = () => {
                 <p className="mb-0">Filler</p>
               </div>
 
+              <Link to ={`/work`}>
               <Button variant="contained" color="primary" className="uppercase">
                 Get Started
               </Button>
+              </Link>
             </Card>
           </Grid>
         </Grid>
