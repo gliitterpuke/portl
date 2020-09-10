@@ -13,12 +13,14 @@ import {
   Typography,
   Fab,
   Grid,
+  CircularProgress
 } from "@material-ui/core";
 import { ValidatorForm } from "react-material-ui-form-validator";
 import { parseJSON } from "date-fns";
 import { withRouter } from "react-router-dom";
 import axios from "axios"
 import localStorageService from "../../services/localStorageService"
+import { SimpleCard, Breadcrumb } from "matx"
 
 let user = localStorageService.getItem("auth_user")
 
@@ -45,6 +47,7 @@ class FileViewer extends Component {
         file: iterator,
         uploading: false,
         error: false,
+        success: false
       });
     }
 
@@ -78,11 +81,25 @@ class FileViewer extends Component {
     const mime_type = this.state.mime_type
     const filetype = mime_type.match(/[^\/]+$/)[0]
     const key = user.id + "/" + appid + "/" + tags + "." + filetype
+    
+    if (filetype === "json") {
+      const appid = this.state.application_id
+      const tags = this.state.tag
+      const key = user.id + "/" + appid + "/" + tags + "." + "pdf"
+
+      axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+      .then(result => { 
+      const win = window.open(`${result.data}`);
+      win.focus();
+    })
+  }
+    else {
     axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
     .then(result => { 
     const win = window.open(`${result.data}`);
     win.focus();
     })
+  }
   }
 
   uploadSingleFile = index => {
@@ -98,7 +115,7 @@ class FileViewer extends Component {
     const filetype = mime_type.match(/[^\/]+$/)[0]
     const key = user.id + "/" + appid + "/" + tags + "." + filetype
 
-    allFiles[index] = { ...file, uploading: true, error: false };
+    allFiles[index] = { ...file, uploading: true, error: false, success: false };
 
     this.setState({
       files: [...allFiles]
@@ -134,12 +151,19 @@ class FileViewer extends Component {
         let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
         user.client_profile.applications[state].blobs[blobs] = response.data
         localStorageService.setItem("auth_user", user)
+        alert('File update successful!')
         this.forceUpdate()
+        this.setState({
+          files: [allFiles[index] = { ...file, uploading: false, error: false, success: true }]
+        });
         return response;
       });
     })
     .catch(error => {
       alert('Error; please try again later')
+      this.setState({
+        files: [allFiles[index] = { ...file, uploading: false, error: true, success: false }]
+      });
    });
   })
 }
@@ -154,7 +178,11 @@ class FileViewer extends Component {
     let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
 
     return (
-      <div className="invoice-viewer py-4">
+      <div className="upload-form m-sm-30">
+        <SimpleCard>
+        <div className="mb-sm-30">
+          <Breadcrumb routeSegments={[{ name: `File` }]} />
+        </div>
         <div className="viewer_actions px-4 mb-5 flex items-center justify-between">
             <IconButton onClick={() => this.props.history.goBack()}>
               <Icon>arrow_back</Icon>
@@ -171,7 +199,6 @@ class FileViewer extends Component {
               Download
              </Button>
           </div>
-          <Card className="mb-4" elevation={0}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -198,7 +225,7 @@ class FileViewer extends Component {
                     </TableRow>
               </TableBody>
             </Table>
-          </Card>
+          
           <div className="upload-form m-sm-30">
         <div>
           <Typography variant="h6">
@@ -239,7 +266,7 @@ class FileViewer extends Component {
             {isEmpty && <p className="px-4">No files yet!</p>}
 
             {files.map((item, index) => {
-              let { file, uploading, error, } = item;
+              let { file, uploading, error, success } = item;
               let { type, tag } = this.state
               return (
             <div className="px-4 py-4" key={file.name}>
@@ -255,7 +282,8 @@ class FileViewer extends Component {
                 </Grid>
                 <Grid item lg={1} md={1} sm={12} xs={12}>
                   {error && <Icon color="error">error</Icon>}
-                  {uploading && <Icon className="text-green">done</Icon>}
+                  {success && <Icon className="text-green">done</Icon>}
+                  {uploading && <CircularProgress size={24} />}
                 </Grid>
                 <Grid item lg={1} md={1} sm={12} xs={12}>
                   <div>
@@ -273,7 +301,9 @@ class FileViewer extends Component {
             })}
             </ValidatorForm>
             </div>
+            
       </div>
+      </SimpleCard>
         </div>
     );
   }

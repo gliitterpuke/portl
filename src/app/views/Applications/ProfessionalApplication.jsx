@@ -17,6 +17,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  CircularProgress
 } from "@material-ui/core";
 import localStorageService from "../../services/localStorageService";
 import { withRouter, Link } from "react-router-dom";
@@ -28,6 +29,7 @@ import { ConfirmationDialog, SimpleCard } from "matx";
 import { ValidatorForm, SelectValidator } from "react-material-ui-form-validator";
 import { withStyles } from "@material-ui/styles"
 import history from "../../../history"
+import { Breadcrumb } from "matx"
 
 let user = localStorageService.getItem("auth_user")
 
@@ -143,6 +145,7 @@ class HigherOrderComponent extends Component {
         file: iterator,
         uploading: false,
         error: false,
+        success: false
       });
     }
 
@@ -182,7 +185,7 @@ class HigherOrderComponent extends Component {
     const filetype = file.file.type.match(/[^\/]+$/)[0]
     const key = state.client_id + "/" + appid + "/" + tags + "." + filetype
 
-    allFiles[index] = { ...file, uploading: true, error: false };
+    allFiles[index] = { ...file, uploading: true, error: false, success: false };
 
     this.setState({
       files: [...allFiles]
@@ -216,16 +219,22 @@ class HigherOrderComponent extends Component {
       console.log(appid)
       return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data)
       .then((response) => {
+        alert('File successfully uploaded')
         let state = user.professional_profile.applications.find (application => application.id === this.props.location.state);
           state.blobs.push(response.data)
           localStorageService.setItem("auth_user", user) 
-          console.log(user)
           this.forceUpdate()
+          this.setState({
+            files: [allFiles[index] = { ...file, uploading: false, error: false, success: true }]
+          });
           return response;
       });
     })
     .catch(error => {
       alert('Error; please try again later')
+      this.setState({
+        files: [allFiles[index] = { ...file, uploading: false, error: true, success: false }]
+      });
    });
   })
 
@@ -244,6 +253,9 @@ class HigherOrderComponent extends Component {
       <React.Fragment>
       <div className="upload-form m-sm-30">
         <SimpleCard>
+        <div className="mb-sm-30">
+          <Breadcrumb routeSegments={[{ name: `Application` }]} />
+        </div>
           <Typography variant="h6">
             Document Checklist
           </Typography>
@@ -596,7 +608,7 @@ class HigherOrderComponent extends Component {
             {isEmpty && <p className="px-4">No files yet!</p>}
 
             {files.map((item, index) => {
-              let { file, uploading, error, } = item;
+              let { file, uploading, error, success } = item;
               return (
             <div className="px-4 py-4" key={file.name}>
               <Grid container spacing={2} direction="row">
@@ -624,7 +636,8 @@ class HigherOrderComponent extends Component {
                 </Grid>
                 <Grid item lg={1} md={1} sm={12} xs={12}>
                   {error && <Icon color="error">error</Icon>}
-                  {uploading && <Icon className="text-green">done</Icon>}
+                  {success && <Icon className="text-green">done</Icon>}
+                  {uploading && <CircularProgress size={24} />}
                 </Grid>
                 <Grid item lg={1} md={1} sm={12} xs={12}>
                   <div>
