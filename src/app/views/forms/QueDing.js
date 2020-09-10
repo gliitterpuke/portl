@@ -7,19 +7,41 @@ import axios from "axios";
 import localStorageService from "../../services/localStorageService";
 import { SimpleCard } from 'matx';
 import history from "../../../history"
-import { green } from '@material-ui/core/colors';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+} 
 const useStyles = makeStyles(theme => ({
   buttonProgress: {
     marginBottom: -8,
-    marginLeft: -85,
+    marginLeft: -60,
     position: 'relative'
   },
+  button: {
+    margin: theme.spacing(1)
+  },
+  snack: {
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    textColor: '#FFFFFF',
+    padding: '0 30px',
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+  }
 }));
 
 export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
   const classes = useStyles();
   const [loading, setLoading] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const { 
     PersonalDetails_ServiceIn_ServiceIn,
@@ -392,6 +414,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
  }
   const handleSubmit = (event) => {
     setLoading(true);
+    setOpen(true)
     let user = localStorageService.getItem("auth_user")
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
@@ -1267,31 +1290,35 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
             <h5>Have you ever witnessed/participated in the ill treatment of prisoners/civilians, looting/desecration of religious buildings?</h5> 
             {GovPosition_Choice}
           </Grid>
-        </Grid>
+        
 
         
-        <div className={classes.textCenter}>
+        <Grid item xs={12}>
           <Button
-            color='secondary'
-            variant='contained'
-            className={classes.button}
-            onClick={() => prevStep()}
-          >
-            Back
+            type='submit' variant='contained' color='secondary' 
+            className={classes.button} onClick={() => prevStep()} >
+              Back
           </Button>
 
           <Button
             color='primary'
             variant='contained'
             type='submit'
+            className={classes.button}
             disabled={loading}
             onClick={() => handleSubmit()}
             // onClick={() => nextStep()}
           >
-            Confirm & Submit
+            Submit
           </Button>
           {loading && <CircularProgress size={24} className={classes.buttonProgress}  />}
-        </div>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} >
+            <Alert onClose={handleClose} className={classes.snack}>
+              Please wait for the file to finish uploading before leaving the page!
+            </Alert>
+          </Snackbar>
+          </Grid>
+          </Grid>
         </SimpleCard>
       </div>
     </>
