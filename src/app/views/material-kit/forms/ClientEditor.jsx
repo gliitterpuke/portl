@@ -46,15 +46,7 @@ class ClientEditor extends Component {
     this.setState({ loading: true });
     let tempState = this.state;
     delete tempState.loading;
-    let data = {
-      first_name: this.state.first_name,
-      middle_name: this.state.middle_name,
-      last_name: this.state.last_name,
-      birth_date: this.state.birth_date,
-      country_code: this.state.citizenship,
-      sex: this.state.sex,
-    }
-    return axios.put("https://portl-dev.herokuapp.com/api/v1/clients/" + user.client_profile.id, data).then((response) => {
+    return axios.put("https://portl-dev.herokuapp.com/api/v1/clients/" + user.client_profile.id, this.state).then((response) => {
       console.log(response)
     user.client_profile = response.data
     localStorageService.setItem("auth_user", user)
@@ -74,7 +66,6 @@ class ClientEditor extends Component {
       country_code,
       sex,
       owner_id,
-      citizenship
     } = this.state;
 
     return (
@@ -194,8 +185,8 @@ class ClientEditor extends Component {
                 label="Citizenship"
                 onChange={this.handleChange}
                 type="text"
-                name="citizenship"
-                value={citizenship}
+                name="country_code"
+                value={country_code}
                 errorMessages={["this field is required"]}
               />
             </Grid>

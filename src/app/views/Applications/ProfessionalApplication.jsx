@@ -225,11 +225,8 @@ class HigherOrderComponent extends Component {
       });
     })
     .catch(error => {
-      const {status} = error.response;
-       if(status === 400) {
-         alert('Please refresh and try again')
-     };
-   })
+      alert('Error; please try again later')
+   });
   })
 
   };

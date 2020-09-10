@@ -55,11 +55,14 @@ class SimpleForm extends Component {
     axios.put(`https://portl-dev.herokuapp.com/api/v1/applications/${application.id}/close`, null, { params: {
       status
     }}).then(res => {
+      alert('Application closed')
       user.client_profile.applications[application.id] = res.data
       localStorageService.setItem("auth_user", user)
       window.location.reload()
-
-    });
+    })
+    .catch(error => {
+      alert('Error; please try again later')
+   });
   };
 
   handleDialogClose = () => {
@@ -107,7 +110,7 @@ class SimpleForm extends Component {
             <Typography variant="h6">Applications</Typography>
           </Grid>
           <Grid item xs={12} lg={2} md={2}>
-            <Link to={`/application/new`}>
+            <Link to={`/products`}>
               <Button color="primary" variant="contained">
                 <span className="pl-2 capitalize">Create New App</span>
               </Button>

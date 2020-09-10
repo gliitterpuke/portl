@@ -137,7 +137,10 @@ class FileViewer extends Component {
         this.forceUpdate()
         return response;
       });
-    });
+    })
+    .catch(error => {
+      alert('Error; please try again later')
+   });
   })
 }
 

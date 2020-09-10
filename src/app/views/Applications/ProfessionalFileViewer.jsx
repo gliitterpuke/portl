@@ -143,13 +143,10 @@ class ProfessionalFileViewer extends Component {
         console.log(localStorageService.getItem("auth_user").professional_profile.applications[state])
         return response;
       })
-      .catch(error => {
-        const {status} = error.response;
-         if(status === 400) {
-           alert('Files must be the same type')
-       };
-     });
-    });
+    })
+    .catch(error => {
+      alert('Error; please try again later')
+   });
   })
 }
 
