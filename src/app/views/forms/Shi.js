@@ -91,7 +91,7 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp }) =
             </Typography>
         </Grid>
         <Grid item xs={12}>
-        <FormGroup row>
+        <FormGroup>
         <FormLabel FormLabel component="legend">Have you or any family members had, or been in contact with anyone, with tuberculosis within the past 2 years? *</FormLabel>
             {canus.map(opt => (
               <Field
@@ -103,6 +103,9 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp }) =
                 Label={{ label: opt.label }}
               />
             ))}
+              <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="bgc" />
+              </div>
             <FormLabel FormLabel component="legend">Do you have any mental/physical disorders that would require social/health services, other than medication, during your stay in Canada? *</FormLabel>
             {canus.map(opt => (
               <Field
@@ -114,6 +117,9 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp }) =
                 Label={{ label: opt.label }}
               />
             ))}
+              <div style={{ color: '#f54639', fontSize: '11px', letterSpacing: '0.0563em'}}>
+                <ErrorMessage name="abc" />
+              </div>
           </FormGroup>
         </Grid>
         <Grid item xs={12}>

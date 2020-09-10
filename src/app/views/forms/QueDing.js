@@ -1,20 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Typography } from '@material-ui/core';
+import { Button, Typography, CircularProgress } from '@material-ui/core';
 import { Grid, FormLabel, FormControlLabel } from '@material-ui/core/';
 import axios from "axios";
 import localStorageService from "../../services/localStorageService";
 import { SimpleCard } from 'matx';
+import history from "../../../history"
+import { green } from '@material-ui/core/colors';
 
 const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1)
-  }
+  buttonProgress: {
+    marginBottom: -8,
+    marginLeft: -85,
+    position: 'relative'
+  },
 }));
 
 export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
   const classes = useStyles();
+  const [loading, setLoading] = React.useState(false);
+
   const { 
     PersonalDetails_ServiceIn_ServiceIn,
     PersonalDetails_VisaType_VisaType,
@@ -385,21 +391,27 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
   GovPosition_Choice, 
  }
   const handleSubmit = (event) => {
-    console.log(formData);
+    setLoading(true);
     let user = localStorageService.getItem("auth_user")
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
+
     axios.post(`https://portl-dev.herokuapp.com/api/v1/forms/imm5257/${user.id}/` + currentApp.id, payload, auth)
       .then(result => { 
-      //console.log(currentApp)
       return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", result.data, auth)
       .then((response) => {
         user.client_profile.applications.push(response.data)
         localStorageService.setItem("auth_user", user)
+        setLoading(false);
+        alert('Success! Taking you back to your application')
+        window.location.reload()
         return response;
-      });
-    })
+      })
+      .catch(error => {
+        alert('Request timed out; please try again later')
+      })
+    }) 
 }
   return (
     <>
@@ -1271,12 +1283,14 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
           <Button
             color='primary'
             variant='contained'
-            className={classes.button}
+            type='submit'
+            disabled={loading}
             onClick={() => handleSubmit()}
-            onClick={() => nextStep()}
+            // onClick={() => nextStep()}
           >
             Confirm & Submit
           </Button>
+          {loading && <CircularProgress size={24} className={classes.buttonProgress}  />}
         </div>
         </SimpleCard>
       </div>
