@@ -432,9 +432,11 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
         window.location.reload()
         return response;
       })
-      .catch(error => {
-        alert('Request timed out; please try again later')
-      })
+      
+    })
+    .catch(error => {
+      alert('Request timed out; please try again later')
+      setLoading(false);
     }) 
 }
   return (

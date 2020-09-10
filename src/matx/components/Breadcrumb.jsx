@@ -2,7 +2,11 @@ import React from "react";
 import { Icon, Breadcrumbs, Hidden } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import localStorageService from "../../app/services/localStorageService"
+import history from "../../history"
 
+if (!localStorage.getItem("access_token")) {
+ history.push('/session/signin');
+ }
 var user = localStorageService.getItem('auth_user')
 
 const Breadcrumb = ({ routeSegments }) => {
