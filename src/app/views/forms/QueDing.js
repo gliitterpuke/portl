@@ -1,4 +1,5 @@
 import React from 'react';
+import { Prompt } from 'react-router';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Typography, CircularProgress } from '@material-ui/core';
@@ -1320,6 +1321,9 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
           </Grid>
           </Grid>
         </SimpleCard>
+        <Prompt
+        message='You have not yet submitted your form, are you sure you want to leave?'
+        />
       </div>
     </>
   );

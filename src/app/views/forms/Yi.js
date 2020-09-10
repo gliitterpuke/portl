@@ -23,6 +23,7 @@ import {
     AutocompleteRenderInputParams,
 } from 'formik-material-ui-lab';
 import { SimpleCard } from "matx";
+import { Prompt } from 'react-router'
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -279,6 +280,9 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
         </div>
         )}
       </Formik>
+      <Prompt
+      message='You have unsaved changes, are you sure you want to leave?'
+      />
     </>
   );
 };

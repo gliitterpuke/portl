@@ -19,6 +19,7 @@ import {
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { SimpleCard } from 'matx';
+import { Prompt } from 'react-router'
   
 const useStyles = makeStyles(theme => ({
   button: {
@@ -295,6 +296,10 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
         </div>
         )}
       </Formik>
+      <Prompt
+      message='You have unsaved changes, are you sure you want to leave?'
+      />
+
     </>
   );
 };
