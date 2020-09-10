@@ -85,16 +85,46 @@ class SignIn extends Component {
       name: "Canadian Dollar"
     }
     const producttype = {
-      name: "Visa"
+      name: "Application"
     }
-    const product = {
+    const trv = {
       name: "Temporary Resident Visa",
       code: "TRV",
       total_price: 200,
       platform_fee: 100,
       processing_cost: 1,
       country_code: 158,
-      currency_code: 124,
+      currency_code: "cad",
+      product_type_id: 1
+    }
+    const study = {
+      name: "Study Permit",
+      code: "study",
+      total_price: 200,
+      platform_fee: 100,
+      processing_cost: 1,
+      country_code: 158,
+      currency_code: "cad",
+      product_type_id: 1
+    }
+    const ee = {
+      name: "Express Entry",
+      code: "ee",
+      total_price: 200,
+      platform_fee: 100,
+      processing_cost: 1,
+      country_code: 158,
+      currency_code: "cad",
+      product_type_id: 1
+    }
+    const work = {
+      name: "Work Permit",
+      code: "work",
+      total_price: 200,
+      platform_fee: 100,
+      processing_cost: 1,
+      country_code: 158,
+      currency_code: "cad",
       product_type_id: 1
     }
     const form = {
@@ -120,7 +150,13 @@ class SignIn extends Component {
     .then(() => { 
     axios.post("https://portl-dev.herokuapp.com/api/v1/product-types/", producttype)})
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/products/", product)})
+    axios.post("https://portl-dev.herokuapp.com/api/v1/products/", trv)})
+    .then(() => { 
+    axios.post("https://portl-dev.herokuapp.com/api/v1/products/", study)})
+    .then(() => { 
+    axios.post("https://portl-dev.herokuapp.com/api/v1/products/", ee)})
+    .then(() => { 
+    axios.post("https://portl-dev.herokuapp.com/api/v1/products/", work)})
     .then(() => { 
     axios.post("https://portl-dev.herokuapp.com/api/v1/form-metadata/", form)})
     }
