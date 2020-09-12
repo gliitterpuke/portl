@@ -25,6 +25,8 @@ let user = localStorageService.getItem("auth_user")
 if (user.role === "professional") {
   history.push('/professional')
 }
+
+let baseURL = "http://127.0.0.1:8000/api/v1/"
 class SimpleForm extends Component {
   state = {
     appList: [],
@@ -52,7 +54,7 @@ class SimpleForm extends Component {
     this.setState({
       shouldShowConfirmationDialog: false
     });
-    axios.put(`https://portl-dev.herokuapp.com/api/v1/applications/${application.id}/close`, null, { params: {
+    axios.put(baseURL + `applications/${application.id}/close`, null, { params: {
       status
     }}).then(res => {
       alert('Application closed')
@@ -86,6 +88,7 @@ class SimpleForm extends Component {
   };
 
   render() {
+    console.log(this.props)
     let user = localStorageService.getItem("auth_user")
     let state = user.client_profile.applications
 

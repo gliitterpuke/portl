@@ -22,6 +22,8 @@ else if(user.role === "client") {
 else if (user.role === "professional") {
   history.push('/professional')
 }
+
+let baseURL = "http://127.0.0.1:8000/api/v1/"
 class SignUp extends Component {
   state = {
     role: "",
@@ -43,7 +45,7 @@ class SignUp extends Component {
       email: this.state.email,
       password: this.state.password
     }
-    axios.post("https://portl-dev.herokuapp.com/api/v1/users/", signup)
+    axios.post(baseURL + "users/", signup)
     .then(result => { 
     const client = {
         first_name: "Jane",
@@ -54,10 +56,10 @@ class SignUp extends Component {
         owner_id: result.data.id,
         country_code: 158
       }
-    axios.post("https://portl-dev.herokuapp.com/api/v1/clients/", client)
+    axios.post(baseURL + "clients/", client)
     })
     .then(result => {
-    axios.post(`https://portl-dev.herokuapp.com/api/v1/send-activation-email/${this.state.email}`)
+    axios.post(baseURL + `send-activation-email/${this.state.email}`)
     alert('Sign up successful - please check your email for your verification email!')
     this.props.history.push(`/session/signin`)
       return result;

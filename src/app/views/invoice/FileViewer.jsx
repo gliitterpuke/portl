@@ -23,7 +23,7 @@ import localStorageService from "../../services/localStorageService"
 import { SimpleCard, Breadcrumb } from "matx"
 
 let user = localStorageService.getItem("auth_user")
-
+let baseURL = "http://127.0.0.1:8000/api/v1/"
 class FileViewer extends Component {
   state = {
     fileList: [],
@@ -87,14 +87,14 @@ class FileViewer extends Component {
       const tags = this.state.tag
       const key = user.id + "/" + appid + "/" + tags + "." + "pdf"
 
-      axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+      axios.get(baseURL + "/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
       .then(result => { 
       const win = window.open(`${result.data}`);
       win.focus();
     })
   }
     else {
-    axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+    axios.get(baseURL + "/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
     .then(result => { 
     const win = window.open(`${result.data}`);
     win.focus();
@@ -120,7 +120,7 @@ class FileViewer extends Component {
     this.setState({
       files: [...allFiles]
     });
-    axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
+    axios.get(baseURL + "/sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
     .then(result => { 
     const formData = new FormData();
     formData.append("AWSAccessKeyId", result.data.data.fields.AWSAccessKeyId);
@@ -145,7 +145,7 @@ class FileViewer extends Component {
       headers: { 'Content-Type': 'multipart/form-data'}
     })
     .then((response) => {
-      return axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.props.location.state.id, data, auth)
+      return axios.put(baseURL + "/blobs/" + this.props.location.state.id, data, auth)
       .then((response) => {
         let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.application_id);
         let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)

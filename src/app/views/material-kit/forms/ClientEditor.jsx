@@ -18,6 +18,8 @@ let user = localStorageService.getItem("auth_user")
 if (user.role === "professional") {
   history.push('/professional')
 }
+
+let baseURL = "http://127.0.0.1:8000/api/v1/"
 class ClientEditor extends Component {
   componentDidMount() {
     this.setState({ ...this.state })
@@ -46,7 +48,7 @@ class ClientEditor extends Component {
     this.setState({ loading: true });
     let tempState = this.state;
     delete tempState.loading;
-    return axios.put("https://portl-dev.herokuapp.com/api/v1/clients/" + user.client_profile.id, this.state).then((response) => {
+    return axios.put(baseURL + "clients/" + user.client_profile.id, this.state).then((response) => {
       console.log(response)
     user.client_profile = response.data
     localStorageService.setItem("auth_user", user)

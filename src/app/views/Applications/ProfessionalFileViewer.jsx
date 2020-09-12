@@ -25,7 +25,7 @@ import localStorageService from "../../services/localStorageService"
 import { Breadcrumb } from "matx"
 
 let user = localStorageService.getItem("auth_user")
-
+let baseURL = "http://127.0.0.1:8000/api/v1/"
 class ProfessionalFileViewer extends Component {
   state = {
     fileList: [],
@@ -84,7 +84,7 @@ class ProfessionalFileViewer extends Component {
     const filetype = mime_type.match(/[^\/]+$/)[0]
     const key = this.props.location.id + "/" + appid + "/" + tags + "." + filetype
 
-    axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+    axios.get(baseURL + "sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
     .then(result => { 
     const win = window.open(`${result.data}`);
     win.focus();
@@ -110,7 +110,7 @@ class ProfessionalFileViewer extends Component {
     this.setState({
       files: [...allFiles]
     });
-    axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
+    axios.get(baseURL + "sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
     .then(result => { 
     console.log(result)
     const formData = new FormData();
@@ -136,7 +136,7 @@ class ProfessionalFileViewer extends Component {
       headers: { 'Content-Type': 'multipart/form-data'}
     })
     .then((response) => {
-      return axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.props.location.state.id, data, auth)
+      return axios.put(baseURL + "blobs/" + this.props.location.state.id, data, auth)
       .then((response) => {
         alert('File successfully changed')
         let state = user.professional_profile.applications.findIndex (application => application.id === this.props.location.state.application_id);

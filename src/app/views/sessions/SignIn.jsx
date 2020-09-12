@@ -26,6 +26,8 @@ else if (user.role === "professional") {
   history.push('/professional')
 }
 
+let baseURL = "http://127.0.0.1:8000/api/v1/"
+
 const styles = theme => ({
   wrapper: {
     position: "relative"
@@ -134,31 +136,31 @@ class SignIn extends Component {
       bucket: "portldump",
       product_id: 1
     }
-    return axios.post("https://portl-dev.herokuapp.com/api/v1/iso/languages/", isolang)
+    return axios.post(baseURL + "iso/languages/", isolang)
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/languages/", isolang2)})
+    axios.post(baseURL + "iso/languages/", isolang2)})
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/languages/", isolang3)})
+    axios.post(baseURL + "iso/languages/", isolang3)})
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/countries/", isoct)})
+    axios.post(baseURL + "iso/countries/", isoct)})
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/countries/", isoct2)})
+    axios.post(baseURL + "iso/countries/", isoct2)})
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/countries/", isoct3)})
+    axios.post(baseURL + "iso/countries/", isoct3)})
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/currencies/", isocurrency)})
+    axios.post(baseURL + "iso/currencies/", isocurrency)})
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/product-types/", producttype)})
+    axios.post(baseURL + "product-types/", producttype)})
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/products/", trv)})
+    axios.post(baseURL + "products/", trv)})
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/products/", study)})
+    axios.post(baseURL + "products/", study)})
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/products/", ee)})
+    axios.post(baseURL + "products/", ee)})
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/products/", work)})
+    axios.post(baseURL + "products/", work)})
     .then(() => { 
-    axios.post("https://portl-dev.herokuapp.com/api/v1/form-metadata/", form)})
+    axios.post(baseURL + "form-metadata/", form)})
     }
 
   render() {

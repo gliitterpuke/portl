@@ -32,11 +32,7 @@ import history from "../../../history"
 import { Breadcrumb } from "matx"
 
 let user = localStorageService.getItem("auth_user")
-
-//if (!localStorage.getItem("access_token")) {
-//  history.push('/session/signin');
-//  console.log(localStorage)
-//  }
+let baseURL = "http://127.0.0.1:8000/api/v1/"
 
 const styles = theme => ({
   root: {
@@ -98,7 +94,7 @@ class HigherOrderComponent extends Component {
     this.setState({
       shouldShowConfirmationDialog: false
     });
-    axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + efile.id, data).then(res => {
+    axios.put(baseURL + "blobs/" + efile.id, data).then(res => {
       user.professional_profile.applications[state].blobs[blobs] = res.data
       localStorageService.setItem("auth_user", user)
       console.log(user.professional_profile.applications[state])
@@ -190,7 +186,7 @@ class HigherOrderComponent extends Component {
     this.setState({
       files: [...allFiles]
     });
-    axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
+    axios.get(baseURL + "sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
     .then(result => { 
     console.log(result)
     const formData = new FormData();
@@ -217,7 +213,7 @@ class HigherOrderComponent extends Component {
     })
     .then((response) => {
       console.log(appid)
-      return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data)
+      return axios.post(baseURL + "blobs/", data)
       .then((response) => {
         alert('File successfully uploaded')
         let state = user.professional_profile.applications.find (application => application.id === this.props.location.state);

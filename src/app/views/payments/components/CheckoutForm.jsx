@@ -14,7 +14,7 @@ import localStorageService from "../../../services/localStorageService";
 import { Breadcrumb } from "matx"
 
 let user = localStorageService.getItem('auth_user')
-
+let baseURL = "http://127.0.0.1:8000/api/v1/"
 const CardElementContainer = styled.div`
   height: 40px;
   display: flex;
@@ -60,7 +60,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
     const cardElement = elements.getElement("card");
 
     try {
-      const { data: clientSecret } = await axios.post("https://portl-dev.herokuapp.com/api/v1/create-payment-intent", {
+      const { data: clientSecret } = await axios.post(baseURL + "create-payment-intent", {
         product_id: 1,
         professional_id: 1
       });
@@ -87,12 +87,13 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
         return;
       }
       const data = { 
-        product_id: 1,
+        professional_id: 1,
+        product_id: 3,
         language_code: "eng",
         client_id: user.client_profile.id
       }
   
-      axios.post("https://portl-dev.herokuapp.com/api/v1/applications/", data).then(result => { 
+      axios.post(baseURL + "applications/", data).then(result => { 
         let user = localStorageService.getItem("auth_user")
         user.client_profile.applications.push(result.data)
         localStorageService.setItem("auth_user", user)

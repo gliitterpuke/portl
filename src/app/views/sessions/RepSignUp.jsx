@@ -56,7 +56,7 @@ class RepSignUp extends Component {
         payout_account: "acct_1HPVPSCMMK6Kdzgg",
         country_code: 158,
         service_languages: [ "eng", "chi", "fre" ],
-        serviced_products: [],
+        serviced_products: [ 1, 2, 3 ],
         owner_id: result.data.id
       }
       axios.post(baseURL + "professionals", professional)
