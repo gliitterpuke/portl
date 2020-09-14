@@ -7,6 +7,7 @@ import { setLayoutSettings } from "app/redux/actions/LayoutActions";
 import { logoutUser } from "app/redux/actions/UserActions";
 import PropTypes from "prop-types";
 import { isMdScreen, classList } from "utils";
+import NotificationBar from "../SharedCompoents/NotificationBar";
 
 const styles = theme => ({
   topbar: {
@@ -89,6 +90,7 @@ class Layout1Topbar extends Component {
               </IconButton>
             </div>
             <div className="flex items-center">
+            <NotificationBar />
               <Tooltip title="Sign out">
                 <IconButtonWhite
                   aria-label="Delete"
