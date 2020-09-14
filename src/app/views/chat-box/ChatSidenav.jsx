@@ -4,22 +4,24 @@ import Scrollbar from "react-perfect-scrollbar";
 import { Divider } from "@material-ui/core";
 import { format } from "date-fns";
 
+let baseURL = "http://127.0.0.1:8000/api/v1/"
+
 const ChatSidenav = ({
   currentUser,
-  contactList = [],
+  appList = [],
   recentContactList = [],
   handleContactClick
 }) => {
   return (
     <div className="chat-sidenav bg-default">
       <div className="chat-sidenav__topbar flex items-center h-56 px-4 bg-primary">
-        <ChatAvatar src={currentUser.avatar} status={currentUser.status} />
+        {/* <ChatAvatar src={currentUser.avatar} status={currentUser.status} /> */}
         <h5 className="ml-4 whitespace-pre mb-0 font-medium text-18 text-white">
-          {currentUser.name}
+          {currentUser.client_profile.first_name + " " + currentUser.client_profile.last_name}
         </h5>
       </div>
       <Scrollbar className="chat-contact-list position-relative h-400">
-        {recentContactList.map((contact, index) => (
+        {/* {recentContactList.map((contact, index) => (
           <div
             onClick={() => handleContactClick(contact.id)}
             key={index}
@@ -37,16 +39,16 @@ const ChatSidenav = ({
             </div>
           </div>
         ))}
-        <Divider />
-        {contactList.map((contact, index) => (
+        <Divider /> */}
+        {appList.map((contact, index) => (
           <div
             onClick={() => handleContactClick(contact.id)}
             key={index}
             className="flex items-center px-4 py-1 cursor-pointer  gray-on-hover"
           >
-            <ChatAvatar src={contact.avatar} status={contact.status} />
+            {/* <ChatAvatar src={contact.avatar} status={contact.status} /> */}
             <div className="pl-4">
-              <p>{contact.name}</p>
+              <p>{contact.application_id}</p>
             </div>
           </div>
         ))}

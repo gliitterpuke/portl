@@ -8,7 +8,7 @@ import {
 } from "matx";
 import {
   getAllContact,
-  getRecentContact,
+  // getRecentContact,
   sendNewMessage,
   getContactById,
   getChatRoomByContactId
@@ -16,46 +16,37 @@ import {
 import ChatSidenav from "./ChatSidenav";
 import ChatContainer from "./ChatContainer";
 import { isMobile } from "utils";
+import localStorageService from "../../services/localStorageService"
 
+let baseURL = "http://127.0.0.1:8000/api/v1/"
 class AppChat extends Component {
   state = {
-    currentUser: {
-      id: "7863a6802ez0e277a0f98534"
-    },
-    contactList: [],
+    currentUser: localStorageService.getItem('auth_user'),
+    appList: [],
     recentContactList: [],
     messageList: [],
+    chatmessages: [],
     currentChatRoom: "",
     opponentUser: null,
-    open: true
+    open: false
   };
 
   bottomRef = React.createRef();
 
   componentDidMount() {
     let { id } = this.state.currentUser;
-    getContactById(id).then(data => {
+    getContactById().then(data => {
       this.setState({
         open: !isMobile(),
         currentUser: {
           ...data.data
-        }
+        },
       });
     });
-    getAllContact(this.state.currentUser.id).then(data =>
-      this.setState({ contactList: [...data.data] })
+    getAllContact().then(data =>
+      this.setState({ appList: [...data.data] })
     );
-    this.updateRecentContactList();
   }
-
-  updateRecentContactList = () => {
-    let { id } = this.state.currentUser;
-    getRecentContact(id).then(data => {
-      this.setState({
-        recentContactList: [...data.data]
-      });
-    });
-  };
 
   scrollToBottom = () => {
     this.bottomRef.current.scrollIntoView({ behavior: "smooth" });
@@ -65,26 +56,23 @@ class AppChat extends Component {
     if (isMobile()) this.toggleSidenav();
 
     getContactById(contactId).then(({ data }) => {
-      this.setState({
-        opponentUser: { ...data }
-      });
+      console.log(data)
     });
-    getChatRoomByContactId(this.state.currentUser.id, contactId).then(
+    getChatRoomByContactId(contactId).then(
       ({ data }) => {
-        let { chatId, messageList, recentListUpdated } = data;
+        let { chatId, messageList, recentListUpdated, chatmessages } = data;
+        console.log(data)
 
         this.setState(
           {
-            currentChatRoom: chatId,
-            messageList
+            currentChatRoom: contactId,
+            opponentUser: data.sender_id,
+            data
           },
           () => {
             this.bottomRef.scrollTop = 9999999999999;
           }
         );
-        if (recentListUpdated) {
-          this.updateRecentContactList();
-        }
       }
     );
   };
@@ -92,41 +80,31 @@ class AppChat extends Component {
   handleMessageSend = message => {
     let { id } = this.state.currentUser;
     let { currentChatRoom, opponentUser } = this.state;
+    let application = this.state.appList.find (application => application.id === currentChatRoom);
+    let owner = application.users.find (owner => owner.owner_id === id)
+    let sender = owner.id
+
     if (currentChatRoom === "") return;
     sendNewMessage({
-      chatId: currentChatRoom,
-      text: message,
-      contactId: id,
-      time: new Date()
+      chat_id: currentChatRoom,
+      body: message,
+      sender_id: sender,
     }).then(data => {
-      this.setState(
-        {
-          messageList: [...data.data]
-        },
-        () => {
-          this.bottomRef.scrollTop = 9999999999999;
-        }
-      );
-
-      // bot message
-      setTimeout(() => {
-        sendNewMessage({
-          chatId: currentChatRoom,
-          text: `Hi, I'm ${opponentUser.name}. Your imaginary friend.`,
-          contactId: opponentUser.id,
-          time: new Date()
-        }).then(data => {
+      getChatRoomByContactId(currentChatRoom).then(
+        ({ data }) => {
+          let { chatmessages } = data;
+          console.log(data)
+  
           this.setState(
             {
-              messageList: [...data.data]
+              data
             },
             () => {
               this.bottomRef.scrollTop = 9999999999999;
             }
           );
-        });
-      }, 750);
-      // bot message ends here
+        }
+      );
     });
   };
 
@@ -139,11 +117,13 @@ class AppChat extends Component {
   render() {
     let {
       currentUser,
-      contactList,
+      appList,
       recentContactList,
       messageList,
       opponentUser,
-      currentChatRoom
+      currentChatRoom,
+      data,
+      chatmessages,
     } = this.state;
     return (
       <div className="m-sm-30">
@@ -159,8 +139,7 @@ class AppChat extends Component {
             >
               <ChatSidenav
                 currentUser={currentUser}
-                contactList={contactList}
-                recentContactList={recentContactList}
+                appList={appList}
                 handleContactClick={this.handleContactClick}
               />
             </MatxSidenav>
@@ -168,7 +147,8 @@ class AppChat extends Component {
               <ChatContainer
                 id={currentUser.id}
                 opponentUser={opponentUser}
-                messageList={messageList}
+                appList={appList}
+                chatmessages={data}
                 currentChatRoom={currentChatRoom}
                 setBottomRef={this.setBottomRef}
                 handleMessageSend={this.handleMessageSend}

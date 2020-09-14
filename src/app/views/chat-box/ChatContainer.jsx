@@ -12,7 +12,10 @@ import Scrollbar from "react-perfect-scrollbar";
 import EmptyMessage from "./EmptyMessage";
 import ChatAvatar from "./ChatAvatar";
 import { getTimeDifference } from "utils";
+import { parseJSON } from "date-fns";
 import shortid from "shortid";
+
+let baseURL = "http://127.0.0.1:8000/api/v1/"
 
 const ChatContainer = ({
   id: currentUserId,
@@ -21,7 +24,8 @@ const ChatContainer = ({
   opponentUser,
   messageList = [],
   setBottomRef,
-  handleMessageSend
+  handleMessageSend,
+  chatmessages = []
 }) => {
   let [message, setMessage] = React.useState("");
   const sendMessageOnEnter = event => {
@@ -31,7 +35,7 @@ const ChatContainer = ({
       setMessage("");
     }
   };
-
+console.log(chatmessages)
   return (
     <div className="chat-container flex-column position-relative">
       <div className="chat-container__topbar flex items-center justify-between p-1 bg-primary">
@@ -41,24 +45,8 @@ const ChatContainer = ({
               <Icon className="text-white">short_text</Icon>
             </IconButton>
           </div>
-
-          <div className="hide-on-mobile">
-            <div className="pl-3"></div>
           </div>
-
-          {opponentUser && (
-            <Fragment>
-              <ChatAvatar
-                src={opponentUser.avatar}
-                status={opponentUser.status}
-              />
-              <h5 className="ml-4 whitespace-pre mb-0 font-medium text-18 text-white">
-                {opponentUser.name}
-              </h5>
-            </Fragment>
-          )}
-        </div>
-        <MatxMenu
+        {/* <MatxMenu
           menuButton={
             <IconButton>
               <Icon className="text-white">more_vert</Icon>
@@ -74,7 +62,7 @@ const ChatContainer = ({
           <MenuItem className="flex items-center">
             <Icon className="mr-4">delete</Icon> Clear Chat
           </MenuItem>
-        </MatxMenu>
+        </MatxMenu> */}
       </div>
 
       <Scrollbar
@@ -86,25 +74,26 @@ const ChatContainer = ({
         {currentChatRoom === "" && (
           <div className="flex-column justify-center items-center h-full">
             <EmptyMessage />
-            <p>Select a contact</p>
+            <p>Select an application</p>
           </div>
         )}
-        {messageList.map((message, index) => (
-          <div className="flex items-start px-4 py-3" key={shortid.generate()}>
-            <ChatAvatar src={message.avatar} status={message.status} />
+        {chatmessages.map((message, index) => (
+          <div className="flex items-start px-4 py-3">
+            {/* <ChatAvatar src={message.avatar} status={message.status} /> */}
             <div className="ml-4">
-              <p className="text-muted m-0 mb-2">{message.name}</p>
+              <p className="text-muted m-0 mb-2">{message.sender.display_name}</p>
               <div
                 className={`px-4 py-2 mb-2 list__message ${
-                  currentUserId === message.contactId
+                  // REMEMBER TO CHANGE CURRENTUSERID TO CHAT USER ID
+                  currentUserId === message.sender_id
                     ? "bg-primary text-white"
                     : "bg-paper"
                 }`}
               >
-                <span className="whitespace-pre-wrap">{message.text}</span>
+                <span className="whitespace-pre-wrap">{message.body}</span>
               </div>
               <small className="text-muted mb-0">
-                {getTimeDifference(new Date(message.time))} ago
+                {parseJSON(message.timestamp).toString().replace(RegExp("GMT.*"), "")}
               </small>
             </div>
           </div>
