@@ -423,9 +423,9 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
 
-    axios.post(`https://portl-dev.herokuapp.com/api/v1/forms/imm5257/${user.id}/` + currentApp.id, payload, auth)
+    axios.post(baseURL + `forms/imm5257/${user.id}/` + currentApp.id, payload, auth)
       .then(result => { 
-      return axios.post(baseURL + "/blobs/", result.data, auth)
+      return axios.post(baseURL + "blobs/", result.data, auth)
       .then((response) => {
         user.applications.push(response.data)
         localStorageService.setItem("auth_user", user)

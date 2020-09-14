@@ -83,15 +83,15 @@ class HigherOrderComponent extends Component {
 
   handleConfirmationResponse = () => {
     let { efile } = this.state;
-    let data = { filename: "DELETED", application_id: null }
     let state = user.applications.findIndex (application => application.id === this.props.location.state);    
     let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
     this.setState({
       shouldShowConfirmationDialog: false
     });
-    axios.put(baseURL + "/blobs/" + efile.id, data).then(res => {
-      user.applications[state].blobs[blobs] = res.data
+    axios.delete(baseURL + "blobs/" + efile.id).then(res => {
+      user.applications[state].blobs.pop(blobs)
       localStorageService.setItem("auth_user", user)
+      console.log(user)
       this.forceUpdate()
 
     });
@@ -180,7 +180,7 @@ class HigherOrderComponent extends Component {
     this.setState({
       files: [...allFiles]
     });
-    axios.get(baseURL + "/sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
+    axios.get(baseURL + "sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
     .then(result => { 
     const formData = new FormData();
     formData.append("AWSAccessKeyId", result.data.data.fields.AWSAccessKeyId);
@@ -204,7 +204,7 @@ class HigherOrderComponent extends Component {
       body: formData,
     })
     .then((response) => {
-      return axios.post(baseURL + "/blobs/", data)
+      return axios.post(baseURL + "blobs/", data)
       .then((response) => {
         alert('File successfully uploaded')
         this.setState({

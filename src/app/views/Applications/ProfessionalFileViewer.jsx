@@ -13,8 +13,6 @@ import {
   Typography,
   Fab,
   Grid,
-  Select,
-  MenuItem,
   CircularProgress
 } from "@material-ui/core";
 import { ValidatorForm } from "react-material-ui-form-validator";
@@ -22,11 +20,11 @@ import { parseJSON } from "date-fns";
 import { withRouter } from "react-router-dom";
 import axios from "axios"
 import localStorageService from "../../services/localStorageService"
-import { Breadcrumb } from "matx"
+import { SimpleCard, Breadcrumb } from "matx"
 
 let user = localStorageService.getItem("auth_user")
 let baseURL = "http://127.0.0.1:8000/api/v1/"
-class ProfessionalFileViewer extends Component {
+class ProfessionalViewer extends Component {
   state = {
     fileList: [],
     filename: "",
@@ -83,13 +81,25 @@ class ProfessionalFileViewer extends Component {
     const mime_type = this.state.mime_type
     const filetype = mime_type.match(/[^\/]+$/)[0]
     const key = this.props.location.id + "/" + appid + "/" + tags + "." + filetype
+    
+    if (filetype === "json") {
+      const appid = this.state.application_id
+      const tags = this.state.tag
+      const key = this.props.location.id + "/" + appid + "/" + tags + "." + "pdf"
 
+      axios.get(baseURL + "sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+      .then(result => { 
+      const win = window.open(`${result.data}`);
+      win.focus();
+    })
+  }
+    else {
     axios.get(baseURL + "sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
     .then(result => { 
     const win = window.open(`${result.data}`);
     win.focus();
-    console.log(this.props.location)
     })
+  }
   }
 
   uploadSingleFile = index => {
@@ -112,7 +122,6 @@ class ProfessionalFileViewer extends Component {
     });
     axios.get(baseURL + "sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
     .then(result => { 
-    console.log(result)
     const formData = new FormData();
     formData.append("AWSAccessKeyId", result.data.data.fields.AWSAccessKeyId);
     formData.append("key", result.data.data.fields.key);
@@ -131,44 +140,46 @@ class ProfessionalFileViewer extends Component {
     }
 
     return fetch(result.data.data.url, {
-      method: 'put',
+      method: 'post',
       body: formData,
-      headers: { 'Content-Type': 'multipart/form-data'}
     })
     .then((response) => {
       return axios.put(baseURL + "blobs/" + this.props.location.state.id, data, auth)
       .then((response) => {
-        alert('File successfully changed')
         let state = user.applications.findIndex (application => application.id === this.props.location.state.application_id);
         let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
         user.applications[state].blobs[blobs] = response.data
         localStorageService.setItem("auth_user", user)
+        alert('File update successful!')
         this.forceUpdate()
         this.setState({
           files: [allFiles[index] = { ...file, uploading: false, error: false, success: true }]
         });
         return response;
-      })
+      });
     })
     .catch(error => {
       alert('Error; please try again later')
+      this.setState({
+        files: [allFiles[index] = { ...file, uploading: false, error: true, success: false }]
+      });
    });
   })
 }
 
   render() {
     let {
-      filename,
       files,
-      fileList,
       isEmpty
     } = this.state;
+    console.log(this.props.location.id)
     let user = localStorageService.getItem("auth_user")
     let state = user.applications.findIndex (application => application.id === this.props.location.state.application_id);
     let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
 
     return (
-      <div className="invoice-viewer py-4">
+      <div className="upload-form m-sm-30">
+        <SimpleCard>
         <div className="mb-sm-30">
           <Breadcrumb routeSegments={[{ name: `File` }]} />
         </div>
@@ -188,7 +199,6 @@ class ProfessionalFileViewer extends Component {
               Download
              </Button>
           </div>
-          <Card className="mb-4" elevation={0}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -215,7 +225,7 @@ class ProfessionalFileViewer extends Component {
                     </TableRow>
               </TableBody>
             </Table>
-          </Card>
+          
           <div className="upload-form m-sm-30">
         <div>
           <Typography variant="h6">
@@ -291,10 +301,12 @@ class ProfessionalFileViewer extends Component {
             })}
             </ValidatorForm>
             </div>
+            
       </div>
+      </SimpleCard>
         </div>
     );
   }
 }
 
-export default withRouter(ProfessionalFileViewer);
+export default withRouter(ProfessionalViewer);

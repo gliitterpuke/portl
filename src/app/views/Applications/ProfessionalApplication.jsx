@@ -23,7 +23,6 @@ import localStorageService from "../../services/localStorageService";
 import { withRouter, Link } from "react-router-dom";
 import axios from "axios";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { getFileById } from "../invoice/AppActions";
 import { parseJSON } from "date-fns";
 import { ConfirmationDialog, SimpleCard } from "matx";
 import { ValidatorForm, SelectValidator } from "react-material-ui-form-validator";
@@ -74,30 +73,26 @@ class HigherOrderComponent extends Component {
     };
     
   handeViewClick = fileId => {
+    let user = localStorageService.getItem('auth_user')
     let secondstate = user.applications.find (application => application.id === this.props.location.state);
-    console.log(this.props.location)
     let blobstate = secondstate.blobs.find (blobs => blobs.id === fileId)
     this.props.history.push({ pathname: `${secondstate.id}/files/${fileId}`, state: blobstate, id: secondstate.client_id });
-    getFileById(fileId).then(res => console.log(blobstate));
   };
-  // this.props.location.state.some
   handeDeleteClick = efile => {
     this.setState({ shouldShowConfirmationDialog: true, efile });
   };
 
   handleConfirmationResponse = () => {
     let { efile } = this.state;
-    let data = { filename: "DELETED", application_id: null }
     let state = user.applications.findIndex (application => application.id === this.props.location.state);    
     let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
-    console.log(blobs)
     this.setState({
       shouldShowConfirmationDialog: false
     });
-    axios.put(baseURL + "blobs/" + efile.id, data).then(res => {
-      user.applications[state].blobs[blobs] = res.data
+    axios.delete(baseURL + "blobs/" + efile.id).then(res => {
+      user.applications[state].blobs.pop(blobs)
       localStorageService.setItem("auth_user", user)
-      console.log(user.applications[state])
+      console.log(user)
       this.forceUpdate()
 
     });
@@ -209,7 +204,6 @@ class HigherOrderComponent extends Component {
     return fetch(result.data.data.url, {
       method: 'post',
       body: formData,
-      headers: { 'Content-Type': 'multipart/form-data'}
     })
     .then((response) => {
       console.log(appid)
