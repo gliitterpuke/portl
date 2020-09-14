@@ -427,7 +427,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
       .then(result => { 
       return axios.post(baseURL + "/blobs/", result.data, auth)
       .then((response) => {
-        user.client_profile.applications.push(response.data)
+        user.applications.push(response.data)
         localStorageService.setItem("auth_user", user)
         setLoading(false);
         alert('Success! Taking you back to your application')

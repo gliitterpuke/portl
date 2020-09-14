@@ -34,8 +34,6 @@ class ClientEditor extends Component {
     citizenship: user.client_profile.citizen_of.name,
     country_code: user.client_profile.citizen_of.code,
     sex: user.client_profile.sex,
-    owner_id: user.id,
-    client: user.client_profile.id,
     loading: false
   };
   

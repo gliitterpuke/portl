@@ -19,6 +19,7 @@ if (user.role === "client") {
   history.push('/profile')
 }
 
+let baseURL = "http://127.0.0.1:8000/api/v1/"
 class ProfessionalEditor extends Component {
   componentDidMount() {
     this.setState({ ...this.state })
@@ -31,7 +32,8 @@ class ProfessionalEditor extends Component {
     company: user.professional_profile.company,
     occupation: user.professional_profile.occupation,
     country_code: user.professional_profile.country_of_operation.code,
-    service_languages: ['eng'],
+    service_languages: [ 'eng', 'chi', 'fre' ],
+    serviced_products: [ 1, 2, 3],
     max_processing_budget: user.professional_profile.max_processing_budget,
     curr_processing_budget: user.professional_profile.curr_processing_budget,
     payout_account: user.professional_profile.payout_account,
@@ -50,7 +52,7 @@ class ProfessionalEditor extends Component {
     this.setState({ loading: true });
     let tempState = this.state;
     delete tempState.loading;
-    return axios.put("https://portl-dev.herokuapp.com/api/v1/professionals/" + user.professional_profile.id, this.state).then((response) => {
+    return axios.put(baseURL + "professionals/" + user.professional_profile.id, this.state).then((response) => {
       console.log(response)
     user.professional_profile = response.data
     localStorageService.setItem("auth_user", user)
@@ -72,7 +74,7 @@ class ProfessionalEditor extends Component {
       max_processing_budget,
       payout_account,
       sex,
-      owner_id,
+      serviced_products,
     } = this.state;
 
     return (

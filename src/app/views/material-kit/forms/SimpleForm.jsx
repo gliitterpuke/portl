@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios"
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import ClientViewer from "./ClientViewer";
 import ClientEditor from "./ClientEditor";
 import {
@@ -15,11 +15,17 @@ import {
   TableCell,
   TableBody,
   IconButton,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Divider
 } from "@material-ui/core";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { ConfirmationDialog } from "matx";
 import { parseJSON } from "date-fns";
 import localStorageService from "../../../services/localStorageService"
 import history from "../../../../history"
+import { withStyles } from "@material-ui/styles"
 
 let user = localStorageService.getItem("auth_user")
 if (user.role === "professional") {
@@ -27,19 +33,45 @@ if (user.role === "professional") {
 }
 
 let baseURL = "http://127.0.0.1:8000/api/v1/"
+
+const styles = theme => ({
+  root: {
+    width: '100%',
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: 500,
+    flexBasis: '33.33%',
+    flexShrink: 0,
+  },
+  heading1: {
+    fontSize: theme.typography.pxToRem(17),
+    fontWeight: 500,
+    flexBasis: '33.33%',
+    flexShrink: 0,
+  },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
+  },
+  iconalign: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
+  },
+});
 class SimpleForm extends Component {
   state = {
     appList: [],
   };
 
   componentDidMount() {
-    this.setState({ appList: user.client_profile.applications });
+    this.setState({ appList: user.applications });
     this.setState({ showClientEditor: false });
   }
 
   handeViewClick = applicationId => {
     let user = localStorageService.getItem("auth_user")
-    let secondstate = user.client_profile.applications.find (application => application.id == applicationId);
+    let secondstate = user.applications.find (application => application.id == applicationId);
     this.props.history.push({pathname: `/application/${applicationId}`, state: secondstate.id });
   }
 
@@ -58,7 +90,7 @@ class SimpleForm extends Component {
       status
     }}).then(res => {
       alert('Application closed')
-      user.client_profile.applications[application.id] = res.data
+      user.applications[application.id] = res.data
       localStorageService.setItem("auth_user", user)
       window.location.reload()
     })
@@ -88,9 +120,9 @@ class SimpleForm extends Component {
   };
 
   render() {
-    console.log(this.props)
+    const { classes } = this.props;
     let user = localStorageService.getItem("auth_user")
-    let state = user.client_profile.applications
+    let state = user.applications
 
     return (
       <React.Fragment>
@@ -173,9 +205,40 @@ class SimpleForm extends Component {
           text="Are you sure to delete?"
         />
       </div>
+      <div className="m-sm-30">
+        <Card elevation={6} className="pricing__card px-6 pt-2 pb-4">
+        {state.map((application) => (
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}>{application.product.name + ": " + application.id}</Typography>
+            <Typography align="right" className={classes.secondaryHeading}>{application.status.replace("CLIENT_ACTION_REQUIRED", "In Progress")}</Typography>
+            <IconButton
+              color="primary"
+              className="mr-2"
+              align="right"
+              onClick={() => this.handeViewClick(application.id)}
+              >
+            <Icon>chevron_right</Icon>
+            </IconButton>
+              <IconButton onClick={() => this.handeDeleteClick(application)} align="right">
+                <Icon color="error" align="right">delete</Icon>
+              </IconButton>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography className={classes.heading}>{"Created At"}</Typography>
+            <Typography className={classes.secondaryHeading}>{parseJSON(application.created_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
+          </AccordionDetails>
+          <AccordionDetails>
+            <Typography className={classes.heading}>{"Uploaded At"}</Typography>
+            <Typography className={classes.secondaryHeading}>{parseJSON(application.uploaded_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
+          </AccordionDetails>
+        </Accordion>
+        ))}
+        </Card>
+      </div>
       </React.Fragment>
     );
   }
 }
 
-export default SimpleForm;
+export default withRouter(withStyles(styles)(SimpleForm));

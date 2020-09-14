@@ -73,7 +73,7 @@ class HigherOrderComponent extends Component {
     
   handeViewClick = fileId => {
     let user = localStorageService.getItem('auth_user')
-    let secondstate = user.client_profile.applications.find (application => application.id === this.props.location.state);
+    let secondstate = user.applications.find (application => application.id === this.props.location.state);
     let blobstate = secondstate.blobs.find (blobs => blobs.id === fileId)
     this.props.history.push({ pathname: `${secondstate.id}/file/${fileId}`, state: blobstate });
   };
@@ -84,13 +84,13 @@ class HigherOrderComponent extends Component {
   handleConfirmationResponse = () => {
     let { efile } = this.state;
     let data = { filename: "DELETED", application_id: null }
-    let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state);    
-    let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
+    let state = user.applications.findIndex (application => application.id === this.props.location.state);    
+    let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
     this.setState({
       shouldShowConfirmationDialog: false
     });
     axios.put(baseURL + "/blobs/" + efile.id, data).then(res => {
-      user.client_profile.applications[state].blobs[blobs] = res.data
+      user.applications[state].blobs[blobs] = res.data
       localStorageService.setItem("auth_user", user)
       this.forceUpdate()
 
@@ -210,7 +210,7 @@ class HigherOrderComponent extends Component {
         this.setState({
           files: [allFiles[index] = { ...file, uploading: false, error: false, success: true }]
         });
-        let state = user.client_profile.applications.find (application => application.id === this.props.location.state);
+        let state = user.applications.find (application => application.id === this.props.location.state);
           state.blobs.push(response.data)
           localStorageService.setItem("auth_user", user) 
           this.forceUpdate()
@@ -232,7 +232,7 @@ class HigherOrderComponent extends Component {
     let { dragClass, files } = this.state;
     let isEmpty = files.length === 0;
     let user = localStorageService.getItem("auth_user")
-    let state = user.client_profile.applications.find (application => application.id === this.props.location.state);
+    let state = user.applications.find (application => application.id === this.props.location.state);
     
     return (
       <React.Fragment>

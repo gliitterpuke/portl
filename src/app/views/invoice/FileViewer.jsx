@@ -33,9 +33,9 @@ class FileViewer extends Component {
   };
 
   componentDidMount() {
-    let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.application_id);
-    let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
-      this.setState({ ...user.client_profile.applications[state].blobs[blobs] });
+    let state = user.applications.findIndex (application => application.id === this.props.location.state.application_id);
+    let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
+      this.setState({ ...user.applications[state].blobs[blobs] });
     }
   
    handleFileSelect = event => {
@@ -147,9 +147,9 @@ class FileViewer extends Component {
     .then((response) => {
       return axios.put(baseURL + "/blobs/" + this.props.location.state.id, data, auth)
       .then((response) => {
-        let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.application_id);
-        let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
-        user.client_profile.applications[state].blobs[blobs] = response.data
+        let state = user.applications.findIndex (application => application.id === this.props.location.state.application_id);
+        let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
+        user.applications[state].blobs[blobs] = response.data
         localStorageService.setItem("auth_user", user)
         alert('File update successful!')
         this.forceUpdate()
@@ -174,8 +174,8 @@ class FileViewer extends Component {
       isEmpty
     } = this.state;
     let user = localStorageService.getItem("auth_user")
-    let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.application_id);
-    let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
+    let state = user.applications.findIndex (application => application.id === this.props.location.state.application_id);
+    let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
 
     return (
       <div className="upload-form m-sm-30">
@@ -209,18 +209,18 @@ class FileViewer extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                    <TableRow key={user.client_profile.applications[state].blobs[blobs].filename}>
+                    <TableRow key={user.applications[state].blobs[blobs].filename}>
                       <TableCell className="pl-sm-24 capitalize" align="left">
-                        {user.client_profile.applications[state].blobs[blobs].filename}
+                        {user.applications[state].blobs[blobs].filename}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {parseJSON(user.client_profile.applications[state].blobs[blobs].uploaded_at).toString().replace(RegExp("GMT.*"), "")}
+                        {parseJSON(user.applications[state].blobs[blobs].uploaded_at).toString().replace(RegExp("GMT.*"), "")}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {parseJSON(user.client_profile.applications[state].blobs[blobs].updated_at).toString().replace(RegExp("GMT.*"), "")}
+                        {parseJSON(user.applications[state].blobs[blobs].updated_at).toString().replace(RegExp("GMT.*"), "")}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {user.client_profile.applications[state].blobs[blobs].tag}
+                        {user.applications[state].blobs[blobs].tag}
                       </TableCell>
                     </TableRow>
               </TableBody>

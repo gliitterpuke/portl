@@ -24,6 +24,8 @@ import localStorageService from "../../../services/localStorageService"
 import history from "../../../../history"
 
 let user = localStorageService.getItem("auth_user")
+let baseURL = "http://127.0.0.1:8000/api/v1/"
+
 if (user.role === "client") {
   history.push('/profile')
 }
@@ -34,14 +36,14 @@ class ProfessionalForm extends Component {
   };
 
   componentDidMount() {
-    this.setState({ appList: user.professional_profile.applications });
+    this.setState({ appList: user.applications });
     this.setState({ showProfessionalEditor: false });
     console.log(localStorage)
   }
 
   handeViewClick = applicationId => {
     let user = localStorageService.getItem("auth_user")
-    let secondstate = user.professional_profile.applications.find (application => application.id == applicationId);
+    let secondstate = user.applications.find (application => application.id == applicationId);
     console.log(applicationId)
     console.log(secondstate)
     this.props.history.push({pathname: `/applications/${applicationId}`, state: secondstate.id });
@@ -53,18 +55,18 @@ class ProfessionalForm extends Component {
 
   handleConfirmationResponse = () => {
     let { application } = this.state;
-    let status = user.professional_profile.applications[application.id].status
- //   let state = user.professional_profile.applications.findIndex (application => application.id === this.props.location.state.id); 
+    let status = user.applications[application.id].status
+ //   let state = user.applications.findIndex (application => application.id === this.props.location.state.id); 
     this.setState({
       shouldShowConfirmationDialog: false
     });
     console.log(application.id)
-    axios.put(`https://portl-dev.herokuapp.com/api/v1/applications/${application.id}/close`, null, { params: {
+    axios.put(baseURL + `applications/${application.id}/close`, null, { params: {
       status
     }}).then(res => {
-      user.professional_profile.applications[application.id] = res.data
+      user.applications[application.id] = res.data
       localStorageService.setItem("auth_user", user)
-      console.log(user.professional_profile.applications[application.id])
+      console.log(user.applications[application.id])
       this.forceUpdate()
 
     });
@@ -93,8 +95,7 @@ class ProfessionalForm extends Component {
 
   render() {
     let user = localStorageService.getItem("auth_user")
-    let state = user.professional_profile.applications
-    console.log(localStorageService.getItem("auth_user").professional_profile.applications)
+    let state = user.applications
 
     return (
       <React.Fragment>

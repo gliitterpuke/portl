@@ -90,14 +90,14 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
         professional_id: 1,
         product_id: 3,
         language_code: "eng",
-        client_id: user.client_profile.id
+        client_id: user.id
       }
   
       axios.post(baseURL + "applications/", data).then(result => { 
         let user = localStorageService.getItem("auth_user")
-        user.client_profile.applications.push(result.data)
+        user.applications.push(result.data)
         localStorageService.setItem("auth_user", user)
-        let secondstate = user.client_profile.applications.find (application => application.id === result.data.id);
+        let secondstate = user.applications.find (application => application.id === result.data.id);
         history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
         alert('Payment successful - proceeding to your application')
       })

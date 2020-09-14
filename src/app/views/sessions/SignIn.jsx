@@ -136,6 +136,7 @@ class SignIn extends Component {
       bucket: "portldump",
       product_id: 1
     }
+    // create test languages, countries, currencies, productypes, products and forms
     return axios.post(baseURL + "iso/languages/", isolang)
     .then(() => { 
     axios.post(baseURL + "iso/languages/", isolang2)})
@@ -161,6 +162,40 @@ class SignIn extends Component {
     axios.post(baseURL + "products/", work)})
     .then(() => { 
     axios.post(baseURL + "form-metadata/", form)})
+    // create test representative
+    .then(() => {
+        const signup = {
+          role: "professional",
+          email: "kat@portl.to",
+          password: "test"
+        }
+        axios.post(baseURL + "users/", signup)
+        .then(result => { 
+        const professional = {
+            first_name: "John",
+            last_name: "Smith",
+            company: "Acme Corporation",
+            occupation: "Representative",
+            sex: "Male",
+            max_processing_budget: 1000,
+            payout_account: "acct_1HPVPSCMMK6Kdzgg",
+            country_code: 158,
+            service_languages: [ "eng", "chi", "fre" ],
+            serviced_products: [ 1, 2, 3 ],
+            owner_id: result.data.id
+          }
+          axios.post(baseURL + "professionals", professional)
+        })
+      })
+      .then(result => {
+        axios.post(baseURL + `send-activation-email/kat@portl.to`)
+        alert('Sign up successful - please check your email for your verification email!')
+        this.props.history.push(`/session/signin`)
+          return result;
+        })
+       .catch(error => {
+            alert('Email is already registered')
+      });
     }
 
   render() {
