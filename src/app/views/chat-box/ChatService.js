@@ -15,7 +15,7 @@ export const getRecentContact = id => {
 //   return axios.get("/api/chat/contacts/all", { data: currentUserId });
 // };
 export const getAllContact = currentUserId => {
-  return axios.get(baseURL + "users/me/chats", { data: currentUserId });
+  return axios.get(baseURL + "users/me/chats/", { data: currentUserId });
 };
 // export const getChatRoomByContactId = (currentUser, contactId) => {
 //   return axios.get("/api/chat/chat-room", { data: { currentUser, contactId } });

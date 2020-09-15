@@ -16,9 +16,11 @@ import {
 import ChatSidenav from "./ChatSidenav";
 import ChatContainer from "./ChatContainer";
 import { isMobile } from "utils";
-import localStorageService from "../../services/localStorageService"
+import localStorageService from "../../services/localStorageService";
+import axios from "axios"
 
 let baseURL = "http://127.0.0.1:8000/api/v1/"
+const auth = { headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} }
 class AppChat extends Component {
   state = {
     currentUser: localStorageService.getItem('auth_user'),
@@ -46,6 +48,7 @@ class AppChat extends Component {
     getAllContact().then(data =>
       this.setState({ appList: [...data.data] })
     );
+
   }
 
   scrollToBottom = () => {
@@ -56,12 +59,10 @@ class AppChat extends Component {
     if (isMobile()) this.toggleSidenav();
 
     getContactById(contactId).then(({ data }) => {
-      console.log(data)
     });
     getChatRoomByContactId(contactId).then(
       ({ data }) => {
         let { chatId, messageList, recentListUpdated, chatmessages } = data;
-        console.log(data)
 
         this.setState(
           {
@@ -93,19 +94,35 @@ class AppChat extends Component {
       getChatRoomByContactId(currentChatRoom).then(
         ({ data }) => {
           let { chatmessages } = data;
-          console.log(data)
-  
           this.setState(
-            {
-              data
-            },
-            () => {
+            { data }, () => {
               this.bottomRef.scrollTop = 9999999999999;
             }
           );
         }
       );
-    });
+
+      const poll = async () => {
+        let response = await axios.get(baseURL + "chats/with-unread-messages/", auth)
+        let message = await response;
+        if (message.data.chats_with_unread_messages[0].find(msg => msg === currentChatRoom) === currentChatRoom) {
+          getChatRoomByContactId(currentChatRoom).then(
+            ({ data }) => {
+              let { chatmessages } = data;
+              this.setState(
+                { data }, () => {
+                  this.bottomRef.scrollTop = 9999999999999;
+                }
+              );
+            }
+          );
+          await poll ()
+        }
+ 
+      }
+      
+      poll()
+    })
   };
 
   setBottomRef = ref => {

@@ -3,8 +3,10 @@ import ChatAvatar from "./ChatAvatar";
 import Scrollbar from "react-perfect-scrollbar";
 import { Divider } from "@material-ui/core";
 import { format } from "date-fns";
+import localStorageService from "../../services/localStorageService"
 
 let baseURL = "http://127.0.0.1:8000/api/v1/"
+let user = localStorageService.getItem('auth_user')
 
 const ChatSidenav = ({
   currentUser,
@@ -16,9 +18,16 @@ const ChatSidenav = ({
     <div className="chat-sidenav bg-default">
       <div className="chat-sidenav__topbar flex items-center h-56 px-4 bg-primary">
         {/* <ChatAvatar src={currentUser.avatar} status={currentUser.status} /> */}
+        {user.role === "client" && (
         <h5 className="ml-4 whitespace-pre mb-0 font-medium text-18 text-white">
           {currentUser.client_profile.first_name + " " + currentUser.client_profile.last_name}
         </h5>
+        )}
+        {user.role === "professional" && (
+        <h5 className="ml-4 whitespace-pre mb-0 font-medium text-18 text-white">
+          {currentUser.professional_profile.first_name + " " + currentUser.professional_profile.last_name}
+        </h5>
+        )}
       </div>
       <Scrollbar className="chat-contact-list position-relative h-400">
         {/* {recentContactList.map((contact, index) => (
