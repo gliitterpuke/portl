@@ -32,7 +32,7 @@ if (user.role === "professional") {
   history.push('/professional')
 }
 
-let baseURL = "http://127.0.0.1:8000/api/v1/"
+let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 
 const styles = theme => ({
   root: {
@@ -43,21 +43,23 @@ const styles = theme => ({
     fontWeight: 500,
     flexBasis: '33.33%',
     flexShrink: 0,
-  },
-  heading1: {
-    fontSize: theme.typography.pxToRem(17),
-    fontWeight: 500,
-    flexBasis: '33.33%',
-    flexShrink: 0,
+    alignSelf: "center"
   },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
+    flexShrink: 0,
+    alignSelf: "center"
   },
   iconalign: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary,
+    textAlign: "right",
+    width: "100%",
   },
+  title: {
+    '&:nth-child(odd)': { 
+      backgroundColor: '#f2f2f2'
+    }
+  }
 });
 class SimpleForm extends Component {
   state = {
@@ -184,7 +186,6 @@ class SimpleForm extends Component {
                   <TableCell className="pl-0">
                     <IconButton
                       color="primary"
-                      className="mr-2"
                       onClick={() => this.handeViewClick(application.id)}
                     >
                       <Icon>chevron_right</Icon>
@@ -207,22 +208,36 @@ class SimpleForm extends Component {
       </div>
       <div className="m-sm-30">
         <Card elevation={6} className="pricing__card px-6 pt-2 pb-4">
+        <br /><br />
+        <Grid container spacing={2}>
+          <Grid item xs={12} lg={10} md={10}>
+            <Typography variant="h6">Applications</Typography>
+          </Grid>
+          <Grid item xs={12} lg={2} md={2}>
+            <Link to={`/products`}>
+              <Button color="primary" variant="contained">
+                <span className="pl-2 capitalize">Create New App</span>
+              </Button>
+            </Link>
+          </Grid>
+        </Grid>
+        <br/><br/>
         {state.map((application) => (
-        <Accordion>
+        <Accordion className={classes.title}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography className={classes.heading}>{application.product.name + ": " + application.id}</Typography>
-            <Typography align="right" className={classes.secondaryHeading}>{application.status.replace("CLIENT_ACTION_REQUIRED", "In Progress")}</Typography>
-            <IconButton
-              color="primary"
-              className="mr-2"
-              align="right"
-              onClick={() => this.handeViewClick(application.id)}
+            <Typography className={classes.secondaryHeading}>{application.status.replace("CLIENT_ACTION_REQUIRED", "In Progress")}</Typography>
+              <div className={classes.iconalign}>
+              <IconButton
+                color="primary" 
+                onClick={() => this.handeViewClick(application.id)}
               >
-            <Icon>chevron_right</Icon>
-            </IconButton>
-              <IconButton onClick={() => this.handeDeleteClick(application)} align="right">
-                <Icon color="error" align="right">delete</Icon>
+                <Icon>chevron_right</Icon>
               </IconButton>
+              <IconButton onClick={() => this.handeDeleteClick(application)} >
+                <Icon color="error">delete</Icon>
+              </IconButton>
+              </div>
           </AccordionSummary>
           <AccordionDetails>
             <Typography className={classes.heading}>{"Created At"}</Typography>
@@ -230,11 +245,17 @@ class SimpleForm extends Component {
           </AccordionDetails>
           <AccordionDetails>
             <Typography className={classes.heading}>{"Uploaded At"}</Typography>
-            <Typography className={classes.secondaryHeading}>{parseJSON(application.uploaded_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
+            <Typography className={classes.secondaryHeading}>{parseJSON(application.created_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
           </AccordionDetails>
         </Accordion>
         ))}
         </Card>
+        <ConfirmationDialog
+          open={this.state.shouldShowConfirmationDialog}
+          onConfirmDialogClose={this.handleDialogClose}
+          onYesClick={this.handleConfirmationResponse}
+          text="Are you sure to delete?"
+        />
       </div>
       </React.Fragment>
     );
