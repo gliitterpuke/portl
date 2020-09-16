@@ -31,7 +31,7 @@ import { withStyles } from "@material-ui/styles"
 import { Breadcrumb } from "matx"
 
 let user = localStorageService.getItem("auth_user")
-let baseURL = "http://127.0.0.1:8000/api/v1/"
+let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 
 const styles = theme => ({
   root: {
@@ -42,17 +42,23 @@ const styles = theme => ({
     fontWeight: 500,
     flexBasis: '33.33%',
     flexShrink: 0,
-  },
-  heading1: {
-    fontSize: theme.typography.pxToRem(17),
-    fontWeight: 500,
-    flexBasis: '33.33%',
-    flexShrink: 0,
+    alignSelf: "center"
   },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
+    flexShrink: 0,
+    alignSelf: "center"
   },
+  iconalign: {
+    textAlign: "right",
+    width: "100%",
+  },
+  title: {
+    '&:nth-child(odd)': { 
+      backgroundColor: '#f2f2f2'
+    }
+  }
 });
 
 class HigherOrderComponent extends Component {
@@ -115,41 +121,9 @@ class HigherOrderComponent extends Component {
     }
 
     this.setState({
-      files: [...list]
+      files: [...list],
+      file: URL.createObjectURL(event.target.files[0])
     });
-  };
-
-  handleDragOver = event => {
-    event.preventDefault();
-    this.setState({ dragClass: "drag-shadow" });
-  };
-
-  handleDrop = event => {
-    event.preventDefault();
-    event.persist();
-
-    let files = event.dataTransfer.files;
-    let list = [];
-
-    for (const iterator of files) {
-      list.push({
-        file: iterator,
-        uploading: false,
-        error: false,
-        success: false
-      });
-    }
-
-    this.setState({
-      dragClass: "",
-      files: [...list]
-    });
-
-    return false;
-  };
-
-  handleDragStart = event => {
-    this.setState({ dragClass: "drag-shadow" });
   };
 
   handleSingleRemove = index => {
@@ -159,6 +133,37 @@ class HigherOrderComponent extends Component {
       files: [...files]
     });
   };
+
+  downloadFile = (fileId) => {
+    const auth = {
+      headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
+    }
+    let user = localStorageService.getItem("auth_user")
+    let app = user.applications.find (application => application.id === this.props.location.state);
+    let doc = app.blobs.find (blobs => blobs.id === fileId)
+    const appid = doc.application_id
+    const tags = doc.tag
+    const mime_type = doc.mime_type
+    const filetype = mime_type.match(/[^\/]+$/)[0]
+    const key = user.id + "/" + appid + "/" + tags + "." + filetype
+    
+    if (filetype === "json") {
+      const key = user.id + "/" + appid + "/" + tags + "." + "pdf"
+
+      axios.get(baseURL + "sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+      .then(result => { 
+      const win = window.open(`${result.data}`);
+      win.focus();
+    })
+  }
+    else {
+    axios.get(baseURL + "sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+    .then(result => { 
+    const win = window.open(`${result.data}`);
+    win.focus();
+    })
+  }
+  }
 
   handleSelectChange = (event) => {
     this.setState({
@@ -532,21 +537,6 @@ class HigherOrderComponent extends Component {
               className="hidden" onChange={this.handleFileSelect} id="upload-single-file" type="file" accept="image/*, application/pdf"
             />
             <br/><br/>
-            <div
-              className={`${dragClass} upload-drop-box mb-6 flex justify-center items-center`}
-              onDragEnter={this.handleDragStart}
-              onDragOver={this.handleDragOver}
-              onDrop={this.handleDrop}
-            >
-              {isEmpty ? (
-                <span>Drop your files here</span>
-              ) : (
-                <h5 className="m-0">
-                  {files.length} file{files.length > 1 ? "s" : ""} selected...
-                </h5>
-              )}
-            </div>
-            <br />
             <div className="p-4">
               <Grid container spacing={2}>
                 <Grid item lg={4} md={4}>Name</Grid>
@@ -602,6 +592,9 @@ class HigherOrderComponent extends Component {
                      </Button>
                   </div>
                 </Grid>
+                <Grid item xs={12}>
+                <img src={this.state.file}/>
+                </Grid>
                </Grid>
             </div>
               );
@@ -616,47 +609,33 @@ class HigherOrderComponent extends Component {
             Current Files
           </Typography>
           <br/>
-          <Table className="min-w-3000">
-            <TableHead>
-              <TableRow>
-                <TableCell className="pl-sm-24">Name</TableCell>
-                <TableCell className="px-0">Uploaded</TableCell>
-                <TableCell className="px-0">Updated</TableCell>
-                <TableCell className="px-0">Document</TableCell>
-                <TableCell className="px-0" width="150px">Edit/Delete</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {state.blobs.map((efile) => (
-                <TableRow key={efile.id}>
-                  <TableCell className="pl-sm-24 capitalize" align="left">
-                    {efile.filename}
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left">
-                    {parseJSON(efile.uploaded_at).toString().replace(RegExp("GMT.*"), "")}
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left">
-                    {parseJSON(efile.updated_at).toString().replace(RegExp("GMT.*"), "")}
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize">
-                    {efile.tag}
-                  </TableCell>
-                  <TableCell className="pl-0">
-                    <IconButton
-                      color="primary"
-                      className="mr-2"
-                      onClick={() => this.handeViewClick(efile.id)}
-                    >
-                      <Icon>chevron_right</Icon>
-                    </IconButton>
-                    <IconButton onClick={() => this.handeDeleteClick(efile)}>
-                      <Icon color="error">delete</Icon>
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          {state.blobs.map((doc) => (
+        <Accordion className={classes.title}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}>{doc.tag}</Typography>
+            <Typography className={classes.secondaryHeading}>{doc.filename}</Typography>
+              <div className={classes.iconalign}>
+                <IconButton color="primary" className="mr-2" onClick={() => this.downloadFile(doc.id)} >
+                  <Icon>get_app</Icon>
+                </IconButton>
+                <IconButton color="primary" className="mr-2" onClick={() => this.handeViewClick(doc.id)} >
+                  <Icon>chevron_right</Icon>
+                </IconButton>
+                <IconButton onClick={() => this.handeDeleteClick(doc)}>
+                  <Icon color="error">delete</Icon>
+                </IconButton>
+              </div>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography className={classes.heading}>{"Created At"}</Typography>
+            <Typography className={classes.secondaryHeading}>{parseJSON(doc.uploaded_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
+          </AccordionDetails>
+          <AccordionDetails>
+            <Typography className={classes.heading}>{"Uploaded At"}</Typography>
+            <Typography className={classes.secondaryHeading}>{parseJSON(doc.updated_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
+          </AccordionDetails>
+        </Accordion>
+        ))}
         </SimpleCard>
         <ConfirmationDialog
           open={this.state.shouldShowConfirmationDialog}

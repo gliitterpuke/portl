@@ -244,8 +244,8 @@ class SimpleForm extends Component {
             <Typography className={classes.secondaryHeading}>{parseJSON(application.created_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
           </AccordionDetails>
           <AccordionDetails>
-            <Typography className={classes.heading}>{"Uploaded At"}</Typography>
-            <Typography className={classes.secondaryHeading}>{parseJSON(application.created_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
+            <Typography className={classes.heading}>{"Updated At"}</Typography>
+            <Typography className={classes.secondaryHeading}>{parseJSON(application.updated_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
           </AccordionDetails>
         </Accordion>
         ))}
