@@ -179,7 +179,8 @@ class HigherOrderComponent extends Component {
 
     axios.post(baseURL + "scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
       this.setState({
-        file: URL.createObjectURL(res.data)
+        preview: URL.createObjectURL(res.data),
+        file: res.data
       })
       });
   }
@@ -206,7 +207,7 @@ class HigherOrderComponent extends Component {
     formData.append("policy", result.data.data.fields.policy);
     formData.append("signature", result.data.data.fields.signature);
     formData.append("Content-Type", file.file.type);
-    formData.append("file", file.file);
+    formData.append("file", this.state.file);
 
     const data = {
       filename: file.file.name, 
@@ -612,7 +613,7 @@ class HigherOrderComponent extends Component {
                   </div>
                 </Grid>
                 <Grid item xs={6}>
-                <img src={this.state.file} />
+                <img src={this.state.preview} />
                 </Grid>
                </Grid>
             </div>
