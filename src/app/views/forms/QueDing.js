@@ -11,7 +11,7 @@ import history from "../../../history"
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
-let baseURL = "http://127.0.0.1:8000/api/v1/"
+let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;

@@ -19,7 +19,7 @@ import { isMobile } from "utils";
 import localStorageService from "../../services/localStorageService";
 import axios from "axios"
 
-let baseURL = "http://127.0.0.1:8000/api/v1/"
+let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 const auth = { headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} }
 class AppChat extends Component {
   state = {

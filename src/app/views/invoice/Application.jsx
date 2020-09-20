@@ -71,7 +71,7 @@ class HigherOrderComponent extends Component {
     statusList: [],
     tags: "",
     status: "",
-    blobs: []
+    blobs: [],
   };
   componentDidMount() {
       this.setState({ ...user })
@@ -171,16 +171,29 @@ class HigherOrderComponent extends Component {
     })
   }
 
-  uploadSingleFile = index => {
+  scanFile = index => {
+    let user = localStorageService.getItem('auth_user')
+    let file = this.state.files[0]
+    const formData = new FormData();
+    formData.append("image_file", file.file);
+
+    axios.post(baseURL + "scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
+      this.setState({
+        file: URL.createObjectURL(res.data)
+      })
+      });
+  }
+
+  uploadSingleFile = () => {
     let user = localStorageService.getItem("auth_user")
     let allFiles = [...this.state.files];
-    let file = this.state.files[index];
+    let file = this.state.files[0];
     const appid = this.props.location.state
     const tags = this.state.result
     const filetype = file.file.type.match(/[^\/]+$/)[0]
     const key = user.id + "/" + appid + "/" + tags + "." + filetype
 
-    allFiles[index] = { ...file, uploading: true, error: false, success: false };
+    allFiles[0] = { ...file, uploading: true, error: false, success: false };
 
     this.setState({
       files: [...allFiles]
@@ -213,7 +226,7 @@ class HigherOrderComponent extends Component {
       .then((response) => {
         alert('File successfully uploaded')
         this.setState({
-          files: [allFiles[index] = { ...file, uploading: false, error: false, success: true }]
+          files: [allFiles[0] = { ...file, uploading: false, error: false, success: true }]
         });
         let state = user.applications.find (application => application.id === this.props.location.state);
           state.blobs.push(response.data)
@@ -225,7 +238,7 @@ class HigherOrderComponent extends Component {
     .catch(error => {
       alert('Please refresh and try again')
       this.setState({
-        files: [allFiles[index] = { ...file, uploading: false, error: true, success: false }]
+        files: [allFiles[0] = { ...file, uploading: false, error: true, success: false }]
       });
    })
   })
@@ -234,10 +247,11 @@ class HigherOrderComponent extends Component {
 
   render() {
     const { classes } = this.props;
-    let { dragClass, files } = this.state;
+    let { dragClass, files, result } = this.state;
     let isEmpty = files.length === 0;
     let user = localStorageService.getItem("auth_user")
     let state = user.applications.find (application => application.id === this.props.location.state);
+    let isEmptyFiles = state.blobs.length === 0
     
     return (
       <React.Fragment>
@@ -540,10 +554,9 @@ class HigherOrderComponent extends Component {
             <div className="p-4">
               <Grid container spacing={2}>
                 <Grid item lg={4} md={4}>Name</Grid>
-                <Grid item lg={3} md={3}>Type</Grid>
                 <Grid item lg={3} md={3}>Document</Grid>
                 <Grid item lg={1} md={1}>Status</Grid>
-                <Grid item lg={1} md={1}> Actions </Grid>
+                <Grid item lg={4} md={4}> Actions </Grid>
               </Grid>
             </div>
             <Divider></Divider>
@@ -558,11 +571,8 @@ class HigherOrderComponent extends Component {
                 <Grid item lg={4} md={4} sm={12} xs={12}>
                   {file.name}
                 </Grid>
-                <Grid item lg={3} md={3} sm={12} xs={12}>
-                  {file.type}
-                </Grid>
                 <Grid item lg={3} md={3} sm={12} x={12}>
-                  <SelectValidator fullWidth onClick={this.handleSelectChange} required="true">
+                  <SelectValidator fullWidth onClick={this.handleSelectChange} name="result" value={result} validators={['required']}>
                     <MenuItem value="passport">Passport</MenuItem>                
                     <MenuItem value="IMM5707">IMM5707</MenuItem>
                     <MenuItem value="IMM5409">IMM5409</MenuItem>
@@ -582,18 +592,27 @@ class HigherOrderComponent extends Component {
                   {uploading && <CircularProgress size={24} />}
                   {success && <Icon className="text-green">done</Icon>}
                 </Grid>
-                <Grid item lg={1} md={1} sm={12} xs={12}>
+                <Grid item lg={2} md={1} sm={12} xs={12}>
                   <div>
                     <Button
                       size="small" variant="contained" color="primary"
-                      onClick={() => this.uploadSingleFile(index)}
+                      onClick={() => this.scanFile(index)}
+                    >
+                      Scan
+                     </Button>
+                  </div>
+                </Grid>
+                <Grid item lg={2} md={1} sm={12} xs={12}>
+                  <div>
+                    <Button
+                      size="small" variant="contained" color="primary" type="submit"
                     >
                       Upload
                      </Button>
                   </div>
                 </Grid>
-                <Grid item xs={12}>
-                <img src={this.state.file}/>
+                <Grid item xs={6}>
+                <img src={this.state.file} />
                 </Grid>
                </Grid>
             </div>
@@ -609,6 +628,7 @@ class HigherOrderComponent extends Component {
             Current Files
           </Typography>
           <br/>
+          {isEmptyFiles && <p className="px-4">No files yet - upload one now!</p>}
           {state.blobs.map((doc) => (
         <Accordion className={classes.title}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>

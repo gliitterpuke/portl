@@ -23,7 +23,7 @@ import localStorageService from "../../services/localStorageService"
 import { SimpleCard, Breadcrumb } from "matx"
 
 let user = localStorageService.getItem("auth_user")
-let baseURL = "http://127.0.0.1:8000/api/v1/"
+let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class FileViewer extends Component {
   state = {
     fileList: [],
@@ -101,6 +101,19 @@ class FileViewer extends Component {
     })
   }
   }
+  
+  scanFile = index => {
+    let user = localStorageService.getItem('auth_user')
+    let file = this.state.files[0]
+    const formData = new FormData();
+    formData.append("image_file", file.file);
+
+    axios.post(baseURL + "scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
+      this.setState({
+        file: URL.createObjectURL(res.data)
+      })
+      });
+  }
 
   uploadSingleFile = index => {
     let allFiles = [...this.state.files];
@@ -115,7 +128,7 @@ class FileViewer extends Component {
     const filetype = mime_type.match(/[^\/]+$/)[0]
     const key = user.id + "/" + appid + "/" + tags + "." + filetype
 
-    allFiles[index] = { ...file, uploading: true, error: false, success: false };
+    allFiles[0] = { ...file, uploading: true, error: false, success: false };
 
     this.setState({
       files: [...allFiles]
@@ -153,7 +166,7 @@ class FileViewer extends Component {
         alert('File update successful!')
         this.forceUpdate()
         this.setState({
-          files: [allFiles[index] = { ...file, uploading: false, error: false, success: true }]
+          files: [allFiles[0] = { ...file, uploading: false, error: false, success: true }]
         });
         return response;
       });
@@ -161,7 +174,7 @@ class FileViewer extends Component {
     .catch(error => {
       alert('Error; please try again later')
       this.setState({
-        files: [allFiles[index] = { ...file, uploading: false, error: true, success: false }]
+        files: [allFiles[0] = { ...file, uploading: false, error: true, success: false }]
       });
    });
   })
@@ -254,10 +267,9 @@ class FileViewer extends Component {
             <div className="p-4">
               <Grid container spacing={2}>
                 <Grid item lg={4} md={4}>Name</Grid>
-                <Grid item lg={3} md={3}>Type</Grid>
                 <Grid item lg={3} md={3}>Document</Grid>
                 <Grid item lg={1} md={1}>Status</Grid>
-                <Grid item lg={1} md={1}> Actions </Grid>
+                <Grid item lg={4} md={4}> Actions </Grid>
               </Grid>
             </div>
             <Divider></Divider>
@@ -273,9 +285,6 @@ class FileViewer extends Component {
                 <Grid item lg={4} md={4} sm={12} xs={12}>
                   {file.name}
                 </Grid>
-                <Grid item lg={3} md={3} sm={12} xs={12}>
-                  {type}
-                </Grid>
                 <Grid item lg={3} md={3} sm={12} x={12}>
                   {tag}
                 </Grid>
@@ -284,7 +293,17 @@ class FileViewer extends Component {
                   {success && <Icon className="text-green">done</Icon>}
                   {uploading && <CircularProgress size={24} />}
                 </Grid>
-                <Grid item lg={1} md={1} sm={12} xs={12}>
+                <Grid item lg={2} md={1} sm={12} xs={12}>
+                  <div>
+                    <Button
+                      size="small" variant="contained" color="primary"
+                      onClick={() => this.scanFile(index)}
+                    >
+                      Scan
+                     </Button>
+                  </div>
+                </Grid>
+                <Grid item lg={2} md={2} sm={12} xs={12}>
                   <div>
                     <Button
                       size="small" variant="contained" color="primary"
@@ -293,6 +312,9 @@ class FileViewer extends Component {
                       Upload
                      </Button>
                   </div>
+                </Grid>
+                <Grid item xs={6}>
+                  <img src={this.state.file} />
                 </Grid>
                </Grid>
             </div>

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import {
   Button,
   Grid,
-  Typography
+  Typography,
+  Icon
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
@@ -27,14 +28,14 @@ class ClientViewer extends Component {
     let user = localStorageService.getItem("auth_user")
 
     return (
-        <div id="print-area">
-          <br /><br />
-          <div className="viewer__order-info px-4 mb-4 flex justify-between">
-            <Grid container spacing={2}>
+        
+            <Grid container spacing={4}>
               <Grid item xs={8} lg={10} md={10} sm={10}>
-                <Typography variant="h6">Profile</Typography>
+              <br/><br/>
+                <h7>Profile</h7>
               </Grid>
-              <Grid item xs={4} lg={2} md={2}>
+              <Grid item xs={2} lg={2} md={2}>
+              <br/><br/>
                 <Button className="mr-4 py-2" variant="contained" color="primary" onClick={() => this.props.toggleClientEditor()} >
                   <span className="pl-2 capitalize">Edit Profile</span>
                 </Button>
@@ -43,7 +44,7 @@ class ClientViewer extends Component {
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>First Name</strong>
                 </h5>
-                <p> {user.client_profile.first_name} </p>
+                <h6> {user.client_profile.first_name} </h6>
               </Grid>
               <Grid item xs={12} md={4} sm={4}>
                 <h5 className="font-normal mb-4 capitalize">
@@ -76,9 +77,7 @@ class ClientViewer extends Component {
                 <p> {user.client_profile.citizen_of.name} </p>
             </Grid>
             </Grid>
-            <div />
-          </div>
-        </div>
+
     );
   }
 }

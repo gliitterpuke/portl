@@ -39,14 +39,26 @@ const styles = theme => ({
     width: '100%',
   },
   heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: 500,
+    fontSize: theme.typography.pxToRem(17),
+    fontWeight: 700,
     flexBasis: '33.33%',
     flexShrink: 0,
-    alignSelf: "center"
+    alignSelf: "center",
+    fontFamily: "Lato",
+    // textTransform: "uppercase"
+  },
+  heading2: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: 700,
+    flexBasis: '33.33%',
+    flexShrink: 0,
+    alignSelf: "center",
+    fontFamily: "Lato",
   },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
+    fontWeight: 700,
+    fontFamily: "Lato",
     color: theme.palette.text.secondary,
     flexShrink: 0,
     alignSelf: "center"
@@ -125,11 +137,13 @@ class SimpleForm extends Component {
     const { classes } = this.props;
     let user = localStorageService.getItem("auth_user")
     let state = user.applications
+    let isEmpty = user.applications.length === 0
+    let isApp = user.applications.length >0
 
     return (
       <React.Fragment>
       <div className="m-sm-30">
-        <Card elevation={6} className="pricing__card px-6 pt-2 pb-4">
+        <Card elevation={6} className="pricing__card px-20 pt-10 pb-10">
       {this.state.showClientEditor ? (
         <ClientEditor
           toggleClientEditor={this.toggleClientEditor}
@@ -140,87 +154,35 @@ class SimpleForm extends Component {
     </Card>
     </div>
       <div className="m-sm-30">
-        <Card elevation={6} className="pricing__card px-6 pt-2 pb-4">
+        <Card elevation={6} className="pricing__card px-20 pt-10 pb-10">
         <br /><br />
         <Grid container spacing={2}>
           <Grid item xs={12} lg={10} md={10}>
-            <Typography variant="h6">Applications</Typography>
+            <h7>Applications</h7>
           </Grid>
+          {isApp && (
           <Grid item xs={12} lg={2} md={2}>
             <Link to={`/products`}>
               <Button color="primary" variant="contained">
-                <span className="pl-2 capitalize">Create New App</span>
+                <span className={classes.iconalign}>Create New App</span>
               </Button>
             </Link>
           </Grid>
-        </Grid>
-        <br/><br/>
-          <Table className="min-w-3000">
-            <TableHead>
-              <TableRow>
-                <TableCell className="pl-sm-24">Program</TableCell>
-                <TableCell className="px-0">ID</TableCell>
-                <TableCell className="px-0">Created</TableCell>
-                <TableCell className="px-0">Updated</TableCell>
-                <TableCell className="px-0">Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {state.map((application) => (
-                <TableRow key={application.id}>
-                  <TableCell className="pl-sm-24 capitalize" align="left">
-                    {application.product.name}
-                  </TableCell>
-                  <TableCell className="pl-sm-24 capitalize" align="left">
-                    {application.id}
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left">
-                    {parseJSON(application.created_at).toString().replace(RegExp("GMT.*"), "")}
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left">
-                    {parseJSON(application.updated_at).toString().replace(RegExp("GMT.*"), "")}
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize">
-                    {application.status.replace("CLIENT_ACTION_REQUIRED", "In Progress")}
-                  </TableCell>
-                  <TableCell className="pl-0">
-                    <IconButton
-                      color="primary"
-                      onClick={() => this.handeViewClick(application.id)}
-                    >
-                      <Icon>chevron_right</Icon>
-                    </IconButton>
-                    <IconButton onClick={() => this.handeDeleteClick(application)}>
-                      <Icon color="error">delete</Icon>
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-      </Card>
-        <ConfirmationDialog
-          open={this.state.shouldShowConfirmationDialog}
-          onConfirmDialogClose={this.handleDialogClose}
-          onYesClick={this.handleConfirmationResponse}
-          text="Are you sure to delete?"
-        />
-      </div>
-      <div className="m-sm-30">
-        <Card elevation={6} className="pricing__card px-6 pt-2 pb-4">
-        <br /><br />
-        <Grid container spacing={2}>
-          <Grid item xs={12} lg={10} md={10}>
-            <Typography variant="h6">Applications</Typography>
-          </Grid>
-          <Grid item xs={12} lg={2} md={2}>
+          )}
+          <br/><br/><br/>
+          {isEmpty && (
+          <Grid item xs={12} lg={12} md={12}>
+            <h5>No applications yet; create a new application!</h5>
+            <br/><br/>
             <Link to={`/products`}>
               <Button color="primary" variant="contained">
-                <span className="pl-2 capitalize">Create New App</span>
+                <span className="pl-2 capitalize">Get Started</span>
               </Button>
             </Link>
           </Grid>
+          )}
         </Grid>
+
         <br/><br/>
         {state.map((application) => (
         <Accordion className={classes.title}>
@@ -240,11 +202,11 @@ class SimpleForm extends Component {
               </div>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography className={classes.heading}>{"Created At"}</Typography>
+            <Typography className={classes.heading2}>{"Created At"}</Typography>
             <Typography className={classes.secondaryHeading}>{parseJSON(application.created_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
           </AccordionDetails>
           <AccordionDetails>
-            <Typography className={classes.heading}>{"Updated At"}</Typography>
+            <Typography className={classes.heading2}>{"Updated At"}</Typography>
             <Typography className={classes.secondaryHeading}>{parseJSON(application.updated_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
           </AccordionDetails>
         </Accordion>
