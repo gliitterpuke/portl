@@ -21,6 +21,8 @@ import { withRouter } from "react-router-dom";
 import axios from "axios"
 import localStorageService from "../../services/localStorageService"
 import { SimpleCard, Breadcrumb } from "matx"
+import { isMobile } from "utils";
+import QRCode from 'react-google-qrcode'
 
 let user = localStorageService.getItem("auth_user")
 let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
@@ -30,6 +32,7 @@ class FileViewer extends Component {
     filename: "",
     dragClass: "",
     files: [],
+    mobile: isMobile()
   };
 
   componentDidMount() {
@@ -189,11 +192,14 @@ class FileViewer extends Component {
   render() {
     let {
       files,
-      isEmpty
+      isEmpty,
+      mobile
     } = this.state;
     let user = localStorageService.getItem("auth_user")
     let state = user.applications.findIndex (application => application.id === this.props.location.state.application_id);
     let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
+    let token = localStorage.getItem("access_token")
+    console.log(this.state.tag)
 
     return (
       <div className="upload-form m-sm-30">
@@ -249,6 +255,14 @@ class FileViewer extends Component {
           <Typography variant="h6">
             Change File
           </Typography>
+          {!mobile && (
+          <div>
+          <QRCode
+            data={`https://portlfe.herokuapp.com/session/filechange?${token}?${user.id}?${this.state.application_id}?${this.props.location.state.id}?${this.state.tag}`} 
+            size={90}
+          />
+          </div>
+        )}
           <br/>
         <ValidatorForm
           ref="form"

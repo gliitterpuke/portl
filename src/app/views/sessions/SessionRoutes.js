@@ -5,6 +5,8 @@ import ForgotPassword from "./ForgotPassword";
 import RepSignUp from "./RepSignUp";
 import RepSignIn from "./RepSignIn";
 import ResetPassword from "./ResetPassword"
+import FileUpload from "./FileUpload"
+import FileChange from "./FileChange"
 
 const settings = {
   activeLayout: "layout1",
@@ -64,7 +66,17 @@ const sessionRoutes = [
     path: "/session/repsignin",
     component: RepSignIn,
     settings
-  }
+  },
+  {
+    path: "/session/fileupload",
+    component: FileUpload,
+    settings
+  },
+  {
+    path: "/session/filechange",
+    component: FileChange,
+    settings
+  },
 ];
 
 export default sessionRoutes;

@@ -15,6 +15,12 @@ const checkJwtAuth = async setUserData => {
   if (window.location.href.match("/session/forgot-password")) {
     history.push(getLastItem(window.location.href))
   }
+  else if (window.location.href.match("/session/file")) {
+    history.push(getLastItem(window.location.href))
+  }
+  else if (window.location.href.match("/session/signup")) {
+    history.push(getLastItem(window.location.href))
+  }
   else if (!localStorage.getItem("access_token")) {
     history.push('/session/signin');
     console.log(localStorage)
@@ -30,6 +36,12 @@ const Auth = ({ children, setUserData, getNavigationByUser }) => {
     checkJwtAuth(setUserData);
     const getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
     if (window.location.href.match("/session/forgot-password")) {
+      history.push(getLastItem(window.location.href))
+    }
+    else if (window.location.href.match("/session/file")) {
+      history.push(getLastItem(window.location.href))
+    }
+    else if (window.location.href.match("/session/signup")) {
       history.push(getLastItem(window.location.href))
     }
     else if (!localStorage.getItem("access_token")) {

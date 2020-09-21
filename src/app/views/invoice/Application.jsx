@@ -25,10 +25,11 @@ import axios from "axios";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { getFileById } from "./AppActions";
 import { parseJSON } from "date-fns";
-import { ConfirmationDialog, SimpleCard } from "matx";
+import { ConfirmationDialog, SimpleCard, Breadcrumb } from "matx";
 import { ValidatorForm, SelectValidator } from "react-material-ui-form-validator";
 import { withStyles } from "@material-ui/styles"
-import { Breadcrumb } from "matx"
+import { isMobile } from "utils";
+import QRCode from 'react-google-qrcode'
 
 let user = localStorageService.getItem("auth_user")
 let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
@@ -72,6 +73,7 @@ class HigherOrderComponent extends Component {
     tags: "",
     status: "",
     blobs: [],
+    mobile: isMobile()
   };
   componentDidMount() {
       this.setState({ ...user })
@@ -248,11 +250,13 @@ class HigherOrderComponent extends Component {
 
   render() {
     const { classes } = this.props;
-    let { dragClass, files, result } = this.state;
+    let { dragClass, files, result, mobile } = this.state;
     let isEmpty = files.length === 0;
     let user = localStorageService.getItem("auth_user")
     let state = user.applications.find (application => application.id === this.props.location.state);
     let isEmptyFiles = state.blobs.length === 0
+    let token = localStorage.getItem("access_token")
+    console.log(token)
     
     return (
       <React.Fragment>
@@ -532,6 +536,14 @@ class HigherOrderComponent extends Component {
           <Typography variant="h6">
             New File Upload
           </Typography>
+          {!mobile && (
+          <div>
+          <QRCode
+            data={`https://portlfe.herokuapp.com/session/fileupload?${token}?${user.id}?${state.id}`} 
+            size={90}
+          />
+          </div>
+        )}
           <br/>
         <ValidatorForm
           ref="form"

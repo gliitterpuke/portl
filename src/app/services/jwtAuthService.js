@@ -2,8 +2,6 @@ import axios from "axios";
 import localStorageService from "./localStorageService";
 import qs from "qs";
 import history from "history.js";
-
-let baseURL = "http://127.0.0.1:8000/api/v1/"
 class JwtAuthService {
 
   // You need to send http request with email and passsword to your server in this method
@@ -22,7 +20,7 @@ class JwtAuthService {
         }
     }
     return axios.post(
-        'http://127.0.0.1:8000/token/',
+        'https://portl-dev.herokuapp.com/token/',
         qs.stringify(requestBody),
         config
     ).then((response) => {
@@ -30,18 +28,18 @@ class JwtAuthService {
       this.setSession(response.data.access_token);
       this.setUser(response.data.data);
     })
-    // .then(() => { 
-    //   let newuser = localStorageService.getItem("auth_user")
-    //   if (newuser.role === "client") {
-    //   history.push({
-    //     pathname: "/profile"
-    //   })
-    //   } else if (newuser.role === "professional") {
-    //   history.push({
-    //     pathname: "/professional"
-    //   })
-    //   }
-    // })
+    .then(() => { 
+      let newuser = localStorageService.getItem("auth_user")
+      if (newuser.role === "client") {
+      history.push({
+        pathname: "/profile"
+      })
+      } else if (newuser.role === "professional") {
+      history.push({
+        pathname: "/professional"
+      })
+      }
+    })
   };
   
   // Save user to localstorage
@@ -57,21 +55,21 @@ class JwtAuthService {
     function sleep (time) {
       return new Promise((resolve) => setTimeout(resolve, time));
     }
-      return axios.get(baseURL + "users/me/", auth)
+      return axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
     .then((response) => {
+      console.log(response)
       this.setUser(response.data)
-      this.setSession(localStorage.getItem("access_token"))
       return response;
     })
      .catch(error => {
-      const {status} = error.response;
-      const getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
-      if (window.location.href.match("/session/forgot-password")) {
-        console.log(getLastItem(window.location.href))
-      }
-      else if(status === 401) {
-        history.push('/session/signin')
-      };
+      // const {status} = error.response;
+      // const getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
+      // if (window.location.href.match("/session/forgot-password")) {
+      //   console.log(getLastItem(window.location.href))
+      // }
+      // else if(status === 401) {
+      //   history.push('/session/signin')
+      // };
     });
 }
 
