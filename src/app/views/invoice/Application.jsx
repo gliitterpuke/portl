@@ -118,13 +118,14 @@ class HigherOrderComponent extends Component {
         file: iterator,
         uploading: false,
         error: false,
-        success: false
+        success: false,
+        scan: false
       });
     }
 
     this.setState({
       files: [...list],
-      file: URL.createObjectURL(event.target.files[0])
+      preview: URL.createObjectURL(event.target.files[0])
     });
   };
 
@@ -174,17 +175,35 @@ class HigherOrderComponent extends Component {
   }
 
   scanFile = index => {
-    let user = localStorageService.getItem('auth_user')
+    let allFiles = [...this.state.files];
     let file = this.state.files[0]
     const formData = new FormData();
     formData.append("image_file", file.file);
+
+    allFiles[0] = { ...file, uploading: true, error: false, success: false };
+
+    this.setState({
+      files: [...allFiles],
+    });
 
     axios.post(baseURL + "scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
       this.setState({
         preview: URL.createObjectURL(res.data),
         file: res.data
       })
-      });
+      }).then((response) => {
+        alert('File successfully uploaded')
+        this.setState({
+          files: [allFiles[0] = { ...file, uploading: false, error: false, success: true }],
+          scan: true
+        });
+      }).catch(error => {
+        alert('Photo of document must be on a single coloured background')
+        this.setState({
+          files: [allFiles[0] = { ...file, uploading: false, error: true, success: false }],
+          scan: false
+        });
+     })
   }
 
   uploadSingleFile = () => {
@@ -198,9 +217,19 @@ class HigherOrderComponent extends Component {
 
     allFiles[0] = { ...file, uploading: true, error: false, success: false };
 
-    this.setState({
-      files: [...allFiles]
-    });
+    if (this.state.scan === true) {
+      this.setState({
+        files: [...allFiles],
+      });
+    }
+
+    else if (this.state.scan === false) {
+      this.setState({
+        files: [...allFiles],
+        file: this.state.files[0].file,
+      });
+    }
+
     axios.get(baseURL + "sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
     .then(result => { 
     const formData = new FormData();
@@ -229,8 +258,10 @@ class HigherOrderComponent extends Component {
       .then((response) => {
         alert('File successfully uploaded')
         this.setState({
-          files: [allFiles[0] = { ...file, uploading: false, error: false, success: true }]
+          files: [allFiles[0] = { ...file, uploading: false, error: false, success: true }],
+          scan: false
         });
+        console.log(this.state.files)
         let state = user.applications.find (application => application.id === this.props.location.state);
           state.blobs.push(response.data)
           localStorageService.setItem("auth_user", user) 
@@ -533,23 +564,12 @@ class HigherOrderComponent extends Component {
       <div className="upload-form m-sm-30">
         <SimpleCard >
         <div>
-          <Typography variant="h6">
-            New File Upload
-          </Typography>
-          {!mobile && (
-          <div>
-          <QRCode
-            data={`https://portlfe.herokuapp.com/session/fileupload?${token}?${user.id}?${state.id}`} 
-            size={90}
-          />
-          </div>
-        )}
-          <br/>
-        <ValidatorForm
-          ref="form"
-          onSubmit={this.uploadSingleFile}
-          onError={errors => null}
-        >
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={10}>
+            <Typography variant="h6">
+              New File Upload
+            </Typography>
+            <br/>
             <label htmlFor="upload-single-file">
               <Fab className="capitalize" color="primary" component="span" variant="extended"
               >
@@ -559,10 +579,26 @@ class HigherOrderComponent extends Component {
                 </div>
               </Fab>
             </label>
-            
             <input
               className="hidden" onChange={this.handleFileSelect} id="upload-single-file" type="file" accept="image/*, application/pdf"
             />
+          </Grid>
+          {!mobile && (
+            <Grid item md={2}>
+              <QRCode
+                data={`https://portlfe.herokuapp.com/session/fileupload?${token}?${user.id}?${state.id}`} 
+                size={115}
+              />
+            </Grid>
+          )}
+        </Grid>
+          <br/>
+        <ValidatorForm
+          ref="form"
+          onSubmit={this.uploadSingleFile}
+          onError={errors => null}
+        >
+
             <br/><br/>
             <div className="p-4">
               <Grid container spacing={2}>
@@ -577,7 +613,7 @@ class HigherOrderComponent extends Component {
             {isEmpty && <p className="px-4">No files yet!</p>}
 
             {files.map((item, index) => {
-              let { file, uploading, error, success } = item;
+              let { file, uploading, error, success, scan } = item;
               return (
             <div className="px-4 py-4" key={file.name}>
               <Grid container spacing={2} direction="row">

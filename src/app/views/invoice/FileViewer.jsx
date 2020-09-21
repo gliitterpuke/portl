@@ -32,7 +32,8 @@ class FileViewer extends Component {
     filename: "",
     dragClass: "",
     files: [],
-    mobile: isMobile()
+    mobile: isMobile(),
+    scan: false
   };
 
   componentDidMount() {
@@ -55,7 +56,8 @@ class FileViewer extends Component {
     }
 
     this.setState({
-      files: [...list]
+      files: [...list],
+      preview: URL.createObjectURL(event.target.files[0])
     });
   };
 
@@ -106,25 +108,40 @@ class FileViewer extends Component {
   }
   
   scanFile = index => {
-    let user = localStorageService.getItem('auth_user')
+    let allFiles = [...this.state.files];
     let file = this.state.files[0]
     const formData = new FormData();
     formData.append("image_file", file.file);
 
+    allFiles[0] = { ...file, uploading: true, error: false, success: false };
+
+    this.setState({
+      files: [...allFiles],
+    });
+
     axios.post(baseURL + "scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
-      var file = res.data
       this.setState({
         preview: URL.createObjectURL(res.data),
         file: res.data
       })
-      console.log(this.state.file)
-      });
-      
+      }).then((response) => {
+        alert('File successfully uploaded')
+        this.setState({
+          files: [allFiles[0] = { ...file, uploading: false, error: false, success: true }],
+          scan: true
+        });
+      }).catch(error => {
+        alert('Photo of document must be on a single coloured background')
+        this.setState({
+          files: [allFiles[0] = { ...file, uploading: false, error: true, success: false }],
+          scan: false
+        });
+     })
   }
 
   uploadSingleFile = index => {
+    console.log(this.state.scan)
     let allFiles = [...this.state.files];
-
     let file = this.state.files[0];
     console.log(file)
     const auth = {
@@ -139,9 +156,19 @@ class FileViewer extends Component {
 
     allFiles[0] = { ...file, uploading: true, error: false, success: false };
 
-    this.setState({
-      files: [...allFiles]
-    });
+    if (this.state.scan === true) {
+      this.setState({
+        files: [...allFiles],
+      });
+    }
+
+    else if (this.state.scan === false) {
+      this.setState({
+        files: [...allFiles],
+        file: this.state.files[0].file,
+      });
+    }
+
     axios.get(baseURL + "sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
     .then(result => { 
     const formData = new FormData();
@@ -252,23 +279,12 @@ class FileViewer extends Component {
           
           <div className="upload-form m-sm-30">
         <div>
-          <Typography variant="h6">
-            Change File
-          </Typography>
-          {!mobile && (
-          <div>
-          <QRCode
-            data={`https://portlfe.herokuapp.com/session/filechange?${token}?${user.id}?${this.state.application_id}?${this.props.location.state.id}?${this.state.tag}`} 
-            size={90}
-          />
-          </div>
-        )}
-          <br/>
-        <ValidatorForm
-          ref="form"
-          onSubmit={this.handleSubmit}
-          onError={errors => null}
-        >
+        <Grid container spacing={4}>
+            <Grid item xs={12} md={10}>
+            <Typography variant="h6">
+              New File Upload
+            </Typography>
+            <br/>
             <label htmlFor="upload-single-file">
               <Fab className="capitalize" color="primary" component="span" variant="extended"
               >
@@ -278,12 +294,26 @@ class FileViewer extends Component {
                 </div>
               </Fab>
             </label>
-            
             <input
               className="hidden" onChange={this.handleFileSelect} id="upload-single-file" type="file" accept="image/*, application/pdf"
             />
+          </Grid>
+          {!mobile && (
+            <Grid item md={2}>
+              <QRCode
+                data={`https://portlfe.herokuapp.com/session/filechange?${token}?${user.id}?${this.state.application_id}?${this.props.location.state.id}?${this.state.tag}`}
+                size={115}
+              />
+            </Grid>
+          )}
+        </Grid>
+          <br/>
+        <ValidatorForm
+          ref="form"
+          onSubmit={this.handleSubmit}
+          onError={errors => null}
+        >
             <br/><br/>
-
             <div className="p-4">
               <Grid container spacing={2}>
                 <Grid item lg={4} md={4}>Name</Grid>
