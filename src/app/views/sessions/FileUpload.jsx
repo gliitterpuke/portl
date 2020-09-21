@@ -79,7 +79,7 @@ class HigherOrderComponent extends Component {
     tags: "",
     status: "",
     blobs: [],
-    user: ""
+    scan: false
   };
     
   handleFileSelect = event => {
@@ -108,17 +108,35 @@ class HigherOrderComponent extends Component {
   }
 
   scanFile = index => {
-    let user = localStorageService.getItem('auth_user')
+    let allFiles = [...this.state.files];
     let file = this.state.files[0]
     const formData = new FormData();
     formData.append("image_file", file.file);
+
+    allFiles[0] = { ...file, uploading: true, error: false, success: false };
+
+    this.setState({
+      files: [...allFiles],
+    });
 
     axios.post(baseURL + "scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
       this.setState({
         preview: URL.createObjectURL(res.data),
         file: res.data
       })
-      });
+      }).then((response) => {
+        alert('File successfully uploaded')
+        this.setState({
+          files: [allFiles[0] = { ...file, uploading: false, error: false, success: true }],
+          scan: true
+        });
+      }).catch(error => {
+        alert('Photo of document must be on a single coloured background')
+        this.setState({
+          files: [allFiles[0] = { ...file, uploading: false, error: true, success: false }],
+          scan: false
+        });
+     })
   }
 
   uploadSingleFile = () => {
@@ -130,9 +148,19 @@ class HigherOrderComponent extends Component {
 
     allFiles[0] = { ...file, uploading: true, error: false, success: false };
 
-    this.setState({
-      files: [...allFiles]
-    });
+    if (this.state.scan === true) {
+      this.setState({
+        files: [...allFiles],
+      });
+    }
+
+    else if (this.state.scan === false) {
+      this.setState({
+        files: [...allFiles],
+        file: this.state.files[0].file,
+      });
+    }
+
     axios.get(baseURL + "sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
     .then(result => { 
     const formData = new FormData();
@@ -277,20 +305,21 @@ class HigherOrderComponent extends Component {
             })}
             </ValidatorForm>
             <br/><br/>
-            <Link to={`/session/signin`}>
-            <label htmlFor="upload-single-file">
-              <Fab className="capitalize" color="primary" component="span" variant="extended"
-              >
-                <div className="flex items-center">
-                  <Icon className="pr-8">cloud_upload</Icon>
-                  <span>Login</span>
-                </div>
-              </Fab>
-            </label>
-            </Link>
             </div>
           </SimpleCard>
-
+          <br/><br/>
+          <Link to={`/session/signin`}>
+            <SimpleCard>
+            <div className="w-full text-center mb-11">
+                <h3 className="m-0 font-medium">
+                Login
+                </h3>
+                <p className="m-0 pt-4 text-muted">
+                and view all your applications and files!
+                </p>
+            </div>
+            </SimpleCard>
+          </Link>
         <br /><br />
       </div>
       </React.Fragment>

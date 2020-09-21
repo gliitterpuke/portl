@@ -17,7 +17,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  CircularProgress
+  CircularProgress,
+  Popover
 } from "@material-ui/core";
 import localStorageService from "../../services/localStorageService";
 import { withRouter, Link } from "react-router-dom";
@@ -73,8 +74,25 @@ class HigherOrderComponent extends Component {
     tags: "",
     status: "",
     blobs: [],
-    mobile: isMobile()
+    mobile: isMobile(),
+    open: false
   };
+
+  handleTouchTap = (event) => {
+    event.preventDefault();
+
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget,
+     });
+    };
+    
+  handleRequestClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
+
   componentDidMount() {
       this.setState({ ...user })
     };
@@ -589,6 +607,17 @@ class HigherOrderComponent extends Component {
                 data={`https://portlfe.herokuapp.com/session/fileupload?${token}?${user.id}?${state.id}`} 
                 size={115}
               />
+              <br/>
+            <Button size="small" variant="contained" color="primary" onClick={this.handleTouchTap}>What's this?</Button>
+              <Popover
+                open={this.state.open}
+                anchorEl={this.state.anchorEl}
+                anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                onClose={this.handleRequestClose}
+              >
+                  <Typography className="px-2">Scan this to upload a file via your phone!</Typography>
+              </Popover>
             </Grid>
           )}
         </Grid>
