@@ -1,12 +1,4 @@
-import SignUp from "./SignUp";
-import SignIn from "./SignIn";
-import NotFound from "./NotFound";
-import ForgotPassword from "./ForgotPassword";
-import RepSignUp from "./RepSignUp";
-import RepSignIn from "./RepSignIn";
-import ResetPassword from "./ResetPassword"
-import FileUpload from "./FileUpload"
-import FileChange from "./FileChange"
+import React from "react";
 
 const settings = {
   activeLayout: "layout1",
@@ -33,48 +25,38 @@ const settings = {
 const sessionRoutes = [
   {
     path: "/session/signup",
-    component: SignUp,
+    component: React.lazy(() => import("./SignUp")),
     settings
   },
   {
     path: "/session/signin",
-    component: SignIn,
+    component: React.lazy(() => import("./SignIn")),
     settings
   },
   {
     path: "/session/forgot-password",
-    component: ForgotPassword,
+    component: React.lazy(() => import("./ForgotPassword")),
     settings,
     exact: true
   },
   {
     path: "/session/forgot-password/:token",
-    component: ResetPassword,
+    component: React.lazy(() => import("./ResetPassword")),
     settings
   },
   {
     path: "/session/404",
-    component: NotFound,
-    settings
-  },
-  {
-    path: "/session/repsignup",
-    component: RepSignUp,
-    settings
-  },
-  {
-    path: "/session/repsignin",
-    component: RepSignIn,
+    component: React.lazy(() => import("./NotFound")),
     settings
   },
   {
     path: "/session/fileupload",
-    component: FileUpload,
+    component: React.lazy(() => import("./FileUpload")),
     settings
   },
   {
     path: "/session/filechange",
-    component: FileChange,
+    component: React.lazy(() => import("./FileChange")),
     settings
   },
 ];

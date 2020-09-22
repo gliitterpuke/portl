@@ -24,11 +24,12 @@ class JwtAuthService {
         qs.stringify(requestBody),
         config
     ).then((response) => {
-      console.log(response)
+      console.log(window.location.href)
       this.setSession(response.data.access_token);
       this.setUser(response.data.data);
     })
     .then(() => { 
+      console.log(window.location.href, 'ohno')
       let newuser = localStorageService.getItem("auth_user")
       if (newuser.role === "client") {
       history.push({
@@ -44,11 +45,13 @@ class JwtAuthService {
   
   // Save user to localstorage
   setUser = (user) => {    
-    localStorageService.setItem('auth_user', user);
+    localStorageService.setItem('auth_user', user)
+    console.log(window.location.href);
   }
   // You need to send http requst with existing token to your server to check token is valid
   // This method is being used when user already logged in & app is reloaded
   loginWithToken = () => {
+    console.log(window.location.href)
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
   }
@@ -57,8 +60,9 @@ class JwtAuthService {
     }
       return axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
     .then((response) => {
-      console.log(response)
+      console.log(window.location.href)
       this.setUser(response.data)
+      this.setSession(localStorage.getItem("access_token"))
       return response;
     })
      .catch(error => {
