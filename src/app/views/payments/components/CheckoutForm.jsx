@@ -3,6 +3,7 @@ import { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import styled from "@emotion/styled";
 import axios from "axios";
+import { button } from '@material-ui/core'
 
 import Row from "./prebuilt/Row";
 import BillingDetailsFields from "./prebuilt/BillingDetailsFields";
@@ -29,6 +30,7 @@ const CardElementContainer = styled.div`
 const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
   const [isProcessing, setProcessingTo] = useState(false);
   const [checkoutError, setCheckoutError] = useState();
+  const [type, setType] = useState('none')
 
   const stripe = useStripe();
   const elements = useElements();
@@ -39,6 +41,40 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
 
   const handleCardDetailsChange = ev => {
     ev.error ? setCheckoutError(ev.error.message) : setCheckoutError();
+  };
+
+  const handleCardChange = ev => {
+    setType('card')
+  };
+
+  const handleAlipayChange = async ev => {
+      const { data: clientSecret } = await axios.post(baseURL + "create-payment-intent", {
+        product_id: 1,
+        professional_id: 1
+      });
+
+      const data = { 
+        professional_id: 1,
+        product_id: 3,
+        language_code: "eng",
+        client_id: user.id
+      }
+
+      await stripe.confirmAlipayPayment(clientSecret.client_secret, {
+        return_url: window.location.href
+      }).then((res) => { 
+        axios.post(baseURL + "applications/", data).then(result => { 
+          let user = localStorageService.getItem("auth_user")
+          user.applications.push(result.data)
+          localStorageService.setItem("auth_user", user)
+          let secondstate = user.applications.find (application => application.id === result.data.id);
+          history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
+          alert('Payment successful - proceeding to your application')
+        })
+      }).catch(err => {
+        console.log(err)
+      })
+  
   };
 
   const handleFormSubmit = async ev => {
@@ -58,7 +94,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
     setProcessingTo(true);
 
     const cardElement = elements.getElement("card");
-
+    
     try {
       const { data: clientSecret } = await axios.post(baseURL + "create-payment-intent", {
         product_id: 1,
@@ -105,19 +141,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
     } catch (err) {
       setCheckoutError(err.message);
     }
-  };
-
-  // Learning
-  // A common ask/bug that users run into is:
-  // How do you change the color of the card element input text?
-  // How do you change the font-size of the card element input text?
-  // How do you change the placeholder color?
-  // The answer to all of the above is to use the `style` option.
-  // It's common to hear users confused why the card element appears impervious
-  // to all their styles. No matter what classes they add to the parent element
-  // nothing within the card element seems to change. The reason for this is that
-  // the card element is housed within an iframe and:
-  // > styles do not cascade from a parent window down into its iframes
+  }
 
   const iframeStyles = {
     base: {
@@ -144,7 +168,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
   };
 
   return (
-
+    <div>
     <form onSubmit={handleFormSubmit}>
       <div className="upload-form m-sm-30">
         <div className="mb-sm-30">
@@ -165,11 +189,19 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
       {checkoutError && <CheckoutError>{checkoutError}</CheckoutError>}
       <Row>
         {/* TIP always disable your submit button while processing payments */}
-        <SubmitButton disabled={isProcessing || !stripe}>
+        <SubmitButton name="payment" value="card" onClick={handleCardChange} disabled={isProcessing || !stripe}>
           {isProcessing ? "Processing..." : `Pay $200`}
         </SubmitButton>
       </Row>
+
     </form>
+      <Row>
+        {/* TIP always disable your submit button while processing payments */}
+        <SubmitButton name="payment" value="alipay" onClick={handleAlipayChange} disabled={isProcessing || !stripe}>
+          {isProcessing ? "Processing..." : `Alipay`}
+        </SubmitButton>
+      </Row>
+      </div>
   );
 };
 
