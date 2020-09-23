@@ -21,8 +21,7 @@ const checkJwtAuth = async setUserData => {
   else if (window.location.href.match("/session/signup")) {
     history.push(getLastItem(window.location.href))
   }
-  else if (user) {setUserData(user);
-  console.log(window.location.href)}
+  else if (user) {setUserData(user)}
   else
     history.push({
       pathname: "/session/signin"
@@ -45,7 +44,6 @@ const Auth = ({ children, setUserData, getNavigationByUser }) => {
     else if (window.location.href.match("/session/signup")) {
       history.push(getLastItem(window.location.href))
     }
-    console.log(window.location.href)
     getNavigationByUser();
   }, [setUserData, getNavigationByUser]);
 

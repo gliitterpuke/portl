@@ -2,12 +2,9 @@ import axios from "axios";
 import localStorageService from "./localStorageService";
 import qs from "qs";
 import history from "history.js";
-class JwtAuthService {
 
-  // You need to send http request with email and passsword to your server in this method
-  // Your server will return user object & a Token
-  // User should have role property
-  // You can define roles in app/auth/authRoles.js
+let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
+class JwtAuthService {
   
   loginWithEmailAndPassword = (username, password) => {
     const requestBody = {
@@ -24,56 +21,30 @@ class JwtAuthService {
         qs.stringify(requestBody),
         config
     ).then((response) => {
-      console.log(window.location.href)
       this.setSession(response.data.access_token);
       this.setUser(response.data.data);
-    })
-    .then(() => { 
-      console.log(window.location.href, 'ohno')
-      let newuser = localStorageService.getItem("auth_user")
-      if (newuser.role === "client") {
-      history.push({
-        pathname: "/profile"
-      })
-      } else if (newuser.role === "professional") {
-      history.push({
-        pathname: "/professional"
-      })
-      }
     })
   };
   
   // Save user to localstorage
   setUser = (user) => {    
     localStorageService.setItem('auth_user', user)
-    console.log(window.location.href);
   }
   // You need to send http requst with existing token to your server to check token is valid
   // This method is being used when user already logged in & app is reloaded
   loginWithToken = () => {
-    console.log(window.location.href)
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
-  }
-    function sleep (time) {
-      return new Promise((resolve) => setTimeout(resolve, time));
     }
-      return axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", auth)
+      return axios.get(baseURL + "users/me/", auth)
     .then((response) => {
-      console.log(window.location.href)
       this.setUser(response.data)
       this.setSession(localStorage.getItem("access_token"))
       return response;
     })
      .catch(error => {
-      // const {status} = error.response;
-      // const getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
-      // if (window.location.href.match("/session/forgot-password")) {
-      //   console.log(getLastItem(window.location.href))
-      // }
-      // else if(status === 401) {
-      //   history.push('/session/signin')
-      // };
+      this.setSession(null);
+      this.removeUser();
     });
 }
 
