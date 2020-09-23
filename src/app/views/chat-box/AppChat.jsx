@@ -145,7 +145,7 @@ class AppChat extends Component {
     return (
       <div className="m-sm-30">
         <div className="mb-sm-30">
-          <Breadcrumb routeSegments={[{ name: "Chat" }]} />
+          <Breadcrumb routeSegments={[{ name: "Messages" }]} />
         </div>
         <Card elevation={6}>
           <MatxSidenavContainer>
