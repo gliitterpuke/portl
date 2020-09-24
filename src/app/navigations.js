@@ -20,6 +20,12 @@ export const navigations = [
     path: "/messages",
     
   },
+  {
+    name: "Calendar",
+    icon: "event",
+    path: "/calendar",
+    
+  },
   // {
   //   name: "Prodcuts",
   //   icon: "assignment",

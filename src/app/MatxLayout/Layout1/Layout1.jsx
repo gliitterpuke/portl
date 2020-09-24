@@ -12,12 +12,13 @@ import Footer from "../SharedCompoents/Footer";
 import SecondarySidebar from "../SharedCompoents/SecondarySidebar/SecondarySidebar";
 import AppContext from "app/appContext";
 import { MatxSuspense } from "matx";
-import image from "../MatxTheme/portport.jpg"
+import image from "../MatxTheme/uno.jpg"
 
 const styles = theme => {
   return {
     layout: {
       backgroundImage: `url(${image})`,
+      backgroundSize: "100% 100%"
     }
   };
 };

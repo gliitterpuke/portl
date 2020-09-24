@@ -32,7 +32,8 @@ const themeOptions = {
   typography: {
     fontSize: 14,
     body1: {
-      fontSize: "14px"
+      fontSize: "14px",
+      fontFamily: "Roboto Condensed" 
     }
   },
 
