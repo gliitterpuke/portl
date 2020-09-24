@@ -23,7 +23,6 @@ import localStorageService from "../../services/localStorageService";
 import { withRouter, Link } from "react-router-dom";
 import axios from "axios";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { getFileById } from "../invoice/AppActions";
 import { parseJSON } from "date-fns";
 import { ConfirmationDialog, SimpleCard } from "matx";
 import { ValidatorForm, SelectValidator } from "react-material-ui-form-validator";
@@ -32,11 +31,7 @@ import history from "../../../history"
 import { Breadcrumb } from "matx"
 
 let user = localStorageService.getItem("auth_user")
-
-//if (!localStorage.getItem("access_token")) {
-//  history.push('/session/signin');
-//  console.log(localStorage)
-//  }
+let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 
 const styles = theme => ({
   root: {
@@ -78,30 +73,26 @@ class HigherOrderComponent extends Component {
     };
     
   handeViewClick = fileId => {
-    let secondstate = user.professional_profile.applications.find (application => application.id === this.props.location.state);
-    console.log(this.props.location)
+    let user = localStorageService.getItem('auth_user')
+    let secondstate = user.applications.find (application => application.id === this.props.location.state);
     let blobstate = secondstate.blobs.find (blobs => blobs.id === fileId)
     this.props.history.push({ pathname: `${secondstate.id}/files/${fileId}`, state: blobstate, id: secondstate.client_id });
-    getFileById(fileId).then(res => console.log(blobstate));
   };
-  // this.props.location.state.some
   handeDeleteClick = efile => {
     this.setState({ shouldShowConfirmationDialog: true, efile });
   };
 
   handleConfirmationResponse = () => {
     let { efile } = this.state;
-    let data = { filename: "DELETED", application_id: null }
-    let state = user.professional_profile.applications.findIndex (application => application.id === this.props.location.state);    
-    let blobs = user.professional_profile.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
-    console.log(blobs)
+    let state = user.applications.findIndex (application => application.id === this.props.location.state);    
+    let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
     this.setState({
       shouldShowConfirmationDialog: false
     });
-    axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + efile.id, data).then(res => {
-      user.professional_profile.applications[state].blobs[blobs] = res.data
+    axios.delete(baseURL + "blobs/" + efile.id).then(res => {
+      user.applications[state].blobs.pop(blobs)
       localStorageService.setItem("auth_user", user)
-      console.log(user.professional_profile.applications[state])
+      console.log(user)
       this.forceUpdate()
 
     });
@@ -177,7 +168,7 @@ class HigherOrderComponent extends Component {
 
   uploadSingleFile = index => {
     let user = localStorageService.getItem("auth_user")
-    let state = user.professional_profile.applications.find (application => application.id === this.props.location.state)
+    let state = user.applications.find (application => application.id === this.props.location.state)
     let allFiles = [...this.state.files];
     let file = this.state.files[index];
     const appid = this.props.location.state
@@ -190,7 +181,7 @@ class HigherOrderComponent extends Component {
     this.setState({
       files: [...allFiles]
     });
-    axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
+    axios.get(baseURL + "sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
     .then(result => { 
     console.log(result)
     const formData = new FormData();
@@ -213,14 +204,13 @@ class HigherOrderComponent extends Component {
     return fetch(result.data.data.url, {
       method: 'post',
       body: formData,
-      headers: { 'Content-Type': 'multipart/form-data'}
     })
     .then((response) => {
       console.log(appid)
-      return axios.post("https://portl-dev.herokuapp.com/api/v1/blobs/", data)
+      return axios.post(baseURL + "blobs/", data)
       .then((response) => {
         alert('File successfully uploaded')
-        let state = user.professional_profile.applications.find (application => application.id === this.props.location.state);
+        let state = user.applications.find (application => application.id === this.props.location.state);
           state.blobs.push(response.data)
           localStorageService.setItem("auth_user", user) 
           this.forceUpdate()
@@ -246,7 +236,7 @@ class HigherOrderComponent extends Component {
     let isEmpty = files.length === 0;
     let user = localStorageService.getItem("auth_user")
     console.log(this.props.location)
-    let test = user.professional_profile.applications.find (application => application.id === this.props.location.state);
+    let test = user.applications.find (application => application.id === this.props.location.state);
     console.log(test)
 
     return (

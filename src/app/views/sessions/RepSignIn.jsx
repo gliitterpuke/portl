@@ -12,21 +12,9 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import localStorageService from "../../services/localStorageService";
-import history from "../../../history"
 
 import { loginWithEmailAndPassword } from "../../redux/actions/LoginActions";
-
-let user = localStorageService.getItem('auth_user')
-if (!localStorage.getItem("access_token")) {
-}
-else if(user.role === "client") {
-  history.push('/profile')
-}
-else if (user.role === "professional") {
-  history.push('/professional')
-}
-
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
+let user = localStorageService.getItem("auth_user")
 
 const styles = theme => ({
   wrapper: {
@@ -42,7 +30,7 @@ const styles = theme => ({
   }
 });
 
-class SignIn extends Component {
+class RepSignIn extends Component {
   state = {
     username: "katherinewwang@gmail.com",
     password: "test",
@@ -62,71 +50,25 @@ class SignIn extends Component {
       code: "eng",
       name: "English"
     }
-    const isolang2 = { 
-      code: "chi",
-      name: "Chinese"
-    }
-    const isolang3 = { 
-      code: "fre",
-      name: "French"
-    }
-    const isoct = {
-      code: 156,
-      name: "China"
-    }
-    const isoct2 = {
-      code: 356,
-      name: "India"
-    }
-    const isoct3 = {
+    const isocountries = {
       code: 158,
       name: "Taiwan"
     }
     const isocurrency ={
-      code: "cad",
+      code: 124,
       name: "Canadian Dollar"
     }
     const producttype = {
-      name: "Application"
+      name: "Visa"
     }
-    const trv = {
+    const product = {
       name: "Temporary Resident Visa",
       code: "TRV",
       total_price: 200,
       platform_fee: 100,
       processing_cost: 1,
       country_code: 158,
-      currency_code: "cad",
-      product_type_id: 1
-    }
-    const study = {
-      name: "Study Permit",
-      code: "study",
-      total_price: 200,
-      platform_fee: 100,
-      processing_cost: 1,
-      country_code: 158,
-      currency_code: "cad",
-      product_type_id: 1
-    }
-    const ee = {
-      name: "Express Entry",
-      code: "ee",
-      total_price: 200,
-      platform_fee: 100,
-      processing_cost: 1,
-      country_code: 158,
-      currency_code: "cad",
-      product_type_id: 1
-    }
-    const work = {
-      name: "Work Permit",
-      code: "work",
-      total_price: 200,
-      platform_fee: 100,
-      processing_cost: 1,
-      country_code: 158,
-      currency_code: "cad",
+      currency_code: 124,
       product_type_id: 1
     }
     const form = {
@@ -136,66 +78,17 @@ class SignIn extends Component {
       bucket: "portldump",
       product_id: 1
     }
-    // create test languages, countries, currencies, productypes, products and forms
-    return axios.post(baseURL + "iso/languages/", isolang)
+    return axios.post("https://portl-dev.herokuapp.com/api/v1/iso/languages/", isolang)
     .then(() => { 
-    axios.post(baseURL + "iso/languages/", isolang2)})
+    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/countries/", isocountries)})
     .then(() => { 
-    axios.post(baseURL + "iso/languages/", isolang3)})
+    axios.post("https://portl-dev.herokuapp.com/api/v1/iso/currencies/", isocurrency)})
     .then(() => { 
-    axios.post(baseURL + "iso/countries/", isoct)})
+    axios.post("https://portl-dev.herokuapp.com/api/v1/product-types/", producttype)})
     .then(() => { 
-    axios.post(baseURL + "iso/countries/", isoct2)})
+    axios.post("https://portl-dev.herokuapp.com/api/v1/products/", product)})
     .then(() => { 
-    axios.post(baseURL + "iso/countries/", isoct3)})
-    .then(() => { 
-    axios.post(baseURL + "iso/currencies/", isocurrency)})
-    .then(() => { 
-    axios.post(baseURL + "product-types/", producttype)})
-    .then(() => { 
-    axios.post(baseURL + "products/", trv)})
-    .then(() => { 
-    axios.post(baseURL + "products/", study)})
-    .then(() => { 
-    axios.post(baseURL + "products/", ee)})
-    .then(() => { 
-    axios.post(baseURL + "products/", work)})
-    .then(() => { 
-    axios.post(baseURL + "form-metadata/", form)})
-    // create test representative
-    .then(() => {
-        const signup = {
-          role: "professional",
-          email: "kat@portl.to",
-          password: "test"
-        }
-        axios.post(baseURL + "users/", signup)
-        .then(result => { 
-        const professional = {
-            first_name: "John",
-            last_name: "Smith",
-            company: "Acme Corporation",
-            occupation: "Representative",
-            sex: "Male",
-            max_processing_budget: 1000,
-            payout_account: "acct_1HPVPSCMMK6Kdzgg",
-            country_code: 158,
-            service_languages: [ "eng", "chi", "fre" ],
-            serviced_products: [ 1, 2, 3 ],
-            owner_id: result.data.id
-          }
-          axios.post(baseURL + "professionals", professional)
-        })
-      })
-      .then(result => {
-        axios.post(baseURL + `send-activation-email/kat@portl.to`)
-        alert('Sign up successful - please check your email for your verification email!')
-        this.props.history.push(`/session/signin`)
-          return result;
-        })
-       .catch(error => {
-            alert('Email is already registered')
-      });
+    axios.post("https://portl-dev.herokuapp.com/api/v1/form-metadata/", form)})
     }
 
   render() {
@@ -296,5 +189,5 @@ const mapStateToProps = state => ({
   login: state.login
 });
 export default withStyles(styles, { withTheme: true })(
-  withRouter(connect(mapStateToProps, { loginWithEmailAndPassword })(SignIn))
+  withRouter(connect(mapStateToProps, { loginWithEmailAndPassword })(RepSignIn))
 );

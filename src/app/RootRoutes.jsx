@@ -13,9 +13,6 @@ import ListRoute from "./views/list/ListRoute";
 
 import otherRoutes from "./views/others/OtherRoutes";
 
-
-let user = localStorageService.getItem("auth_user")
-
 const redirectRoute = [
   {
     path: "/",

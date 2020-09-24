@@ -15,9 +15,9 @@ export const navigations = [
     auth: authRoles.professional
   },
   {
-    name: "Chat",
+    name: "Messages",
     icon: "chat",
-    path: "/chat",
+    path: "/messages",
     
   },
   // {

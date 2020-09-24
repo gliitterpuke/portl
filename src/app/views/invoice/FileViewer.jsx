@@ -21,21 +21,25 @@ import { withRouter } from "react-router-dom";
 import axios from "axios"
 import localStorageService from "../../services/localStorageService"
 import { SimpleCard, Breadcrumb } from "matx"
+import { isMobile } from "utils";
+import QRCode from 'react-google-qrcode'
 
 let user = localStorageService.getItem("auth_user")
-
+let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class FileViewer extends Component {
   state = {
     fileList: [],
     filename: "",
     dragClass: "",
     files: [],
+    mobile: isMobile(),
+    scan: false
   };
 
   componentDidMount() {
-    let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.application_id);
-    let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
-      this.setState({ ...user.client_profile.applications[state].blobs[blobs] });
+    let state = user.applications.findIndex (application => application.id === this.props.location.state.application_id);
+    let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
+      this.setState({ ...user.applications[state].blobs[blobs] });
     }
   
    handleFileSelect = event => {
@@ -52,7 +56,8 @@ class FileViewer extends Component {
     }
 
     this.setState({
-      files: [...list]
+      files: [...list],
+      preview: URL.createObjectURL(event.target.files[0])
     });
   };
 
@@ -87,24 +92,58 @@ class FileViewer extends Component {
       const tags = this.state.tag
       const key = user.id + "/" + appid + "/" + tags + "." + "pdf"
 
-      axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+      axios.get(baseURL + "sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
       .then(result => { 
       const win = window.open(`${result.data}`);
       win.focus();
     })
   }
     else {
-    axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+    axios.get(baseURL + "sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
     .then(result => { 
     const win = window.open(`${result.data}`);
     win.focus();
     })
   }
   }
+  
+  scanFile = index => {
+    let allFiles = [...this.state.files];
+    let file = this.state.files[0]
+    const formData = new FormData();
+    formData.append("image_file", file.file);
+
+    allFiles[0] = { ...file, uploading: true, error: false, success: false };
+
+    this.setState({
+      files: [...allFiles],
+    });
+
+    axios.post(baseURL + "scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
+      this.setState({
+        preview: URL.createObjectURL(res.data),
+        file: res.data
+      })
+      }).then((response) => {
+        alert('File successfully uploaded')
+        this.setState({
+          files: [allFiles[0] = { ...file, uploading: false, error: false, success: true }],
+          scan: true
+        });
+      }).catch(error => {
+        alert('Photo of document must be on a single coloured background')
+        this.setState({
+          files: [allFiles[0] = { ...file, uploading: false, error: true, success: false }],
+          scan: false
+        });
+     })
+  }
 
   uploadSingleFile = index => {
+    console.log(this.state.scan)
     let allFiles = [...this.state.files];
     let file = this.state.files[0];
+    console.log(file)
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
@@ -115,12 +154,22 @@ class FileViewer extends Component {
     const filetype = mime_type.match(/[^\/]+$/)[0]
     const key = user.id + "/" + appid + "/" + tags + "." + filetype
 
-    allFiles[index] = { ...file, uploading: true, error: false, success: false };
+    allFiles[0] = { ...file, uploading: true, error: false, success: false };
 
-    this.setState({
-      files: [...allFiles]
-    });
-    axios.get("https://portl-dev.herokuapp.com/api/v1/sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
+    if (this.state.scan === true) {
+      this.setState({
+        files: [...allFiles],
+      });
+    }
+
+    else if (this.state.scan === false) {
+      this.setState({
+        files: [...allFiles],
+        file: this.state.files[0].file,
+      });
+    }
+
+    axios.get(baseURL + "sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
     .then(result => { 
     const formData = new FormData();
     formData.append("AWSAccessKeyId", result.data.data.fields.AWSAccessKeyId);
@@ -128,7 +177,7 @@ class FileViewer extends Component {
     formData.append("policy", result.data.data.fields.policy);
     formData.append("signature", result.data.data.fields.signature);
     formData.append("Content-Type", file.file.type);
-    formData.append("file", file.file);
+    formData.append("file", this.state.file);
 
     const data = {
       filename: file.file.name, 
@@ -140,21 +189,20 @@ class FileViewer extends Component {
     }
 
     return fetch(result.data.data.url, {
-      method: 'put',
+      method: 'post',
       body: formData,
-      headers: { 'Content-Type': 'multipart/form-data'}
     })
     .then((response) => {
-      return axios.put("https://portl-dev.herokuapp.com/api/v1/blobs/" + this.props.location.state.id, data, auth)
+      return axios.put(baseURL + "blobs/" + this.props.location.state.id, data, auth)
       .then((response) => {
-        let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.application_id);
-        let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
-        user.client_profile.applications[state].blobs[blobs] = response.data
+        let state = user.applications.findIndex (application => application.id === this.props.location.state.application_id);
+        let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
+        user.applications[state].blobs[blobs] = response.data
         localStorageService.setItem("auth_user", user)
         alert('File update successful!')
         this.forceUpdate()
         this.setState({
-          files: [allFiles[index] = { ...file, uploading: false, error: false, success: true }]
+          files: [allFiles[0] = { ...file, uploading: false, error: false, success: true }]
         });
         return response;
       });
@@ -162,7 +210,7 @@ class FileViewer extends Component {
     .catch(error => {
       alert('Error; please try again later')
       this.setState({
-        files: [allFiles[index] = { ...file, uploading: false, error: true, success: false }]
+        files: [allFiles[0] = { ...file, uploading: false, error: true, success: false }]
       });
    });
   })
@@ -171,11 +219,14 @@ class FileViewer extends Component {
   render() {
     let {
       files,
-      isEmpty
+      isEmpty,
+      mobile
     } = this.state;
     let user = localStorageService.getItem("auth_user")
-    let state = user.client_profile.applications.findIndex (application => application.id === this.props.location.state.application_id);
-    let blobs = user.client_profile.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
+    let state = user.applications.findIndex (application => application.id === this.props.location.state.application_id);
+    let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
+    let token = localStorage.getItem("access_token")
+    console.log(this.state.tag)
 
     return (
       <div className="upload-form m-sm-30">
@@ -209,18 +260,18 @@ class FileViewer extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                    <TableRow key={user.client_profile.applications[state].blobs[blobs].filename}>
+                    <TableRow key={user.applications[state].blobs[blobs].filename}>
                       <TableCell className="pl-sm-24 capitalize" align="left">
-                        {user.client_profile.applications[state].blobs[blobs].filename}
+                        {user.applications[state].blobs[blobs].filename}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {parseJSON(user.client_profile.applications[state].blobs[blobs].uploaded_at).toString().replace(RegExp("GMT.*"), "")}
+                        {parseJSON(user.applications[state].blobs[blobs].uploaded_at).toString().replace(RegExp("GMT.*"), "")}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {parseJSON(user.client_profile.applications[state].blobs[blobs].updated_at).toString().replace(RegExp("GMT.*"), "")}
+                        {parseJSON(user.applications[state].blobs[blobs].updated_at).toString().replace(RegExp("GMT.*"), "")}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {user.client_profile.applications[state].blobs[blobs].tag}
+                        {user.applications[state].blobs[blobs].tag}
                       </TableCell>
                     </TableRow>
               </TableBody>
@@ -228,15 +279,12 @@ class FileViewer extends Component {
           
           <div className="upload-form m-sm-30">
         <div>
-          <Typography variant="h6">
-            Change File
-          </Typography>
-          <br/>
-        <ValidatorForm
-          ref="form"
-          onSubmit={this.handleSubmit}
-          onError={errors => null}
-        >
+        <Grid container spacing={4}>
+            <Grid item xs={12} md={10}>
+            <Typography variant="h6">
+              New File Upload
+            </Typography>
+            <br/>
             <label htmlFor="upload-single-file">
               <Fab className="capitalize" color="primary" component="span" variant="extended"
               >
@@ -246,19 +294,32 @@ class FileViewer extends Component {
                 </div>
               </Fab>
             </label>
-            
             <input
               className="hidden" onChange={this.handleFileSelect} id="upload-single-file" type="file" accept="image/*, application/pdf"
             />
+          </Grid>
+          {!mobile && (
+            <Grid item md={2}>
+              <QRCode
+                data={`https://portlfe.herokuapp.com/session/filechange?${token}?${user.id}?${this.state.application_id}?${this.props.location.state.id}?${this.state.tag}`}
+                size={115}
+              />
+            </Grid>
+          )}
+        </Grid>
+          <br/>
+        <ValidatorForm
+          ref="form"
+          onSubmit={this.handleSubmit}
+          onError={errors => null}
+        >
             <br/><br/>
-
             <div className="p-4">
               <Grid container spacing={2}>
                 <Grid item lg={4} md={4}>Name</Grid>
-                <Grid item lg={3} md={3}>Type</Grid>
                 <Grid item lg={3} md={3}>Document</Grid>
                 <Grid item lg={1} md={1}>Status</Grid>
-                <Grid item lg={1} md={1}> Actions </Grid>
+                <Grid item lg={4} md={4}> Actions </Grid>
               </Grid>
             </div>
             <Divider></Divider>
@@ -274,9 +335,6 @@ class FileViewer extends Component {
                 <Grid item lg={4} md={4} sm={12} xs={12}>
                   {file.name}
                 </Grid>
-                <Grid item lg={3} md={3} sm={12} xs={12}>
-                  {type}
-                </Grid>
                 <Grid item lg={3} md={3} sm={12} x={12}>
                   {tag}
                 </Grid>
@@ -285,7 +343,17 @@ class FileViewer extends Component {
                   {success && <Icon className="text-green">done</Icon>}
                   {uploading && <CircularProgress size={24} />}
                 </Grid>
-                <Grid item lg={1} md={1} sm={12} xs={12}>
+                <Grid item lg={2} md={1} sm={12} xs={12}>
+                  <div>
+                    <Button
+                      size="small" variant="contained" color="primary"
+                      onClick={() => this.scanFile(index)}
+                    >
+                      Scan
+                     </Button>
+                  </div>
+                </Grid>
+                <Grid item lg={2} md={2} sm={12} xs={12}>
                   <div>
                     <Button
                       size="small" variant="contained" color="primary"
@@ -294,6 +362,9 @@ class FileViewer extends Component {
                       Upload
                      </Button>
                   </div>
+                </Grid>
+                <Grid item xs={6}>
+                  <img src={this.state.preview} />
                 </Grid>
                </Grid>
             </div>

@@ -31,8 +31,9 @@ class ProfessionalViewer extends Component {
 
   render() {
     let user = localStorageService.getItem("auth_user")
-    let state= user.professional_profile.service_languages
+    let state = user.professional_profile.service_languages
     let coo = user.professional_profile.country_of_operation
+    let products = user.professional_profile.serviced_products
 
     return (
       <div className="invoice-viewer py-4">
@@ -132,6 +133,26 @@ class ProfessionalViewer extends Component {
                       <TableRow key={lang.id}>
                         <TableCell className="pl-sm-24 capitalize" align="left">
                           {lang.name}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell className="font-normal mb-4 capitalize">
+                        <strong><h5>Serviced Products</h5></strong>
+                        </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {products.map((products) => (
+                      <TableRow key={products.id}>
+                        <TableCell className="pl-sm-24 capitalize" align="left">
+                          {products.name}
                         </TableCell>
                       </TableRow>
                     ))}

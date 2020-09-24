@@ -18,6 +18,8 @@ let user = localStorageService.getItem("auth_user")
 if (user.role === "professional") {
   history.push('/professional')
 }
+
+let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class ClientEditor extends Component {
   componentDidMount() {
     this.setState({ ...this.state })
@@ -32,8 +34,6 @@ class ClientEditor extends Component {
     citizenship: user.client_profile.citizen_of.name,
     country_code: user.client_profile.citizen_of.code,
     sex: user.client_profile.sex,
-    owner_id: user.id,
-    client: user.client_profile.id,
     loading: false
   };
   
@@ -46,7 +46,7 @@ class ClientEditor extends Component {
     this.setState({ loading: true });
     let tempState = this.state;
     delete tempState.loading;
-    return axios.put("https://portl-dev.herokuapp.com/api/v1/clients/" + user.client_profile.id, this.state).then((response) => {
+    return axios.put(baseURL + "clients/" + user.client_profile.id, this.state).then((response) => {
       console.log(response)
     user.client_profile = response.data
     localStorageService.setItem("auth_user", user)

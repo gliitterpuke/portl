@@ -2,7 +2,7 @@ import React from 'react';
 
 const chatRoutes = [
   {
-    path: "/chat",
+    path: "/messages",
     component: React.lazy(() => import("./AppChat"))
   }
 ];
