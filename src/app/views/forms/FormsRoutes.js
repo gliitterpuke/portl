@@ -21,7 +21,7 @@ const formsRoutes = [
   },
   {
     path: "/application/:id",
-    component: React.lazy(() => import("../invoice/Application.jsx")),
+    component: React.lazy(() => import("../apps/Application.jsx")),
     exact: true,
   },
 ];
