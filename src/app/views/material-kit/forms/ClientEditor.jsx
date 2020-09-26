@@ -12,12 +12,8 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import localStorageService from "../../../services/localStorageService";
-import history from "../../../../history"
 
 let user = localStorageService.getItem("auth_user")
-if (user.role === "professional") {
-  history.push('/professional')
-}
 
 let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class ClientEditor extends Component {
@@ -65,7 +61,6 @@ class ClientEditor extends Component {
       birth_date,
       country_code,
       sex,
-      owner_id,
     } = this.state;
 
     return (

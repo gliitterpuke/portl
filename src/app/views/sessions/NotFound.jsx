@@ -23,11 +23,8 @@ class NotFound extends Component {
   state = {};
   clickMe = () => {
     let user = localStorageService.getItem('auth_user')
-    if (user.role === "client") {
+    if (user.role.length > 0) {
       this.props.history.push('/profile')
-    }
-    else if (user.role === "professional") {
-      this.props.history.push('/professional')
     }
     else {
       this.props.history.push('/session/signin')

@@ -8,20 +8,9 @@ const invoiceRoutes = [
     exact: true,
   },
   {
-    path: "/applications/:id",
-    component: React.lazy(() => import("../Applications/ProfessionalApplication.jsx")),
-    exact: true,
-    auth: authRoles.professional
-  },
-  {
     path: "/trv",
-    component: React.lazy(() => import("../payments/pages/index"))
-  },
-  {
-    path: "/applications/:id/files/:id",
-    component: React.lazy(() => import("../Applications/ProfessionalFileViewer.jsx")),
-    exact: true,
-    auth: authRoles.professional
+    component: React.lazy(() => import("../payments/pages/index")),
+    auth: authRoles.client
   },
 ];
 

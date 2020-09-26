@@ -11,9 +11,6 @@ import localStorageService from "../../../services/localStorageService"
 import history from "../../../../history"
 
 let user = localStorageService.getItem("auth_user")
-if (user.role === "professional") {
-  history.push('/professional')
-}
 class ClientViewer extends Component {
   state = {
   };

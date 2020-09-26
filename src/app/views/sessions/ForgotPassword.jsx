@@ -13,11 +13,8 @@ import history from "../../../history";
 let user = localStorageService.getItem('auth_user')
 if (!localStorage.getItem("access_token")) {
 }
-else if(user.role === "client") {
+else  {
   history.push('/profile')
-}
-else if (user.role === "professional") {
-  history.push('/professional')
 }
 class ForgotPassword extends Component {
   state = {

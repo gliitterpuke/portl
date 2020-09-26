@@ -6,13 +6,6 @@ export const navigations = [
     name: "Home",
     path: "/profile",
     icon: "house",
-    auth: authRoles.client
-  },
-  {
-    name: "Home",
-    path: "/professional",
-    icon: "house",
-    auth: authRoles.professional
   },
   {
     name: "Messages",

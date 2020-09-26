@@ -20,16 +20,7 @@ export function loginWithEmailAndPassword({ username, password }) {
       .loginWithEmailAndPassword(username, password)
       .then(user => {
         dispatch(setUserData(user))
-        let newuser = localStorageService.getItem('auth_user')
-        if (newuser.role === "client") {
-            history.push({
-              pathname: "/profile"
-            })
-          } else if (newuser.role === "professional") {
-            history.push({
-              pathname: "/professional"
-            })
-          }
+        history.push('/profile')
         
         return dispatch({
           type: LOGIN_SUCCESS

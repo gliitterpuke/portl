@@ -1,6 +1,5 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import localStorageService from "./services/localStorageService";
 
 import sessionRoutes from "./views/sessions/SessionRoutes";
 

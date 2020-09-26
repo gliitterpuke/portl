@@ -19,11 +19,8 @@ import { loginWithEmailAndPassword } from "../../redux/actions/LoginActions";
 let user = localStorageService.getItem('auth_user')
 if (!localStorage.getItem("access_token")) {
 }
-else if(user.role === "client") {
+else  {
   history.push('/profile')
-}
-else if (user.role === "professional") {
-  history.push('/professional')
 }
 
 let baseURL = "https://portl-dev.herokuapp.com/api/v1/"

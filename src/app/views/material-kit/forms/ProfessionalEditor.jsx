@@ -15,9 +15,6 @@ import localStorageService from "../../../services/localStorageService";
 import history from "../../../../history"
 
 let user = localStorageService.getItem("auth_user")
-if (user.role === "client") {
-  history.push('/profile')
-}
 
 let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class ProfessionalEditor extends Component {
