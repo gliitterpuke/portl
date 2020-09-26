@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios"
 import { Link, withRouter } from "react-router-dom";
-import { withStyles } from "@material-ui/styles"
-import { deleteFile } from "./existing";
-import ProfessionalViewer from "./ProfessionalViewer";
-import ProfessionalEditor from "./ProfessionalEditor";
+import ClientViewer from "./ClientViewer";
+import ClientEditor from "./ClientEditor";
 import {
   Button,
   Icon,
@@ -12,18 +10,18 @@ import {
   Card,
   Typography,
   IconButton,
-  Divider,
   Accordion,
+  AccordionDetails,
   AccordionSummary,
-  AccordionDetails
 } from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { ConfirmationDialog } from "matx";
 import { parseJSON } from "date-fns";
-import localStorageService from "../../../services/localStorageService"
-import history from "../../../../history"
+import localStorageService from "../../services/localStorageService"
+import { withStyles } from "@material-ui/styles"
 
 let user = localStorageService.getItem("auth_user")
+
 let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 
 const styles = theme => ({
@@ -65,21 +63,19 @@ const styles = theme => ({
     }
   }
 });
-class ProfessionalForm extends Component {
+class ClientForm extends Component {
   state = {
     appList: [],
   };
 
   componentDidMount() {
     this.setState({ appList: user.applications });
-    this.setState({ showProfessionalEditor: false });
-    console.log(localStorage)
+    this.setState({ showClientEditor: false });
   }
 
   handeViewClick = applicationId => {
     let user = localStorageService.getItem("auth_user")
-    let secondstate = user.applications.find (application => application.id == applicationId);
-    console.log(this.props)
+    let secondstate = user.applications.find (application => application.id === applicationId);
     this.props.history.push({pathname: `/application/${applicationId}`, state: secondstate.id });
   }
 
@@ -89,21 +85,22 @@ class ProfessionalForm extends Component {
 
   handleConfirmationResponse = () => {
     let { application } = this.state;
-    let status = user.applications[application.id].status
- //   let state = user.applications.findIndex (application => application.id === this.props.location.state.id); 
+    console.log(application)
+    let status = application.status
     this.setState({
       shouldShowConfirmationDialog: false
     });
-    console.log(application.id)
-    axios.put(baseURL + `application/${application.id}/close`, null, { params: {
+    axios.put(baseURL + `applications/${application.id}/close`, null, { params: {
       status
     }}).then(res => {
+      alert('Application closed')
       user.applications[application.id] = res.data
       localStorageService.setItem("auth_user", user)
-      console.log(user.applications[application.id])
-      this.forceUpdate()
-
-    });
+      window.location.reload()
+    })
+    .catch(error => {
+      alert('Error; please try again later')
+   });
   };
 
   handleDialogClose = () => {
@@ -116,43 +113,65 @@ class ProfessionalForm extends Component {
   };
 
   handleDateChange = birth_date => {
-    // console.log(date);
 
     this.setState({ birth_date });
   };
-  toggleProfessionalEditor = () => {
+  toggleClientEditor = () => {
     this.setState({
-      showProfessionalEditor: !this.state.showProfessionalEditor,
+      showClientEditor: !this.state.showClientEditor,
     });
-//    this.forceUpdate()
   };
 
   render() {
     const { classes } = this.props;
     let user = localStorageService.getItem("auth_user")
     let state = user.applications
+    let isEmpty = user.applications.length === 0
+    let isApp = user.applications.length > 0
 
     return (
       <React.Fragment>
       <div className="m-sm-30">
-      <Card elevation={6} className="pricing__card px-6 pt-2 pb-4">
-      {this.state.showProfessionalEditor ? (
-        <ProfessionalEditor
-          toggleProfessionalEditor={this.toggleProfessionalEditor}
+        <Card elevation={6} className="pricing__card px-20 pt-10 pb-10">
+      {this.state.showClientEditor ? (
+        <ClientEditor
+          toggleClientEditor={this.toggleClientEditor}
         />
       ) : (
-        <ProfessionalViewer toggleProfessionalEditor={this.toggleProfessionalEditor} />
+        <ClientViewer toggleClientEditor={this.toggleClientEditor} />
       )}
     </Card>
     </div>
       <div className="m-sm-30">
-      <Card elevation={6} className="pricing__card px-6 pt-2 pb-4">
+        <Card elevation={6} className="pricing__card px-20 pt-10 pb-10">
         <br /><br />
         <Grid container spacing={2}>
           <Grid item xs={12} lg={10} md={10}>
-            <Typography variant="h6">Applications</Typography>
+            <h7>Applications</h7>
           </Grid>
+          {isApp && (
+          <Grid item xs={12} lg={2} md={2}>
+            <Link to={`/products`}>
+              <Button color="primary" variant="contained">
+                <span className={classes.iconalign}>Create New App</span>
+              </Button>
+            </Link>
+          </Grid>
+          )}
+          <br/><br/><br/>
+          {isEmpty && (
+          <Grid item xs={12} lg={12} md={12}>
+            <h5>No applications yet; create a new application!</h5>
+            <br/><br/>
+            <Link to={`/products`}>
+              <Button color="primary" variant="contained">
+                <span className="pl-2 capitalize">Get Started</span>
+              </Button>
+            </Link>
+          </Grid>
+          )}
         </Grid>
+
         <br/><br/>
         {state.map((application) => (
         <Accordion className={classes.title}>
@@ -194,4 +213,4 @@ class ProfessionalForm extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(ProfessionalForm));
+export default withRouter(withStyles(styles)(ClientForm));

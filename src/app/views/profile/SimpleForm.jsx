@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import ClientForm from "./ClientForm";
 import ProfessionalForm from "./ProfessionalForm";
-import localStorageService from "../../../services/localStorageService"
+import localStorageService from "../../services/localStorageService"
 class SimpleForm extends Component {
 
   render() {

@@ -11,8 +11,8 @@ import {
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
-import localStorageService from "../../../services/localStorageService";
-import history from "../../../../history"
+import localStorageService from "../../services/localStorageService";
+import history from "../../../history"
 
 let user = localStorageService.getItem("auth_user")
 

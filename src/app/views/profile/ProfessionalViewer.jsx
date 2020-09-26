@@ -11,8 +11,8 @@ import {
   TableBody
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
-import localStorageService from "../../../services/localStorageService"
-import history from "../../../../history"
+import localStorageService from "../../services/localStorageService"
+import history from "../../../history"
 
 let user = localStorageService.getItem("auth_user")
   

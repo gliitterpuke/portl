@@ -4,7 +4,7 @@ import { authRoles } from "../../auth/authRoles";
 const formsRoutes = [
   {
     path: "/profile",
-    component: React.lazy(() => import("../material-kit/forms/SimpleForm")),
+    component: React.lazy(() => import("../profile/SimpleForm")),
   },
   {
     path: "/forms/editor",
