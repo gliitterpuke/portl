@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import ClientFileViewer from "./ClientFileViewer.jsx";
-import ProfessionalFileViewer from "../Applications/ProfessionalFileViewer.jsx";
+import ProfessionalFileViewer from "./ProfessionalFileViewer.jsx";
 import localStorageService from "../../services/localStorageService"
 class FileViewer extends Component {
 
