@@ -3,13 +3,10 @@ import { Redirect } from "react-router-dom";
 
 import sessionRoutes from "./views/sessions/SessionRoutes";
 
-import materialRoutes from "./views/material-kit/MaterialRoutes";
 import appRoutes from "./views/apps/AppRoutes";
 import formsRoutes from "./views/forms/FormsRoutes";
 import chatRoutes from "./views/chat-box/ChatRoutes";
-import ListRoute from "./views/list/ListRoute";
 import calendarRoutes from "./views/calendar/CalendarRoutes";
-
 
 import otherRoutes from "./views/others/OtherRoutes";
 
@@ -29,13 +26,11 @@ const errorRoute = [
 
 const routes = [
   ...sessionRoutes,
-  ...materialRoutes,
   ...calendarRoutes,
   ...appRoutes,
   ...formsRoutes,
   ...chatRoutes,
   ...otherRoutes,
-  ...ListRoute,
   ...redirectRoute,
   ...errorRoute,
 ];
