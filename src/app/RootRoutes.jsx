@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 import sessionRoutes from "./views/sessions/SessionRoutes";
 
 import materialRoutes from "./views/material-kit/MaterialRoutes";
-import invoiceRoutes from "./views/invoice/InvoioceRoutes";
+import appRoutes from "./views/apps/AppRoutes";
 import formsRoutes from "./views/forms/FormsRoutes";
 import chatRoutes from "./views/chat-box/ChatRoutes";
 import ListRoute from "./views/list/ListRoute";
@@ -31,7 +31,7 @@ const routes = [
   ...sessionRoutes,
   ...materialRoutes,
   ...calendarRoutes,
-  ...invoiceRoutes,
+  ...appRoutes,
   ...formsRoutes,
   ...chatRoutes,
   ...otherRoutes,

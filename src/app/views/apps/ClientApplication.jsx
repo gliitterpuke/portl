@@ -24,7 +24,6 @@ import localStorageService from "../../services/localStorageService";
 import { withRouter, Link } from "react-router-dom";
 import axios from "axios";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { getFileById } from "./AppActions";
 import { parseJSON } from "date-fns";
 import { ConfirmationDialog, SimpleCard, Breadcrumb } from "matx";
 import { ValidatorForm, SelectValidator } from "react-material-ui-form-validator";

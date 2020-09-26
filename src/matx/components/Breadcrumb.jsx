@@ -1,13 +1,6 @@
 import React from "react";
 import { Icon, Breadcrumbs, Hidden } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
-import localStorageService from "../../app/services/localStorageService"
-import history from "../../history"
-
-if (!localStorage.getItem("access_token")) {
- history.push('/session/signin');
- }
-var user = localStorageService.getItem('auth_user')
 
 const Breadcrumb = ({ routeSegments }) => {
   return (
@@ -24,21 +17,11 @@ const Breadcrumb = ({ routeSegments }) => {
         separator={<Icon className="text-hint">navigate_next</Icon>}
         className="flex items-center position-relative"
       >
-        
-        {user.role === "client" && (
         <NavLink to="/profile">
           <Icon className="align-middle ml-2 mb-1" color="primary">
             home
           </Icon>
         </NavLink>
-        )}
-        {user.role === "professional" && (
-        <NavLink to="/professional">
-          <Icon className="align-middle ml-2 mb-1" color="primary">
-            home
-          </Icon>
-        </NavLink>
-        )}
         {routeSegments
           ? routeSegments.map((route, index) => {
               return index !== routeSegments.length - 1 ? (
