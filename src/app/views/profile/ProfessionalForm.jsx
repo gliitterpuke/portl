@@ -23,7 +23,7 @@ import localStorageService from "../../services/localStorageService"
 import history from "../../../history"
 
 let user = localStorageService.getItem("auth_user")
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
+let baseURL = "http://127.0.0.1:8000/api/v1/"
 
 const styles = theme => ({
   root: {

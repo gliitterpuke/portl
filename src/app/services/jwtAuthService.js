@@ -3,7 +3,7 @@ import localStorageService from "./localStorageService";
 import qs from "qs";
 import history from "history.js";
 
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
+let baseURL = "http://127.0.0.1:8000/api/v1/"
 class JwtAuthService {
   
   loginWithEmailAndPassword = (username, password) => {
@@ -17,7 +17,7 @@ class JwtAuthService {
         }
     }
     return axios.post(
-        'https://portl-dev.herokuapp.com/token/',
+        'http://127.0.0.1:8000/token/',
         qs.stringify(requestBody),
         config
     ).then((response) => {
