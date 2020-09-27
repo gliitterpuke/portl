@@ -68,19 +68,19 @@ class Layout1Sidenav extends Component {
     setDefaultSettings(updatedSettings);
   };
 
-  handleSidenavToggle = () => {
-    let {
-      settings: {
-        layout1Settings: {
-          leftSidebar: { mode }
-        }
-      }
-    } = this.props;
+  // handleSidenavToggle = () => {
+  //   let {
+  //     settings: {
+  //       layout1Settings: {
+  //         leftSidebar: { mode }
+  //       }
+  //     }
+  //   } = this.props;
 
-    console.log(mode);
+  //   console.log(mode);
 
-    this.updateSidebarMode({ mode: mode === "compact" ? "full" : "compact" });
-  };
+  //   this.updateSidebarMode({ mode: mode === "close" ? "full" : "close" });
+  // };
 
   handleSignOut = () => {
     this.props.logoutUser();
@@ -89,14 +89,14 @@ class Layout1Sidenav extends Component {
   renderLogoSwitch = () => (
     // Open Brand component file to replace logo and text
     <Brand>
-      <Switch
+      {/* <Switch
         className="sidenav__toggle show-on-pc"
         onChange={this.handleSidenavToggle}
         checked={
           !(this.props.settings.layout1Settings.leftSidebar.mode === "full")
         }
         color="secondary"
-      />
+      /> */}
     </Brand>
   );
 

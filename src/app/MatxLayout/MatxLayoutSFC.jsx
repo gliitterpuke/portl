@@ -46,7 +46,7 @@ const MatxLayoutSFC = props => {
   const listenWindowResize = () => {
     let settings = tempSettings;
     if (settings.layout1Settings.leftSidebar.show) {
-      let mode = isMdScreen() ? "close" : "full";
+      let mode = isMdScreen() ? "close" : "compact";
       setLayoutSettings(
         merge({}, settings, { layout1Settings: { leftSidebar: { mode } } })
       );
