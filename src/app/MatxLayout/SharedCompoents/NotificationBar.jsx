@@ -21,9 +21,6 @@ import axios from "axios"
 import localStorageService from "app/services/localStorageService";
 
 const baseURL = "http://127.0.0.1:8000/api/v1/"
-const auth = {
-  headers: {Authorization:`Bearer ${localStorage.getItem("access_token")}`} 
-}
 
 const NotificationBar = props => {
   const {
@@ -38,15 +35,22 @@ const NotificationBar = props => {
 
   // Notifications badge
   const [numNotifications, setnumNotifications] = React.useState("");
-  axios.get(baseURL + "users/me/notifications").then((res)=> {
-    setnumNotifications(res.data.length);    
-  })    
+  const [notificationDetails, setnotificationDetails] = React.useState([]);
+  React.useEffect(() => {
+    axios.get(baseURL + "users/me/notifications").then((res)=> {
+      setnumNotifications(res.data.length); 
+      // setnotificationDetails(res.data);   
+    })   
+  });
+ 
 
   const [panelOpen, setPanelOpen] = React.useState(false);
 
   function handleDrawerToggle() {
     if (!panelOpen) {
-      getNotification();
+      axios.get(baseURL + "users/me/notifications").then((res)=> {
+        setnotificationDetails(res.data);   
+      })   
     }
     setPanelOpen(!panelOpen);
   }
@@ -85,7 +89,7 @@ const NotificationBar = props => {
             <h5 className="ml-2 my-0 font-medium">Notifications</h5>
           </div>
 
-          {notifcationList.map(notification => (
+          {notificationDetails.map(notification => (
             <div
               key={notification.id}
               className="notification__card position-relative"
@@ -99,11 +103,11 @@ const NotificationBar = props => {
                   clear
                 </Icon>
               </IconButton>
-              <Link to={`/${notification.path}`} onClick={handleDrawerToggle}>
+              <Link to={`/${notification.go_to_path}`} onClick={handleDrawerToggle}>
                 <Card className="mx-4 mb-6" elevation={3}>
                   <div className="card__topbar flex items-center justify-between p-2 bg-light-gray">
                     <div className="flex items-center">
-                      <div className="card__topbar__button">
+                      {/* <div className="card__topbar__button">
                         <Icon
                           className="card__topbar__icon"
                           fontSize="small"
@@ -111,19 +115,19 @@ const NotificationBar = props => {
                         >
                           {notification.icon.name}
                         </Icon>
-                      </div>
+                      </div> */}
                       <span className="ml-4 font-medium text-muted">
-                        {notification.heading}
+                        {notification.category}
                       </span>
                     </div>
                     <small className="card__topbar__time text-muted">
-                      {getTimeDifference(new Date(notification.timestamp))} ago
+                      {notification.timestamp} ago
                     </small>
                   </div>
                   <div className="px-4 pt-2 pb-4">
                     <p className="m-0">{notification.title}</p>
                     <small className="text-muted">
-                      {notification.subtitle}
+                      {notification.description}
                     </small>
                   </div>
                 </Card>

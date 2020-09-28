@@ -6,7 +6,7 @@ export const DELETE_NOTIFICATION = "DELETE_NOTIFICATION";
 export const DELETE_ALL_NOTIFICATION = "DELETE_ALL_NOTIFICATION";
 
 export const getNotification = () => dispatch => {
-  axios.get("/api/notification").then(res => {
+  axios.get("https://portl-dev.herokuapp.com/api/v1/chats/with-unread-messages/").then(res => {
     dispatch({
       type: GET_NOTIFICATION,
       payload: res.data
