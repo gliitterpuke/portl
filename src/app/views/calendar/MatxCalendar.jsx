@@ -12,6 +12,7 @@ import { getAllEvents, updateEvent } from "./CalendarService";
 import EventEditorDialog from "./EventEditorDialog";
 
 import globalize from "globalize";
+import axios from "axios"
 
 const localizer = globalizeLocalizer(globalize);
 
@@ -19,6 +20,7 @@ const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 let viewList = Object.keys(Views).map(key => Views[key]);
 
+let baseURL = "http://127.0.0.1:8000/api/v1/"
 class MatxCalendar extends Component {
   state = {
     events: [],
@@ -41,6 +43,18 @@ class MatxCalendar extends Component {
       .then(events => {
         this.setState({ events });
       });
+  };
+
+  handleExport = event => {
+    event.persist();
+    axios.get(baseURL + "users/me/calendar/", {responseType: 'blob'}).then((blob) => {
+      console.log(blob)
+      let url = URL.createObjectURL(blob.data)
+      let a = document.createElement('a');
+      a.href = url;
+      blob.download = 'download';
+      a.click();
+    })
   };
 
   handleDialogClose = () => {
@@ -89,12 +103,15 @@ class MatxCalendar extends Component {
           onClick={() =>
             this.openNewEventDialog({
               action: "doubleClick",
-              start: new Date(),
-              end: new Date()
+              starts_at: new Date(),
+              ends_at: new Date()
             })
           }
         >
           Add Event
+        </Button>
+        <Button color="primary" variant="contained" className="mb-4" onClick={this.handleExport}>
+          Export
         </Button>
         <div className="h-full-screen flex-column">
           <div ref={this.headerComponentRef} />
