@@ -55,7 +55,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
 
       const data = { 
         professional_id: 1,
-        product_id: 3,
+        product_id: 1,
         language_code: "eng",
         client_id: user.id
       }
@@ -124,7 +124,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
       }
       const data = { 
         professional_id: 1,
-        product_id: 3,
+        product_id: 1,
         language_code: "eng",
         client_id: user.id
       }

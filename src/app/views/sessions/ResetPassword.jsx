@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import axios from "axios"
 import history from "../../../history"
 
+const baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class ResetPassword extends Component {
   state = {
     username: "",
@@ -28,11 +29,11 @@ class ResetPassword extends Component {
   handleFormSubmit = event => {
     const getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
     const token = getLastItem(this.props.location.pathname)
-    axios.get("https://portl-dev.herokuapp.com/api/v1/users/me/", {headers: {'Authorization': `Bearer ${token}`}})
+    axios.get(baseURL + "users/me/", {headers: {'Authorization': `Bearer ${token}`}})
     .then((res) => {
         console.log(res)
         const data = { email: res.data.email, password: this.state.password }
-        axios.put("https://portl-dev.herokuapp.com/api/v1/users/" + res.data.id, data)
+        axios.put(baseURL + "users/" + res.data.id, data)
         alert("Success! Use your new password to sign in")
         history.push("/session/signin")
     })

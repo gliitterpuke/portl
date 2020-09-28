@@ -5,7 +5,12 @@ import {
   FormControlLabel,
   Grid,
   Button,
-  MenuItem
+  MenuItem,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  DialogActions
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator, SelectValidator } from "react-material-ui-form-validator";
 import { connect } from "react-redux";
@@ -23,7 +28,7 @@ else  {
 let baseURL = "http://127.0.0.1:8000/api/v1/"
 class SignUp extends Component {
   state = {
-    role: "",
+    open: false,
     email: "",
     password: "",
   };
@@ -35,28 +40,44 @@ class SignUp extends Component {
     });
   };
 
+  handleCheck = (event) => {
+    this.setState({ [event.target.name]: event.target.checked });
+  };
+
+  handleClickOpen = event => {
+    this.setState({
+      open: true
+    })
+  };
+
+  handleClose = event => {
+    this.setState({
+      open: false
+    })
+  };
 
   handleFormSubmit = event => {
+    console.log(this.state.agreement)
     const signup = {
-      role: "client",
+      is_client: true,
       email: this.state.email,
       password: this.state.password
     }
     axios.post(baseURL + "users/", signup)
     .then(result => { 
     const client = {
-        first_name: "Jane",
+        given_names: "Jane",
         middle_name: "Marie",
-        last_name: "Smith",
+        family_name: "Smith",
         birth_date: "1950-01-01",
         sex: "Female",
         owner_id: result.data.id,
-        country_code: 158
+        country_code: "cn"
       }
     axios.post(baseURL + "clients/", client)
     })
     .then(result => {
-    axios.post(baseURL + `send-activation-email/${this.state.email}`)
+    axios.post(baseURL + `email/send-activation-email/${this.state.email}`)
     alert('Sign up successful - please check your email for your verification email!')
     this.props.history.push(`/session/signin`)
       return result;
@@ -112,13 +133,33 @@ class SignUp extends Component {
                       validators={["required"]}
                       errorMessages={["this field is required"]}
                     />
-                    <FormControlLabel
-                      className="mb-4"
-                      name="agreement"
-                      onChange={this.handleChange}
-                      control={<Checkbox />}
-                      label="I have read and agreed to the terms of service."
-                    />
+
+                    <Button
+                      className="capitalize"
+                      variant="outlined"
+                      color="primary"
+                      onClick={this.handleClickOpen}
+                    >
+                      Terms of Service
+                    </Button>     
+                    <Dialog
+                      open={this.state.open}
+                      onClose={this.handleClose}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description"
+                    >
+                      <DialogTitle id="alert-dialog-title">{"Terms of Service"}</DialogTitle>
+                        <FormControlLabel
+                          className="mb-4 px-6"
+                          name="agreement"
+                          onChange={this.handleCheck}
+                          control={<Checkbox checked={true}/>}
+                          validators={["required"]}
+                          errorMessages={["this field is required"]}
+                          label="I have read and agreed to the terms of service."
+                        />
+                    </Dialog>
+                    <br/>
                     <div className="flex items-center">
                       <Button
                         className="capitalize"
@@ -136,15 +177,6 @@ class SignUp extends Component {
                         }
                       >
                         Sign in
-                      </Button>
-                      <span className="mx-2 ml-5">or</span>
-                      <Button
-                        className="capitalize"
-                        onClick={() =>
-                          this.props.history.push("/session/repsignup")
-                        }
-                      >
-                        Rep Sign Up
                       </Button>
                     </div>
                   </ValidatorForm>

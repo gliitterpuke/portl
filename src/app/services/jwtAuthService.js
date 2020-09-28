@@ -17,7 +17,7 @@ class JwtAuthService {
         }
     }
     return axios.post(
-        'http://127.0.0.1:8000/token/',
+        'http://127.0.0.1:8000/auth/token/',
         qs.stringify(requestBody),
         config
     ).then((response) => {

@@ -18,37 +18,18 @@ const ChatSidenav = ({
     <div className="chat-sidenav bg-default">
       <div className="chat-sidenav__topbar flex items-center h-56 px-4 bg-primary">
         {/* <ChatAvatar src={currentUser.avatar} status={currentUser.status} /> */}
-        {user.role === "client" && (
+        {user.is_client === true && (
         <h5 className="ml-4 whitespace-pre mb-0 font-medium text-18 text-white">
-          {currentUser.client_profile.first_name + " " + currentUser.client_profile.last_name}
+          {currentUser.client_profile.given_names + " " + currentUser.client_profile.family_name}
         </h5>
         )}
-        {user.role === "professional" && (
+        {user.is_client === false && (
         <h5 className="ml-4 whitespace-pre mb-0 font-medium text-18 text-white">
-          {currentUser.professional_profile.first_name + " " + currentUser.professional_profile.last_name}
+          {currentUser.professional_profile.given_names + " " + currentUser.professional_profile.family_name}
         </h5>
         )}
       </div>
       <Scrollbar className="chat-contact-list position-relative h-400">
-        {/* {recentContactList.map((contact, index) => (
-          <div
-            onClick={() => handleContactClick(contact.id)}
-            key={index}
-            className="flex items-center p-4 cursor-pointer  gray-on-hover"
-          >
-            <ChatAvatar src={contact.avatar} status={contact.status} />
-            <div className="pl-4">
-              <p className="m-0">{contact.name}</p>
-              <p className="m-0 text-muted">
-                {format(
-                  new Date(contact.lastChatTime).getTime(),
-                  "MMMM dd, yyyy"
-                )}
-              </p>
-            </div>
-          </div>
-        ))}
-        <Divider /> */}
         {appList.map((contact, index) => (
           <div
             onClick={() => handleContactClick(contact.id)}
@@ -57,7 +38,7 @@ const ChatSidenav = ({
           >
             {/* <ChatAvatar src={contact.avatar} status={contact.status} /> */}
             <div className="pl-4">
-              <p>{contact.application_id}</p>
+              <p>{`Application ${contact.application_id}`}</p>
             </div>
           </div>
         ))}

@@ -16,6 +16,7 @@ if (!localStorage.getItem("access_token")) {
 else  {
   history.push('/profile')
 }
+const baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class ForgotPassword extends Component {
   state = {
     email: "katherinewwang@gmail.com"
@@ -28,7 +29,7 @@ class ForgotPassword extends Component {
   };
   handleFormSubmit = () => {
     let email = this.state.email
-    axios.post(`https://portl-dev.herokuapp.com/api/v1/send-password-reset-email/` + email)
+    axios.post(baseURL + `email/send-password-reset-email/` + email)
     alert("Success! Please check your email for further instructions")
   };
   render() {

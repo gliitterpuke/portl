@@ -55,6 +55,7 @@ class SignIn extends Component {
     console.log(localStorage);
   }
   clickMe = () => {
+    console.log(new Date())
     const isolang = { 
       code: "eng",
       name: "English"
@@ -68,15 +69,15 @@ class SignIn extends Component {
       name: "French"
     }
     const isoct = {
-      code: 156,
+      code: "cn",
       name: "China"
     }
     const isoct2 = {
-      code: 356,
+      code: "in",
       name: "India"
     }
     const isoct3 = {
-      code: 158,
+      code: "tw",
       name: "Taiwan"
     }
     const isocurrency ={
@@ -86,15 +87,23 @@ class SignIn extends Component {
     const producttype = {
       name: "Application"
     }
+    const form = {
+      name: "imm5257",
+      xml_template_key: "templates/imm5257.xml",
+      pdf_template_key: "blanks/imm5257.pdf",
+      bucket: "portldump",
+      form_created_at: new Date()
+    }
     const trv = {
       name: "Temporary Resident Visa",
       code: "TRV",
       total_price: 200,
       platform_fee: 100,
       processing_cost: 1,
-      country_code: 158,
+      country_code: "cn",
       currency_code: "cad",
-      product_type_id: 1
+      product_type_id: 1,
+      forms: [ 1 ]
     }
     const study = {
       name: "Study Permit",
@@ -102,7 +111,7 @@ class SignIn extends Component {
       total_price: 200,
       platform_fee: 100,
       processing_cost: 1,
-      country_code: 158,
+      country_code: "cn",
       currency_code: "cad",
       product_type_id: 1
     }
@@ -112,7 +121,7 @@ class SignIn extends Component {
       total_price: 200,
       platform_fee: 100,
       processing_cost: 1,
-      country_code: 158,
+      country_code: "cn",
       currency_code: "cad",
       product_type_id: 1
     }
@@ -122,19 +131,18 @@ class SignIn extends Component {
       total_price: 200,
       platform_fee: 100,
       processing_cost: 1,
-      country_code: 158,
+      country_code: "cn",
       currency_code: "cad",
       product_type_id: 1
     }
-    const form = {
-      name: "imm5257",
-      xml_template_key: "templates/imm5257.xml",
-      pdf_template_key: "blanks/imm5257.pdf",
-      bucket: "portldump",
-      product_id: 1
+    const occupation = {
+      name: "Consultant"
     }
+    
     // create test languages, countries, currencies, productypes, products and forms
-    return axios.post(baseURL + "iso/languages/", isolang)
+    return axios.post(baseURL + "occupations/", occupation)
+    .then(() => {
+    axios.post(baseURL + "iso/languages/", isolang)})
     .then(() => { 
     axios.post(baseURL + "iso/languages/", isolang2)})
     .then(() => { 
@@ -150,42 +158,43 @@ class SignIn extends Component {
     .then(() => { 
     axios.post(baseURL + "product-types/", producttype)})
     .then(() => { 
-    axios.post(baseURL + "products/", trv)})
-    .then(() => { 
-    axios.post(baseURL + "products/", study)})
-    .then(() => { 
-    axios.post(baseURL + "products/", ee)})
-    .then(() => { 
-    axios.post(baseURL + "products/", work)})
-    .then(() => { 
     axios.post(baseURL + "form-metadata/", form)})
+    .then(() => { 
+    axios.post(baseURL + "products/", trv)})
+    // .then(() => { 
+    // axios.post(baseURL + "products/", study)})
+    // .then(() => { 
+    // axios.post(baseURL + "products/", ee)})
+    // .then(() => { 
+    // axios.post(baseURL + "products/", work)})
+
     // create test representative
     .then(() => {
         const signup = {
-          role: "professional",
-          email: "kat@portl.to",
+          is_client: false,
+          email: "katherine.wang01@gmail.com",
           password: "test"
         }
         axios.post(baseURL + "users/", signup)
         .then(result => { 
         const professional = {
-            first_name: "John",
-            last_name: "Smith",
-            company: "Acme Corporation",
-            occupation: "Representative",
+            family_name: "Smith",
+            given_names: "John",
+            affiliation: "Acme Corporation",
             sex: "Male",
             max_processing_budget: 1000,
             payout_account: "acct_1HPVPSCMMK6Kdzgg",
-            country_code: 158,
+            country_code: "cn",
+            occupation_id: 1,
             service_languages: [ "eng", "chi", "fre" ],
-            serviced_products: [ 1, 2, 3 ],
+            serviced_products: [ 1 ],
             owner_id: result.data.id
           }
           axios.post(baseURL + "professionals", professional)
         })
       })
       .then(result => {
-        axios.post(baseURL + `send-activation-email/kat@portl.to`)
+        axios.post(baseURL + `email/send-activation-email/katherine.wang01@gmail.com`)
         alert('Sign up successful - please check your email for your verification email!')
         this.props.history.push(`/session/signin`)
           return result;

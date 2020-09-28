@@ -176,7 +176,7 @@ class ClientForm extends Component {
         {state.map((application) => (
         <Accordion className={classes.title}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>{application.product.name + ": " + application.id}</Typography>
+            <Typography className={classes.heading}>{application.products[0].name + ": " + application.id}</Typography>
             <Typography className={classes.secondaryHeading}>{application.status.replace("CLIENT_ACTION_REQUIRED", "In Progress")}</Typography>
               <div className={classes.iconalign}>
               <IconButton

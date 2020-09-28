@@ -24,13 +24,13 @@ class ProfessionalEditor extends Component {
   }
   
   state = {
-    first_name: user.professional_profile.first_name,
-    last_name: user.professional_profile.last_name,
-    company: user.professional_profile.company,
-    occupation: user.professional_profile.occupation,
+    given_names: user.professional_profile.given_names,
+    family_name: user.professional_profile.family_name,
+    affiliation: user.professional_profile.affiliation,
+    occupation_id: user.professional_profile.occupation_id,
     country_code: user.professional_profile.country_of_operation.code,
     service_languages: [ 'eng', 'chi', 'fre' ],
-    serviced_products: [ 1, 2, 3],
+    serviced_products: [ 1 ],
     max_processing_budget: user.professional_profile.max_processing_budget,
     curr_processing_budget: user.professional_profile.curr_processing_budget,
     payout_account: user.professional_profile.payout_account,
@@ -62,10 +62,10 @@ class ProfessionalEditor extends Component {
   render() {
     let {
       loading,
-      first_name,
-      last_name,
-      company,
-      occupation,
+      given_names,
+      family_name,
+      affiliation,
+      occupation_id,
       country_code,
       service_languages,
       max_processing_budget,
@@ -112,8 +112,8 @@ class ProfessionalEditor extends Component {
                 label="First Name"
                 onChange={this.handleChange}
                 type="text"
-                name="first_name"
-                value={first_name}
+                name="given_names"
+                value={given_names}
                 errorMessages={["this field is required"]}
               />
               <TextValidator
@@ -121,19 +121,19 @@ class ProfessionalEditor extends Component {
                 label="Last Name"
                 onChange={this.handleChange}
                 type="text"
-                name="last_name"
-                value={last_name}
+                name="family_name"
+                value={family_name}
                 errorMessages={["this field is required"]}
               />
             </Grid>
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <TextValidator
                 className="mb-4 w-full"
-                label="Company"
+                label="Affiliation"
                 onChange={this.handleChange}
                 type="text"
-                name="company"
-                value={company}
+                name="affiliation"
+                value={affiliation}
                 errorMessages={["this field is required"]}
               />
               <TextValidator
@@ -141,8 +141,8 @@ class ProfessionalEditor extends Component {
                 label="Occupation"
                 onChange={this.handleChange}
                 type="text"
-                name="occupation"
-                value={occupation}
+                name="occupation_id"
+                value={occupation_id}
                 errorMessages={["this field is required"]}
               />
             </Grid>

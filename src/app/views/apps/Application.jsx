@@ -11,10 +11,10 @@ class Application extends Component {
     return (
       <React.Fragment>
       <div className="m-sm-30">
-        {user.role === "professional" && (
+        {user.is_client === false && (
           <ProfessionalApplication/>
         )}
-        {user.role === "client" && (
+        {user.is_client === true && (
           <ClientApplication/>
         )}
       </div>

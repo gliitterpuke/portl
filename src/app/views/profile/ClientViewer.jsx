@@ -41,19 +41,13 @@ class ClientViewer extends Component {
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>First Name</strong>
                 </h5>
-                <h6> {user.client_profile.first_name} </h6>
-              </Grid>
-              <Grid item xs={12} md={4} sm={4}>
-                <h5 className="font-normal mb-4 capitalize">
-                  <strong>Middle Name</strong>
-                </h5>
-                <p> {user.client_profile.middle_name} </p>
+                <h6> {user.client_profile.given_names} </h6>
               </Grid>
               <Grid item xs={12} md={4} sm={4}>
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>Last Name</strong>
                 </h5>
-                <p> {user.client_profile.last_name} </p>
+                <p> {user.client_profile.family_name} </p>
               </Grid>
               <Grid item xs={12} md={4} sm={4}>
                 <h5 className="font-normal mb-4 capitalize">

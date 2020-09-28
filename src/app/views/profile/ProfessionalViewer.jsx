@@ -57,13 +57,13 @@ class ProfessionalViewer extends Component {
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>First Name</strong>
                 </h5>
-                <p> {user.professional_profile.first_name} </p>
+                <p> {user.professional_profile.given_names} </p>
               </Grid>
               <Grid item xs={12} md={4}>
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>Last Name</strong>
                 </h5>
-                <p> {user.professional_profile.last_name} </p>
+                <p> {user.professional_profile.family_name} </p>
               </Grid>
               <Grid item xs={12} md={4}>
                 <h5 className="font-normal mb-4 capitalize">
@@ -78,13 +78,13 @@ class ProfessionalViewer extends Component {
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>Company</strong>
                 </h5>
-                <p> {user.professional_profile.company} </p>
+                <p> {user.professional_profile.affiliation} </p>
               </Grid>
               <Grid item xs={12} md={4}>
                 <h5 className="font-normal mb-4 capitalize">
                   <strong>Occupation</strong>
                 </h5>
-                <p> {user.professional_profile.occupation} </p>
+                <p> {user.professional_profile.occupation_id} </p>
               </Grid>
               <Grid item xs={12} md={12} lg={12}>
                 <FormLabel>Financial Information</FormLabel>

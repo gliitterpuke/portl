@@ -19,7 +19,7 @@ const getAuthStatus = (props, routes) => {
   const matched = routes.find(r => r.path === pathname);
   const authenticated =
     matched && matched.auth && matched.auth.length
-      ? matched.auth.includes(user.role)
+      ? matched.auth.includes(user.is_client)
       : true;
 
   return authenticated;

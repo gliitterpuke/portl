@@ -1,7 +1,7 @@
 export const authRoles = {
   sa: ['SA'], // Only Super Admin has access
-  professional: ['professional'],
-  client: ['client'] // Everyone has access
+  professional: false,
+  client: true // Everyone has access
 }
 
 // Check out app/views/dashboard/DashboardRoutes.js

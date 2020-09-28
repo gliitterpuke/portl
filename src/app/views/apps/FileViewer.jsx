@@ -11,10 +11,10 @@ class FileViewer extends Component {
     return (
       <React.Fragment>
       <div className="m-sm-30">
-        {user.role === "professional" && (
+        {user.is_client === false && (
           <ProfessionalFileViewer/>
         )}
-        {user.role === "client" && (
+        {user.is_client === true && (
           <ClientFileViewer/>
         )}
       </div>

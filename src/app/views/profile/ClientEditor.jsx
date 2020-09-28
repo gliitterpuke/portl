@@ -23,9 +23,8 @@ class ClientEditor extends Component {
   }
   
   state = {
-    first_name: user.client_profile.first_name,
-    middle_name: user.client_profile.middle_name,
-    last_name: user.client_profile.last_name,
+    given_names: user.client_profile.given_names,
+    family_name: user.client_profile.family_name,
     birth_date: user.client_profile.birth_date,
     citizenship: user.client_profile.citizen_of.name,
     country_code: user.client_profile.citizen_of.code,
@@ -55,9 +54,8 @@ class ClientEditor extends Component {
   render() {
     let {
       loading,
-      first_name,
-      middle_name,
-      last_name,
+      given_names,
+      family_name,
       birth_date,
       country_code,
       sex,
@@ -101,19 +99,8 @@ class ClientEditor extends Component {
                 label="First Name"
                 onChange={this.handleChange}
                 type="text"
-                name="first_name"
-                value={first_name}
-                errorMessages={["this field is required"]}
-              />
-            </Grid>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
-              <TextValidator
-                className="mb-4 w-full"
-                label="Middle Name"
-                onChange={this.handleChange}
-                type="text"
-                name="middle_name"
-                value={middle_name}
+                name="given_names"
+                value={given_names}
                 errorMessages={["this field is required"]}
               />
             </Grid>
@@ -123,8 +110,8 @@ class ClientEditor extends Component {
                 label="Last Name"
                 onChange={this.handleChange}
                 type="text"
-                name="last_name"
-                value={last_name}
+                name="family_name"
+                value={family_name}
                 errorMessages={["this field is required"]}
               />
             </Grid>

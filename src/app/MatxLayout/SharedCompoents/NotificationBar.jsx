@@ -17,6 +17,13 @@ import {
   deleteAllNotification,
   deleteNotification
 } from "../../redux/actions/NotificationActions";
+import axios from "axios"
+import localStorageService from "app/services/localStorageService";
+
+const baseURL = "http://127.0.0.1:8000/api/v1/"
+const auth = {
+  headers: {Authorization:`Bearer ${localStorage.getItem("access_token")}`} 
+}
 
 const NotificationBar = props => {
   const {
@@ -28,6 +35,12 @@ const NotificationBar = props => {
     deleteAllNotification,
     deleteNotification
   } = props;
+
+  // Notifications badge
+  const [numNotifications, setnumNotifications] = React.useState("");
+  axios.get(baseURL + "users/me/notifications", auth).then((res)=> {
+    setnumNotifications(res.data.length);    
+  })    
 
   const [panelOpen, setPanelOpen] = React.useState(false);
 
@@ -50,7 +63,7 @@ const NotificationBar = props => {
               : parentThemePalette.text.primary
         }}
       >
-        <Badge color="secondary" badgeContent={5}>
+        <Badge color="secondary" badgeContent={numNotifications}>
           <Icon>notifications</Icon>
         </Badge>
       </IconButton>
