@@ -192,11 +192,11 @@ class ClientForm extends Component {
           </AccordionSummary>
           <AccordionDetails>
             <Typography className={classes.heading2}>{"Created At"}</Typography>
-            <Typography className={classes.secondaryHeading}>{parseJSON(application.created_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
+            <Typography className={classes.secondaryHeading}>{new Date(application.created_at).toLocaleString()}</Typography>
           </AccordionDetails>
           <AccordionDetails>
             <Typography className={classes.heading2}>{"Updated At"}</Typography>
-            <Typography className={classes.secondaryHeading}>{parseJSON(application.updated_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
+            <Typography className={classes.secondaryHeading}>{new Date(application.updated_at).toLocaleString()}</Typography>
           </AccordionDetails>
         </Accordion>
         ))}

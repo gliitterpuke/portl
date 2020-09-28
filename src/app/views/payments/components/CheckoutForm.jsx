@@ -134,9 +134,18 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
         user.applications.push(result.data)
         localStorageService.setItem("auth_user", user)
         let secondstate = user.applications.find (application => application.id === result.data.id);
+        const notification = {
+          title: "New Application",
+          description: `You have been assigned a new ${result.data.products[0].name}`,
+          category: "Alert",
+          notify_at: new Date(),
+          go_to_path: "",
+          recipient_id: 1
+        }
+        axios.post(baseURL + "notifications", notification)
         history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
-        alert('Payment successful - proceeding to your application')
-      })
+          alert('Payment successful - proceeding to your application')
+    })
       // onSuccessfulCheckout();
     } catch (err) {
       setCheckoutError(err.message);

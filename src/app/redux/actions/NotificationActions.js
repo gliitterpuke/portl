@@ -15,11 +15,12 @@ export const getNotification = () => dispatch => {
 };
 
 export const deleteNotification = id => dispatch => {
-  axios.post("/api/notification/delete", { id }).then(res => {
-    dispatch({
-      type: DELETE_NOTIFICATION,
-      payload: res.data
-    });
+  axios.delete(`http://127.0.0.1:8000/api/v1/notifications/${id}`).then(res => {
+    this.forceUpdate()
+    // dispatch({
+    //   type: DELETE_NOTIFICATION,
+    //   payload: res.data
+    // });
   });
 };
 

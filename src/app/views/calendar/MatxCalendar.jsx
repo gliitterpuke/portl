@@ -42,7 +42,9 @@ class MatxCalendar extends Component {
       .then(res => res.data)
       .then(events => {
         this.setState({ events });
-      });
+      }).then (() => {
+        console.log(this.state.events)
+      })
   };
 
   handleAllExport = event => {

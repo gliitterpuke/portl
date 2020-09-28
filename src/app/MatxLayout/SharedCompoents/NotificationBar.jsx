@@ -9,16 +9,12 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { withStyles, ThemeProvider } from "@material-ui/core/styles";
-import { getTimeDifference } from "utils.js";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
   getNotification,
-  deleteAllNotification,
-  deleteNotification
 } from "../../redux/actions/NotificationActions";
 import axios from "axios"
-import localStorageService from "app/services/localStorageService";
 
 const baseURL = "http://127.0.0.1:8000/api/v1/"
 
@@ -27,10 +23,6 @@ const NotificationBar = props => {
     container,
     theme,
     settings,
-    notifications: notifcationList = [],
-    getNotification,
-    deleteAllNotification,
-    deleteNotification
   } = props;
 
   // Notifications badge
@@ -55,6 +47,16 @@ const NotificationBar = props => {
     setPanelOpen(!panelOpen);
   }
   const parentThemePalette = theme.palette;
+
+  function deleteNotification (id) {
+    axios.delete(`http://127.0.0.1:8000/api/v1/notifications/${id}`).then(res => {
+    });
+  };
+
+  function deleteAllNotification() {
+    axios.delete("http://127.0.0.1:8000/api/v1/users/me/notifications/").then(res => {
+    });
+  };
 
   return (
     <ThemeProvider theme={settings.themes[settings.activeTheme]}>
@@ -121,7 +123,7 @@ const NotificationBar = props => {
                       </span>
                     </div>
                     <small className="card__topbar__time text-muted">
-                      {notification.timestamp} ago
+                      {new Date(notification.notify_at).toLocaleString()}
                     </small>
                   </div>
                   <div className="px-4 pt-2 pb-4">
@@ -134,7 +136,7 @@ const NotificationBar = props => {
               </Link>
             </div>
           ))}
-          {!!notifcationList.length && (
+          {!!notificationDetails.length && (
             <div className="text-center">
               <Button onClick={deleteAllNotification}>
                 Clear Notifications
@@ -166,7 +168,5 @@ export default withStyles(
 )(
   connect(mapStateToProps, {
     getNotification,
-    deleteNotification,
-    deleteAllNotification
   })(NotificationBar)
 );

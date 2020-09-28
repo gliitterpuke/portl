@@ -8,18 +8,18 @@ const viewNameListObject = {
     name: "Month",
     icon: "view_module"
   },
-  // week: {
-  //   name: "Week",
-  //   icon: "view_week"
-  // },
-  // work_week: {
-  //   name: "Work week",
-  //   icon: "view_array"
-  // },
-  // day: {
-  //   name: "Day",
-  //   icon: "view_day"
-  // },
+  week: {
+    name: "Week",
+    icon: "view_week"
+  },
+  work_week: {
+    name: "Work week",
+    icon: "view_array"
+  },
+  day: {
+    name: "Day",
+    icon: "view_day"
+  },
   // agenda: {
   //   name: "Agenda",
   //   icon: "view_agenda"
@@ -65,7 +65,7 @@ class CalendarHeader extends Toolbar {
           </Tooltip>
 
           <Tooltip title="Today">
-            <IconButton onClick={this.navigate.bind(null, navigate.TODAY)}>
+            <IconButton onClick={this.navigate.bind(null, navigate.DATE)}>
               <Icon className="text-white">today</Icon>
             </IconButton>
           </Tooltip>

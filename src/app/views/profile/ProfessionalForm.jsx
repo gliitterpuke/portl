@@ -156,7 +156,7 @@ class ProfessionalForm extends Component {
         {state.map((application) => (
         <Accordion className={classes.title}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>{application.product.name + ": " + application.id}</Typography>
+            <Typography className={classes.heading}>{application.products[0].name + ": " + application.id}</Typography>
             <Typography className={classes.secondaryHeading}>{application.status.replace("CLIENT_ACTION_REQUIRED", "In Progress")}</Typography>
               <div className={classes.iconalign}>
               <IconButton
@@ -172,11 +172,11 @@ class ProfessionalForm extends Component {
           </AccordionSummary>
           <AccordionDetails>
             <Typography className={classes.heading2}>{"Created At"}</Typography>
-            <Typography className={classes.secondaryHeading}>{parseJSON(application.created_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
+            <Typography className={classes.secondaryHeading}>{new Date(application.created_at).toLocaleString()}</Typography>
           </AccordionDetails>
           <AccordionDetails>
             <Typography className={classes.heading2}>{"Updated At"}</Typography>
-            <Typography className={classes.secondaryHeading}>{parseJSON(application.updated_at).toString().replace(RegExp("GMT.*"), "")}</Typography>
+            <Typography className={classes.secondaryHeading}>{new Date(application.updated_at).toLocaleString()}</Typography>
           </AccordionDetails>
         </Accordion>
         ))}

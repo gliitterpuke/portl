@@ -92,7 +92,7 @@ const ChatContainer = ({
                 <span className="whitespace-pre-wrap">{message.body}</span>
               </div>
               <small className="text-muted mb-0">
-                {parseJSON(message.sent_at).toString().replace(RegExp("GMT.*"), "")}
+                {new Date(message.sent_at).toLocaleString()}
               </small>
             </div>
           </div>

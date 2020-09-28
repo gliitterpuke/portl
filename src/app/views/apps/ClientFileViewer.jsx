@@ -265,10 +265,10 @@ class ClientFileViewer extends Component {
                         {user.applications[state].blobs[blobs].filename}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {parseJSON(user.applications[state].blobs[blobs].uploaded_at).toString().replace(RegExp("GMT.*"), "")}
+                        {new Date(user.applications[state].blobs[blobs].uploaded_at).toLocaleString()}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {parseJSON(user.applications[state].blobs[blobs].updated_at).toString().replace(RegExp("GMT.*"), "")}
+                        {new Date(user.applications[state].blobs[blobs].updated_at).toLocaleString()}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
                         {user.applications[state].blobs[blobs].tag}
