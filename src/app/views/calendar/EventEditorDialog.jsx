@@ -1,18 +1,20 @@
 import React, { Component } from "react";
-import { Dialog, IconButton, Button, Icon, Grid } from "@material-ui/core";
+import { Dialog, IconButton, Button, Icon, Grid, TextField } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
-import { addNewEvent, updateEvent, deleteEvent } from "./CalendarService";
-
+import { updateEvent, deleteEvent } from "./CalendarService";
+import localStorageService from "../../services/localStorageService";
+import { parseJSON } from "date-fns";
 class EventEditorDialog extends Component {
   state = {
-    title: "",
-    start: "",
-    end: "",
-    location: "",
-    note: ""
+    starts_at: "",
+    ends_at: "",
+    user_ids: [  ],
+    video_conference_link: "",
+    phone_number: "",
+    location: "Online"
   };
 
   handleChange = event => {
@@ -23,29 +25,17 @@ class EventEditorDialog extends Component {
   };
 
   handleFormSubmit = () => {
-    let { id } = this.state;
-    if (id) {
-      updateEvent({
-        ...this.state
-      }).then(() => {
-        this.props.handleClose();
-      });
-    } else {
-      addNewEvent({
-        id: this.generateRandomId(),
-        ...this.state
-      }).then(() => {
-        this.props.handleClose();
-      });
-    }
+    updateEvent({
+      ...this.state
+    }).then(() => {
+      this.props.handleClose();
+    });
   };
 
   handleDeleteEvent = () => {
-    if (this.state.id) {
-      deleteEvent(this.state).then(() => {
-        this.props.handleClose();
-      });
-    }
+    deleteEvent(this.state.id).then(() => {
+      this.props.handleClose();
+    });
   };
 
   handleDateChange = (date, name) => {
@@ -54,11 +44,6 @@ class EventEditorDialog extends Component {
     });
   };
 
-  generateRandomId = () => {
-    let tempId = Math.random().toString();
-    let id = tempId.substr(2, tempId.length - 1);
-    return id;
-  };
 
   componentDidMount() {
     this.setState({
@@ -67,9 +52,10 @@ class EventEditorDialog extends Component {
   }
 
   render() {
-    let { title, start, end, location, note } = this.state;
+    let { title, starts_at, ends_at, video_conference_link, phone_number, location } = this.state;
     let { open, handleClose } = this.props;
-
+    let user = localStorageService.getItem('auth_user')
+    
     return (
       <Dialog onClose={handleClose} open={open} maxWidth="xs" fullWidth={true}>
         <div className="flex justify-between items-center pl-4 pr-2 py-2 bg-primary">
@@ -78,14 +64,74 @@ class EventEditorDialog extends Component {
             <Icon className="text-white">clear</Icon>
           </IconButton>
         </div>
+        {user.is_client === true && (
+        <div className="p-4">
+          <Grid container spacing={4}>
+            <Grid item sm={6} xs={12}>
+              <TextField
+                label= "Title"
+                value={title}
+                InputProps={{ readOnly: true, }}
+                fullWidth
+              />
+            </Grid>
+            <Grid item sm={6} xs={12}>
+              <TextField
+                label= "Start"
+                value={parseJSON(starts_at).toString().replace(RegExp("GMT.*"), "")}
+                InputProps={{ readOnly: true, }}
+                fullWidth
+              />
+            </Grid>
+            <Grid item sm={6} xs={12}>
+              <TextField
+                label= "End"
+                value={parseJSON(ends_at).toString().replace(RegExp("GMT.*"), "")}
+                InputProps={{ readOnly: true, }}
+                fullWidth
+              />
+            </Grid>
+            {this.state.video_conference_link && (
+            <Grid item sm={6} xs={12}>
+              <TextField
+                label= "Link"
+                value={video_conference_link}
+                InputProps={{ readOnly: true, }}
+                fullWidth
+                multiline
+              />
+            </Grid>
+            )}
+            {this.state.phone_number && (
+            <Grid item sm={6} xs={12}>
+              <TextField
+                label= "Phone Number"
+                value={phone_number}
+                InputProps={{ readOnly: true, }}
+                fullWidth
+              />
+            </Grid>
+            )}
+            {this.state.location && (
+            <Grid item sm={6} xs={12}>
+              <TextField
+                label= "Location"
+                value={location}
+                InputProps={{ readOnly: true, }}
+                fullWidth
+                multiline
+              />
+            </Grid>
+            )}
+          </Grid>
+        </div>
+        )}
 
+        {user.is_client === false && (
         <div className="p-4">
           <ValidatorForm ref="form" onSubmit={this.handleFormSubmit}>
             <TextValidator
-              className="mb-6 w-full"
-              label="Title"
-              onChange={this.handleChange}
-              type="text"
+              className="mb-6 w-full" label="Title" onChange={this.handleChange} type="text"
               name="title"
               value={title}
               validators={["required"]}
@@ -102,9 +148,9 @@ class EventEditorDialog extends Component {
                     inputVariant="standard"
                     type="text"
                     autoOk={true}
-                    value={start}
+                    value={starts_at}
                     fullWidth
-                    onChange={date => this.handleDateChange(date, "start")}
+                    onChange={date => this.handleDateChange(date, "starts_at")}
                   />
                 </MuiPickersUtilsProvider>
               </Grid>
@@ -117,34 +163,32 @@ class EventEditorDialog extends Component {
                     inputVariant="standard"
                     type="text"
                     autoOk={true}
-                    value={end}
+                    value={ends_at}
                     fullWidth
-                    onChange={date => this.handleDateChange(date, "end")}
+                    onChange={date => this.handleDateChange(date, "ends_at")}
                   />
                 </MuiPickersUtilsProvider>
               </Grid>
             </Grid>
             <div className="py-2" />
             <TextValidator
-              className="mb-6 w-full"
-              label="Location"
-              onChange={this.handleChange}
-              type="text"
-              name="location"
-              value={location}
+              className="mb-6 w-full" label="Link" onChange={this.handleChange} type="link"
+              name="video_conference_link"
+              value={video_conference_link}
               validators={["required"]}
               errorMessages={["this field is required"]}
             />
-
             <TextValidator
-              className="mb-9 w-full"
-              label="Note"
-              onChange={this.handleChange}
-              type="text"
-              name="note"
-              value={note}
-              rowsMax={2}
-              multiline={true}
+              className="mb-6 w-full" label="Phone Number" onChange={this.handleChange} type="number"
+              name="phone_number"
+              value={phone_number}
+              validators={["required"]}
+              errorMessages={["this field is required"]}
+            />
+            <TextValidator
+              className="mb-6 w-full" label="Location" onChange={this.handleChange} type="text"
+              name="location"
+              value={location}
               validators={["required"]}
               errorMessages={["this field is required"]}
             />
@@ -160,6 +204,7 @@ class EventEditorDialog extends Component {
             </div>
           </ValidatorForm>
         </div>
+        )}
       </Dialog>
     );
   }

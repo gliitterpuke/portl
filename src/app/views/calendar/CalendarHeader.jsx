@@ -8,22 +8,22 @@ const viewNameListObject = {
     name: "Month",
     icon: "view_module"
   },
-  week: {
-    name: "Week",
-    icon: "view_week"
-  },
-  work_week: {
-    name: "Work week",
-    icon: "view_array"
-  },
-  day: {
-    name: "Day",
-    icon: "view_day"
-  },
-  agenda: {
-    name: "Agenda",
-    icon: "view_agenda"
-  }
+  // week: {
+  //   name: "Week",
+  //   icon: "view_week"
+  // },
+  // work_week: {
+  //   name: "Work week",
+  //   icon: "view_array"
+  // },
+  // day: {
+  //   name: "Day",
+  //   icon: "view_day"
+  // },
+  // agenda: {
+  //   name: "Agenda",
+  //   icon: "view_agenda"
+  // }
 };
 
 class CalendarHeader extends Toolbar {
@@ -33,23 +33,23 @@ class CalendarHeader extends Toolbar {
     let viewNameList = this.props.views;
     const currentView = this.props.view;
 
-    if (viewNameList.length > 1) {
-      return viewNameList.map(view => (
-        <Tooltip title={viewNameListObject[view].name} key={view}>
-          <div>
-            <IconButton
-              aria-label={view}
-              onClick={() => this.props.onView(view)}
-              disabled={currentView === view}
-            >
-              <Icon className="text-white">
-                {viewNameListObject[view].icon}
-              </Icon>
-            </IconButton>
-          </div>
-        </Tooltip>
-      ));
-    }
+  //   if (viewNameList.length > 1) {
+  //     return viewNameList.map(view => (
+  //       <Tooltip title={viewNameListObject[view].name} key={view}>
+  //         <div>
+  //           <IconButton
+  //             aria-label={view}
+  //             onClick={() => this.props.onView(view)}
+  //             disabled={currentView === view}
+  //           >
+  //             <Icon className="text-white">
+  //               {viewNameListObject[view].icon}
+  //             </Icon>
+  //           </IconButton>
+  //         </div>
+  //       </Tooltip>
+  //     ));
+  //   }
   };
 
   render() {

@@ -8,7 +8,7 @@ import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import CalendarHeader from "./CalendarHeader";
 import * as ReactDOM from "react-dom";
 import { Breadcrumb } from "matx";
-import { getAllEvents, updateEvent } from "./CalendarService";
+import { exportAllEvents, exportFutureEvents, getAllEvents, updateEvent } from "./CalendarService";
 import EventEditorDialog from "./EventEditorDialog";
 
 import globalize from "globalize";
@@ -45,14 +45,26 @@ class MatxCalendar extends Component {
       });
   };
 
-  handleExport = event => {
+  handleAllExport = event => {
     event.persist();
-    axios.get(baseURL + "users/me/calendar/", {responseType: 'blob'}).then((blob) => {
+    exportAllEvents().then((blob) => {
       console.log(blob)
       let url = URL.createObjectURL(blob.data)
       let a = document.createElement('a');
       a.href = url;
-      blob.download = 'download';
+      a.download = 'calendar.ics';
+      a.click();
+    })
+  };
+
+  handleFutureExport = event => {
+    event.persist();
+    exportFutureEvents().then((blob) => {
+      console.log(blob)
+      let url = URL.createObjectURL(blob.data)
+      let a = document.createElement('a');
+      a.href = url;
+      a.download = 'calendar.ics';
       a.click();
     })
   };
@@ -96,22 +108,12 @@ class MatxCalendar extends Component {
           <Breadcrumb routeSegments={[{ name: "Calendar" }]} />
         </div>
 
-        <Button
-          className="mb-4"
-          variant="contained"
-          color="secondary"
-          onClick={() =>
-            this.openNewEventDialog({
-              action: "doubleClick",
-              starts_at: new Date(),
-              ends_at: new Date()
-            })
-          }
-        >
-          Add Event
+        <Button color="primary" variant="contained" className="mb-4" onClick={this.handleAllExport}>
+          Download All
         </Button>
-        <Button color="primary" variant="contained" className="mb-4" onClick={this.handleExport}>
-          Export
+        &nbsp;&nbsp;&nbsp;
+        <Button color="secondary" variant="contained" className="mb-4" onClick={this.handleFutureExport}>
+          Download Future Events
         </Button>
         <div className="h-full-screen flex-column">
           <div ref={this.headerComponentRef} />
@@ -124,8 +126,8 @@ class MatxCalendar extends Component {
             onEventResize={this.handleEventResize}
             defaultView={Views.MONTH}
             defaultDate={new Date()}
-            startAccessor="start"
-            endAccessor="end"
+            startAccessor="starts_at"
+            endAccessor="ends_at"
             views={viewList}
             step={60}
             showMultiDayTimes
