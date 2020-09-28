@@ -38,7 +38,7 @@ const NotificationBar = props => {
 
   // Notifications badge
   const [numNotifications, setnumNotifications] = React.useState("");
-  axios.get(baseURL + "users/me/notifications", auth).then((res)=> {
+  axios.get(baseURL + "users/me/notifications").then((res)=> {
     setnumNotifications(res.data.length);    
   })    
 
