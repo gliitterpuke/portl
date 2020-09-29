@@ -74,7 +74,8 @@ class ClientApplication extends Component {
     status: "",
     blobs: [],
     mobile: isMobile(),
-    open: false
+    open: false,
+    scan: false
   };
 
   handleTouchTap = (event) => {
@@ -116,7 +117,6 @@ class ClientApplication extends Component {
     axios.delete(baseURL + "blobs/" + efile.id).then(res => {
       user.applications[state].blobs.pop(blobs)
       localStorageService.setItem("auth_user", user)
-      console.log(user)
       this.forceUpdate()
 
     });
@@ -203,7 +203,7 @@ class ClientApplication extends Component {
       files: [...allFiles],
     });
 
-    axios.post(baseURL + "scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
+    axios.post(baseURL + "image/scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
       this.setState({
         preview: URL.createObjectURL(res.data),
         file: res.data
@@ -278,7 +278,6 @@ class ClientApplication extends Component {
           files: [allFiles[0] = { ...file, uploading: false, error: false, success: true }],
           scan: false
         });
-        console.log(this.state.files)
         let state = user.applications.find (application => application.id === this.props.location.state);
           state.blobs.push(response.data)
           localStorageService.setItem("auth_user", user) 
@@ -304,7 +303,6 @@ class ClientApplication extends Component {
     let state = user.applications.find (application => application.id === this.props.location.state);
     let isEmptyFiles = state.blobs.length === 0
     let token = localStorage.getItem("access_token")
-    console.log(token)
     
     return (
       <React.Fragment>
@@ -651,10 +649,10 @@ class ClientApplication extends Component {
                 <Grid item lg={3} md={3} sm={12} x={12}>
                   <SelectValidator fullWidth onClick={this.handleSelectChange} name="result" value={result} validators={['required']}>
                     <MenuItem value="passport">Passport</MenuItem>                
-                    <MenuItem value="IMM5707">IMM5707</MenuItem>
-                    <MenuItem value="IMM5409">IMM5409</MenuItem>
-                    <MenuItem value="IMM5476">IMM5476</MenuItem>
-                    <MenuItem value="IMM5475">IMM5475</MenuItem>
+                    <MenuItem value="imm5707">IMM5707</MenuItem>
+                    <MenuItem value="imm5409">IMM5409</MenuItem>
+                    <MenuItem value="imm5476">IMM5476</MenuItem>
+                    <MenuItem value="imm5475">IMM5475</MenuItem>
                     <MenuItem value="photo">Photos</MenuItem>
                     <MenuItem value="financials">Proof of Financial Support</MenuItem>
                     <MenuItem value="marriage">Marriage Documents</MenuItem>

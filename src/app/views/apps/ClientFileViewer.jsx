@@ -119,7 +119,7 @@ class ClientFileViewer extends Component {
       files: [...allFiles],
     });
 
-    axios.post(baseURL + "scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
+    axios.post(baseURL + "image/scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
       this.setState({
         preview: URL.createObjectURL(res.data),
         file: res.data
@@ -140,10 +140,8 @@ class ClientFileViewer extends Component {
   }
 
   uploadSingleFile = index => {
-    console.log(this.state.scan)
     let allFiles = [...this.state.files];
     let file = this.state.files[0];
-    console.log(file)
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
@@ -226,7 +224,6 @@ class ClientFileViewer extends Component {
     let state = user.applications.findIndex (application => application.id === this.props.location.state.application_id);
     let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)
     let token = localStorage.getItem("access_token")
-    console.log(this.state.tag)
 
     return (
       <div className="upload-form m-sm-30">
