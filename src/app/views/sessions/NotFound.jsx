@@ -22,8 +22,7 @@ const styles = theme => ({
 class NotFound extends Component {
   state = {};
   clickMe = () => {
-    let user = localStorageService.getItem('auth_user')
-    if (user.role.length > 0) {
+    if (localStorage.getItem('access_token')) {
       this.props.history.push('/profile')
     }
     else {
