@@ -21,3 +21,7 @@ export const exportAllEvents = () => {
 export const exportFutureEvents = () => {
     return axios.get(baseURL + "users/me/calendar/", { params: { unconcluded_only: true }, responseType: 'blob'})
 }
+
+export const newEvent = (event) => {
+    return axios.post(baseURL + "calendar/events/", event)
+}
