@@ -214,10 +214,10 @@ class ProfessionalViewer extends Component {
                         {user.applications[state].blobs[blobs].filename}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {new Date(user.applications[state].blobs[blobs].uploaded_at+"Z").toLocaleString()}
+                        {new Date(user.applications[state].blobs[blobs].uploaded_at+"Z").toLocaleString('en-US', {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true})}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
-                        {new Date(user.applications[state].blobs[blobs].updated_at+"Z").toLocaleString()}
+                        {new Date(user.applications[state].blobs[blobs].updated_at+"Z").toLocaleString('en-US', {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true})}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="left">
                         {user.applications[state].blobs[blobs].tag}

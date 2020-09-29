@@ -74,7 +74,7 @@ const ChatContainer = ({
                 <span className="whitespace-pre-wrap">{message.body}</span>
               </div>
               <small className="text-muted mb-0">
-                {new Date(message.sent_at+"Z").toLocaleString()}
+                {new Date(message.sent_at+"Z").toLocaleString('en-US', {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true})}
               </small>
             </div>
           </div>

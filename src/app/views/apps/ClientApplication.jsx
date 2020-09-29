@@ -725,11 +725,11 @@ class ClientApplication extends Component {
           </AccordionSummary>
           <AccordionDetails>
             <Typography className={classes.heading}>{"Created At"}</Typography>
-            <Typography className={classes.secondaryHeading}>{new Date(doc.uploaded_at+"Z").toLocaleString()}</Typography>
+            <Typography className={classes.secondaryHeading}>{new Date(doc.uploaded_at+"Z").toLocaleString('en-US', {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true})}</Typography>
           </AccordionDetails>
           <AccordionDetails>
             <Typography className={classes.heading}>{"Uploaded At"}</Typography>
-            <Typography className={classes.secondaryHeading}>{new Date(doc.updated_at+"Z").toLocaleString()}</Typography>
+            <Typography className={classes.secondaryHeading}>{new Date(doc.updated_at+"Z").toLocaleString('en-US', {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true})}</Typography>
           </AccordionDetails>
         </Accordion>
         ))}

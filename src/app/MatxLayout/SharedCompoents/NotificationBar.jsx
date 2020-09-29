@@ -49,12 +49,18 @@ const NotificationBar = props => {
   const parentThemePalette = theme.palette;
 
   function deleteNotification (id) {
-    axios.delete(`https://portl-dev.herokuapp.com/api/v1/notifications/${id}`).then(res => {
+    axios.delete(baseURL + `notifications/${id}`).then(res => {
+      axios.get(baseURL + "users/me/notifications").then((res)=> {
+        setnotificationDetails(res.data);   
+      }) 
     });
   };
 
   function deleteAllNotification() {
-    axios.delete("https://portl-dev.herokuapp.com/api/v1/users/me/notifications/").then(res => {
+    axios.delete(baseURL + "users/me/notifications/").then(res => {
+      axios.get(baseURL + "users/me/notifications").then((res)=> {
+        setnotificationDetails(res.data);   
+      }) 
     });
   };
 
@@ -127,12 +133,12 @@ const NotificationBar = props => {
                         </Icon>
                       </div>
                       )}
-                      <span className="ml-4 font-medium text-muted">
+                      <span className="ml-4 font-medium text-muted uppercase">
                         {notification.category}
                       </span>
                     </div>
                     <small className="card__topbar__time text-muted">
-                      {new Date(notification.notify_at+"Z").toLocaleString()}
+                      {new Date(notification.notify_at+"Z").toLocaleString('en-US', {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true})}
                     </small>
                   </div>
                   <div className="px-4 pt-2 pb-4">

@@ -80,6 +80,7 @@ class AppChat extends Component {
       let owner = application.users.find (owner => owner.owner_id === this.state.currentUser.id)
       let sender = owner.id
       this.setState({
+        application: application,
         sender: owner.id
       });
       });
@@ -95,15 +96,31 @@ class AppChat extends Component {
       body: message,
       sender_id: this.state.sender,
     }).then(data => {
-      const notification = {
-        title: "New Message",
-        description: `from Application ${currentChatRoom}`,
-        category: "MESSAGE",
-        notify_at: new Date(),
-        go_to_path: "",
-        recipient_id: 1
+      
+      // find all chat users in current chatroom
+      const chatUsers = [];
+      this.state.application.users.forEach(function(obj){
+          chatUsers.push(obj.owner_id);
+      })
+      // remove self from list of users
+      const index = chatUsers.indexOf(id);
+      if (index > -1) {
+        chatUsers.splice(index, 1);
       }
-      newEvent(notification)
+
+      // send notification to each recipient on message send
+      chatUsers.forEach(function (item, index) {
+        const notification = {
+          title: "New Message",
+          description: `from Application ${currentChatRoom}`,
+          category: "MESSAGE",
+          notify_at: new Date(),
+          go_to_path: "/chat",
+          recipient_id: item
+        }
+        newEvent(notification)
+      });
+
       getChatRoomByContactId(currentChatRoom).then(
         ({ data }) => {
           let { chatmessages } = data;
