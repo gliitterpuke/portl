@@ -26,18 +26,9 @@ export const getChatRoomByContactId = (appId) => {
 export const deleteMessage = message => {
   return axios.post("/api/chat/delete", message);
 };
-// export const deleteMessage = message => {
-//   return axios.post(baseURL + "messages/", message);
-// };
-// export const sendNewMessage = message => {
-//   return axios.post("/api/chat/add", message);
-// };
 export const sendNewMessage = message => {
   return axios.post(baseURL + "messages/", message);
 };
-export const updateMessage = message => {
-  return axios.post("/api/chat/update", message);
-};
-// export const updateMessage = message => {
-//   return axios.put(baseURL + "/api/v1/messages/" + message_id, message);
-// };
+export const newEvent = message => {
+  return axios.post(baseURL + "notifications/", message)
+}

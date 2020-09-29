@@ -11,7 +11,8 @@ import {
   // getRecentContact,
   sendNewMessage,
   getContactById,
-  getChatRoomByContactId
+  getChatRoomByContactId,
+  newEvent
 } from "./ChatService";
 import ChatSidenav from "./ChatSidenav";
 import ChatContainer from "./ChatContainer";
@@ -30,7 +31,8 @@ class AppChat extends Component {
     chatmessages: [],
     currentChatRoom: "",
     opponentUser: null,
-    open: false
+    open: false,
+    sender: ""
   };
 
   bottomRef = React.createRef();
@@ -72,33 +74,42 @@ class AppChat extends Component {
           },
           () => {
             this.bottomRef.scrollTop = 9999999999999;
-          }
-        );
-      }
-    );
+          });
+      }).then(() => {
+      let application = this.state.appList.find (application => application.id === this.state.currentChatRoom);
+      let owner = application.users.find (owner => owner.owner_id === this.state.currentUser.id)
+      let sender = owner.id
+      this.setState({
+        sender: owner.id
+      });
+      });
   };
 
   handleMessageSend = message => {
     let { id } = this.state.currentUser;
     let { currentChatRoom, opponentUser } = this.state;
-    let application = this.state.appList.find (application => application.id === currentChatRoom);
-    let owner = application.users.find (owner => owner.owner_id === id)
-    let sender = owner.id
 
     if (currentChatRoom === "") return;
     sendNewMessage({
       chat_id: currentChatRoom,
       body: message,
-      sender_id: sender,
+      sender_id: this.state.sender,
     }).then(data => {
+      const notification = {
+        title: "New Message",
+        description: `from Application ${currentChatRoom}`,
+        category: "MESSAGE",
+        notify_at: new Date(),
+        go_to_path: "",
+        recipient_id: 1
+      }
+      newEvent(notification)
       getChatRoomByContactId(currentChatRoom).then(
         ({ data }) => {
           let { chatmessages } = data;
-          this.setState(
-            { data }, () => {
+          this.setState({ data }, () => {
               this.bottomRef.scrollTop = 9999999999999;
-            }
-          );
+            });
         }
       );
 
@@ -141,6 +152,7 @@ class AppChat extends Component {
       currentChatRoom,
       data,
       chatmessages,
+      sender
     } = this.state;
     return (
       <div className="m-sm-30">
@@ -170,6 +182,7 @@ class AppChat extends Component {
                 setBottomRef={this.setBottomRef}
                 handleMessageSend={this.handleMessageSend}
                 toggleSidenav={this.toggleSidenav}
+                sender={sender}
               />
             </MatxSidenavContent>
           </MatxSidenavContainer>

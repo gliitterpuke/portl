@@ -25,7 +25,8 @@ const ChatContainer = ({
   messageList = [],
   setBottomRef,
   handleMessageSend,
-  chatmessages = []
+  chatmessages = [],
+  sender
 }) => {
   let [message, setMessage] = React.useState("");
   const sendMessageOnEnter = event => {
@@ -45,23 +46,6 @@ const ChatContainer = ({
             </IconButton>
           </div>
           </div>
-        {/* <MatxMenu
-          menuButton={
-            <IconButton>
-              <Icon className="text-white">more_vert</Icon>
-            </IconButton>
-          }
-        >
-          <MenuItem className="flex items-center">
-            <Icon className="mr-4">account_circle</Icon> Contact
-          </MenuItem>
-          <MenuItem className="flex items-center">
-            <Icon className="mr-4">volume_mute</Icon> Mute
-          </MenuItem>
-          <MenuItem className="flex items-center">
-            <Icon className="mr-4">delete</Icon> Clear Chat
-          </MenuItem>
-        </MatxMenu> */}
       </div>
 
       <Scrollbar
@@ -78,13 +62,11 @@ const ChatContainer = ({
         )}
         {chatmessages.map((message, index) => (
           <div className="flex items-start px-4 py-3">
-            {/* <ChatAvatar src={message.avatar} status={message.status} /> */}
             <div className="ml-4">
               <p className="text-muted m-0 mb-2">{message.sender.display_name}</p>
               <div
                 className={`px-4 py-2 mb-2 list__message ${
-                  // REMEMBER TO CHANGE CURRENTUSERID TO CHAT USER ID
-                  currentUserId === message.sender_id
+                  sender === message.sender_id
                     ? "bg-primary text-white"
                     : "bg-paper"
                 }`}
