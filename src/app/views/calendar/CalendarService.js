@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let baseURL = "http://127.0.0.1:8000/api/v1/"
+let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 
 export const getAllEvents = () => {
     return axios.get(baseURL + "users/me/calendar/events/");

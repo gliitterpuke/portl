@@ -16,7 +16,7 @@ import {
 } from "../../redux/actions/NotificationActions";
 import axios from "axios"
 
-const baseURL = "http://127.0.0.1:8000/api/v1/"
+const baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 
 const NotificationBar = props => {
   const {
@@ -49,12 +49,12 @@ const NotificationBar = props => {
   const parentThemePalette = theme.palette;
 
   function deleteNotification (id) {
-    axios.delete(`http://127.0.0.1:8000/api/v1/notifications/${id}`).then(res => {
+    axios.delete(`https://portl-dev.herokuapp.com/api/v1/notifications/${id}`).then(res => {
     });
   };
 
   function deleteAllNotification() {
-    axios.delete("http://127.0.0.1:8000/api/v1/users/me/notifications/").then(res => {
+    axios.delete("https://portl-dev.herokuapp.com/api/v1/users/me/notifications/").then(res => {
     });
   };
 
@@ -109,15 +109,24 @@ const NotificationBar = props => {
                 <Card className="mx-4 mb-6" elevation={3}>
                   <div className="card__topbar flex items-center justify-between p-2 bg-light-gray">
                     <div className="flex items-center">
-                      {/* <div className="card__topbar__button">
+                      {notification.category === "alert" && (
+                      <div className="card__topbar__button">
                         <Icon
-                          className="card__topbar__icon"
-                          fontSize="small"
-                          color={notification.icon.color}
+                          className="card__topbar__icon" fontSize="small" color={"error"}
                         >
-                          {notification.icon.name}
+                          {"notifications"}
                         </Icon>
-                      </div> */}
+                      </div>
+                      )}
+                      {notification.category === "message" && (
+                      <div className="card__topbar__button">
+                        <Icon
+                          className="card__topbar__icon" fontSize="small" color={"primary"}
+                        >
+                          {"chat"}
+                        </Icon>
+                      </div>
+                      )}
                       <span className="ml-4 font-medium text-muted">
                         {notification.category}
                       </span>

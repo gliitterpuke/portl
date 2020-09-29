@@ -23,7 +23,7 @@ else  {
   history.push('/profile')
 }
 
-let baseURL = "http://127.0.0.1:8000/api/v1/"
+let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 
 const styles = theme => ({
   wrapper: {
@@ -142,6 +142,8 @@ class SignIn extends Component {
     // create test languages, countries, currencies, productypes, products and forms
     return axios.post(baseURL + "occupations/", occupation)
     .then(() => {
+    axios.post(baseURL + "form-metadata/", form)})
+    .then(() => { 
     axios.post(baseURL + "iso/languages/", isolang)})
     .then(() => { 
     axios.post(baseURL + "iso/languages/", isolang2)})
@@ -157,8 +159,6 @@ class SignIn extends Component {
     axios.post(baseURL + "iso/currencies/", isocurrency)})
     .then(() => { 
     axios.post(baseURL + "product-types/", producttype)})
-    .then(() => { 
-    axios.post(baseURL + "form-metadata/", form)})
     .then(() => { 
     axios.post(baseURL + "products/", trv)})
     // .then(() => { 

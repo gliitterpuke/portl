@@ -15,7 +15,7 @@ import localStorageService from "../../services/localStorageService";
 
 let user = localStorageService.getItem("auth_user")
 
-let baseURL = "http://127.0.0.1:8000/api/v1/"
+let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class ClientEditor extends Component {
   componentDidMount() {
     this.setState({ ...this.state })
