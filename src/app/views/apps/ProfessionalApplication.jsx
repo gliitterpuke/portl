@@ -512,10 +512,10 @@ class HigherOrderComponent extends Component {
                     {efile.filename}
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left">
-                    {new Date(efile.uploaded_at).toLocaleString()}
+                    {new Date(efile.uploaded_at+"Z").toLocaleString()}
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left">
-                    {new Date(efile.updated_at).toLocaleString()}
+                    {new Date(efile.updated_at+"Z").toLocaleString()}
                   </TableCell>
                   <TableCell className="pl-0 capitalize">
                     {efile.tag}

@@ -92,7 +92,7 @@ const ChatContainer = ({
                 <span className="whitespace-pre-wrap">{message.body}</span>
               </div>
               <small className="text-muted mb-0">
-                {new Date(message.sent_at).toLocaleString()}
+                {new Date(message.sent_at+"Z").toLocaleString()}
               </small>
             </div>
           </div>

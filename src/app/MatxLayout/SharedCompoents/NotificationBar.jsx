@@ -132,7 +132,7 @@ const NotificationBar = props => {
                       </span>
                     </div>
                     <small className="card__topbar__time text-muted">
-                      {new Date(notification.notify_at).toLocaleString()}
+                      {new Date(notification.notify_at+"Z").toLocaleString()}
                     </small>
                   </div>
                   <div className="px-4 pt-2 pb-4">
