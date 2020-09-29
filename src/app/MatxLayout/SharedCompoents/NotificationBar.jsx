@@ -48,6 +48,16 @@ const NotificationBar = props => {
   }
   const parentThemePalette = theme.palette;
 
+  function goToEvent(notification) {
+    if (notification.category === "message") {
+      deleteNotification(notification.id)
+      setPanelOpen(!panelOpen);
+    }
+    else {
+      setPanelOpen(!panelOpen);
+    }
+  }
+
   function deleteNotification (id) {
     axios.delete(baseURL + `notifications/${id}`).then(res => {
       axios.get(baseURL + "users/me/notifications").then((res)=> {
@@ -111,7 +121,7 @@ const NotificationBar = props => {
                   clear
                 </Icon>
               </IconButton>
-              <Link to={`/${notification.go_to_path}`} onClick={handleDrawerToggle}>
+              <Link to={`${notification.go_to_path}`} onClick={() => goToEvent(notification)}>
                 <Card className="mx-4 mb-6" elevation={3}>
                   <div className="card__topbar flex items-center justify-between p-2 bg-light-gray">
                     <div className="flex items-center">

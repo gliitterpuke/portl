@@ -25,3 +25,7 @@ export const exportFutureEvents = () => {
 export const newEvent = (event) => {
     return axios.post(baseURL + "calendar/events/", event)
 }
+
+export const eventNotification = (event) => {
+    return axios.post(baseURL + "notifications/", event)
+}

@@ -4,7 +4,7 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
-import { updateEvent, deleteEvent } from "./CalendarService";
+import { updateEvent, deleteEvent, eventNotification } from "./CalendarService";
 import localStorageService from "../../services/localStorageService";
 import { parseJSON } from "date-fns";
 class EventEditorDialog extends Component {
@@ -28,6 +28,15 @@ class EventEditorDialog extends Component {
     updateEvent({
       ...this.state
     }).then(() => {
+      const notification = {
+        title: "Updated Event",
+        description: "Your representative has updated an event",
+        category: "alert",
+        notify_at: new Date(),
+        go_to_path: "/calendar",
+        recipient_id: 2
+      }
+      eventNotification(notification)
       this.props.handleClose();
     });
   };

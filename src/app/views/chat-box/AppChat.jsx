@@ -113,9 +113,9 @@ class AppChat extends Component {
         const notification = {
           title: "New Message",
           description: `from Application ${currentChatRoom}`,
-          category: "MESSAGE",
+          category: "message",
           notify_at: new Date(),
-          go_to_path: "/chat",
+          go_to_path: "/messages",
           recipient_id: item
         }
         newEvent(notification)
