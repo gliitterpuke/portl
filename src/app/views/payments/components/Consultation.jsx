@@ -50,7 +50,7 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
   };
 
   const handleAlipayChange = async ev => {
-      const { data: clientSecret } = await axios.post(baseURL + "create-payment-intent", {
+      const { data: clientSecret } = await axios.post(baseURL + "payment/create-payment-intent", {
         product_id: prod,
         professional_id: 1
       });
@@ -98,7 +98,7 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
     const cardElement = elements.getElement("card");
     
     try {
-      const { data: clientSecret } = await axios.post(baseURL + "create-payment-intent", {
+      const { data: clientSecret } = await axios.post(baseURL + "payment/create-payment-intent", {
         product_id: prod,
         professional_id: rep
       });

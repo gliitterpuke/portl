@@ -156,19 +156,19 @@ class SignIn extends Component {
     .then(() => {
     axios.post(baseURL + "form/metadata/", form)})
     .then(() => { 
-    axios.post(baseURL + "iso/languages/", isolang)})
+    axios.post(baseURL + "languages/", isolang)})
     .then(() => { 
-    axios.post(baseURL + "iso/languages/", isolang2)})
+    axios.post(baseURL + "languages/", isolang2)})
     .then(() => { 
-    axios.post(baseURL + "iso/languages/", isolang3)})
+    axios.post(baseURL + "languages/", isolang3)})
     .then(() => { 
-    axios.post(baseURL + "iso/countries/", isoct)})
+    axios.post(baseURL + "countries/", isoct)})
     .then(() => { 
-    axios.post(baseURL + "iso/countries/", isoct2)})
+    axios.post(baseURL + "countries/", isoct2)})
     .then(() => { 
-    axios.post(baseURL + "iso/countries/", isoct3)})
+    axios.post(baseURL + "countries/", isoct3)})
     .then(() => { 
-    axios.post(baseURL + "iso/currencies/", isocurrency)})
+    axios.post(baseURL + "currencies/", isocurrency)})
     .then(() => { 
     axios.post(baseURL + "product-types/", application)})
     .then(() => { 

@@ -7,11 +7,11 @@ export const getAllEvents = () => {
 }
 
 export const updateEvent = (event) => {
-    return axios.put(baseURL + `calendar/events/${event.id}`, event);
+    return axios.put(baseURL + `events/${event.id}`, event);
 }
 
 export const deleteEvent = (event) => {
-    return axios.delete(baseURL + `calendar/events/${event}`);
+    return axios.delete(baseURL + `events/${event}`);
 }
 
 export const exportAllEvents = () => {
@@ -23,7 +23,7 @@ export const exportFutureEvents = () => {
 }
 
 export const newEvent = (event) => {
-    return axios.post(baseURL + "calendar/events/", event)
+    return axios.post(baseURL + "events/", event)
 }
 
 export const eventNotification = (event) => {
