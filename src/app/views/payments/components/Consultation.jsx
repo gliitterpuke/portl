@@ -27,7 +27,7 @@ const CardElementContainer = styled.div`
   }
 `;
 
-const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
+const Consultation = ({ price, onSuccessfulCheckout, props }) => {
   const [isProcessing, setProcessingTo] = useState(false);
   const [checkoutError, setCheckoutError] = useState();
   const [type, setType] = useState('none')
@@ -49,12 +49,12 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
 
   const handleAlipayChange = async ev => {
       const { data: clientSecret } = await axios.post(baseURL + "create-payment-intent", {
-        product_id: 1,
+        product_id: 2,
         professional_id: 1
       });
 
       const data = { 
-        professional_id: 1,
+        professional_id: props.match.params.id,
         product_id: 1,
         language_code: "eng",
         client_id: user.id
@@ -97,8 +97,8 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
     
     try {
       const { data: clientSecret } = await axios.post(baseURL + "create-payment-intent", {
-        product_id: 1,
-        professional_id: 1
+        product_id: 2,
+        professional_id: props.match.params.id
       });
 
       const paymentMethodReq = await stripe.createPaymentMethod({
@@ -123,8 +123,8 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
         return;
       }
       const data = { 
-        professional_id: 1,
-        product_id: 1,
+        professional_id: props.match.params.id,
+        product_id: 2,
         language_code: "eng",
         client_id: user.id
       }
@@ -143,7 +143,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
           recipient_id: 1
         }
         axios.post(baseURL + "notifications", notification)
-        history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
+        history.push({pathname: `/event`, state: secondstate.id });
           alert('Payment successful - proceeding to your application')
     })
     } catch (err) {
@@ -198,7 +198,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
       <Row>
         {/* TIP always disable your submit button while processing payments */}
         <SubmitButton name="payment" value="card" onClick={handleCardChange} disabled={isProcessing || !stripe}>
-          {isProcessing ? "Processing..." : `Pay $200`}
+          {isProcessing ? "Processing..." : `Pay $100`}
         </SubmitButton>
       </Row>
 
@@ -213,4 +213,4 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
   );
 };
 
-export default CheckoutForm;
+export default Consultation;

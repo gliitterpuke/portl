@@ -738,6 +738,22 @@ class ClientApplication extends Component {
           onYesClick={this.handleConfirmationResponse}
           text="Are you sure to delete?"
         />
+
+        <br /><br />
+        <SimpleCard elevation={6} className="w-full">
+          <Typography variant="h6">
+            Add-ons
+          </Typography>
+          <br/>
+          <div>
+          <Link to={{ pathname: `${this.props.location.state}/addons/`, state: state.professional_id }}>
+            <Button
+              size="medium" variant="contained" color="primary">
+              View all add-on serivces
+            </Button>
+          </Link>
+          </div>
+        </SimpleCard>
       </div>
       </React.Fragment>
     );
