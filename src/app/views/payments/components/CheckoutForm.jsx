@@ -27,10 +27,12 @@ const CardElementContainer = styled.div`
   }
 `;
 
-const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
+const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
   const [isProcessing, setProcessingTo] = useState(false);
   const [checkoutError, setCheckoutError] = useState();
   const [type, setType] = useState('none')
+
+  const { prod } = props.location.state.prod
 
   const stripe = useStripe();
   const elements = useElements();
@@ -49,13 +51,13 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
 
   const handleAlipayChange = async ev => {
       const { data: clientSecret } = await axios.post(baseURL + "create-payment-intent", {
-        product_id: 1,
+        product_id: prod,
         professional_id: 1
       });
 
       const data = { 
         professional_id: 1,
-        product_id: 1,
+        product_id: prod,
         language_code: "eng",
         client_id: user.id
       }
@@ -97,7 +99,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
     
     try {
       const { data: clientSecret } = await axios.post(baseURL + "create-payment-intent", {
-        product_id: 1,
+        product_id: prod,
         professional_id: 1
       });
 
@@ -124,7 +126,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
       }
       const data = { 
         professional_id: 1,
-        product_id: 1,
+        product_id: prod,
         language_code: "eng",
         client_id: user.id
       }

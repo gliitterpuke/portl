@@ -41,7 +41,7 @@ const Pricing = () => {
                 <p className="mb-0">Super Visas</p>
               </div>
               
-              <Link to={`/trv`}>
+              <Link to={{ pathname:`/trv`, state: { prod: 1 }}}>
               <Button variant="contained" color="primary" className="uppercase">
                 Get started
               </Button>

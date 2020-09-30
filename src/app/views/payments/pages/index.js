@@ -10,7 +10,7 @@ const MainPage = props => {
 
   return (
     <Layout title="Donut Shop">
-      <CheckoutForm/>
+      <CheckoutForm props={props}/>
     </Layout>
   );
 };

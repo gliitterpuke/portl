@@ -75,14 +75,14 @@ class ProfessionalForm extends Component {
     console.log(localStorage)
   }
 
-  handeViewClick = applicationId => {
+  handleViewClick = applicationId => {
     let user = localStorageService.getItem("auth_user")
     let secondstate = user.applications.find (application => application.id == applicationId);
     console.log(this.props)
     this.props.history.push({pathname: `/application/${applicationId}`, state: secondstate.id });
   }
 
-  handeDeleteClick = application => {
+  handleDeleteClick = application => {
     this.setState({ shouldShowConfirmationDialog: true, application });
   };
 
@@ -161,11 +161,11 @@ class ProfessionalForm extends Component {
               <div className={classes.iconalign}>
               <IconButton
                 color="primary" 
-                onClick={() => this.handeViewClick(application.id)}
+                onClick={() => this.handleViewClick(application.id)}
               >
                 <Icon>chevron_right</Icon>
               </IconButton>
-              <IconButton onClick={() => this.handeDeleteClick(application)} >
+              <IconButton onClick={() => this.handleDeleteClick(application)} >
                 <Icon color="error">delete</Icon>
               </IconButton>
               </div>

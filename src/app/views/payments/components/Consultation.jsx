@@ -28,6 +28,8 @@ const CardElementContainer = styled.div`
 `;
 
 const Consultation = ({ price, onSuccessfulCheckout, props }) => {
+  const { app, rep, prod, appindex } = props.location.state
+    console.log(user.applications[appindex].products)
   const [isProcessing, setProcessingTo] = useState(false);
   const [checkoutError, setCheckoutError] = useState();
   const [type, setType] = useState('none')
@@ -49,13 +51,13 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
 
   const handleAlipayChange = async ev => {
       const { data: clientSecret } = await axios.post(baseURL + "create-payment-intent", {
-        product_id: 2,
+        product_id: prod,
         professional_id: 1
       });
 
       const data = { 
-        professional_id: props.match.params.id,
-        product_id: 1,
+        professional_id: rep,
+        product_id: prod,
         language_code: "eng",
         client_id: user.id
       }
@@ -63,7 +65,7 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
       await stripe.confirmAlipayPayment(clientSecret.client_secret, {
         return_url: window.location.href
       }).then((res) => { 
-        axios.post(baseURL + "applications/", data).then(result => { 
+        axios.put(baseURL + "applications/", data).then(result => { 
           let user = localStorageService.getItem("auth_user")
           user.applications.push(result.data)
           localStorageService.setItem("auth_user", user)
@@ -97,8 +99,8 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
     
     try {
       const { data: clientSecret } = await axios.post(baseURL + "create-payment-intent", {
-        product_id: 2,
-        professional_id: props.match.params.id
+        product_id: prod,
+        professional_id: rep
       });
 
       const paymentMethodReq = await stripe.createPaymentMethod({
@@ -122,29 +124,33 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
         setProcessingTo(false);
         return;
       }
+      const currentProd = [];
+      user.applications[appindex].products.forEach(function(obj){
+        currentProd.push(obj.id);
+        currentProd.push(prod)
+        })
       const data = { 
-        professional_id: props.match.params.id,
-        product_id: 2,
-        language_code: "eng",
-        client_id: user.id
+        status: "PROFESSIONAL_ACTION_REQUIRED",
+        products: currentProd
       }
-  
-      axios.post(baseURL + "applications/", data).then(result => { 
+      console.log(data)
+      axios.put(baseURL + `applications/${app}`, data).then(result => { 
+        console.log(result)
         let user = localStorageService.getItem("auth_user")
-        user.applications.push(result.data)
-        localStorageService.setItem("auth_user", user)
-        let secondstate = user.applications.find (application => application.id === result.data.id);
-        const notification = {
-          title: "New Application",
-          description: `You have been assigned a new ${result.data.products[0].name}`,
-          category: "alert",
-          notify_at: new Date(),
-          go_to_path: `/profile`,
-          recipient_id: 1
-        }
-        axios.post(baseURL + "notifications", notification)
-        history.push({pathname: `/event`, state: secondstate.id });
-          alert('Payment successful - proceeding to your application')
+        // user.applications.products.push(result.data)
+        // localStorageService.setItem("auth_user", user)
+        console.log(result.data)
+        // const notification = {
+        //   title: "New Application",
+        //   description: `You have been assigned a new ${result.data.products[1].name}`,
+        //   category: "alert",
+        //   notify_at: new Date(),
+        //   go_to_path: `/calendar`,
+        //   recipient_id: rep
+        // }
+        // axios.post(baseURL + "notifications", notification)
+        // history.push({pathname: `/event`, state: app });
+        //   alert('Payment successful - proceeding to your application')
     })
     } catch (err) {
       setCheckoutError(err.message);

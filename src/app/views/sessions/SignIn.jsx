@@ -52,10 +52,8 @@ class SignIn extends Component {
   };
   handleFormSubmit = event => {
     this.props.loginWithEmailAndPassword({ ...this.state })
-    console.log(localStorage);
   }
   clickMe = () => {
-    console.log(new Date())
     const isolang = { 
       code: "eng",
       name: "English"
@@ -84,8 +82,11 @@ class SignIn extends Component {
       code: "cad",
       name: "Canadian Dollar"
     }
-    const producttype = {
+    const application = {
       name: "Application"
+    }
+    const addonsc = {
+      name: "Consultation"
     }
     const form = {
       name: "imm5257",
@@ -97,9 +98,9 @@ class SignIn extends Component {
     const trv = {
       name: "Temporary Resident Visa",
       code: "TRV",
-      total_price: 200,
+      total_price: 500,
       platform_fee: 100,
-      processing_cost: 1,
+      processing_cost: 10,
       country_code: "cn",
       currency_code: "cad",
       product_type_id: 1,
@@ -138,11 +139,22 @@ class SignIn extends Component {
     const occupation = {
       name: "Consultant"
     }
+    const consultation = {
+      name: "Consultation",
+      code: "consult",
+      total_price: 200,
+      platform_fee: 100,
+      processing_cost: 1,
+      country_code: "cn",
+      currency_code: "cad",
+      product_type_id: 2,
+      forms: [ 0 ]
+    }
     
     // create test languages, countries, currencies, productypes, products and forms
     return axios.post(baseURL + "occupations/", occupation)
     .then(() => {
-    axios.post(baseURL + "form-metadata/", form)})
+    axios.post(baseURL + "form/form-metadata/", form)})
     .then(() => { 
     axios.post(baseURL + "iso/languages/", isolang)})
     .then(() => { 
@@ -158,15 +170,13 @@ class SignIn extends Component {
     .then(() => { 
     axios.post(baseURL + "iso/currencies/", isocurrency)})
     .then(() => { 
-    axios.post(baseURL + "product-types/", producttype)})
+    axios.post(baseURL + "product-types/", application)})
     .then(() => { 
-    axios.post(baseURL + "products/", trv)})
+    // axios.post(baseURL + "product-types/", addonsc)})
     // .then(() => { 
-    // axios.post(baseURL + "products/", study)})
+    axios.post(baseURL + "products", trv)})
     // .then(() => { 
-    // axios.post(baseURL + "products/", ee)})
-    // .then(() => { 
-    // axios.post(baseURL + "products/", work)})
+    // axios.post(baseURL + "products/", consultation)})
 
     // create test representative
     .then(() => {

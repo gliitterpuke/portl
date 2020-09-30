@@ -134,14 +134,17 @@ class SignUp extends Component {
                       errorMessages={["this field is required"]}
                     />
 
-                    <Button
-                      className="capitalize"
-                      variant="outlined"
-                      color="primary"
-                      onClick={this.handleClickOpen}
-                    >
-                      Terms of Service
-                    </Button>     
+                    <a onClick={this.handleClickOpen}>
+                    <FormControlLabel
+                      className="mb-4"
+                      name="agreement"
+                      onChange={this.handleChange}
+                      control={<Checkbox />}
+                      label="I have read and agree to the terms of service."
+                      validators={["required"]}
+                      errorMessages={["this field is required"]}
+                    />
+                    </a>  
                     <Dialog
                       open={this.state.open}
                       onClose={this.handleClose}
@@ -149,15 +152,11 @@ class SignUp extends Component {
                       aria-describedby="alert-dialog-description"
                     >
                       <DialogTitle id="alert-dialog-title">{"Terms of Service"}</DialogTitle>
-                        <FormControlLabel
-                          className="mb-4 px-6"
-                          name="agreement"
-                          onChange={this.handleCheck}
-                          control={<Checkbox checked={true}/>}
-                          validators={["required"]}
-                          errorMessages={["this field is required"]}
-                          label="I have read and agreed to the terms of service."
-                        />
+                      <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                          Terms of Service goes here
+                        </DialogContentText>
+                      </DialogContent>
                     </Dialog>
                     <br/>
                     <div className="flex items-center">

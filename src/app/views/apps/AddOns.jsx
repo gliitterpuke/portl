@@ -36,7 +36,7 @@ const AddOns = (props) => {
                 <p>Ask whatever you need</p>
               </div>
               
-              <Link to={`${props.location.pathname}consultation`}>
+              <Link to={{pathname: `${props.location.pathname}consultation`, state: { rep: props.location.rep, app: props.location.app, prod: 2, appindex: props.location.appindex }}}>
               <Button variant="contained" color="primary" className="uppercase">
                 Get started
               </Button>

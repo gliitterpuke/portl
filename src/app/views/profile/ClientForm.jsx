@@ -73,26 +73,27 @@ class ClientForm extends Component {
     this.setState({ showClientEditor: false });
   }
 
-  handeViewClick = applicationId => {
+  handleViewClick = applicationId => {
     let user = localStorageService.getItem("auth_user")
     let secondstate = user.applications.find (application => application.id === applicationId);
     this.props.history.push({pathname: `/application/${applicationId}`, state: secondstate.id });
   }
 
-  handeDeleteClick = application => {
+  handleDeleteClick = application => {
     this.setState({ shouldShowConfirmationDialog: true, application });
   };
 
   handleConfirmationResponse = () => {
+    let user = localStorageService.getItem('auth_user')
     let { application } = this.state;
-    console.log(application)
-    let status = application.status
+    let close = {
+      status: application.status,
+      products: [ ]
+    }
     this.setState({
       shouldShowConfirmationDialog: false
     });
-    axios.put(baseURL + `applications/${application.id}/close`, null, { params: {
-      status
-    }}).then(res => {
+    axios.put(baseURL + `applications/${application.id}/close`, close).then(res => {
       alert('Application closed')
       user.applications[application.id] = res.data
       localStorageService.setItem("auth_user", user)
@@ -181,11 +182,11 @@ class ClientForm extends Component {
               <div className={classes.iconalign}>
               <IconButton
                 color="primary" 
-                onClick={() => this.handeViewClick(application.id)}
+                onClick={() => this.handleViewClick(application.id)}
               >
                 <Icon>chevron_right</Icon>
               </IconButton>
-              <IconButton onClick={() => this.handeDeleteClick(application)} >
+              <IconButton onClick={() => this.handleDeleteClick(application)} >
                 <Icon color="error">delete</Icon>
               </IconButton>
               </div>

@@ -71,17 +71,18 @@ class HigherOrderComponent extends Component {
       this.setState({ ...user })
     };
     
-  handeViewClick = fileId => {
+  handleViewClick = fileId => {
     let user = localStorageService.getItem('auth_user')
     let secondstate = user.applications.find (application => application.id === this.props.location.state);
     let blobstate = secondstate.blobs.find (blobs => blobs.id === fileId)
     this.props.history.push({ pathname: `${secondstate.id}/file/${fileId}`, state: blobstate, id: secondstate.client_id });
   };
-  handeDeleteClick = efile => {
+  handleDeleteClick = efile => {
     this.setState({ shouldShowConfirmationDialog: true, efile });
   };
 
   handleConfirmationResponse = () => {
+    let user = localStorageService.getItem('auth_user')
     let { efile } = this.state;
     let state = user.applications.findIndex (application => application.id === this.props.location.state);    
     let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
@@ -89,10 +90,11 @@ class HigherOrderComponent extends Component {
       shouldShowConfirmationDialog: false
     });
     axios.delete(baseURL + "blobs/" + efile.id).then(res => {
-      user.applications[state].blobs.pop(blobs)
+      if (blobs > -1) {
+        user.applications[state].blobs.splice(blobs, 1);
+      }
       localStorageService.setItem("auth_user", user)
       this.forceUpdate()
-
     });
   };
 
@@ -524,11 +526,11 @@ class HigherOrderComponent extends Component {
                     <IconButton
                       color="primary"
                       className="mr-2"
-                      onClick={() => this.handeViewClick(efile.id)}
+                      onClick={() => this.handleViewClick(efile.id)}
                     >
                       <Icon>chevron_right</Icon>
                     </IconButton>
-                    <IconButton onClick={() => this.handeDeleteClick(efile)}>
+                    <IconButton onClick={() => this.handleDeleteClick(efile)}>
                       <Icon color="error">delete</Icon>
                     </IconButton>
                   </TableCell>

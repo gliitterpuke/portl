@@ -97,25 +97,29 @@ class ClientApplication extends Component {
       this.setState({ ...user })
     };
 
-  handeViewClick = fileId => {
+  handleViewClick = fileId => {
     let user = localStorageService.getItem('auth_user')
     let secondstate = user.applications.find (application => application.id === this.props.location.state);
     let blobstate = secondstate.blobs.find (blobs => blobs.id === fileId)
     this.props.history.push({ pathname: `${secondstate.id}/file/${fileId}`, state: blobstate });
   };
-  handeDeleteClick = efile => {
+  handleDeleteClick = efile => {
     this.setState({ shouldShowConfirmationDialog: true, efile });
   };
 
   handleConfirmationResponse = () => {
+    let user = localStorageService.getItem('auth_user')
     let { efile } = this.state;
     let state = user.applications.findIndex (application => application.id === this.props.location.state);
     let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
     this.setState({
       shouldShowConfirmationDialog: false
     });
+    
     axios.delete(baseURL + "blobs/" + efile.id).then(res => {
-      user.applications[state].blobs.pop(blobs)
+      if (blobs > -1) {
+        user.applications[state].blobs.splice(blobs, 1);
+      }
       localStorageService.setItem("auth_user", user)
       this.forceUpdate()
 
@@ -301,6 +305,7 @@ class ClientApplication extends Component {
     let isEmpty = files.length === 0;
     let user = localStorageService.getItem("auth_user")
     let state = user.applications.find (application => application.id === this.props.location.state);
+    let index = user.applications.findIndex (application => application.id === this.props.location.state);
     let isEmptyFiles = state.blobs.length === 0
     let token = localStorage.getItem("access_token")
 
@@ -713,10 +718,10 @@ class ClientApplication extends Component {
                 <IconButton color="primary" className="mr-2" onClick={() => this.downloadFile(doc.id)} >
                   <Icon>get_app</Icon>
                 </IconButton>
-                <IconButton color="primary" className="mr-2" onClick={() => this.handeViewClick(doc.id)} >
+                <IconButton color="primary" className="mr-2" onClick={() => this.handleViewClick(doc.id)} >
                   <Icon>chevron_right</Icon>
                 </IconButton>
-                <IconButton onClick={() => this.handeDeleteClick(doc)}>
+                <IconButton onClick={() => this.handleDeleteClick(doc)}>
                   <Icon color="error">delete</Icon>
                 </IconButton>
               </div>
@@ -740,7 +745,7 @@ class ClientApplication extends Component {
         />
 
         <br /><br />
-        <Link to={{ pathname: `${this.props.location.state}/addons/`, state: state.professional_id }}>
+        <Link to={{ pathname: `${this.props.location.state}/addons/`, rep: state.professional_id, app: state.id, appindex: index }}>
         <SimpleCard elevation={6} className="w-full">
           <Typography variant="h6">
             Add-ons
