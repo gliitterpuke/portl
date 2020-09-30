@@ -21,8 +21,8 @@ export const UserForm = (props) => {
   const [formData, setFormData] = useState({
 PersonalDetails_ServiceIn_ServiceIn: "01",
 PersonalDetails_VisaType_VisaType: "VisitorVisa",
-PersonalDetails_Name_FamilyName: user.client_profile.last_name,
-PersonalDetails_Name_GivenName: user.client_profile.first_name,
+PersonalDetails_Name_FamilyName: user.client_profile.family_name,
+PersonalDetails_Name_GivenName: user.client_profile.given_names,
 PersonalDetails_AliasName_AliasFamilyName: "",
 PersonalDetails_AliasName_AliasGivenName: "",
 PersonalDetails_AliasName_AliasNameIndicator_AliasNameIndicator: "N",

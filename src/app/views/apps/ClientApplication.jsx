@@ -56,7 +56,7 @@ const styles = theme => ({
     width: "100%",
   },
   title: {
-    '&:nth-child(odd)': { 
+    '&:nth-child(odd)': {
       backgroundColor: '#f2f2f2'
     }
   }
@@ -86,7 +86,7 @@ class ClientApplication extends Component {
       anchorEl: event.currentTarget,
      });
     };
-    
+
   handleRequestClose = () => {
     this.setState({
       open: false,
@@ -96,7 +96,7 @@ class ClientApplication extends Component {
   componentDidMount() {
       this.setState({ ...user })
     };
-    
+
   handeViewClick = fileId => {
     let user = localStorageService.getItem('auth_user')
     let secondstate = user.applications.find (application => application.id === this.props.location.state);
@@ -109,7 +109,7 @@ class ClientApplication extends Component {
 
   handleConfirmationResponse = () => {
     let { efile } = this.state;
-    let state = user.applications.findIndex (application => application.id === this.props.location.state);    
+    let state = user.applications.findIndex (application => application.id === this.props.location.state);
     let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === efile.id)
     this.setState({
       shouldShowConfirmationDialog: false
@@ -156,7 +156,7 @@ class ClientApplication extends Component {
 
   downloadFile = (fileId) => {
     const auth = {
-      headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
+      headers: {Authorization:"Bearer " + localStorage.getItem("access_token")}
     }
     let user = localStorageService.getItem("auth_user")
     let app = user.applications.find (application => application.id === this.props.location.state);
@@ -166,19 +166,19 @@ class ClientApplication extends Component {
     const mime_type = doc.mime_type
     const filetype = mime_type.match(/[^\/]+$/)[0]
     const key = user.id + "/" + appid + "/" + tags + "." + filetype
-    
+
     if (filetype === "json") {
       const key = user.id + "/" + appid + "/" + tags + "." + "pdf"
 
       axios.get(baseURL + "sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
-      .then(result => { 
+      .then(result => {
       const win = window.open(`${result.data}`);
       win.focus();
     })
   }
     else {
     axios.get(baseURL + "sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
-    .then(result => { 
+    .then(result => {
     const win = window.open(`${result.data}`);
     win.focus();
     })
@@ -248,7 +248,7 @@ class ClientApplication extends Component {
     }
 
     axios.get(baseURL + "sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
-    .then(result => { 
+    .then(result => {
     const formData = new FormData();
     formData.append("AWSAccessKeyId", result.data.data.fields.AWSAccessKeyId);
     formData.append("key", result.data.data.fields.key);
@@ -258,11 +258,11 @@ class ClientApplication extends Component {
     formData.append("file", this.state.file);
 
     const data = {
-      filename: file.file.name, 
+      filename: file.file.name,
       tag: tags,
       bucket: "portldump",
       application_id: appid,
-      mime_type: file.file.type, 
+      mime_type: file.file.type,
       url: result.data.url
     }
 
@@ -280,7 +280,7 @@ class ClientApplication extends Component {
         });
         let state = user.applications.find (application => application.id === this.props.location.state);
           state.blobs.push(response.data)
-          localStorageService.setItem("auth_user", user) 
+          localStorageService.setItem("auth_user", user)
           this.forceUpdate()
           return response;
       });
@@ -303,7 +303,7 @@ class ClientApplication extends Component {
     let state = user.applications.find (application => application.id === this.props.location.state);
     let isEmptyFiles = state.blobs.length === 0
     let token = localStorage.getItem("access_token")
-    
+
     return (
       <React.Fragment>
       <div className="upload-form m-sm-30">
@@ -391,7 +391,7 @@ class ClientApplication extends Component {
               </AccordionDetails>
             </Accordion>
           </Accordion>
-          
+
 
         <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -601,7 +601,7 @@ class ClientApplication extends Component {
           {!mobile && (
             <Grid item md={2}>
               <QRCode
-                data={`https://portlfe.herokuapp.com/session/fileupload?${token}?${user.id}?${state.id}`} 
+                data={`https://portlfe.herokuapp.com/session/fileupload?${token}?${user.id}?${state.id}`}
                 size={115}
               />
               <br/>
@@ -648,7 +648,7 @@ class ClientApplication extends Component {
                 </Grid>
                 <Grid item lg={3} md={3} sm={12} x={12}>
                   <SelectValidator fullWidth onClick={this.handleSelectChange} name="result" value={result} validators={['required']}>
-                    <MenuItem value="passport">Passport</MenuItem>                
+                    <MenuItem value="passport">Passport</MenuItem>
                     <MenuItem value="imm5707">IMM5707</MenuItem>
                     <MenuItem value="imm5409">IMM5409</MenuItem>
                     <MenuItem value="imm5476">IMM5476</MenuItem>
@@ -740,20 +740,19 @@ class ClientApplication extends Component {
         />
 
         <br /><br />
+        <Link to={{ pathname: `${this.props.location.state}/addons/`, state: state.professional_id }}>
         <SimpleCard elevation={6} className="w-full">
           <Typography variant="h6">
             Add-ons
           </Typography>
           <br/>
           <div>
-          <Link to={{ pathname: `${this.props.location.state}/addons/`, state: state.professional_id }}>
-            <Button
-              size="medium" variant="contained" color="primary">
-              View all add-on serivces
-            </Button>
-          </Link>
+            <Typography>
+              View all add-on services including additional consultation, notarization, translation, and more!
+            </Typography>
           </div>
         </SimpleCard>
+        </Link>
       </div>
       </React.Fragment>
     );
