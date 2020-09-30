@@ -31,8 +31,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
   const [isProcessing, setProcessingTo] = useState(false);
   const [checkoutError, setCheckoutError] = useState();
   const [type, setType] = useState('none')
-
-  const { prod } = props.location.state.prod
+  const { prod } = props.location.state
 
   const stripe = useStripe();
   const elements = useElements();

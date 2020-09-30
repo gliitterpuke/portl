@@ -130,27 +130,26 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
         currentProd.push(prod)
         })
       const data = { 
-        status: "PROFESSIONAL_ACTION_REQUIRED",
+        status: "CLIENT_ACTION_REQUIRED",
         products: currentProd
       }
       console.log(data)
       axios.put(baseURL + `applications/${app}`, data).then(result => { 
         console.log(result)
         let user = localStorageService.getItem("auth_user")
-        // user.applications.products.push(result.data)
-        // localStorageService.setItem("auth_user", user)
-        console.log(result.data)
-        // const notification = {
-        //   title: "New Application",
-        //   description: `You have been assigned a new ${result.data.products[1].name}`,
-        //   category: "alert",
-        //   notify_at: new Date(),
-        //   go_to_path: `/calendar`,
-        //   recipient_id: rep
-        // }
-        // axios.post(baseURL + "notifications", notification)
-        // history.push({pathname: `/event`, state: app });
-        //   alert('Payment successful - proceeding to your application')
+        user.applications[appindex] = result.data
+        localStorageService.setItem("auth_user", user)
+        const notification = {
+          title: `New add-on for Client ${result.data.client_id}`,
+          description: `Client ${result.data.client_id}'s application has a new add-on!`,
+          category: "alert",
+          notify_at: new Date(),
+          go_to_path: `/calendar`,
+          recipient_id: rep
+        }
+        axios.post(baseURL + "notifications", notification)
+        history.push({pathname: `/event`, state: app });
+          alert('Payment successful - proceeding to your application')
     })
     } catch (err) {
       setCheckoutError(err.message);

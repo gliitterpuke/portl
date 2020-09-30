@@ -154,7 +154,7 @@ class SignIn extends Component {
     // create test languages, countries, currencies, productypes, products and forms
     return axios.post(baseURL + "occupations/", occupation)
     .then(() => {
-    axios.post(baseURL + "form/form-metadata/", form)})
+    axios.post(baseURL + "form/metadata/", form)})
     .then(() => { 
     axios.post(baseURL + "iso/languages/", isolang)})
     .then(() => { 
