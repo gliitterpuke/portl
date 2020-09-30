@@ -11,8 +11,6 @@ import history from "../../../history"
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
-
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 } 
@@ -423,9 +421,9 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
 
-    axios.post(baseURL + `form/imm5257/${user.id}/` + currentApp.id, payload, auth)
+    axios.post(`form/imm5257/${user.id}/` + currentApp.id, payload, auth)
       .then(result => { 
-      return axios.post(baseURL + "blobs/", result.data, auth)
+      return axios.post("blobs/", result.data, auth)
       .then((response) => {
         user.applications.push(response.data)
         localStorageService.setItem("auth_user", user)

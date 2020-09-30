@@ -19,13 +19,15 @@ import localStorageService from "../../services/localStorageService";
 import history from "history.js";
 
 let user = localStorageService.getItem('auth_user')
+axios.defaults.baseURL = 'https://portl-dev.herokuapp.com/api/v1/'
+
 if (!localStorage.getItem("access_token")) {
 }
 else  {
   history.push('/profile')
 }
 
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
+// let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class SignUp extends Component {
   state = {
     open: false,
@@ -63,7 +65,7 @@ class SignUp extends Component {
       email: this.state.email,
       password: this.state.password
     }
-    axios.post(baseURL + "users/", signup)
+    axios.post("users/", signup)
     .then(result => { 
     const client = {
         given_names: "Jane",
@@ -74,10 +76,10 @@ class SignUp extends Component {
         owner_id: result.data.id,
         country_code: "cn"
       }
-    axios.post(baseURL + "clients/", client)
+    axios.post("clients/", client)
     })
     .then(result => {
-    axios.post(baseURL + `email/send-activation-email/${this.state.email}`)
+    axios.post(`email/send-activation-email/${this.state.email}`)
     alert('Sign up successful - please check your email for your verification email!')
     this.props.history.push(`/session/signin`)
       return result;

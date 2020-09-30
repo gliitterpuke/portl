@@ -16,14 +16,14 @@ import history from "../../../history"
 
 import { loginWithEmailAndPassword } from "../../redux/actions/LoginActions";
 
+axios.defaults.baseURL = 'https://portl-dev.herokuapp.com/api/v1/'
+
 let user = localStorageService.getItem('auth_user')
 if (!localStorage.getItem("access_token")) {
 }
 else  {
   history.push('/profile')
 }
-
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 
 const styles = theme => ({
   wrapper: {
@@ -152,31 +152,31 @@ class SignIn extends Component {
     }
     
     // create test languages, countries, currencies, productypes, products and forms
-    return axios.post(baseURL + "occupations/", occupation)
+    return axios.post("occupations/", occupation)
     .then(() => {
-    axios.post(baseURL + "form-metadata/", form)})
+    axios.post("form-metadata/", form)})
     .then(() => { 
-    axios.post(baseURL + "languages/", isolang)})
+    axios.post("languages/", isolang)})
     .then(() => { 
-    axios.post(baseURL + "languages/", isolang2)})
+    axios.post("languages/", isolang2)})
     .then(() => { 
-    axios.post(baseURL + "languages/", isolang3)})
+    axios.post("languages/", isolang3)})
     .then(() => { 
-    axios.post(baseURL + "countries/", isoct)})
+    axios.post("countries/", isoct)})
     .then(() => { 
-    axios.post(baseURL + "countries/", isoct2)})
+    axios.post("countries/", isoct2)})
     .then(() => { 
-    axios.post(baseURL + "countries/", isoct3)})
+    axios.post("countries/", isoct3)})
     .then(() => { 
-    axios.post(baseURL + "currencies/", isocurrency)})
+    axios.post("currencies/", isocurrency)})
     .then(() => { 
-    axios.post(baseURL + "product-types/", application)})
+    axios.post("product-types/", application)})
     .then(() => { 
-    // axios.post(baseURL + "product-types/", addonsc)})
+    // axios.post("product-types/", addonsc)})
     // .then(() => { 
-    axios.post(baseURL + "products", trv)})
+    axios.post("products", trv)})
     // .then(() => { 
-    // axios.post(baseURL + "products/", consultation)})
+    // axios.post("products/", consultation)})
 
     // create test representative
     .then(() => {
@@ -185,7 +185,7 @@ class SignIn extends Component {
           email: "katherine.wang01@gmail.com",
           password: "test"
         }
-        axios.post(baseURL + "users/", signup)
+        axios.post("users/", signup)
         .then(result => { 
         const professional = {
             family_name: "Smith",
@@ -200,11 +200,11 @@ class SignIn extends Component {
             serviced_products: [ 1 ],
             owner_id: result.data.id
           }
-          axios.post(baseURL + "professionals", professional)
+          axios.post("professionals", professional)
         })
       })
       .then(result => {
-        axios.post(baseURL + `email/send-activation-email/katherine.wang01@gmail.com`)
+        axios.post(`email/send-activation-email/katherine.wang01@gmail.com`)
         alert('Sign up successful - please check your email for your verification email!')
         this.props.history.push(`/session/signin`)
           return result;

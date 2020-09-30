@@ -11,10 +11,10 @@ import localStorageService from "../../services/localStorageService"
 import history from "../../../history"
 
 let user = localStorageService.getItem("auth_user")
+
 class ClientViewer extends Component {
   state = {
   };
-
 
   componentDidMount() {
     this.setState({ ...user.client_profile })

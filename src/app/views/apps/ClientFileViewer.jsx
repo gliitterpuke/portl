@@ -25,7 +25,7 @@ import { isMobile } from "utils";
 import QRCode from 'react-google-qrcode'
 
 let user = localStorageService.getItem("auth_user")
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
+
 class ClientFileViewer extends Component {
   state = {
     fileList: [],
@@ -92,14 +92,14 @@ class ClientFileViewer extends Component {
       const tags = this.state.tag
       const key = user.id + "/" + appid + "/" + tags + "." + "pdf"
 
-      axios.get(baseURL + "sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+      axios.get("sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
       .then(result => { 
       const win = window.open(`${result.data}`);
       win.focus();
     })
   }
     else {
-    axios.get(baseURL + "sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+    axios.get("sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
     .then(result => { 
     const win = window.open(`${result.data}`);
     win.focus();
@@ -119,7 +119,7 @@ class ClientFileViewer extends Component {
       files: [...allFiles],
     });
 
-    axios.post(baseURL + "image/scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
+    axios.post("image/scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
       this.setState({
         preview: URL.createObjectURL(res.data),
         file: res.data
@@ -167,7 +167,7 @@ class ClientFileViewer extends Component {
       });
     }
 
-    axios.get(baseURL + "sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
+    axios.get("sign-s3-post/", { params: { key: key, mime_type: mime_type }}, auth)
     .then(result => { 
     const formData = new FormData();
     formData.append("AWSAccessKeyId", result.data.data.fields.AWSAccessKeyId);
@@ -191,7 +191,7 @@ class ClientFileViewer extends Component {
       body: formData,
     })
     .then((response) => {
-      return axios.put(baseURL + "blobs/" + this.props.location.state.id, data, auth)
+      return axios.put("blobs/" + this.props.location.state.id, data, auth)
       .then((response) => {
         let state = user.applications.findIndex (application => application.id === this.props.location.state.application_id);
         let blobs = user.applications[state].blobs.findIndex (blobs => blobs.id === this.props.location.state.id)

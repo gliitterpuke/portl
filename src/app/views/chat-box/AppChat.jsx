@@ -20,8 +20,8 @@ import { isMobile } from "utils";
 import localStorageService from "../../services/localStorageService";
 import axios from "axios"
 
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 const auth = { headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} }
+
 class AppChat extends Component {
   state = {
     currentUser: localStorageService.getItem('auth_user'),
@@ -131,7 +131,7 @@ class AppChat extends Component {
       );
 
       const poll = async () => {
-        let response = await axios.get(baseURL + "chats/with-unread-messages/", auth)
+        let response = await axios.get("chats/with-unread-messages/", auth)
         let message = await response;
         if (message.data.chats_with_unread_messages[0].find(msg => msg === currentChatRoom) === currentChatRoom) {
           getChatRoomByContactId(currentChatRoom).then(

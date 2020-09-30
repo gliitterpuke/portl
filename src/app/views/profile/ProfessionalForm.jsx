@@ -23,7 +23,6 @@ import localStorageService from "../../services/localStorageService"
 import history from "../../../history"
 
 let user = localStorageService.getItem("auth_user")
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 
 const styles = theme => ({
   root: {
@@ -94,7 +93,7 @@ class ProfessionalForm extends Component {
       shouldShowConfirmationDialog: false
     });
     console.log(application.id)
-    axios.put(baseURL + `application/${application.id}/close`, null, { params: {
+    axios.put(`application/${application.id}/close`, null, { params: {
       status
     }}).then(res => {
       user.applications[application.id] = res.data

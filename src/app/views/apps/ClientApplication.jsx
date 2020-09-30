@@ -32,7 +32,6 @@ import { isMobile } from "utils";
 import QRCode from 'react-google-qrcode'
 
 let user = localStorageService.getItem("auth_user")
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 
 const styles = theme => ({
   root: {
@@ -116,7 +115,7 @@ class ClientApplication extends Component {
       shouldShowConfirmationDialog: false
     });
     
-    axios.delete(baseURL + "blobs/" + efile.id).then(res => {
+    axios.delete("blobs/" + efile.id).then(res => {
       if (blobs > -1) {
         user.applications[state].blobs.splice(blobs, 1);
       }
@@ -174,14 +173,14 @@ class ClientApplication extends Component {
     if (filetype === "json") {
       const key = user.id + "/" + appid + "/" + tags + "." + "pdf"
 
-      axios.get(baseURL + "sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+      axios.get("sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
       .then(result => {
       const win = window.open(`${result.data}`);
       win.focus();
     })
   }
     else {
-    axios.get(baseURL + "sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
+    axios.get("sign-s3-get/", { params: { bucket: "portldump", key: key }}, auth)
     .then(result => {
     const win = window.open(`${result.data}`);
     win.focus();
@@ -207,7 +206,7 @@ class ClientApplication extends Component {
       files: [...allFiles],
     });
 
-    axios.post(baseURL + "image/scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
+    axios.post("image/scan-image", formData, { params: { b_and_w: false }, responseType: 'blob'}).then ((res) => {
       this.setState({
         preview: URL.createObjectURL(res.data),
         file: res.data
@@ -251,7 +250,7 @@ class ClientApplication extends Component {
       });
     }
 
-    axios.get(baseURL + "sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
+    axios.get("sign-s3-post/", { params: { key: key, mime_type: file.file.type }})
     .then(result => {
     const formData = new FormData();
     formData.append("AWSAccessKeyId", result.data.data.fields.AWSAccessKeyId);
@@ -275,7 +274,7 @@ class ClientApplication extends Component {
       body: formData,
     })
     .then((response) => {
-      return axios.post(baseURL + "blobs/", data)
+      return axios.post("blobs/", data)
       .then((response) => {
         alert('File successfully uploaded')
         this.setState({

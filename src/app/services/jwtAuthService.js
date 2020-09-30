@@ -58,6 +58,7 @@ class JwtAuthService {
     if (access_token) {
       localStorage.setItem('access_token', access_token);
       axios.defaults.headers.common = {'Authorization': `Bearer ${access_token}`}
+      axios.defaults.baseURL = 'https://portl-dev.herokuapp.com/api/v1/'
     } else {
       localStorage.removeItem('access_token');
       delete axios.defaults.headers.common["Authorization"];

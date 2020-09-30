@@ -1,31 +1,29 @@
 import axios from 'axios';
 
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
-
 export const getAllEvents = () => {
-    return axios.get(baseURL + "users/me/calendar/events/");
+    return axios.get("users/me/calendar/events/");
 }
 
 export const updateEvent = (event) => {
-    return axios.put(baseURL + `events/${event.id}`, event);
+    return axios.put(`events/${event.id}`, event);
 }
 
 export const deleteEvent = (event) => {
-    return axios.delete(baseURL + `events/${event}`);
+    return axios.delete(`events/${event}`);
 }
 
 export const exportAllEvents = () => {
-    return axios.get(baseURL + "users/me/calendar/", { params: { unconcluded_only: false }, responseType: 'blob'})
+    return axios.get("users/me/calendar/", { params: { unconcluded_only: false }, responseType: 'blob'})
 }
 
 export const exportFutureEvents = () => {
-    return axios.get(baseURL + "users/me/calendar/", { params: { unconcluded_only: true }, responseType: 'blob'})
+    return axios.get("users/me/calendar/", { params: { unconcluded_only: true }, responseType: 'blob'})
 }
 
 export const newEvent = (event) => {
-    return axios.post(baseURL + "events/", event)
+    return axios.post("events/", event)
 }
 
 export const eventNotification = (event) => {
-    return axios.post(baseURL + "notifications/", event)
+    return axios.post("notifications/", event)
 }

@@ -16,7 +16,6 @@ import history from "../../../history"
 
 let user = localStorageService.getItem("auth_user")
 
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class ProfessionalEditor extends Component {
   componentDidMount() {
     this.setState({ ...this.state })
@@ -49,7 +48,7 @@ class ProfessionalEditor extends Component {
     this.setState({ loading: true });
     let tempState = this.state;
     delete tempState.loading;
-    return axios.put(baseURL + "professionals/" + user.professional_profile.id, this.state).then((response) => {
+    return axios.put("professionals/" + user.professional_profile.id, this.state).then((response) => {
       console.log(response)
     user.professional_profile = response.data
     localStorageService.setItem("auth_user", user)

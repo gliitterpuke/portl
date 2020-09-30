@@ -16,8 +16,6 @@ import {
 } from "../../redux/actions/NotificationActions";
 import axios from "axios"
 
-const baseURL = "https://portl-dev.herokuapp.com/api/v1/"
-
 const NotificationBar = props => {
   const {
     container,
@@ -29,7 +27,7 @@ const NotificationBar = props => {
   const [numNotifications, setnumNotifications] = React.useState("");
   const [notificationDetails, setnotificationDetails] = React.useState([]);
   React.useEffect(() => {
-    axios.get(baseURL + "users/me/notifications").then((res)=> {
+    axios.get("users/me/notifications").then((res)=> {
       setnumNotifications(res.data.length); 
       // setnotificationDetails(res.data);   
     })   
@@ -40,7 +38,7 @@ const NotificationBar = props => {
 
   function handleDrawerToggle() {
     if (!panelOpen) {
-      axios.get(baseURL + "users/me/notifications").then((res)=> {
+      axios.get("users/me/notifications").then((res)=> {
         setnotificationDetails(res.data);   
       })   
     }
@@ -59,16 +57,16 @@ const NotificationBar = props => {
   }
 
   function deleteNotification (id) {
-    axios.delete(baseURL + `notifications/${id}`).then(res => {
-      axios.get(baseURL + "users/me/notifications").then((res)=> {
+    axios.delete(`notifications/${id}`).then(res => {
+      axios.get("users/me/notifications").then((res)=> {
         setnotificationDetails(res.data);   
       }) 
     });
   };
 
   function deleteAllNotification() {
-    axios.delete(baseURL + "users/me/notifications/").then(res => {
-      axios.get(baseURL + "users/me/notifications").then((res)=> {
+    axios.delete("users/me/notifications/").then(res => {
+      axios.get("users/me/notifications").then((res)=> {
         setnotificationDetails(res.data);   
       }) 
     });

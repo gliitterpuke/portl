@@ -15,7 +15,7 @@ import localStorageService from "../../../services/localStorageService";
 import { Breadcrumb } from "matx"
 
 let user = localStorageService.getItem('auth_user')
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
+
 const CardElementContainer = styled.div`
   height: 40px;
   display: flex;
@@ -49,7 +49,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
   };
 
   const handleAlipayChange = async ev => {
-      const { data: clientSecret } = await axios.post(baseURL + "payment/create-payment-intent", {
+      const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
         product_id: prod,
         professional_id: 1
       });
@@ -64,7 +64,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
       await stripe.confirmAlipayPayment(clientSecret.client_secret, {
         return_url: window.location.href
       }).then((res) => { 
-        axios.post(baseURL + "applications/", data).then(result => { 
+        axios.post("applications/", data).then(result => { 
           let user = localStorageService.getItem("auth_user")
           user.applications.push(result.data)
           localStorageService.setItem("auth_user", user)
@@ -97,7 +97,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
     const cardElement = elements.getElement("card");
     
     try {
-      const { data: clientSecret } = await axios.post(baseURL + "payment/create-payment-intent", {
+      const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
         product_id: prod,
         professional_id: 1
       });
@@ -130,7 +130,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
         client_id: user.id
       }
   
-      axios.post(baseURL + "applications/", data).then(result => { 
+      axios.post("applications/", data).then(result => { 
         let user = localStorageService.getItem("auth_user")
         user.applications.push(result.data)
         localStorageService.setItem("auth_user", user)
@@ -143,7 +143,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
           go_to_path: `/profile`,
           recipient_id: 1
         }
-        axios.post(baseURL + "notifications", notification)
+        axios.post("notifications", notification)
         history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
           alert('Payment successful - proceeding to your application')
     })

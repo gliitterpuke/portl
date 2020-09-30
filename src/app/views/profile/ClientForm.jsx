@@ -22,8 +22,6 @@ import { withStyles } from "@material-ui/styles"
 
 let user = localStorageService.getItem("auth_user")
 
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
-
 const styles = theme => ({
   root: {
     width: '100%',
@@ -93,7 +91,7 @@ class ClientForm extends Component {
     this.setState({
       shouldShowConfirmationDialog: false
     });
-    axios.put(baseURL + `applications/${application.id}/close`, close).then(res => {
+    axios.put(`applications/${application.id}/close`, close).then(res => {
       alert('Application closed')
       user.applications[application.id] = res.data
       localStorageService.setItem("auth_user", user)

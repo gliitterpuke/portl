@@ -14,8 +14,6 @@ import axios from "axios";
 import localStorageService from "../../services/localStorageService";
 
 let user = localStorageService.getItem("auth_user")
-
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class ClientEditor extends Component {
   componentDidMount() {
     this.setState({ ...this.state })
@@ -41,7 +39,7 @@ class ClientEditor extends Component {
     this.setState({ loading: true });
     let tempState = this.state;
     delete tempState.loading;
-    return axios.put(baseURL + "clients/" + user.client_profile.id, this.state).then((response) => {
+    return axios.put("clients/" + user.client_profile.id, this.state).then((response) => {
       console.log(response)
     user.client_profile = response.data
     localStorageService.setItem("auth_user", user)
