@@ -93,6 +93,7 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
           var PersonalDetails_PlaceBirthCountry = values.PBC.value
           var PersonalDetails_Citizenship_Citizenship = values.citizenship.value
           setFormData({...values, PersonalDetails_PlaceBirthCountry, PersonalDetails_Citizenship_Citizenship});
+          axios.put("https://portl-dev.herokuapp.com/api/v1/users/me/form/save", {PersonalDetails_VisaType_VisaType: "VisitorVisa"})
           nextStep();
         }}
         validationSchema={validationSchema}
