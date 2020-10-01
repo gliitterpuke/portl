@@ -27,11 +27,10 @@ const CardElementContainer = styled.div`
   }
 `;
 
-const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
+const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
   const [isProcessing, setProcessingTo] = useState(false);
   const [checkoutError, setCheckoutError] = useState();
   const [type, setType] = useState('none')
-  const { prod } = props.location.state
 
   const stripe = useStripe();
   const elements = useElements();
@@ -50,13 +49,13 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
 
   const handleAlipayChange = async ev => {
       const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
-        product_id: prod,
+        product_id: 1,
         professional_id: 1
       });
 
       const data = { 
         professional_id: 1,
-        product_id: prod,
+        product_id: 1,
         language_code: "eng",
         client_id: user.id
       }
@@ -98,7 +97,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
     
     try {
       const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
-        product_id: prod,
+        product_id: 1,
         professional_id: 1
       });
 
@@ -125,7 +124,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
       }
       const data = { 
         professional_id: 1,
-        product_id: prod,
+        product_id: 1,
         language_code: "eng",
         client_id: user.id
       }
@@ -147,6 +146,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
         history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
           alert('Payment successful - proceeding to your application')
     })
+
     } catch (err) {
       setCheckoutError(err.message);
     }
