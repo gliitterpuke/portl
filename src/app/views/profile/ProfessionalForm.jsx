@@ -81,29 +81,6 @@ class ProfessionalForm extends Component {
     this.props.history.push({pathname: `/application/${applicationId}`, state: secondstate.id });
   }
 
-  handleDeleteClick = application => {
-    this.setState({ shouldShowConfirmationDialog: true, application });
-  };
-
-  handleConfirmationResponse = () => {
-    let { application } = this.state;
-    let status = user.applications[application.id].status
- //   let state = user.applications.findIndex (application => application.id === this.props.location.state.id); 
-    this.setState({
-      shouldShowConfirmationDialog: false
-    });
-    console.log(application.id)
-    axios.put(`application/${application.id}/close`, null, { params: {
-      status
-    }}).then(res => {
-      user.applications[application.id] = res.data
-      localStorageService.setItem("auth_user", user)
-      console.log(user.applications[application.id])
-      this.forceUpdate()
-
-    });
-  };
-
   handleDialogClose = () => {
     this.setState({ shouldShowConfirmationDialog: false });
   };
@@ -163,9 +140,6 @@ class ProfessionalForm extends Component {
                 onClick={() => this.handleViewClick(application.id)}
               >
                 <Icon>chevron_right</Icon>
-              </IconButton>
-              <IconButton onClick={() => this.handleDeleteClick(application)} >
-                <Icon color="error">delete</Icon>
               </IconButton>
               </div>
           </AccordionSummary>

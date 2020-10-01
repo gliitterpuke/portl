@@ -77,31 +77,6 @@ class ClientForm extends Component {
     this.props.history.push({pathname: `/application/${applicationId}`, state: secondstate.id });
   }
 
-  handleDeleteClick = application => {
-    this.setState({ shouldShowConfirmationDialog: true, application });
-  };
-
-  handleConfirmationResponse = () => {
-    let user = localStorageService.getItem('auth_user')
-    let { application } = this.state;
-    let close = {
-      status: application.status,
-      products: [ ]
-    }
-    this.setState({
-      shouldShowConfirmationDialog: false
-    });
-    axios.put(`applications/${application.id}/close`, close).then(res => {
-      alert('Application closed')
-      user.applications[application.id] = res.data
-      localStorageService.setItem("auth_user", user)
-      window.location.reload()
-    })
-    .catch(error => {
-      alert('Error; please try again later')
-   });
-  };
-
   handleDialogClose = () => {
     this.setState({ shouldShowConfirmationDialog: false });
   };
@@ -183,9 +158,6 @@ class ClientForm extends Component {
                 onClick={() => this.handleViewClick(application.id)}
               >
                 <Icon>chevron_right</Icon>
-              </IconButton>
-              <IconButton onClick={() => this.handleDeleteClick(application)} >
-                <Icon color="error">delete</Icon>
               </IconButton>
               </div>
           </AccordionSummary>
