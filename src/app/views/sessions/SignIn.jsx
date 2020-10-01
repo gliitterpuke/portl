@@ -16,8 +16,6 @@ import history from "../../../history"
 
 import { loginWithEmailAndPassword } from "../../redux/actions/LoginActions";
 
-axios.defaults.baseURL = 'https://portl-dev.herokuapp.com/api/v1/'
-
 let user = localStorageService.getItem('auth_user')
 if (!localStorage.getItem("access_token")) {
 }

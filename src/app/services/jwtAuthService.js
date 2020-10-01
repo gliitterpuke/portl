@@ -3,7 +3,6 @@ import localStorageService from "./localStorageService";
 import qs from "qs";
 import history from "history.js";
 
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class JwtAuthService {
   
   loginWithEmailAndPassword = (username, password) => {
@@ -17,7 +16,7 @@ class JwtAuthService {
         }
     }
     return axios.post(
-        'https://portl-dev.herokuapp.com/auth/token/',
+        'http://127.0.0.1:8000/auth/token/',
         qs.stringify(requestBody),
         config
     ).then((response) => {
@@ -36,7 +35,7 @@ class JwtAuthService {
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
-      return axios.get(baseURL + "users/me/", auth)
+      return axios.get("users/me/", auth)
     .then((response) => {
       this.setUser(response.data)
       this.setSession(localStorage.getItem("access_token"))
@@ -58,7 +57,6 @@ class JwtAuthService {
     if (access_token) {
       localStorage.setItem('access_token', access_token);
       axios.defaults.headers.common = {'Authorization': `Bearer ${access_token}`}
-      axios.defaults.baseURL = 'https://portl-dev.herokuapp.com/api/v1/'
     } else {
       localStorage.removeItem('access_token');
       delete axios.defaults.headers.common["Authorization"];

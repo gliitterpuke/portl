@@ -19,7 +19,6 @@ import localStorageService from "../../services/localStorageService";
 import history from "history.js";
 
 let user = localStorageService.getItem('auth_user')
-axios.defaults.baseURL = 'https://portl-dev.herokuapp.com/api/v1/'
 
 if (!localStorage.getItem("access_token")) {
 }
@@ -27,7 +26,6 @@ else  {
   history.push('/profile')
 }
 
-// let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class SignUp extends Component {
   state = {
     open: false,
@@ -59,7 +57,6 @@ class SignUp extends Component {
   };
 
   handleFormSubmit = event => {
-    console.log(this.state.agreement)
     const signup = {
       is_client: true,
       email: this.state.email,

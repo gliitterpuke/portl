@@ -13,8 +13,10 @@ import { Store } from "./redux/Store";
 import Auth from "./auth/Auth";
 import MatxLayout from "./MatxLayout/MatxLayoutSFC";
 import AuthGuard from "./auth/AuthGuard";
+import axios from "axios";
 
 const App = () => {
+  axios.defaults.baseURL = 'http://127.0.0.1:8000/api/v1/'
   return (
     <AppContext.Provider value={{ routes }}>
       <Provider store={Store}>
