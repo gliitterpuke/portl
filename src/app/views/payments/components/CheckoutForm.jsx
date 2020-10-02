@@ -60,20 +60,40 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
         client_id: user.id
       }
 
-      await stripe.confirmAlipayPayment(clientSecret.client_secret, {
-        return_url: window.location.href
-      }).then((res) => { 
-        axios.post("applications/", data).then(result => { 
-          let user = localStorageService.getItem("auth_user")
-          user.applications.push(result.data)
-          localStorageService.setItem("auth_user", user)
-          let secondstate = user.applications.find (application => application.id === result.data.id);
-          history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
-          alert('Payment successful - proceeding to your application')
-        })
-      }).catch(err => {
-        console.log(err)
-      })
+      await stripe.confirmAlipayPayment(clientSecret.client_secret, 
+        {
+          return_url: `${window.location.href}`
+        }).then(function(result) {
+          if (result.error) {
+            // Show error to your customer
+            alert(result.error.message);
+          } else {
+            // The payment has been processed!
+            alert('sos');
+          }
+        });
+        
+      //   .then((res) => { 
+      //     axios.post("applications/", data).then(result => { 
+      //       let user = localStorageService.getItem("auth_user")
+      //       user.applications.push(result.data)
+      //       localStorageService.setItem("auth_user", user)
+      //       let secondstate = user.applications.find (application => application.id === result.data.id);
+      //       const notification = {
+      //         title: "New Application",
+      //         description: `You have been assigned a new ${result.data.products[0].name}`,
+      //         category: "alert",
+      //         notify_at: new Date(),
+      //         go_to_path: `/profile`,
+      //         recipient_id: 1
+      //       }
+      //       axios.post("notifications", notification)
+      //       history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
+      //         alert('Payment successful - proceeding to your application')
+      //     })
+      //   }).catch(err => {
+      //   console.log(err)
+      // })
   
   };
 
