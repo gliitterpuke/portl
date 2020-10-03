@@ -78,7 +78,7 @@ const validationSchema = yup.object({
       otherwise: yup.date() }),
 });
 
-export const San = ({ formData, setFormData, nextStep, prevStep }) => {
+export const San = ({ formData, setFormData, nextStep, prevStep, saveData }) => {
   const classes = useStyles();
   const [direction, setDirection] = useState('back');
 
@@ -86,8 +86,10 @@ export const San = ({ formData, setFormData, nextStep, prevStep }) => {
     <>
       <Formik
         initialValues={formData}
+        enableReinitialize={true}
         onSubmit={values => {
           setFormData(values);
+          saveData(values)
           direction === 'back' ? prevStep() : nextStep();
         }}
         validationSchema={validationSchema}

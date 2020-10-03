@@ -25,44 +25,44 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  bgc: yup.array()
-    .required('Required'),
-  abc: yup.array()
-    .required('Required'),
-  BackgroundInfo_Details_MedicalDetails: yup.string()
-    .when("BackgroundInfo_Choice", {
-      is: "Y", then: yup.string().required( "Required" ),
-      otherwise: yup.string() }),
-  BackgroundInfo2_VisaChoice1: yup.string()
-    .required('Required'),
-  BackgroundInfo2_VisaChoice2: yup.string()
-    .required('Required'),
-  BackgroundInfo2_Details_VisaChoice3: yup.string()
-    .required('Required'),
-    //make either visas1-3
-  BackgroundInfo2_Details_refusedDetails: yup.string()
-    .when("BackgroundInfo2_VisaChoice1", {
-      is: "Y", then: yup.string().required( "Required" ),
-      otherwise: yup.string() }),
-  BackgroundInfo3_Choice: yup.string()
-    .required('Required'),
-  BackgroundInfo3_details: yup.string()
-    .when("BackgroundInfo3_Choice", {
-      is: "Y", then: yup.string().required( "Required" ),
-      otherwise: yup.string() }),
-  Military_Choice: yup.string()
-    .required('Required'),
-  Military_militaryServiceDetails: yup.string()
-    .when("Military_Choice", {
-      is: "Y", then: yup.string().required( "Required" ),
-      otherwise: yup.string() }),
-  Occupation_Choice: yup.string()
-    .required('Required'),
-  GovPosition_Choice: yup.string()
-    .required('Required'),
+  // bgc: yup.array()
+  //   .required('Required'),
+  // abc: yup.array()
+  //   .required('Required'),
+  // BackgroundInfo_Details_MedicalDetails: yup.string()
+  //   .when("BackgroundInfo_Choice", {
+  //     is: "Y", then: yup.string().required( "Required" ),
+  //     otherwise: yup.string() }),
+  // BackgroundInfo2_VisaChoice1: yup.string()
+  //   .required('Required'),
+  // BackgroundInfo2_VisaChoice2: yup.string()
+  //   .required('Required'),
+  // BackgroundInfo2_Details_VisaChoice3: yup.string()
+  //   .required('Required'),
+  //   //make either visas1-3
+  // BackgroundInfo2_Details_refusedDetails: yup.string()
+  //   .when("BackgroundInfo2_VisaChoice1", {
+  //     is: "Y", then: yup.string().required( "Required" ),
+  //     otherwise: yup.string() }),
+  // BackgroundInfo3_Choice: yup.string()
+  //   .required('Required'),
+  // BackgroundInfo3_details: yup.string()
+  //   .when("BackgroundInfo3_Choice", {
+  //     is: "Y", then: yup.string().required( "Required" ),
+  //     otherwise: yup.string() }),
+  // Military_Choice: yup.string()
+  //   .required('Required'),
+  // Military_militaryServiceDetails: yup.string()
+  //   .when("Military_Choice", {
+  //     is: "Y", then: yup.string().required( "Required" ),
+  //     otherwise: yup.string() }),
+  // Occupation_Choice: yup.string()
+  //   .required('Required'),
+  // GovPosition_Choice: yup.string()
+  //   .required('Required'),
 });
 
-export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp }) => {
+export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp, saveData }) => {
   const classes = useStyles();
   const [direction, setDirection] = useState('back');
 
@@ -70,8 +70,13 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp }) =
     <>
       <Formik
         initialValues={formData}
+        enableReinitialize={true}
         onSubmit={values => {
           setFormData({...values, BackgroundInfo_Choice: values.bgc.concat(values.abc)});
+
+          let BackgroundInfo_Choice = {BackgroundInfo_Choice: values.bgc.concat(values.abc)}
+          saveData(values, BackgroundInfo_Choice)
+          
           direction === 'back' ? prevStep() : nextStep();
         }}
         validationSchema={validationSchema}

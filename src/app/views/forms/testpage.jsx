@@ -32,7 +32,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-
 const validationSchema = yup.object({
   PersonalDetails_ServiceIn_ServiceIn: yup.string()	
     .required('Required'),	
@@ -65,19 +64,24 @@ const validationSchema = yup.object({
 
 });
 
-export const Yi = ({ formData, setFormData, nextStep, currentApp }) => {
+export const Yi = ({ formData, setFormData, nextStep, currentApp, saveData }) => {
+
   const classes = useStyles();
   return (
     <>
       <Formik
         initialValues={formData}
+        enableReinitialize={true}
         onSubmit={values => {
           var PersonalDetails_PlaceBirthCountry = values.PBC.value
           var PersonalDetails_Citizenship_Citizenship = values.citizenship.value
           setFormData({...values, PersonalDetails_PlaceBirthCountry, PersonalDetails_Citizenship_Citizenship});
-          values.citizenship = values.citizenship.value
-          axios.put("users/me/form/save", {...values, PersonalDetails_PlaceBirthCountry, PersonalDetails_Citizenship_Citizenship})
+          values.PBC = JSON.stringify(values.PBC)
+          values.citizenship = JSON.stringify(values.citizenship)
+          console.log(values.PBC)
           console.log(values)
+          console.log(values.natLang)
+          saveData(values, PersonalDetails_PlaceBirthCountry, PersonalDetails_Citizenship_Citizenship)
           nextStep();
         }}
         validationSchema={validationSchema}

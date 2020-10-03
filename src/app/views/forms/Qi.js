@@ -48,7 +48,7 @@ const validationSchema = yup.object({
     .required('Address in Canada required'),
 });
 
-export const Qi = ({ formData, setFormData, nextStep, prevStep }) => {
+export const Qi = ({ formData, setFormData, nextStep, prevStep, saveData }) => {
   const classes = useStyles();
   const [direction, setDirection] = useState('back');
 
@@ -56,8 +56,10 @@ export const Qi = ({ formData, setFormData, nextStep, prevStep }) => {
     <>
       <Formik
         initialValues={formData}
+        enableReinitialize={true}
         onSubmit={values => {
           setFormData(values);
+          saveData(values)
           direction === 'back' ? prevStep() : nextStep();
         }}
         validationSchema={validationSchema}

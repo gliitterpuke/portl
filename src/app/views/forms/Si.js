@@ -43,7 +43,7 @@ const validationSchema = yup.object({
     .required('Required')
 });
 
-export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
+export const Si = ({ formData, setFormData, nextStep, prevStep, saveData, languages }) => {
   const classes = useStyles();
   const [direction, setDirection] = useState('back');
 
@@ -51,9 +51,13 @@ export const Si = ({ formData, setFormData, nextStep, prevStep }) => {
     <>
       <Formik
         initialValues={formData}
+        enableReinitialize={true}
         onSubmit={values => {
           var MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang = values.natlang.value
           setFormData({...values, MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang});
+
+          saveData(values, MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang)
+          
           direction === 'back' ? prevStep() : nextStep();
         }}
         validationSchema={validationSchema}
@@ -157,34 +161,3 @@ Si.propTypes = {
   nextStep: PropTypes.func.isRequired,
   prevStep: PropTypes.func.isRequired
 };
-
-const languages = [
-  { label: 'Chinese', value: '299' }, 
-  { label: 'English', value: '001' }, 
-  { label: 'French', value: '002' }, 
-  { label: 'Japanese', value: '303' }, 
-  { label: 'Korean', value: '305' }, 
-  { label: 'Mandarin', value: '301' }, 
-  { label: 'Canto', value: '300' }, 
-  { label: 'Chinese, Min Nan', value: '545' }, 
-  { label: 'Chinese, Yue', value: '546' }, 
-  { label: 'Chinese, Yuh', value: '547' }, 
-  { label: 'Hindi', value: '321' }, 
-  { label: 'Hebrew', value: '253' }, 
-  { label: 'Dutch', value: '117' }, 
-  { label: 'German', value: '116' }, 
-  { label: 'Punjabi', value: '324' }, 
-  { label: 'Portugese', value: '115' }, 
-  { label: 'Russian', value: '101' }, 
-  { label: 'Shanghainese', value: '214' }, 
-  { label: 'Spanish', value: '050' }, 
-  { label: 'Turkish', value: '012' }, 
-  { label: 'Vietnamese', value: '306' }, 
-  { label: 'Welsh', value: '150' }, 
-  { label: 'Arabic', value: '250' }, 
-  { label: 'Italian', value: '123' }, 
-  { label: 'Interp. Not Required', value: '601' }, 
-  { label: 'Greek', value: '130' }, 
-  { label: 'Hebrew, Yemen', value: '588' }, 
-  { label: 'Kashmiri', value: '027' },
-];
