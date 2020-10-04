@@ -14,13 +14,19 @@ import {
   TextField,
   Typography,
   MenuItem,
-  FormControl
+  FormControl,
+  Snackbar
 } from "@material-ui/core";
+import MuiAlert from '@material-ui/lab/Alert';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { SimpleCard, Breadcrumb } from 'matx';
 import { Prompt } from 'react-router'
-  
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+} 
+
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
@@ -81,16 +87,25 @@ const validationSchema = yup.object({
 export const San = ({ formData, setFormData, nextStep, prevStep, saveData }) => {
   const classes = useStyles();
   const [direction, setDirection] = useState('back');
-
+  const [open, setOpen] = React.useState(true);
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') { return; }
+    setOpen(false);
+  };
+  
   return (
     <>
       <Formik
         initialValues={formData}
         enableReinitialize={true}
         onSubmit={values => {
-          setFormData(values);
+          setFormData({...values});
           saveData(values)
-          direction === 'back' ? prevStep() : nextStep();
+            .then(() => {
+              if (direction === 'back') { prevStep() }
+              else if (direction === 'forward') { nextStep() }
+              else { setOpen(true) }
+            })
         }}
         validationSchema={validationSchema}
       >
@@ -293,6 +308,22 @@ export const San = ({ formData, setFormData, nextStep, prevStep, saveData }) => 
                 className={classes.button} onClick={() => setDirection('forward')}>
                 Continue
               </Button>
+              <Button
+                type='submit' variant='contained' color='secondary'
+                className={classes.button}
+              >
+                Save
+              </Button>
+              <Snackbar open={open} autoHideDuration={1000} onClose={handleClose} onClick={() => setDirection('stay')} 
+                style={{ height: "100%" }}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center"
+                }}>
+                <Alert onClose={handleClose} className={classes.snack}>
+                  Saved!
+                </Alert>
+              </Snackbar>
           </Grid>
           </Grid>
         </MuiPickersUtilsProvider>

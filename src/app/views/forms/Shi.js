@@ -12,12 +12,18 @@ import {
   Radio,
   TextField,
   Typography,
+  Snackbar
 } from "@material-ui/core";
+import MuiAlert from '@material-ui/lab/Alert';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { SimpleCard, Breadcrumb } from 'matx';
 import { Prompt } from 'react-router'
-  
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+} 
+
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
@@ -25,46 +31,51 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const validationSchema = yup.object({
-  // bgc: yup.array()
-  //   .required('Required'),
-  // abc: yup.array()
-  //   .required('Required'),
-  // BackgroundInfo_Details_MedicalDetails: yup.string()
-  //   .when("BackgroundInfo_Choice", {
-  //     is: "Y", then: yup.string().required( "Required" ),
-  //     otherwise: yup.string() }),
-  // BackgroundInfo2_VisaChoice1: yup.string()
-  //   .required('Required'),
-  // BackgroundInfo2_VisaChoice2: yup.string()
-  //   .required('Required'),
-  // BackgroundInfo2_Details_VisaChoice3: yup.string()
-  //   .required('Required'),
-  //   //make either visas1-3
-  // BackgroundInfo2_Details_refusedDetails: yup.string()
-  //   .when("BackgroundInfo2_VisaChoice1", {
-  //     is: "Y", then: yup.string().required( "Required" ),
-  //     otherwise: yup.string() }),
-  // BackgroundInfo3_Choice: yup.string()
-  //   .required('Required'),
-  // BackgroundInfo3_details: yup.string()
-  //   .when("BackgroundInfo3_Choice", {
-  //     is: "Y", then: yup.string().required( "Required" ),
-  //     otherwise: yup.string() }),
-  // Military_Choice: yup.string()
-  //   .required('Required'),
-  // Military_militaryServiceDetails: yup.string()
-  //   .when("Military_Choice", {
-  //     is: "Y", then: yup.string().required( "Required" ),
-  //     otherwise: yup.string() }),
-  // Occupation_Choice: yup.string()
-  //   .required('Required'),
-  // GovPosition_Choice: yup.string()
-  //   .required('Required'),
+  bgc: yup.array()
+    .required('Required'),
+  abc: yup.array()
+    .required('Required'),
+  BackgroundInfo_Details_MedicalDetails: yup.string()
+    .when("BackgroundInfo_Choice", {
+      is: "Y", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  BackgroundInfo2_VisaChoice1: yup.string()
+    .required('Required'),
+  BackgroundInfo2_VisaChoice2: yup.string()
+    .required('Required'),
+  BackgroundInfo2_Details_VisaChoice3: yup.string()
+    .required('Required'),
+    //make either visas1-3
+  BackgroundInfo2_Details_refusedDetails: yup.string()
+    .when("BackgroundInfo2_VisaChoice1", {
+      is: "Y", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  BackgroundInfo3_Choice: yup.string()
+    .required('Required'),
+  BackgroundInfo3_details: yup.string()
+    .when("BackgroundInfo3_Choice", {
+      is: "Y", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  Military_Choice: yup.string()
+    .required('Required'),
+  Military_militaryServiceDetails: yup.string()
+    .when("Military_Choice", {
+      is: "Y", then: yup.string().required( "Required" ),
+      otherwise: yup.string() }),
+  Occupation_Choice: yup.string()
+    .required('Required'),
+  GovPosition_Choice: yup.string()
+    .required('Required'),
 });
 
 export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp, saveData }) => {
   const classes = useStyles();
   const [direction, setDirection] = useState('back');
+  const [open, setOpen] = React.useState(true);
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') { return; }
+    setOpen(false);
+  };
 
   return (
     <>
@@ -76,8 +87,11 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp, sav
 
           let BackgroundInfo_Choice = {BackgroundInfo_Choice: values.bgc.concat(values.abc)}
           saveData(values, BackgroundInfo_Choice)
-          
-          direction === 'back' ? prevStep() : nextStep();
+          .then(() => {
+            if (direction === 'back') { prevStep() }
+            else if (direction === 'forward') { nextStep() }
+            else { setOpen(true) }
+          })
         }}
         validationSchema={validationSchema}
       >
@@ -307,6 +321,22 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp, sav
                 className={classes.button} onClick={() => setDirection('forward')}>
                 Continue
               </Button>
+              <Button
+                type='submit' variant='contained' color='secondary'
+                className={classes.button}
+              >
+                Save
+              </Button>
+              <Snackbar open={open} autoHideDuration={1000} onClose={handleClose} onClick={() => setDirection('stay')} 
+                style={{ height: "100%" }}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center"
+                }}>
+                <Alert onClose={handleClose} className={classes.snack}>
+                  Saved!
+                </Alert>
+              </Snackbar>
             </Grid>
           </Grid>
         </MuiPickersUtilsProvider>

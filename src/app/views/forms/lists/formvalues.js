@@ -902,7 +902,7 @@ export const languages = [
   { value: "068", label: "Zshiluba" },
   { value: "069", label: "Zuganda" },
   { value: "208", label: "Zulu" }
-  ]
+]
 
 export const countryofbirth = [
   { value: "", label: "" },

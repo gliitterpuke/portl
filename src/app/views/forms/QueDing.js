@@ -101,7 +101,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
     MaritalStatus_SectionA_TypeOfRelationship,
     MaritalStatus_SectionA_FromDate,
     MaritalStatus_SectionA_ToDate_ToDate,
-    natlang,
+    natLang,
     MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang,
     MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate,
     MaritalStatus_SectionA_Languages_languages_lov,
@@ -718,7 +718,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
             <h4>Languages</h4>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
-            <h5>Native Language</h5> {MaritalStatus_SectionA_Languages_languages_nativeLang_nativeLang.label}
+            <h5>Native Language</h5> {natLang.label}
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <h5>English/French?</h5> {MaritalStatus_SectionA_Languages_languages_ableToCommunicate_ableToCommunicate}

@@ -13,6 +13,7 @@ import {
   Typography,
   MenuItem,
   FormControl,
+  Snackbar
 } from "@material-ui/core";
 import * as yup from 'yup';
 import {
@@ -21,10 +22,21 @@ import {
 } from 'formik-material-ui-lab';
 import { SimpleCard, Breadcrumb } from "matx";
 import { Prompt } from 'react-router'
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+} 
 
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
+  },
+  snack: {
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    textColor: '#FFFFFF',
+    padding: '0 30px',
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
   }
 }));
 
@@ -81,22 +93,32 @@ const validationSchema = yup.object({
 
 export const Yi = ({ formData, setFormData, nextStep, currentApp, saveData, countryofbirth, citizenship }) => {
   const classes = useStyles();
+  const [direction, setDirection] = React.useState('back');
+  const [open, setOpen] = React.useState(false);
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') { return; }
+    setOpen(false);
+  };
+  
   return (
     <>
       <Formik
         initialValues={formData}
         enableReinitialize={true}
-        onSubmit={values => {
+        onSubmit={ (values) => {
+          
           // set fields
           var PersonalDetails_PlaceBirthCountry = values.PBC.value
           var PersonalDetails_Citizenship_Citizenship = values.citizenship.value
 
           setFormData({...values, PersonalDetails_PlaceBirthCountry, PersonalDetails_Citizenship_Citizenship});
 
-          // stringify objects and save
+          // stringify objects, save, next page
           saveData(values, PersonalDetails_PlaceBirthCountry, PersonalDetails_Citizenship_Citizenship)
-
-          nextStep();
+            .then(() => {
+              direction === 'forward' ? nextStep() : setOpen(true)
+            })
+          
         }}
         validationSchema={validationSchema}
       >
@@ -275,10 +297,26 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp, saveData, coun
             <Grid item xs={12}>
             <Button
               type='submit' variant='contained' color='primary'
-              className={classes.button}
+              className={classes.button} onClick={() => setDirection('forward')}
             >
               Continue
             </Button>
+            <Button
+              type='submit' variant='contained' color='secondary'
+              className={classes.button} onClick={() => setDirection('stay')}
+            >
+              Save
+            </Button>
+            <Snackbar open={open} autoHideDuration={1000} onClose={handleClose} 
+             style={{ height: "100%" }}
+             anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center"
+             }}>
+            <Alert onClose={handleClose} className={classes.snack}>
+              Saved!
+            </Alert>
+          </Snackbar>
             </Grid>
           </Grid>
         </Form>
