@@ -36,7 +36,6 @@ PersonalDetails_ServiceIn_ServiceIn: "01",
     PersonalDetails_PlaceBirthCountry: "",
     citizenship: "",
     PersonalDetails_Citizenship_Citizenship: "",
-    ctr: "",
 ctr: "",
 PersonalDetails_CurrentCOR_Row2_Country: "",
 PersonalDetails_CurrentCOR_Row2_Status: "",
@@ -222,29 +221,51 @@ Military_militaryServiceDetails: "",
 Occupation_Choice: "",
 GovPosition_Choice: "", 
   });
-  const saveData = () => {
-    axios.put("users/me/form/save", formData)
+
+  React.useEffect(() => {
+    axios.get("users/me/form/load", { params: { return_dict: true }})
+  .then((res) => {
+      let values = res.data
+      values.PBC = JSON.parse(values.PBC)
+    //   values.citizenship = JSON.parse(values.citizenship)
+    //   values.ctr = JSON.parse(values.ctr)
+    //   values.pct = JSON.parse(values.pct)
+    //   values.pct2 = JSON.parse(values.pct2)
+    //   values.cwa = JSON.parse(values.cwa)
+    //   values.natlang = JSON.parse(values.natlang)
+    //   values.pcoi = JSON.parse(values.pcoi)
+    //   values.nidcoi = JSON.parse(values.nidcoi)
+    //   values.cmct = JSON.parse(values.cmct)
+    //   values.cmps = JSON.parse(values.cmps)
+    //   values.ract = JSON.parse(values.ract)
+    //   values.raps = JSON.parse(values.raps)
+    //   values.occct = JSON.parse(values.occct)
+    //   values.occps = JSON.parse(values.occps)
+    //   values.occ2ct = JSON.parse(values.occ2ct)
+    //   values.occ2ps = JSON.parse(values.occ2ps)
+    //   values.occ3ct = JSON.parse(values.occ3ct)
+    //   values.occ3ps = JSON.parse(values.occ3ps)
+    //   values.educt = JSON.parse(values.educt)
+    //   values.edups = JSON.parse(values.edups)
+    //   values.bgc = JSON.parse(values.bgc)
+    //   values.abc = JSON.parse(values.abc)
+    //   values.BackgroundInfo_Choice = JSON.parse(values.BackgroundInfo_Choice)
+      console.log(values.BackgroundInfo_Choice)
+      setFormData({...values})
+      console.log(res.data)
+    })
+},[])
+
+  const saveData = (data) => {
+    axios.put("users/me/form/save", data)
   }
-  const loadData = () => {
-      axios.get("users/me/form/load", { params: { return_dict: true }})
-      .then((res) => {
-          setFormData(res.data)
-          console.log(res.data)
-        }).then((res) => {
-            console.log(formData)
-        })
-  }
-  window.onload = function() {
-    saveData();
-    loadData();
-    
-  };
   const nextStep = () => setStep(prev => prev + 1);
   const prevStep = () => setStep(prev => prev - 1);
   switch (step) {
     case 1:
       return (
-        <Yi
+        <Shi
+          saveData = {saveData}
           currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
@@ -255,6 +276,7 @@ GovPosition_Choice: "",
     case 2:
         return (
           <Er
+            saveData = {saveData}
             currentApp = {props.location.state}
             formData={formData}
             setFormData={setFormData}
@@ -265,6 +287,7 @@ GovPosition_Choice: "",
     case 3:
       return (
         <San
+          saveData = {saveData}
           currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
@@ -275,6 +298,7 @@ GovPosition_Choice: "",
     case 4:
       return (
         <Si
+          saveData = {saveData}
           currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
@@ -285,6 +309,7 @@ GovPosition_Choice: "",
     case 5:
       return (
         <Wu
+          saveData = {saveData}
           currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
@@ -295,6 +320,7 @@ GovPosition_Choice: "",
     case 6:
       return (
         <Liu
+          saveData = {saveData}
           currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
@@ -305,6 +331,7 @@ GovPosition_Choice: "",
     case 7:
       return (
         <Qi
+          saveData = {saveData}
           currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
@@ -315,6 +342,7 @@ GovPosition_Choice: "",
     case 8:
       return (
         <Ba
+          saveData = {saveData}
           currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
@@ -325,6 +353,7 @@ GovPosition_Choice: "",
     case 9:
       return (
         <Jiu
+          saveData = {saveData}
           currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
@@ -335,6 +364,7 @@ GovPosition_Choice: "",
     case 10:
       return (
         <Shi
+          saveData = {saveData}
           currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
@@ -344,7 +374,12 @@ GovPosition_Choice: "",
       );
     case 11:
       return (
-        <QueDing currentApp = {props.location.state} formData={formData} nextStep={nextStep} prevStep={prevStep} />
+        <QueDing 
+          saveData = {saveData} 
+          currentApp = {props.location.state} 
+          formData={formData} 
+          nextStep={nextStep} 
+          prevStep={prevStep} />
       );
     default:
       return <Success />;
