@@ -13,6 +13,7 @@ import CheckoutError from "./prebuilt/CheckoutError";
 import history from "../../../../history";
 import localStorageService from "../../../services/localStorageService";
 import { Breadcrumb } from "matx"
+import QRCode from 'react-google-qrcode'
 
 let user = localStorageService.getItem('auth_user')
 
@@ -30,8 +31,10 @@ const CardElementContainer = styled.div`
 const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
   const [isProcessing, setProcessingTo] = useState(false);
   const [isAlipaying, setAlipayingTo] = useState(false);
+  const [isWeChatting, setWeChattingTo] = useState(false);
   const [checkoutError, setCheckoutError] = useState();
   const [type, setType] = useState('none')
+  const [wechat, setWechat] = useState('')
 
   const stripe = useStripe();
   const elements = useElements();
@@ -94,26 +97,32 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
   };
 
   const handleAlipayChange = async ev => {
-    setAlipayingTo(true);
-    const { prod } = props.location.state
-      const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
-        product_id: prod,
-        professional_id: 1
-      });
-
-      const data = { 
-        professional_id: 1,
-        product_id: prod,
-        language_code: "eng",
-        client_id: user.id
-      }
-
-      stripe.confirmAlipayPayment(clientSecret.client_secret,
-        {
-          return_url: `${window.location.href}?product=${prod}&`,
-          receipt_email: 'katherinewwang@gmail.com',
-        });
+    setType('alipay')
   };
+
+  // FUTURE USE WECHAT
+  // const handleWeChatChange = async ev => {
+  //   setWeChattingTo(true);
+  //   const { prod } = props.location.state
+
+  //     const data = { 
+  //       professional_id: 1,
+  //       product_id: prod,
+  //       language_code: "eng",
+  //       client_id: user.id
+  //     }
+
+  //     const { source } = await stripe.createSource({
+  //       type: 'wechat',
+  //       amount: 50000,
+  //       currency: 'cad',
+  //     })
+  //       setType('wechat')
+  //       console.log(source.wechat.qr_code_url)
+  //       setWechat(source.wechat.qr_code_url)
+      
+
+  // };
 
   const handleFormSubmit = async ev => {
     ev.preventDefault();
@@ -130,16 +139,16 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
       }
     };
 
-    setProcessingTo(true);
-
     const cardElement = elements.getElement("card");
+
+    const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
+      product_id: prod,
+      professional_id: 1
+    });
     
     try {
-      const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
-        product_id: prod,
-        professional_id: 1
-      });
-
+      if (type === 'card') {
+      setProcessingTo(true);
       const paymentMethodReq = await stripe.createPaymentMethod({
         type: "card",
         card: cardElement,
@@ -386,10 +395,38 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
         history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
           alert('Payment successful - proceeding to your application')
     })
+  }
 
+  else if (type === 'alipay') {
+    
+    setAlipayingTo(true);
+      const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
+        product_id: prod,
+        professional_id: 1
+      });
+
+      const paymentMethodReq = await stripe.createPaymentMethod({
+        type: "alipay",
+        billing_details: billingDetails
+      });
+
+      if (paymentMethodReq.error) {
+        setCheckoutError(paymentMethodReq.error.message);
+        setProcessingTo(false);
+        return;
+      }
+
+    stripe.confirmAlipayPayment(clientSecret.client_secret,
+      {
+        return_url: `${window.location.href}?product=${prod}&`,
+        receipt_email: ev.target.email.value,
+        payment_method: paymentMethodReq.paymentMethod.id
+      });
+  }
     } catch (err) {
       setCheckoutError(err.message);
     }
+  
   }
 
   const iframeStyles = {
@@ -437,19 +474,28 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
       </Row>
       {checkoutError && <CheckoutError>{checkoutError}</CheckoutError>}
       <Row>
-        {/* TIP always disable your submit button while processing payments */}
         <SubmitButton name="payment" value="card" onClick={handleCardChange} disabled={isProcessing || !stripe}>
           {isProcessing ? "Processing..." : `Pay $200`}
         </SubmitButton>
       </Row>
-
-    </form>
       <Row>
-        {/* TIP always disable your submit button while processing payments */}
         <SubmitButton name="payment" value="alipay" onClick={handleAlipayChange} disabled={isAlipaying || !stripe}>
           {isAlipaying ? "Processing..." : `Alipay`}
         </SubmitButton>
       </Row>
+    </form>
+
+      {/* <Row>
+        <SubmitButton name="payment" value="wechat" onClick={handleWeChatChange} disabled={isWeChatting || !stripe}>
+          {isWeChatting ? "Processing..." : `WeChat Pay`}
+        </SubmitButton>
+      </Row> */}
+      {type === 'wechat' && (
+      <QRCode
+          data={wechat}
+          size={115}
+        />
+      )}
       </div>
   );
 };

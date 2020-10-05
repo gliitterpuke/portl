@@ -67,7 +67,7 @@ const Pricing = () => {
                 <p className="mb-0">Extensions available</p>
               </div>
 
-              <Link to={`/study`}>
+              <Link to={{ pathname:`/payments`, state: { prod: 1 }}}>
               <Button variant="contained" color="primary" className="uppercase">
                 Get started
               </Button>
@@ -93,7 +93,7 @@ const Pricing = () => {
                 <p className="mb-0">Filler</p>
               </div>
 
-              <Link to ={`/ee`}>
+              <Link to={{ pathname:`/payments`, state: { prod: 1 }}}>
               <Button variant="contained" color="primary" className="uppercase">
                 Get Started
               </Button>
@@ -119,7 +119,7 @@ const Pricing = () => {
                 <p className="mb-0">Filler</p>
               </div>
 
-              <Link to ={`/work`}>
+              <Link to={{ pathname:`/payments`, state: { prod: 1 }}}>
               <Button variant="contained" color="primary" className="uppercase">
                 Get Started
               </Button>
