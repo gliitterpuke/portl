@@ -8,7 +8,7 @@ const appRoutes = [
     exact: true,
   },
   {
-    path: "/trv",
+    path: "/payments",
     component: React.lazy(() => import("../payments/pages/index")),
     auth: authRoles.client
   },

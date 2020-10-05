@@ -27,7 +27,7 @@ const CardElementContainer = styled.div`
   }
 `;
 
-const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
+const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
   const [isProcessing, setProcessingTo] = useState(false);
   const [checkoutError, setCheckoutError] = useState();
   const [type, setType] = useState('none')
@@ -35,10 +35,55 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
   const stripe = useStripe();
   const elements = useElements();
 
-  // TIP
-  // use the cardElements onChange prop to add a handler
-  // for setting any errors:
+  const alipayResponse = async ev => {
+    var query = window.location.search;
+    var payment = query.match(/(?<=payment_intent_client_secret=)(.*)(?=\&product)/)
+    const prod = window.location.search.match(/(?<=product=)(.*)(?=\&)/)
 
+    const data = { 
+      professional_id: 1,
+      product_id: prod[0],
+      language_code: "eng",
+      client_id: user.id
+    }
+    setProcessingTo(true);
+    stripe.retrievePaymentIntent(payment[0]).then(function(response) {
+      if (response.paymentIntent && response.paymentIntent.status === 'succeeded') {
+
+        axios.post("applications/", data).then(result => { 
+          console.log(result)
+          let user = localStorageService.getItem("auth_user")
+          user.applications.push(result.data)
+          localStorageService.setItem("auth_user", user)
+          let secondstate = user.applications.find (application => application.id === result.data.id);
+          const notification = {
+            title: "New Application",
+            description: `You have been assigned a new ${result.data.products[0].name}`,
+            category: "alert",
+            notify_at: new Date(),
+            go_to_path: `/profile`,
+            recipient_id: result.data.professional_id
+          }
+          axios.post("notifications", notification)
+          history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
+            setProcessingTo(false)
+            alert('Payment successful - now taking you to your application')
+        })
+        } else if (response.paymentIntent && response.paymentIntent.status === 'requires_payment_method') {
+          setProcessingTo(false)
+          alert('Payment failed; please re-select your product and try again')
+          history.push('/products')
+        }
+        else {
+          console.log(response)
+        }
+    });
+  }
+  window.onload = function () {
+    if (window.location.search.length > 0) {
+      alipayResponse()
+    }
+  }
   const handleCardDetailsChange = ev => {
     ev.error ? setCheckoutError(ev.error.message) : setCheckoutError();
   };
@@ -48,57 +93,29 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
   };
 
   const handleAlipayChange = async ev => {
+    const { prod } = props.location.state
       const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
-        product_id: 1,
+        product_id: prod,
         professional_id: 1
       });
 
       const data = { 
         professional_id: 1,
-        product_id: 1,
+        product_id: prod,
         language_code: "eng",
         client_id: user.id
       }
 
-      await stripe.confirmAlipayPayment(clientSecret.client_secret, 
+      stripe.confirmAlipayPayment(clientSecret.client_secret,
         {
-          return_url: `${window.location.href}`
-        }).then(function(result) {
-          if (result.error) {
-            // Show error to your customer
-            alert(result.error.message);
-          } else {
-            // The payment has been processed!
-            alert('sos');
-          }
+          return_url: `${window.location.href}?product=${prod}&`,
+          receipt_email: 'katherinewwang@gmail.com',
         });
-        
-      //   .then((res) => { 
-      //     axios.post("applications/", data).then(result => { 
-      //       let user = localStorageService.getItem("auth_user")
-      //       user.applications.push(result.data)
-      //       localStorageService.setItem("auth_user", user)
-      //       let secondstate = user.applications.find (application => application.id === result.data.id);
-      //       const notification = {
-      //         title: "New Application",
-      //         description: `You have been assigned a new ${result.data.products[0].name}`,
-      //         category: "alert",
-      //         notify_at: new Date(),
-      //         go_to_path: `/profile`,
-      //         recipient_id: 1
-      //       }
-      //       axios.post("notifications", notification)
-      //       history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
-      //         alert('Payment successful - proceeding to your application')
-      //     })
-      //   }).catch(err => {
-      //   console.log(err)
-      // })
-  
   };
 
   const handleFormSubmit = async ev => {
     ev.preventDefault();
+    const { prod } = props.location.state
 
     const billingDetails = {
       name: ev.target.name.value,
@@ -117,7 +134,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
     
     try {
       const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
-        product_id: 1,
+        product_id: prod,
         professional_id: 1
       });
 
@@ -144,7 +161,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
       }
       const data = { 
         professional_id: 1,
-        product_id: 1,
+        product_id: prod,
         language_code: "eng",
         client_id: user.id
       }
