@@ -29,6 +29,7 @@ const CardElementContainer = styled.div`
 
 const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
   const [isProcessing, setProcessingTo] = useState(false);
+  const [isAlipaying, setAlipayingTo] = useState(false);
   const [checkoutError, setCheckoutError] = useState();
   const [type, setType] = useState('none')
 
@@ -46,7 +47,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
       language_code: "eng",
       client_id: user.id
     }
-    setProcessingTo(true);
+    setAlipayingTo(true);
     stripe.retrievePaymentIntent(payment[0]).then(function(response) {
       if (response.paymentIntent && response.paymentIntent.status === 'succeeded') {
 
@@ -70,7 +71,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
             alert('Payment successful - now taking you to your application')
         })
         } else if (response.paymentIntent && response.paymentIntent.status === 'requires_payment_method') {
-          setProcessingTo(false)
+          setAlipayingTo(false)
           alert('Payment failed; please re-select your product and try again')
           history.push('/products')
         }
@@ -93,6 +94,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
   };
 
   const handleAlipayChange = async ev => {
+    setAlipayingTo(true);
     const { prod } = props.location.state
       const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
         product_id: prod,
@@ -444,8 +446,8 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
     </form>
       <Row>
         {/* TIP always disable your submit button while processing payments */}
-        <SubmitButton name="payment" value="alipay" onClick={handleAlipayChange} disabled={isProcessing || !stripe}>
-          {isProcessing ? "Processing..." : `Alipay`}
+        <SubmitButton name="payment" value="alipay" onClick={handleAlipayChange} disabled={isAlipaying || !stripe}>
+          {isAlipaying ? "Processing..." : `Alipay`}
         </SubmitButton>
       </Row>
       </div>
