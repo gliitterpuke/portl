@@ -51,7 +51,7 @@ class SignIn extends Component {
   handleFormSubmit = event => {
     this.props.loginWithEmailAndPassword({ ...this.state })
   }
-  clickMe = () => {
+  clickMe = async (e) => {
     const isolang = { 
       code: "eng",
       name: "English"
@@ -150,31 +150,19 @@ class SignIn extends Component {
     }
     
     // create test languages, countries, currencies, productypes, products and forms
-    return axios.post("occupations/", occupation)
-    .then(() => {
-    axios.post("form-metadata/", form)})
-    .then(() => { 
-    axios.post("languages/", isolang)})
-    .then(() => { 
-    axios.post("languages/", isolang2)})
-    .then(() => { 
-    axios.post("languages/", isolang3)})
-    .then(() => { 
-    axios.post("countries/", isoct)})
-    .then(() => { 
-    axios.post("countries/", isoct2)})
-    .then(() => { 
-    axios.post("countries/", isoct3)})
-    .then(() => { 
-    axios.post("currencies/", isocurrency)})
-    .then(() => { 
-    axios.post("product-types/", application)})
-    .then(() => { 
-    // axios.post("product-types/", addonsc)})
-    // .then(() => { 
-    axios.post("products", trv)})
-    // .then(() => { 
-    // axios.post("products/", consultation)})
+    await axios.post("occupations/", occupation)
+    await axios.post("form-metadata/", form)
+    await axios.post("languages/", isolang)
+    await axios.post("languages/", isolang2)
+    await axios.post("languages/", isolang3)
+    await axios.post("countries/", isoct)
+    await axios.post("countries/", isoct2)
+    await axios.post("countries/", isoct3)
+    await axios.post("currencies/", isocurrency)
+    await axios.post("product-types/", application)
+    await axios.post("product-types/", addonsc)
+    await axios.post("products", trv)
+    await axios.post("products/", consultation)
 
     // create test representative
     .then(() => {
