@@ -43,7 +43,10 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
 
     setOpen(false);
   };
-
+  const fieldRef = React.useRef(null);
+  React.useEffect(() => {
+    fieldRef.current.scrollIntoView();
+  }, []);
   const { 
     PersonalDetails_ServiceIn_ServiceIn,
     PersonalDetails_VisaType_VisaType,
@@ -441,7 +444,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
 }
   return (
     <>
-      <div className="upload-form m-sm-30">
+      <div className="upload-form m-sm-30"  ref={fieldRef}>
       <SimpleCard>
         <div className="mb-sm-30">
           <Breadcrumb routeSegments={[{ name: "Temporary Resident Visa" }]} />

@@ -24,9 +24,10 @@ import {
 import localStorageService from "../../services/localStorageService";
 import axios from "axios";
 
-var user = localStorageService.getItem('auth_user')
+let user = localStorageService.getItem('auth_user')
 
 export const UserForm = (props) => {
+  let user = localStorageService.getItem('auth_user')
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     PersonalDetails_ServiceIn_ServiceIn: "01",

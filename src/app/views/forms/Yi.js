@@ -99,7 +99,10 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp, saveData, coun
     if (reason === 'clickaway') { return; }
     setOpen(false);
   };
-  
+  const fieldRef = React.useRef(null);
+  React.useEffect(() => {
+    fieldRef.current.scrollIntoView();
+  }, []);
   return (
     <>
       <Formik
@@ -123,7 +126,7 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp, saveData, coun
         validationSchema={validationSchema}
       >
         {({ errors, touched, values }) => (
-      <div className="upload-form m-sm-30">
+      <div className="upload-form m-sm-30"  ref={fieldRef}>
       <SimpleCard>
         <div className="mb-sm-30">
           <Breadcrumb routeSegments={[{ name: "Temporary Resident Visa" }]} />
