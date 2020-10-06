@@ -22,6 +22,7 @@ class JwtAuthService {
     ).then((response) => {
       this.setSession(response.data.access_token);
       this.setUser(response.data.data);
+      return response
     })
   };
   
