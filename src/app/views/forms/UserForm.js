@@ -335,6 +335,7 @@ export const UserForm = (props) => {
           prevStep={prevStep}
           citizenship={citizenship}
           countryofbirth={countryofbirth}
+          step={step}
         />
       );
     case 2:
@@ -347,6 +348,7 @@ export const UserForm = (props) => {
             nextStep={nextStep}
             prevStep={prevStep}
             country={country}
+            step={step}
           />
         );
     case 3:
@@ -358,6 +360,7 @@ export const UserForm = (props) => {
           setFormData={setFormData}
           nextStep={nextStep}
           prevStep={prevStep}
+          step={step}
         />
       );
     case 4:
@@ -370,6 +373,7 @@ export const UserForm = (props) => {
           nextStep={nextStep}
           prevStep={prevStep}
           languages={languages}
+          step={step}
         />
       );
     case 5:
@@ -382,6 +386,7 @@ export const UserForm = (props) => {
           nextStep={nextStep}
           prevStep={prevStep}
           traveldoc={traveldoc}
+          step={step}
         />
       );
     case 6:
@@ -395,6 +400,7 @@ export const UserForm = (props) => {
           prevStep={prevStep}
           country={country}
           provstate={provstate}
+          step={step}
         />
       );
     case 7:
@@ -406,6 +412,7 @@ export const UserForm = (props) => {
           setFormData={setFormData}
           nextStep={nextStep}
           prevStep={prevStep}
+          step={step}
         />
       );
     case 8:
@@ -419,6 +426,7 @@ export const UserForm = (props) => {
           prevStep={prevStep}
           country={country}
           provstate={provstate}
+          step={step}
         />
       );
     case 9:
@@ -432,6 +440,7 @@ export const UserForm = (props) => {
           prevStep={prevStep}
           country={country}
           provstate={provstate}
+          step={step}
         />
       );
     case 10:
@@ -443,6 +452,7 @@ export const UserForm = (props) => {
           setFormData={setFormData}
           nextStep={nextStep}
           prevStep={prevStep}
+          step={step}
         />
       );
     case 11:

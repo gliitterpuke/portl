@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { RadioGroup, CheckboxWithLabel } from 'formik-material-ui'
 import {
   Button,
@@ -12,13 +12,16 @@ import {
   Radio,
   TextField,
   Typography,
-  Snackbar
+  Snackbar,
+  MobileStepper
 } from "@material-ui/core";
 import MuiAlert from '@material-ui/lab/Alert';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { SimpleCard, Breadcrumb } from 'matx';
-import { Prompt } from 'react-router'
+import { Prompt } from 'react-router';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+import { isMobile } from "utils";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -27,7 +30,11 @@ function Alert(props) {
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
-  }
+  },
+  root: {
+    maxWidth: 400,
+    flexGrow: 1,
+  },
 }));
 
 const validationSchema = yup.object({
@@ -68,9 +75,12 @@ const validationSchema = yup.object({
     .required('Required'),
 });
 
-export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp, saveData }) => {
+export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp, saveData, step }) => {
   const classes = useStyles();
   const [direction, setDirection] = useState('back');
+
+  const theme = useTheme();
+
   const [open, setOpen] = React.useState(true);
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') { return; }
@@ -107,10 +117,24 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp, sav
         </div>
       <Form>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Typography variant="h6" gutterBottom>
-              Background Information
-        </Typography>
-        <Grid container spacing={6}>
+      <Grid container spacing={2}>
+        <Grid item xs={9} md={6}>
+          <Typography variant="h6" gutterBottom>
+            Background Information
+          </Typography>
+        </Grid>
+        <Grid item xs={3} md={6}>
+          <Button type='submit' variant='contained' color='primary' className={classes.button} onClick={() => setDirection('stay')} >
+            Save
+          </Button>
+          <Snackbar open={open} autoHideDuration={1000} onClose={handleClose} 
+            style={{ height: "100%" }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+            <Alert onClose={handleClose} className={classes.snack}>
+              Saved!
+            </Alert>
+          </Snackbar> 
+        </Grid>
         <Grid item xs={12}>
             <Typography variant="subtitle1" gutterBottom>
               Medical Details
@@ -313,34 +337,23 @@ export const Shi = ({ formData, setFormData, nextStep, prevStep, currentApp, sav
                 <ErrorMessage name="GovPosition_Choice" />
             </div>
         </Grid>
-          <Grid item xs={12}>
-            <Button
-                type='submit' variant='contained' color='secondary' 
-                className={classes.button} onClick={() => setDirection('back')} >
-                Back
+        <Grid item xs={12}>
+          {isMobile() === true && (
+          <MobileStepper
+            variant="progress" steps={10} position="static" activeStep={step-1} className={classes.root}
+            nextButton={
+              <Button type='submit' size="small" onClick={() => setDirection('forward')} disabled={step === 11}>
+                Next {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
               </Button>
-              <Button
-                type='submit' variant='contained' color='primary' 
-                className={classes.button} onClick={() => setDirection('forward')}>
-                Continue
+            }
+            backButton={
+              <Button size="small" onClick={prevStep} disabled={step === 0}>
+                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />} Back
               </Button>
-              <Button
-                type='submit' variant='contained' color='secondary'
-                className={classes.button}
-              >
-                Save
-              </Button>
-              <Snackbar open={open} autoHideDuration={1000} onClose={handleClose} onClick={() => setDirection('stay')} 
-                style={{ height: "100%" }}
-                anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center"
-                }}>
-                <Alert onClose={handleClose} className={classes.snack}>
-                  Saved!
-                </Alert>
-              </Snackbar>
-            </Grid>
+            }
+          />
+          )}
+        </Grid>
           </Grid>
         </MuiPickersUtilsProvider>
         </Form>
