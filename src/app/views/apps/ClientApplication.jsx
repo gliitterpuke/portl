@@ -27,9 +27,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { parseJSON } from "date-fns";
 import { ConfirmationDialog, SimpleCard, Breadcrumb } from "matx";
 import { ValidatorForm, SelectValidator } from "react-material-ui-form-validator";
-import { withStyles } from "@material-ui/styles"
+import { withStyles } from "@material-ui/styles";
 import { isMobile } from "utils";
-import QRCode from 'react-google-qrcode'
+import QRCode from 'react-google-qrcode';
+import JoyRide from "react-joyride";
 
 let user = localStorageService.getItem("auth_user")
 
@@ -74,7 +75,51 @@ class ClientApplication extends Component {
     blobs: [],
     mobile: isMobile(),
     open: false,
-    scan: false
+    scan: false,
+    steps: [
+      {
+        target: ".application",
+        content: "You can see all of your application information here",
+        disableBeacon: true,
+      },
+      {
+        target: ".fillable",
+        content:
+          "Here are all the forms we can help you fill out",
+      },
+      {
+        target: ".doc-checklist",
+        content: "These are the documents (both required and optional) that you'll need",
+      },
+      {
+        target: ".web-upload",
+        content: "Click here to upload your files",
+      },
+      {
+        target: ".qr-upload",
+        content: "Scan this QR code to upload directly from your phone",
+      },
+      {
+        target: ".tags-info",
+        content: "Choose which category your file belongs to",
+      },
+      {
+        target: ".download-file",
+        content: "Download your file",
+      },
+      {
+        target: ".see-file",
+        content: "See file info and edit",
+      },
+      {
+        target: ".file-overview",
+        content: "General overview of your file",
+      },
+      {
+        target: ".add-ons",
+        content: "More moolah",
+      },
+    ]
   };
 
   handleTouchTap = (event) => {
@@ -300,7 +345,7 @@ class ClientApplication extends Component {
 
   render() {
     const { classes } = this.props;
-    let { dragClass, files, result, mobile } = this.state;
+    let { dragClass, files, result, mobile, steps } = this.state;
     let isEmpty = files.length === 0;
     let user = localStorageService.getItem("auth_user")
     let state = user.applications.find (application => application.id === this.props.location.state);
@@ -310,7 +355,15 @@ class ClientApplication extends Component {
 
     return (
       <React.Fragment>
-      <div className="upload-form m-sm-30">
+      <JoyRide
+        steps={steps} continuous={true} showSkipButton={true} scrollToFirstStep={true} disableScrolling={false}
+        styles={{ tooltipContainer: { textAlign: "left" },
+          buttonNext: { backgroundColor: "green" },
+          buttonBack: { marginRight: 10 }
+        }}
+        locale={{ last: "End tour", skip: "Close tour" }}
+      />
+      <div className="upload-form m-sm-30 application">
         <SimpleCard>
         <div className="mb-sm-30">
           <Breadcrumb routeSegments={[{ name: `Application` }]} />
@@ -322,7 +375,7 @@ class ClientApplication extends Component {
             <br/>
           <Link to={{ pathname: `${this.props.location.state}/trv/`, state: state }}>
             <Button
-              size="medium" variant="contained" color="primary">
+              size="medium" variant="contained" color="primary" className="fillable">
               TRV
             </Button>
           </Link>
@@ -331,7 +384,7 @@ class ClientApplication extends Component {
       </div>
       <div className="upload-form m-sm-30">
         <SimpleCard>
-          <Typography variant="h6">
+          <Typography variant="h6" className="doc-checklist">
             Document Checklist
           </Typography>
           <br/>
@@ -592,7 +645,7 @@ class ClientApplication extends Component {
             <label htmlFor="upload-single-file">
               <Fab className="capitalize" color="primary" component="span" variant="extended"
               >
-                <div className="flex items-center">
+                <div className="flex items-center web-upload">
                   <Icon className="pr-8">cloud_upload</Icon>
                   <span>Single File</span>
                 </div>
@@ -606,7 +659,7 @@ class ClientApplication extends Component {
             <Grid item md={2}>
               <QRCode
                 data={`https://portlfe.herokuapp.com/session/fileupload?${token}?${user.id}?${state.id}`}
-                size={115}
+                size={115} className="qr-upload"
               />
               <br/>
             <Button size="small" variant="contained" color="primary" onClick={this.handleTouchTap}>What's this?</Button>
@@ -751,7 +804,7 @@ class ClientApplication extends Component {
           </Typography>
           <br/>
           <div>
-            <Typography>
+            <Typography className="tags-info">
               View all add-on services including additional consultation, notarization, translation, and more!
             </Typography>
           </div>
