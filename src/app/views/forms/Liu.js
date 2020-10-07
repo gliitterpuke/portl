@@ -18,7 +18,10 @@ import {
   MenuItem,
   FormControl,
   Snackbar,
-  MobileStepper
+  MobileStepper,
+  Stepper,
+  Step,
+  StepButton
 } from "@material-ui/core";
 import MuiAlert from '@material-ui/lab/Alert';
 import {
@@ -114,13 +117,24 @@ const validationSchema = yup.object({
     .required('Email is required'),
 });
 
-export const Liu = ({ formData, setFormData, nextStep, prevStep, saveData, country, provstate, step }) => {
+export const Liu = ({ formData, setFormData, nextStep, prevStep, saveData, country, provstate, step, getSteps, setStep,
+open, setOpen }) => {
   const classes = useStyles();
-  const [direction, setDirection] = useState('back');
+  const [direction, setDirection] = React.useState('back');
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [completed, setCompleted] = React.useState({});
+  const steps = getSteps();
+
+  const totalSteps = () => {
+    return steps.length;
+  };
+
+  const handleStep = (num) => () => {
+    setStep(num);
+  };
 
   const theme = useTheme();
 
-  const [open, setOpen] = React.useState(true);
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') { return; }
     setOpen(false);
@@ -201,8 +215,8 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep, saveData, count
             ContactInformation_contact_PhoneNumbers_Phone_ActualNumber, ContactInformation_contact_PhoneNumbers_AltPhone_ActualNumber,
             ContactInformation_contact_PhoneNumbers_FaxEmail_Phone_ActualNumber)
               .then(() => {
-                if (direction === 'back') { prevStep() }
-                else if (direction === 'forward') { nextStep() }
+                if (direction === 'back') { prevStep(); setOpen(true) }
+                else if (direction === 'forward') { nextStep(); setOpen(true) }
                 else { setOpen(true) }
               })
         }}
@@ -215,15 +229,28 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep, saveData, count
         <div className="mb-sm-30">
           <Breadcrumb routeSegments={[{ name: "Temporary Resident Visa" }]} />
         </div>
+        {isMobile() === false && (
+        <div>
+        <Stepper nonLinear activeStep={step-1}>
+        {steps.map((label, index) => (
+          <Step key={label}>
+            <StepButton onClick={handleStep(index+1)} completed={completed[index]}>
+              {label}
+            </StepButton>
+          </Step>
+        ))}
+      </Stepper>
+      </div>
+      )}
       <Form>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container spacing={2}>
-        <Grid item xs={9} md={6}>
+        <Grid item xs={9} md={11}>
           <Typography variant="h6" gutterBottom>
             Current Mailing Address
           </Typography>
         </Grid>
-        <Grid item xs={3} md={6}>
+        <Grid item xs={3} md={1}>
           <Button type='submit' variant='contained' color='primary' className={classes.button} onClick={() => setDirection('stay')} >
             Save
           </Button>
@@ -792,23 +819,34 @@ export const Liu = ({ formData, setFormData, nextStep, prevStep, saveData, count
                 helperText={touched.ContactInformation_contact_PhoneNumbers_FaxEmail_Email && errors.ContactInformation_contact_PhoneNumbers_FaxEmail_Email}
               />
           </Grid>
-          <Grid item xs={12}>
-            {isMobile() === true && (
-            <MobileStepper
-              variant="progress" steps={10} position="static" activeStep={step-1} className={classes.root}
-              nextButton={
-                <Button type='submit' size="small" onClick={() => setDirection('forward')} disabled={step === 11}>
-                  Next {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-                </Button>
-              }
-              backButton={
-                <Button size="small" onClick={prevStep} disabled={step === 0}>
-                  {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />} Back
-                </Button>
-              }
-            />
+          {isMobile() === false && (
+            <Grid item xs={12}>
+              <Button type='submit' variant='contained' color='secondary' 
+                className={classes.button} onClick={() => setDirection('back')} >
+                Back
+              </Button>
+              <Button type='submit' variant='contained' color='primary' 
+                className={classes.button} onClick={() => setDirection('forward')}>
+                Continue
+              </Button>
+            </Grid>
             )}
-          </Grid>
+            {isMobile() === true && (
+            <Grid item xs={12}>
+              <MobileStepper
+                variant="progress" steps={10} position="static" activeStep={step-1} className={classes.root}
+                nextButton={
+                  <Button type='submit' size="small" onClick={() => setDirection('forward')} disabled={step === 11}>
+                    Next {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                  </Button>
+                }
+                backButton={
+                  <Button size="small" onClick={prevStep} disabled={step === 0}>
+                    {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />} Back
+                  </Button>
+                } />
+            </Grid>
+            )}
           </Grid>
         </MuiPickersUtilsProvider>
         </Form>

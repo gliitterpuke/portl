@@ -273,23 +273,34 @@ export const Jiu = ({ formData, setFormData, nextStep, prevStep, saveData, count
             />
         </Grid>
         )}
-        <Grid item xs={12}>
-          {isMobile() === true && (
-          <MobileStepper
-            variant="progress" steps={10} position="static" activeStep={step-1} className={classes.root}
-            nextButton={
-              <Button type='submit' size="small" onClick={() => setDirection('forward')} disabled={step === 11}>
-                Next {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+            {isMobile() === false && (
+            <Grid item xs={12}>
+              <Button type='submit' variant='contained' color='secondary' 
+                className={classes.button} onClick={() => setDirection('back')} >
+                Back
               </Button>
-            }
-            backButton={
-              <Button size="small" onClick={prevStep} disabled={step === 0}>
-                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />} Back
+              <Button type='submit' variant='contained' color='primary' 
+                className={classes.button} onClick={() => setDirection('forward')}>
+                Continue
               </Button>
-            }
-          />
-          )}
-        </Grid>
+            </Grid>
+            )}
+            {isMobile() === true && (
+            <Grid item xs={12}>
+              <MobileStepper
+                variant="progress" steps={6} position="static" activeStep={step-1} className={classes.root}
+                nextButton={
+                  <Button type='submit' size="small" onClick={() => setDirection('forward')} disabled={step === 7}>
+                    Next {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                  </Button>
+                }
+                backButton={
+                  <Button size="small" onClick={prevStep} disabled={step === 0}>
+                    {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />} Back
+                  </Button>
+                } />
+            </Grid>
+            )}
           </Grid>
         </MuiPickersUtilsProvider>
         </Form>

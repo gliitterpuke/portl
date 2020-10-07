@@ -17,7 +17,10 @@ import {
   MenuItem,
   FormControl,
   Snackbar,
-  MobileStepper
+  MobileStepper,
+  Stepper,
+  Step,
+  StepButton
 } from "@material-ui/core";
 import MuiAlert from '@material-ui/lab/Alert';
 import {
@@ -127,13 +130,24 @@ const validationSchema = yup.object({
       otherwise: yup.date() }),
 });
 
-export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp, saveData, country, step }) => {
+export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp, saveData, country, step, getSteps, setStep,
+  open, setOpen }) => {
   const classes = useStyles();
   const [direction, setDirection] = useState('back');
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [completed, setCompleted] = React.useState({});
+  const steps = getSteps();
+  
+  const totalSteps = () => {
+    return steps.length;
+  };
+
+  const handleStep = (num) => () => {
+    setStep(num);
+  };
 
   const theme = useTheme();
 
-  const [open, setOpen] = React.useState(true);
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') { return; }
     setOpen(false);
@@ -158,8 +172,8 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp, save
           saveData(values, PersonalDetails_CurrentCOR_Row2_Country, PersonalDetails_PreviousCOR_Row2_Country, 
             PersonalDetails_PreviousCOR_Row3_Country, PersonalDetails_CountryWhereApplying_Row2_Country)
             .then(() => {
-              if (direction === 'back') { prevStep() }
-              else if (direction === 'forward') { nextStep() }
+              if (direction === 'back') { prevStep(); setOpen(true) }
+              else if (direction === 'forward') { nextStep(); setOpen(true) }
               else { setOpen(true) }
             })
         }}
@@ -171,6 +185,19 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp, save
         <div className="mb-sm-30">
           <Breadcrumb routeSegments={[{ name: "Temporary Resident Visa" }]} />
         </div>
+        {isMobile() === false && (
+        <div>
+        <Stepper nonLinear activeStep={step-1}>
+        {steps.map((label, index) => (
+          <Step key={label}>
+            <StepButton onClick={handleStep(index+1)} completed={completed[index]}>
+              {label}
+            </StepButton>
+          </Step>
+        ))}
+      </Stepper>
+      </div>
+      )}
       <Form>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Grid container spacing={2}>
@@ -496,12 +523,24 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp, save
               helperText={touched.PersonalDetails_CountryWhereApplying_Row2_ToDate && errors.PersonalDetails_CountryWhereApplying_Row2_ToDate} />
           </Grid>
           )}
+            {isMobile() === false && (
             <Grid item xs={12}>
-              {isMobile() === true && (
+              <Button type='submit' variant='contained' color='secondary' 
+                className={classes.button} onClick={() => setDirection('back')} >
+                Back
+              </Button>
+              <Button type='submit' variant='contained' color='primary' 
+                className={classes.button} onClick={() => setDirection('forward')}>
+                Continue
+              </Button>
+            </Grid>
+            )}
+            {isMobile() === true && (
+            <Grid item xs={12}>
               <MobileStepper
-                variant="progress" steps={10} position="static" activeStep={step-1} className={classes.root}
+                variant="progress" steps={6} position="static" activeStep={step-1} className={classes.root}
                 nextButton={
-                  <Button type='submit' size="small" onClick={() => setDirection('forward')} disabled={step === 11}>
+                  <Button type='submit' size="small" onClick={() => setDirection('forward')} disabled={step === 7}>
                     Next {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
                   </Button>
                 }
@@ -509,10 +548,9 @@ export const Er = ({ formData, setFormData, nextStep, prevStep, currentApp, save
                   <Button size="small" onClick={prevStep} disabled={step === 0}>
                     {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />} Back
                   </Button>
-                }
-              />
-              )}
+                } />
             </Grid>
+            )}
           </Grid>
         </MuiPickersUtilsProvider>
         </Form>

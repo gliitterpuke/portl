@@ -169,8 +169,20 @@ export const Si = ({ formData, setFormData, nextStep, prevStep, saveData, langua
                 <ErrorMessage name="MaritalStatus_SectionA_Languages_LanguageTest" />
             </div>
           </Grid>
-          <Grid item xs={12}>
-              {isMobile() === true && (
+          {isMobile() === false && (
+            <Grid item xs={12}>
+              <Button type='submit' variant='contained' color='secondary' 
+                className={classes.button} onClick={() => setDirection('back')} >
+                Back
+              </Button>
+              <Button type='submit' variant='contained' color='primary' 
+                className={classes.button} onClick={() => setDirection('forward')}>
+                Continue
+              </Button>
+            </Grid>
+            )}
+            {isMobile() === true && (
+            <Grid item xs={12}>
               <MobileStepper
                 variant="progress" steps={10} position="static" activeStep={step-1} className={classes.root}
                 nextButton={
@@ -182,10 +194,9 @@ export const Si = ({ formData, setFormData, nextStep, prevStep, saveData, langua
                   <Button size="small" onClick={prevStep} disabled={step === 0}>
                     {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />} Back
                   </Button>
-                }
-              />
-              )}
+                } />
             </Grid>
+            )}
           </Grid>
         </MuiPickersUtilsProvider>
         </Form>

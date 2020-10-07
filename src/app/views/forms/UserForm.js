@@ -1,13 +1,13 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { Yi } from './Yi'; // Personal Info
+import { Yi } from './Yi'; // Personal, Marital, Languages
 import { Er } from './Er'; // Countries
-import { San } from './San'; // Marital
-import { Si } from './Si'; // Languages
-import { Wu } from './Wu'; // IDs
+// import { San } from './San'; // Marital
+// import { Si } from './Si'; // Languages
+import { Wu } from './Wu'; // IDs, Visit Details
 import { Liu } from './Liu'; // Contact Info
-import { Qi } from './Qi'; // Visit Details
-import { Ba } from './Ba'; // Employment
-import { Jiu } from './Jiu'; // Education
+// import { Qi } from './Qi'; // Visit Details
+import { Ba } from './Ba'; // Employment, Education
+// import { Jiu } from './Jiu'; // Education
 import { Shi } from './Shi'; // Background
 import { QueDing } from './QueDing';
 import { Success } from './Success';
@@ -234,6 +234,24 @@ export const UserForm = (props) => {
   const nextStep = () => setStep(prev => prev + 1);
   const prevStep = () => setStep(prev => prev - 1);
 
+  function getSteps() {
+    return ['Personal', 'Contact', 'Residential History', 'Travel Information', 
+      'Education and Employment', 'Background Info'];
+  }
+  
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return 'Step 1: Select campaign settings...';
+      case 1:
+        return 'Step 2: What is an ad group anyways?';
+      case 2:
+        return 'Step 3: This is the bit I really care about!';
+      default:
+        return 'Unknown step';
+    }
+  }
+
   useLayoutEffect(() => {
     axios.get("users/me/form/load", { params: { return_dict: true }})
       .then((res) => {
@@ -322,7 +340,8 @@ export const UserForm = (props) => {
     values.BackgroundInfo_Choice = JSON.parse(values.BackgroundInfo_Choice)
   }
   
-  
+  const [open, setOpen] = React.useState(false);
+
   switch (step) {
     case 1:
       return (
@@ -335,61 +354,15 @@ export const UserForm = (props) => {
           prevStep={prevStep}
           citizenship={citizenship}
           countryofbirth={countryofbirth}
+          languages={languages}
           step={step}
+          getSteps={getSteps}
+          setStep={setStep}
+          open={open}
+          setOpen={setOpen}
         />
       );
     case 2:
-        return (
-          <Er
-            saveData = {saveData}
-            currentApp = {props.location.state}
-            formData={formData}
-            setFormData={setFormData}
-            nextStep={nextStep}
-            prevStep={prevStep}
-            country={country}
-            step={step}
-          />
-        );
-    case 3:
-      return (
-        <San
-          saveData = {saveData}
-          currentApp = {props.location.state}
-          formData={formData}
-          setFormData={setFormData}
-          nextStep={nextStep}
-          prevStep={prevStep}
-          step={step}
-        />
-      );
-    case 4:
-      return (
-        <Si
-          saveData = {saveData}
-          currentApp = {props.location.state}
-          formData={formData}
-          setFormData={setFormData}
-          nextStep={nextStep}
-          prevStep={prevStep}
-          languages={languages}
-          step={step}
-        />
-      );
-    case 5:
-      return (
-        <Wu
-          saveData = {saveData}
-          currentApp = {props.location.state}
-          formData={formData}
-          setFormData={setFormData}
-          nextStep={nextStep}
-          prevStep={prevStep}
-          traveldoc={traveldoc}
-          step={step}
-        />
-      );
-    case 6:
       return (
         <Liu
           saveData = {saveData}
@@ -401,21 +374,47 @@ export const UserForm = (props) => {
           country={country}
           provstate={provstate}
           step={step}
+          getSteps={getSteps}
+          setStep={setStep}
+          open={open}
+          setOpen={setOpen}
         />
       );
-    case 7:
+    case 3:
+        return (
+          <Er
+            saveData = {saveData}
+            currentApp = {props.location.state}
+            formData={formData}
+            setFormData={setFormData}
+            nextStep={nextStep}
+            prevStep={prevStep}
+            country={country}
+            step={step}
+            getSteps={getSteps}
+            setStep={setStep}
+            open={open}
+            setOpen={setOpen}
+          />
+        );
+    case 4:
       return (
-        <Qi
+        <Wu
           saveData = {saveData}
           currentApp = {props.location.state}
           formData={formData}
           setFormData={setFormData}
           nextStep={nextStep}
           prevStep={prevStep}
+          traveldoc={traveldoc}
           step={step}
+          getSteps={getSteps}
+          setStep={setStep}
+          open={open}
+          setOpen={setOpen}
         />
       );
-    case 8:
+    case 5:
       return (
         <Ba
           saveData = {saveData}
@@ -427,23 +426,13 @@ export const UserForm = (props) => {
           country={country}
           provstate={provstate}
           step={step}
+          getSteps={getSteps}
+          setStep={setStep}
+          open={open}
+          setOpen={setOpen}
         />
       );
-    case 9:
-      return (
-        <Jiu
-          saveData = {saveData}
-          currentApp = {props.location.state}
-          formData={formData}
-          setFormData={setFormData}
-          nextStep={nextStep}
-          prevStep={prevStep}
-          country={country}
-          provstate={provstate}
-          step={step}
-        />
-      );
-    case 10:
+    case 6:
       return (
         <Shi
           saveData = {saveData}
@@ -453,16 +442,22 @@ export const UserForm = (props) => {
           nextStep={nextStep}
           prevStep={prevStep}
           step={step}
+          getSteps={getSteps}
+          setStep={setStep}
+          open={open}
+          setOpen={setOpen}
         />
       );
-    case 11:
+    case 7:
       return (
         <QueDing 
           saveData = {saveData} 
           currentApp = {props.location.state} 
           formData={formData} 
           nextStep={nextStep} 
-          prevStep={prevStep} />
+          prevStep={prevStep}
+          open={open}
+          setOpen={setOpen} />
       );
     default:
       return <Success />;
