@@ -356,7 +356,8 @@ class ClientApplication extends Component {
     return (
       <React.Fragment>
       <JoyRide
-        steps={steps} continuous={true} showSkipButton={true} scrollToFirstStep={true} disableScrolling={false}
+        steps={steps} continuous={true} showSkipButton={true} disableScrolling={false}
+        // scrollToFirstStep={true} 
         styles={{ tooltipContainer: { textAlign: "left" },
           buttonNext: { backgroundColor: "green" },
           buttonBack: { marginRight: 10 }
@@ -656,7 +657,7 @@ class ClientApplication extends Component {
             />
           </Grid>
           {!mobile && (
-            <Grid item md={2}>
+            <Grid item md={2} >
               <QRCode
                 data={`https://portlfe.herokuapp.com/session/fileupload?${token}?${user.id}?${state.id}`}
                 size={115} className="qr-upload"
