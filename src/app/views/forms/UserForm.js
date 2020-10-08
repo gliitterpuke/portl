@@ -456,6 +456,7 @@ export const UserForm = (props) => {
           formData={formData} 
           nextStep={nextStep} 
           prevStep={prevStep}
+          step={step}
           open={open}
           setOpen={setOpen} />
       );

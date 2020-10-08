@@ -115,7 +115,8 @@ const validationSchema = yup.object({
       .required('Address in Canada required'),
 });
 
-export const Wu = ({ formData, setFormData, nextStep, prevStep, saveData, traveldoc, step, getSteps, setStep }) => {
+export const Wu = ({ formData, setFormData, nextStep, prevStep, saveData, traveldoc, step, getSteps, setStep,
+  open, setOpen }) => {
   const classes = useStyles();
   const [direction, setDirection] = React.useState('back');
   const [activeStep, setActiveStep] = React.useState(0);
@@ -128,7 +129,6 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep, saveData, travel
 
   const theme = useTheme();
 
-  const [open, setOpen] = React.useState(true);
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') { return; }
     setOpen(false);

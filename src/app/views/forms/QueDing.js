@@ -31,17 +31,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
+export const QueDing = ({ formData, prevStep, nextStep, currentApp, open, setOpen }) => {
   const classes = useStyles();
   const [loading, setLoading] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
+    if (reason === 'clickaway') { return; }
     setOpen(false);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') { return; }
+    setOpenSnackbar(false);
   };
   const fieldRef = React.useRef(null);
   React.useEffect(() => {
@@ -418,7 +420,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
  }
   const handleSubmit = (event) => {
     setLoading(true);
-    setOpen(true)
+    setOpenSnackbar(true)
     let user = localStorageService.getItem("auth_user")
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
@@ -1321,11 +1323,18 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp }) => {
             Submit
           </Button>
           {loading && <CircularProgress size={24} className={classes.buttonProgress}  />}
-          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} >
-            <Alert onClose={handleClose} className={classes.snack}>
+          <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} >
+            <Alert onClose={handleCloseSnackbar} className={classes.snack}>
               Please wait for the file to finish uploading before leaving the page!
             </Alert>
           </Snackbar>
+          <Snackbar open={open} autoHideDuration={1000} onClose={handleClose} 
+            style={{ height: "100%" }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+            <Alert onClose={handleClose} className={classes.snack}>
+              Saved!
+            </Alert>
+          </Snackbar> 
           </Grid>
           </Grid>
         </SimpleCard>

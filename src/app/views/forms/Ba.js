@@ -165,7 +165,8 @@ const validationSchema = yup.object({
       otherwise: yup.string() }),
 });
 
-export const Ba = ({ formData, setFormData, nextStep, prevStep, saveData, country, provstate, step, getSteps, setStep }) => {
+export const Ba = ({ formData, setFormData, nextStep, prevStep, saveData, country, provstate, step, getSteps, setStep,
+  open, setOpen }) => {
   const classes = useStyles();
   const [direction, setDirection] = React.useState('back');
   const [activeStep, setActiveStep] = React.useState(0);
@@ -178,7 +179,6 @@ export const Ba = ({ formData, setFormData, nextStep, prevStep, saveData, countr
 
   const theme = useTheme();
 
-  const [open, setOpen] = React.useState(true);
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') { return; }
     setOpen(false);
