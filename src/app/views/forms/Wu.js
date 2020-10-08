@@ -135,7 +135,7 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep, saveData, travel
   };
   const fieldRef = React.useRef(null);
   React.useEffect(() => {
-    fieldRef.current.scrollIntoView();
+    window.scrollTo(0,0)
   }, []);
   return (
     <>
@@ -158,7 +158,7 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep, saveData, travel
       >
         {({ errors, touched, values }) => (
 
-      <div className="upload-form m-sm-30"  ref={fieldRef}>
+      <div className="upload-form m-sm-30">
       <SimpleCard>
         <div className="mb-sm-30">
           <Breadcrumb routeSegments={[{ name: "Temporary Resident Visa" }]} />

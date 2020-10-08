@@ -47,7 +47,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp, open, setOpe
   };
   const fieldRef = React.useRef(null);
   React.useEffect(() => {
-    fieldRef.current.scrollIntoView();
+    window.scrollTo(0,0)
   }, []);
   const { 
     PersonalDetails_ServiceIn_ServiceIn,
@@ -446,7 +446,7 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp, open, setOpe
 }
   return (
     <>
-      <div className="upload-form m-sm-30"  ref={fieldRef}>
+      <div className="upload-form m-sm-30">
       <SimpleCard>
         <div className="mb-sm-30">
           <Breadcrumb routeSegments={[{ name: "Temporary Resident Visa" }]} />
