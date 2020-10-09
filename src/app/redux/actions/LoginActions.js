@@ -20,7 +20,10 @@ export function loginWithEmailAndPassword({ username, password }) {
       .loginWithEmailAndPassword(username, password)
       .then(user => {
         dispatch(setUserData(user))
-          history.push('/profile');
+          setTimeout(
+            () => history.push('/profile'), 
+            1000
+          );
         
         return dispatch({
           type: LOGIN_SUCCESS

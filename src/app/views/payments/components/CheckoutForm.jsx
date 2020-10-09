@@ -419,7 +419,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
     stripe.confirmAlipayPayment(clientSecret.client_secret,
       {
         return_url: `${window.location.href}?product=${prod}&`,
-        receipt_email: ev.target.email.value,
+        receipt_email: user.email,
         payment_method: paymentMethodReq.paymentMethod.id
       });
   }

@@ -182,6 +182,9 @@ class ClientForm extends Component {
           <Card elevation={6} className="pricing__card px-20 pt-10 pb-10">
           <br /><br />
           <Grid container spacing={2}>
+            <Grid item xs={12} lg={10} md={10}>
+              <h7>Applications</h7>
+            </Grid>
             {isApp && (
             <Grid item xs={12} lg={2} md={2}>
               <Link to={`/products`}>
