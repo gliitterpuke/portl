@@ -21,6 +21,10 @@ const checkJwtAuth = async setUserData => {
   else if (window.location.href.match("/session/signup")) {
     history.push(getLastItem(window.location.href))
   }
+  // for demo
+  else if (window.location.href.match("/session/demo")) {
+    history.push(getLastItem(window.location.href))
+  }
   else if (user) {setUserData(user)}
   else
     history.push({
@@ -38,10 +42,14 @@ const Auth = ({ children, setUserData, getNavigationByUser }) => {
     if (window.location.href.match("/session/forgot-password")) {
       history.push(getLastItem(window.location.href))
     }
-    else if (window.location.href.match("/session/file")) {
+    else if (window.location.href.match("/session/")) {
       history.push(getLastItem(window.location.href))
     }
     else if (window.location.href.match("/session/signup")) {
+      history.push(getLastItem(window.location.href))
+    }
+    // for demo
+    else if (window.location.href.match("/session/demo")) {
       history.push(getLastItem(window.location.href))
     }
     getNavigationByUser();

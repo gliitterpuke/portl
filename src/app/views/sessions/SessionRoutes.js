@@ -59,6 +59,12 @@ const sessionRoutes = [
     component: React.lazy(() => import("./FileChange")),
     settings
   },
+  // for demo
+  {
+    path: "/session/demo",
+    component: React.lazy(() => import("./Demo")),
+    settings
+  },
 ];
 
 export default sessionRoutes;
