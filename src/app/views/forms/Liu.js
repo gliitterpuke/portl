@@ -141,7 +141,7 @@ open, setOpen }) => {
   };
   const fieldRef = React.useRef(null);
   React.useEffect(() => {
-    window.scrollTo(0,0)
+    document.getElementsByClassName("scrollable-content")[0].scrollTo(0,0)
   }, []);
   return (
     <>

@@ -19,7 +19,8 @@ import { ConfirmationDialog } from "matx";
 import { parseJSON } from "date-fns";
 import localStorageService from "../../services/localStorageService";
 import { withStyles } from "@material-ui/styles";
-import JoyRide from "react-joyride";
+import ReactJoyride, { ACTIONS, EVENTS, LIFECYCLE, STATUS } from "react-joyride";
+import PropTypes from "prop-types";
 
 let user = localStorageService.getItem("auth_user")
 
@@ -73,14 +74,49 @@ class ClientForm extends Component {
       },
       {
         target: ".new-app",
-        content:
-          "Start your first application!",
+        content: "Start your first application!",
       },
       {
         target: ".existing-app",
         content: "You can view your existing applications here",
       },
-    ]
+    ],
+    run: false
+  };
+
+  static propTypes = {
+    joyride: PropTypes.shape({
+      callback: PropTypes.func
+    })
+  };
+
+  static defaultProps = {
+    joyride: {}
+  };
+
+  handleClickStart = e => {
+    e.preventDefault();
+    this.setState({ run: true });
+  };
+
+  callback = (data) => {
+    const { joyride } = this.props;
+    const { type, index, lifecycle, action, step } = data;
+    if (type === EVENTS.TOUR_END && this.state.run) {
+      // Need to set our running state to false, so we can restart if we click start again.
+      this.setState({ run: false });
+    }
+
+    if (action === 'next' || 'start' ) {
+      document.getElementsByClassName(step.target.replace('.', ''))[0].scrollIntoView({
+        block: "center",
+        inline: "nearest"
+      })
+    } else {
+      console.group(type);
+      console.log(data); //eslint-disable-line no-console
+      console.groupEnd();
+    }
   };
 
   componentDidMount() {
@@ -104,18 +140,16 @@ class ClientForm extends Component {
   };
 
   handleDateChange = birth_date => {
-
     this.setState({ birth_date });
   };
+
   toggleClientEditor = () => {
-    this.setState({
-      showClientEditor: !this.state.showClientEditor,
-    });
+    this.setState({ showClientEditor: !this.state.showClientEditor, });
   };
 
   render() {
     const { classes } = this.props;
-    const { steps } = this.state
+    const { run, steps } = this.state
     let user = localStorageService.getItem("auth_user")
     let state = user.applications
     let isEmpty = user.applications.length === 0
@@ -123,14 +157,16 @@ class ClientForm extends Component {
 
     return (
       <React.Fragment>
-        <JoyRide
-          steps={steps} continuous={true} showSkipButton={true}
-          styles={{ tooltipContainer: { textAlign: "left" },
-            buttonNext: { backgroundColor: "green" },
-            buttonBack: { marginRight: 10 }
-          }}
-          locale={{ last: "End tour", skip: "Close tour" }}
+        <ReactJoyride
+          continuous scrollToFirstStep showSkipButton run={run} steps={steps}
+          styles={{ options: { zIndex: 10000 } }} callback={this.callback}
         />
+      <div className="m-sm-30">
+        <Card elevation={6} className="pricing__card px-20 pt-10 pb-10">
+          <h5>Click here to start the tour</h5>
+          <Button color="primary" variant="contained" onClick={this.handleClickStart}>Let's Go!</Button>
+        </Card>
+      </div>
         <div className="m-sm-30">
           <Card elevation={6} className="pricing__card px-20 pt-10 pb-10">
         {this.state.showClientEditor ? (
@@ -146,9 +182,6 @@ class ClientForm extends Component {
           <Card elevation={6} className="pricing__card px-20 pt-10 pb-10">
           <br /><br />
           <Grid container spacing={2}>
-            <Grid item xs={12} lg={10} md={10}>
-              <h7>Applications</h7>
-            </Grid>
             {isApp && (
             <Grid item xs={12} lg={2} md={2}>
               <Link to={`/products`}>

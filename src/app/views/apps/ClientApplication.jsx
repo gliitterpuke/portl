@@ -30,7 +30,7 @@ import { ValidatorForm, SelectValidator } from "react-material-ui-form-validator
 import { withStyles } from "@material-ui/styles";
 import { isMobile } from "utils";
 import QRCode from 'react-google-qrcode';
-import JoyRide from "react-joyride";
+import ReactJoyride, { ACTIONS, EVENTS, LIFECYCLE, STATUS } from "react-joyride";
 
 let user = localStorageService.getItem("auth_user")
 
@@ -76,6 +76,7 @@ class ClientApplication extends Component {
     mobile: isMobile(),
     open: false,
     scan: false,
+    run: false,
     steps: [
       {
         target: ".application",
@@ -94,10 +95,6 @@ class ClientApplication extends Component {
       {
         target: ".web-upload",
         content: "Click here to upload your files",
-      },
-      {
-        target: ".qr-upload",
-        content: "Scan this QR code to upload directly from your phone",
       },
       {
         target: ".tags-info",
@@ -120,6 +117,38 @@ class ClientApplication extends Component {
         content: "More moolah",
       },
     ]
+  };
+
+  static propTypes = {
+    joyride: PropTypes.shape({ callback: PropTypes.func })
+  };
+
+  static defaultProps = {
+    joyride: {}
+  };
+
+  handleClickStart = e => {
+    e.preventDefault();
+    this.setState({ run: true });
+  };
+
+  callback = (data) => {
+    const { joyride } = this.props;
+    const { type, index, lifecycle, action, step } = data;
+    if (type === EVENTS.TOUR_END && this.state.run) {
+      this.setState({ run: false });
+    }
+
+    if (action === 'next' || 'start' ) {
+      document.getElementsByClassName(step.target.replace('.', ''))[0].scrollIntoView({
+        block: "center",
+        inline: "nearest"
+      })
+    } else {
+      console.group(type);
+      console.log(data);
+      console.groupEnd();
+    }
   };
 
   handleTouchTap = (event) => {
@@ -345,7 +374,7 @@ class ClientApplication extends Component {
 
   render() {
     const { classes } = this.props;
-    let { dragClass, files, result, mobile, steps } = this.state;
+    let { dragClass, files, result, mobile, steps, run } = this.state;
     let isEmpty = files.length === 0;
     let user = localStorageService.getItem("auth_user")
     let state = user.applications.find (application => application.id === this.props.location.state);
@@ -355,16 +384,16 @@ class ClientApplication extends Component {
 
     return (
       <React.Fragment>
-      <JoyRide
-        steps={steps} continuous={true} showSkipButton={true} disableScrolling={false}
-        // scrollToFirstStep={true} 
-        styles={{ tooltipContainer: { textAlign: "left" },
-          buttonNext: { backgroundColor: "green" },
-          buttonBack: { marginRight: 10 }
-        }}
-        locale={{ last: "End tour", skip: "Close tour" }}
-      />
+        <ReactJoyride
+          continuous scrollToFirstStep showSkipButton run={run} steps={steps}
+          styles={{ options: { zIndex: 10000 } }} callback={this.callback}
+        />
       <div className="upload-form m-sm-30 application">
+        <SimpleCard elevation={6} className="pricing__card px-20 pt-10 pb-10">
+          <h5>Click here to start the tour</h5>
+          <Button color="primary" variant="contained" onClick={this.handleClickStart}>Let's Go!</Button>
+        </SimpleCard>
+        <br/>
         <SimpleCard>
         <div className="mb-sm-30">
           <Breadcrumb routeSegments={[{ name: `Application` }]} />
@@ -687,7 +716,7 @@ class ClientApplication extends Component {
             <div className="p-4">
               <Grid container spacing={2}>
                 <Grid item lg={4} md={4}>Name</Grid>
-                <Grid item lg={3} md={3}>Document</Grid>
+                <Grid item lg={3} md={3} className="tags-info">Document</Grid>
                 <Grid item lg={1} md={1}>Status</Grid>
                 <Grid item lg={4} md={4}> Actions </Grid>
               </Grid>
@@ -764,14 +793,14 @@ class ClientApplication extends Component {
           {isEmptyFiles && <p className="px-4">No files yet - upload one now!</p>}
           {state.blobs.map((doc) => (
         <Accordion className={classes.title}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} className="file-overview" >
             <Typography className={classes.heading}>{doc.tag}</Typography>
             <Typography className={classes.secondaryHeading}>{doc.filename}</Typography>
               <div className={classes.iconalign}>
-                <IconButton color="primary" className="mr-2" onClick={() => this.downloadFile(doc.id)} >
+                <IconButton color="primary" className="mr-2 download-file" onClick={() => this.downloadFile(doc.id)} >
                   <Icon>get_app</Icon>
                 </IconButton>
-                <IconButton color="primary" className="mr-2" onClick={() => this.handleViewClick(doc.id)} >
+                <IconButton color="primary" className="mr-2 see-file" onClick={() => this.handleViewClick(doc.id)} >
                   <Icon>chevron_right</Icon>
                 </IconButton>
                 <IconButton onClick={() => this.handleDeleteClick(doc)}>
@@ -805,7 +834,7 @@ class ClientApplication extends Component {
           </Typography>
           <br/>
           <div>
-            <Typography className="tags-info">
+            <Typography className="add-ons">
               View all add-on services including additional consultation, notarization, translation, and more!
             </Typography>
           </div>

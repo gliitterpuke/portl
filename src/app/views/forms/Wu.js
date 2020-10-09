@@ -135,7 +135,8 @@ export const Wu = ({ formData, setFormData, nextStep, prevStep, saveData, travel
   };
   const fieldRef = React.useRef(null);
   React.useEffect(() => {
-    window.scrollTo(0,0)
+    var elmnt = document.getElementsByClassName("scrollable-content");
+    elmnt[0].scrollTo(0,0);
   }, []);
   return (
     <>

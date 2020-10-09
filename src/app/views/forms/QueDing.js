@@ -47,7 +47,8 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp, open, setOpe
   };
   const fieldRef = React.useRef(null);
   React.useEffect(() => {
-    window.scrollTo(0,0)
+    var elmnt = document.getElementsByClassName("scrollable-content");
+    elmnt[0].scrollTo(0,0);
   }, []);
   const { 
     PersonalDetails_ServiceIn_ServiceIn,
