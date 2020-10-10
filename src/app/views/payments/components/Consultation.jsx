@@ -41,7 +41,7 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
     var query = window.location.search;
     var payment = query.match(/(?<=payment_intent_client_secret=)(.*)(?=\&product)/)
     const prod = window.location.search.match(/(?<=product=)(.*)(?=%3F)/)
-    const app = window.location.search.match(/(?<=app%3D)(.*)(?=\&)/)
+    const app = window.location.search.match(/(?<=app%3D)(.*?)(?=\&)/)
     const appindex = app[0]
     let user = localStorageService.getItem('auth_user')
     const appid = user.applications[appindex].id
@@ -60,9 +60,8 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
     if (response.paymentIntent && response.paymentIntent.status === 'succeeded') {
 
         const result = await axios.put(`applications/${appid}`, data)
-        console.log(result)
         let user = localStorageService.getItem("auth_user")
-        user.applications.push(result.data)
+        user.applications[appindex] = result.data
         localStorageService.setItem("auth_user", user)
         const notification = {
         title: `New add-on for Client ${result.data.client_id}`,
@@ -79,7 +78,7 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
     else if (response.paymentIntent && response.paymentIntent.status === 'requires_payment_method') {
         setAlipayingTo(false)
         alert('Payment failed; please re-select your product and try again')
-        this.props.history.goBack()
+        history.push('/profile')
     }
     else {
         console.log(response)
