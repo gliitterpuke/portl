@@ -13,6 +13,7 @@ import CheckoutError from "./prebuilt/CheckoutError";
 import history from "../../../../history";
 import localStorageService from "../../../services/localStorageService";
 import { Breadcrumb } from "matx"
+import QRCode from 'react-google-qrcode'
 
 let user = localStorageService.getItem('auth_user')
 
@@ -28,19 +29,68 @@ const CardElementContainer = styled.div`
 `;
 
 const Consultation = ({ price, onSuccessfulCheckout, props }) => {
-  const { app, rep, prod, appindex } = props.location.state
-    console.log(user.applications[appindex].products)
   const [isProcessing, setProcessingTo] = useState(false);
+  const [isAlipaying, setAlipayingTo] = useState(false);
   const [checkoutError, setCheckoutError] = useState();
   const [type, setType] = useState('none')
 
   const stripe = useStripe();
   const elements = useElements();
 
-  // TIP
-  // use the cardElements onChange prop to add a handler
-  // for setting any errors:
+  const alipayResponse = async ev => {
+    var query = window.location.search;
+    var payment = query.match(/(?<=payment_intent_client_secret=)(.*)(?=\&product)/)
+    const prod = window.location.search.match(/(?<=product=)(.*)(?=%3F)/)
+    const app = window.location.search.match(/(?<=app%3D)(.*)(?=\&)/)
+    const appindex = app[0]
+    let user = localStorageService.getItem('auth_user')
+    const appid = user.applications[appindex].id
 
+    const currentProd = [];
+    user.applications[appindex].products.forEach(function(obj){
+      currentProd.push(obj.id);
+      currentProd.push(prod[0])
+    })
+    const data = { 
+      status: "CLIENT_ACTION_REQUIRED",
+      products: currentProd
+    }
+    setAlipayingTo(true);
+    const response = await stripe.retrievePaymentIntent(payment[0])
+    if (response.paymentIntent && response.paymentIntent.status === 'succeeded') {
+
+        const result = await axios.put(`applications/${appid}`, data)
+        console.log(result)
+        let user = localStorageService.getItem("auth_user")
+        user.applications.push(result.data)
+        localStorageService.setItem("auth_user", user)
+        const notification = {
+        title: `New add-on for Client ${result.data.client_id}`,
+        description: `Client ${result.data.client_id}'s application has a new add-on!`,
+        category: "alert",
+        notify_at: new Date(),
+        go_to_path: `/calendar`,
+        recipient_id: result.data.professional_id
+        }
+        axios.post("notifications", notification)
+        alert('Payment successful - proceeding to your application')
+        history.push({pathname: `/event`, state: appid });
+    }
+    else if (response.paymentIntent && response.paymentIntent.status === 'requires_payment_method') {
+        setAlipayingTo(false)
+        alert('Payment failed; please re-select your product and try again')
+        this.props.history.goBack()
+    }
+    else {
+        console.log(response)
+    }
+    
+  }
+  window.onload = function () {
+    if (window.location.search.length > 0) {
+      alipayResponse()
+    }
+  }
   const handleCardDetailsChange = ev => {
     ev.error ? setCheckoutError(ev.error.message) : setCheckoutError();
   };
@@ -50,37 +100,13 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
   };
 
   const handleAlipayChange = async ev => {
-      const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
-        product_id: prod,
-        professional_id: 1
-      });
-
-      const data = { 
-        professional_id: rep,
-        product_id: prod,
-        language_code: "eng",
-        client_id: user.id
-      }
-
-      await stripe.confirmAlipayPayment(clientSecret.client_secret, {
-        return_url: window.location.href
-      }).then((res) => { 
-        axios.put("applications/", data).then(result => { 
-          let user = localStorageService.getItem("auth_user")
-          user.applications.push(result.data)
-          localStorageService.setItem("auth_user", user)
-          let secondstate = user.applications.find (application => application.id === result.data.id);
-          history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
-          alert('Payment successful - proceeding to your application')
-        })
-      }).catch(err => {
-        console.log(err)
-      })
-  
+    setType('alipay')
   };
 
   const handleFormSubmit = async ev => {
     ev.preventDefault();
+    let user = localStorageService.getItem('auth_user')
+    const { app, rep, prod, appindex } = props.location.state
 
     const billingDetails = {
       name: ev.target.name.value,
@@ -93,16 +119,16 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
       }
     };
 
-    setProcessingTo(true);
-
     const cardElement = elements.getElement("card");
+
+    const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
+      product_id: prod,
+      professional_id: 1
+    });
     
     try {
-      const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
-        product_id: prod,
-        professional_id: rep
-      });
-
+      if (type === 'card') {
+      setProcessingTo(true);
       const paymentMethodReq = await stripe.createPaymentMethod({
         type: "card",
         card: cardElement,
@@ -124,36 +150,65 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
         setProcessingTo(false);
         return;
       }
+
       const currentProd = [];
       user.applications[appindex].products.forEach(function(obj){
         currentProd.push(obj.id);
         currentProd.push(prod)
-        })
+      })
       const data = { 
         status: "CLIENT_ACTION_REQUIRED",
         products: currentProd
       }
-      console.log(data)
-      axios.put(`applications/${app}`, data).then(result => { 
-        console.log(result)
-        let user = localStorageService.getItem("auth_user")
-        user.applications[appindex] = result.data
-        localStorageService.setItem("auth_user", user)
-        const notification = {
-          title: `New add-on for Client ${result.data.client_id}`,
-          description: `Client ${result.data.client_id}'s application has a new add-on!`,
-          category: "alert",
-          notify_at: new Date(),
-          go_to_path: `/calendar`,
-          recipient_id: rep
-        }
-        axios.post("notifications", notification)
-        history.push({pathname: `/event`, state: app });
+
+      const result = await axios.put(`applications/${app}`, data)
+      let user = localStorageService.getItem("auth_user")
+      user.applications[appindex] = result.data
+      localStorageService.setItem("auth_user", user)
+      const notification = {
+        title: `New add-on for Client ${result.data.client_id}`,
+        description: `Client ${result.data.client_id}'s application has a new add-on!`,
+        category: "alert",
+        notify_at: new Date(),
+        go_to_path: `/calendar`,
+        recipient_id: rep
+      }
+      axios.post("notifications", notification)
+      history.push({pathname: `/event`, state: app });
           alert('Payment successful - proceeding to your application')
-    })
+  }
+
+  else if (type === 'alipay') {
+    
+    setAlipayingTo(true);
+      const { data: clientSecret } = await axios.post("payment/create-payment-intent", {
+        product_id: prod,
+        professional_id: 1
+      });
+
+      const paymentMethodReq = await stripe.createPaymentMethod({
+        type: "alipay",
+        billing_details: billingDetails
+      });
+
+      if (paymentMethodReq.error) {
+        setCheckoutError(paymentMethodReq.error.message);
+        setProcessingTo(false);
+        return;
+      }
+
+    stripe.confirmAlipayPayment(clientSecret.client_secret,
+      {
+        return_url: `${window.location.href}?product=${prod}?app=${appindex}&`,
+        receipt_email: user.email,
+        payment_method: paymentMethodReq.paymentMethod.id
+      });
+      
+  }
     } catch (err) {
       setCheckoutError(err.message);
     }
+  
   }
 
   const iframeStyles = {
@@ -201,19 +256,17 @@ const Consultation = ({ price, onSuccessfulCheckout, props }) => {
       </Row>
       {checkoutError && <CheckoutError>{checkoutError}</CheckoutError>}
       <Row>
-        {/* TIP always disable your submit button while processing payments */}
         <SubmitButton name="payment" value="card" onClick={handleCardChange} disabled={isProcessing || !stripe}>
-          {isProcessing ? "Processing..." : `Pay $100`}
+          {isProcessing ? "Processing..." : `Pay $200`}
         </SubmitButton>
       </Row>
-
-    </form>
       <Row>
-        {/* TIP always disable your submit button while processing payments */}
-        <SubmitButton name="payment" value="alipay" onClick={handleAlipayChange} disabled={isProcessing || !stripe}>
-          {isProcessing ? "Processing..." : `Alipay`}
+        <SubmitButton name="payment" value="alipay" onClick={handleAlipayChange} disabled={isAlipaying || !stripe}>
+          {isAlipaying ? "Processing..." : `Alipay`}
         </SubmitButton>
       </Row>
+    </form>
+
       </div>
   );
 };
