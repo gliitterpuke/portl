@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import {
-  Table,
   TableHead,
   TableRow,
   TableCell,
@@ -31,12 +30,18 @@ import { withStyles } from "@material-ui/styles";
 import { isMobile } from "utils";
 import QRCode from 'react-google-qrcode';
 import ReactJoyride, { ACTIONS, EVENTS, LIFECYCLE, STATUS } from "react-joyride";
+import bunny from "../others/bunny.png"
+import {Table, Thead, Tbody, Tr, Th, Td} from 'react-super-responsive-table'
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 
 let user = localStorageService.getItem("auth_user")
 
 const styles = theme => ({
   root: {
     width: '100%',
+  },
+  button: {
+    margin: theme.spacing(1)
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -55,11 +60,17 @@ const styles = theme => ({
     textAlign: "right",
     width: "100%",
   },
+  thAlign: {
+    textAlign: "left",
+  },
   title: {
     '&:nth-child(odd)': {
       backgroundColor: '#f2f2f2'
     }
-  }
+  },
+  max: {
+    maxWidth: "300px",
+  },
 });
 
 class ClientApplication extends Component {
@@ -79,14 +90,9 @@ class ClientApplication extends Component {
     run: false,
     steps: [
       {
-        target: ".application",
-        content: "You can see all of your application information here",
-        disableBeacon: true,
-      },
-      {
         target: ".fillable",
-        content:
-          "Here are all the forms we can help you fill out",
+        content: "Here are all the forms we can help you fill out",
+        disableBeacon: true,
       },
       {
         target: ".doc-checklist",
@@ -99,18 +105,6 @@ class ClientApplication extends Component {
       {
         target: ".tags-info",
         content: "Choose which category your file belongs to",
-      },
-      {
-        target: ".download-file",
-        content: "Download your file",
-      },
-      {
-        target: ".see-file",
-        content: "See file info and edit",
-      },
-      {
-        target: ".file-overview",
-        content: "General overview of your file",
       },
       {
         target: ".add-ons",
@@ -142,7 +136,6 @@ class ClientApplication extends Component {
     if (action === 'next' || 'start' ) {
       document.getElementsByClassName(step.target.replace('.', ''))[0].scrollIntoView({
         block: "center",
-        inline: "nearest"
       })
     } else {
       console.group(type);
@@ -169,6 +162,15 @@ class ClientApplication extends Component {
   componentDidMount() {
       this.setState({ ...user })
     };
+
+  clickMe = () => {
+    let user = localStorageService.getItem('auth_user')
+    let state = user.applications.find (application => application.id === this.props.location.state);
+    let index = user.applications.findIndex (application => application.id === this.props.location.state);
+    this.props.history.push({ pathname: `${this.props.location.state}/addons/`, 
+      rep: state.professional_id, app: state.id, appindex: index });
+    
+  };
 
   handleViewClick = fileId => {
     let user = localStorageService.getItem('auth_user')
@@ -388,16 +390,23 @@ class ClientApplication extends Component {
           continuous scrollToFirstStep showSkipButton run={run} steps={steps}
           styles={{ options: { zIndex: 10000 } }} callback={this.callback}
         />
-      <div className="upload-form m-sm-30 application">
+      <div className="upload-form m-sm-30">
         <SimpleCard elevation={6} className="pricing__card px-20 pt-10 pb-10">
-          <h5>Click here to start the tour</h5>
-          <Button color="primary" variant="contained" onClick={this.handleClickStart}>Let's Go!</Button>
+          <div className="mb-sm-30">
+            <Breadcrumb routeSegments={[{ name: `Application` }]} />
+          </div>
+          <Grid container spacing={2}>
+            <Grid item xs={4} md={2} className="hide-on-mobile">
+              <img src={bunny} height={150}/>
+            </Grid>
+            <Grid item xs={8} md={10} className="align-center">
+              <h5>Click here to start the tour</h5>
+              <Button color="primary" variant="contained" onClick={this.handleClickStart}>Let's Go!</Button>
+            </Grid>
+          </Grid>
         </SimpleCard>
         <br/>
         <SimpleCard>
-        <div className="mb-sm-30">
-          <Breadcrumb routeSegments={[{ name: `Application` }]} />
-        </div>
           <Typography variant="h6">
             Fillable Forms
           </Typography>
@@ -406,7 +415,7 @@ class ClientApplication extends Component {
           <Link to={{ pathname: `${this.props.location.state}/trv/`, state: state }}>
             <Button
               size="medium" variant="contained" color="primary" className="fillable">
-              TRV
+              IMM5257
             </Button>
           </Link>
           </div>
@@ -711,76 +720,62 @@ class ClientApplication extends Component {
           onSubmit={this.uploadSingleFile}
           onError={errors => null}
         >
-
-            <br/><br/>
-            <div className="p-4">
-              <Grid container spacing={2}>
-                <Grid item lg={4} md={4}>Name</Grid>
-                <Grid item lg={3} md={3} className="tags-info">Document</Grid>
-                <Grid item lg={1} md={1}>Status</Grid>
-                <Grid item lg={4} md={4}> Actions </Grid>
-              </Grid>
-            </div>
-            <Divider></Divider>
-
+          <Table >
+            <Thead>
+              <Tr className={classes.thAlign}>
+                <Th>Name</Th>
+                <Th className="tags-info">Category</Th>
+                <Th>Actions</Th>
+                <Th>Status</Th>
+              </Tr>
+            </Thead>
             {isEmpty && <p className="px-4">No files yet!</p>}
-
             {files.map((item, index) => {
-              let { file, uploading, error, success, scan } = item;
-              return (
-            <div className="px-4 py-4" key={file.name}>
-              <Grid container spacing={2} direction="row">
-                <Grid item lg={4} md={4} sm={12} xs={12}>
-                  {file.name}
-                </Grid>
-                <Grid item lg={3} md={3} sm={12} x={12}>
-                  <SelectValidator fullWidth onClick={this.handleSelectChange} name="result" value={result} validators={['required']}>
-                    <MenuItem value="passport">Passport</MenuItem>
-                    <MenuItem value="imm5707">IMM5707</MenuItem>
-                    <MenuItem value="imm5409">IMM5409</MenuItem>
-                    <MenuItem value="imm5476">IMM5476</MenuItem>
-                    <MenuItem value="imm5475">IMM5475</MenuItem>
-                    <MenuItem value="photo">Photos</MenuItem>
-                    <MenuItem value="financials">Proof of Financial Support</MenuItem>
-                    <MenuItem value="marriage">Marriage Documents</MenuItem>
-                    <MenuItem value="purpose">Purpose of Travel</MenuItem>
-                    <MenuItem value="immstatus">Current Immigration Status</MenuItem>
-                    <MenuItem value="custody">Custody Document/Letter of Authorization</MenuItem>
-                    <MenuItem value="other">Other</MenuItem>
-                  </SelectValidator>
-                </Grid>
-                <Grid item lg={1} md={1} sm={12} xs={12}>
-                  {error && <Icon color="error">error</Icon>}
-                  {uploading && <CircularProgress size={24} />}
-                  {success && <Icon className="text-green">done</Icon>}
-                </Grid>
-                <Grid item lg={2} md={1} sm={12} xs={12}>
-                  <div>
-                    <Button
-                      size="small" variant="contained" color="primary"
-                      onClick={() => this.scanFile(index)}
-                    >
-                      Scan
-                     </Button>
-                  </div>
-                </Grid>
-                <Grid item lg={2} md={1} sm={12} xs={12}>
-                  <div>
-                    <Button
-                      size="small" variant="contained" color="primary" type="submit"
-                    >
-                      Upload
-                     </Button>
-                  </div>
-                </Grid>
-                <Grid item xs={6}>
-                <img src={this.state.preview} />
-                </Grid>
-               </Grid>
-            </div>
-              );
-            })}
-            </ValidatorForm>
+            let { file, uploading, error, success, scan } = item;
+            return (
+          <Tbody key={file.name}>
+            <Tr>
+              <Td className="items-center">{file.name}</Td>
+              <Td>
+                <SelectValidator fullWidth onClick={this.handleSelectChange} name="result" value={result} validators={['required']}>
+                  <MenuItem value="passport">Passport</MenuItem>
+                  <MenuItem value="imm5707">IMM5707</MenuItem>
+                  <MenuItem value="imm5409">IMM5409</MenuItem>
+                  <MenuItem value="imm5476">IMM5476</MenuItem>
+                  <MenuItem value="imm5475">IMM5475</MenuItem>
+                  <MenuItem value="photo">Photos</MenuItem>
+                  <MenuItem value="financials">Proof of Financial Support</MenuItem>
+                  <MenuItem value="marriage">Marriage Documents</MenuItem>
+                  <MenuItem value="purpose">Purpose of Travel</MenuItem>
+                  <MenuItem value="immstatus">Current Immigration Status</MenuItem>
+                  <MenuItem value="custody">Custody Document/Letter of Authorization</MenuItem>
+                  <MenuItem value="other">Other</MenuItem>
+                </SelectValidator>
+              </Td>
+              <Td>
+                <Button
+                  size="small" variant="contained" color="primary" className={classes.button}
+                  onClick={() => this.scanFile(index)}
+                >
+                  Scan
+                 </Button>
+                <Button
+                  size="small" variant="contained" color="primary" type="submit" className={classes.button}
+                >
+                  Upload
+                 </Button>
+              </Td>
+              <Td>
+                {error && <Icon color="error">error</Icon>}
+                {uploading && <CircularProgress size={24} />}
+                {success && <Icon className="text-green">done</Icon>}
+              </Td>
+            </Tr>
+          </Tbody>
+          )})}
+        </Table>
+        <img src={this.state.preview} className={classes.max} />
+        </ValidatorForm>
             </div>
           </SimpleCard>
 
@@ -793,14 +788,14 @@ class ClientApplication extends Component {
           {isEmptyFiles && <p className="px-4">No files yet - upload one now!</p>}
           {state.blobs.map((doc) => (
         <Accordion className={classes.title}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />} className="file-overview" >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} >
             <Typography className={classes.heading}>{doc.tag}</Typography>
             <Typography className={classes.secondaryHeading}>{doc.filename}</Typography>
               <div className={classes.iconalign}>
-                <IconButton color="primary" className="mr-2 download-file" onClick={() => this.downloadFile(doc.id)} >
+                <IconButton color="primary" className="mr-2" onClick={() => this.downloadFile(doc.id)} >
                   <Icon>get_app</Icon>
                 </IconButton>
-                <IconButton color="primary" className="mr-2 see-file" onClick={() => this.handleViewClick(doc.id)} >
+                <IconButton color="primary" className="mr-2" onClick={() => this.handleViewClick(doc.id)} >
                   <Icon>chevron_right</Icon>
                 </IconButton>
                 <IconButton onClick={() => this.handleDeleteClick(doc)}>
@@ -827,19 +822,21 @@ class ClientApplication extends Component {
         />
 
         <br /><br />
-        <Link to={{ pathname: `${this.props.location.state}/addons/`, rep: state.professional_id, app: state.id, appindex: index }}>
         <SimpleCard elevation={6} className="w-full">
           <Typography variant="h6">
             Add-ons
           </Typography>
           <br/>
           <div>
-            <Typography className="add-ons">
+            <Typography>
               View all add-on services including additional consultation, notarization, translation, and more!
             </Typography>
+            <br/>
+            <Button variant="contained" color="primary" onClick={this.clickMe} className="add-ons">
+              Click here
+            </Button>
           </div>
         </SimpleCard>
-        </Link>
       </div>
       </React.Fragment>
     );

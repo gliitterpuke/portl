@@ -26,12 +26,12 @@ class ClientViewer extends Component {
 
     return (
       <React.Fragment>
-        <Grid container spacing={4}>
+        <Grid container spacing={2}>
           <Grid item xs={8} lg={10} md={10} sm={10}>
           <br/><br/>
-            <h7>Profile</h7>
+            <Typography variant="h6">Profile</Typography>
           </Grid>
-          <Grid item xs={2} lg={2} md={2}>
+          <Grid item xs={4} lg={2} md={2}>
           <br/><br/>
             <Button className="mr-4 py-2 edit-profile" variant="contained" color="primary" onClick={() => this.props.toggleClientEditor()} >
               <span className="pl-2 capitalize">Edit Profile</span>

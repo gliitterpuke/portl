@@ -60,7 +60,7 @@ class ClientEditor extends Component {
     } = this.state;
 
     return (
-      <div className="invoice-viewer py-4">
+      <div className="invoice-viewer">
         <ValidatorForm
           ref="form"
           onSubmit={this.handleSubmit}

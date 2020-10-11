@@ -5,7 +5,7 @@ import history from "history.js";
 
 class JwtAuthService {
   
-  loginWithEmailAndPassword = (username, password) => {
+  loginWithEmailAndPassword = async (username, password) => {
     const requestBody = {
         username: username,
         password: password
@@ -15,15 +15,15 @@ class JwtAuthService {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }
-    return axios.post(
+    const response = await axios.post(
         'http://127.0.0.1:8000/auth/token/',
         qs.stringify(requestBody),
         config
-    ).then((response) => {
-      this.setSession(response.data.access_token);
-      this.setUser(response.data.data);
-      return response
-    })
+    )
+    await this.setSession(response.data.access_token);
+    await this.setUser(response.data.data);
+    return response
+    
   };
   
   // Save user to localstorage

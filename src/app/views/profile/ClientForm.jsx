@@ -21,6 +21,7 @@ import localStorageService from "../../services/localStorageService";
 import { withStyles } from "@material-ui/styles";
 import ReactJoyride, { ACTIONS, EVENTS, LIFECYCLE, STATUS } from "react-joyride";
 import PropTypes from "prop-types";
+import bunny from "../others/bunny.png"
 
 let user = localStorageService.getItem("auth_user")
 
@@ -73,12 +74,8 @@ class ClientForm extends Component {
         disableBeacon: true,
       },
       {
-        target: ".new-app",
+        target: ".create-app",
         content: "Start your first application!",
-      },
-      {
-        target: ".existing-app",
-        content: "You can view your existing applications here",
       },
     ],
     run: false
@@ -162,13 +159,20 @@ class ClientForm extends Component {
           styles={{ options: { zIndex: 10000 } }} callback={this.callback}
         />
       <div className="m-sm-30">
-        <Card elevation={6} className="pricing__card px-20 pt-10 pb-10">
-          <h5>Click here to start the tour</h5>
-          <Button color="primary" variant="contained" onClick={this.handleClickStart}>Let's Go!</Button>
+        <Card elevation={6} className="pricing__card px-20 pt-5 pb-5">
+          <Grid container spacing={2}>
+            <Grid item xs={4} md={2} className="hide-on-mobile">
+              <img src={bunny} height={150}/>
+            </Grid>
+            <Grid item xs={8} md={10} className="align-center">
+              <h5>Click here to start the tour</h5>
+              <Button color="primary" variant="contained" onClick={this.handleClickStart}>Let's Go!</Button>
+            </Grid>
+          </Grid>
         </Card>
       </div>
         <div className="m-sm-30">
-          <Card elevation={6} className="pricing__card px-20 pt-10 pb-10">
+          <Card elevation={6} className="pricing__card px-20 pt-5 pb-5">
         {this.state.showClientEditor ? (
           <ClientEditor
             toggleClientEditor={this.toggleClientEditor}
@@ -179,16 +183,16 @@ class ClientForm extends Component {
       </Card>
       </div>
         <div className="m-sm-30">
-          <Card elevation={6} className="pricing__card px-20 pt-10 pb-10">
+          <Card elevation={6} className="pricing__card px-20 pt-5 pb-5">
           <br /><br />
           <Grid container spacing={2}>
             <Grid item xs={12} lg={10} md={10}>
-              <h7>Applications</h7>
+              <Typography variant="h6">Applications</Typography>
             </Grid>
             {isApp && (
             <Grid item xs={12} lg={2} md={2}>
               <Link to={`/products`}>
-                <Button color="primary" variant="contained" className="new-app">
+                <Button color="primary" variant="contained" className="create-app">
                   <span className={classes.iconalign}>Create New App</span>
                 </Button>
               </Link>
@@ -216,7 +220,7 @@ class ClientForm extends Component {
               <Typography className={classes.secondaryHeading}>{application.status.replace("CLIENT_ACTION_REQUIRED", "In Progress")}</Typography>
                 <div className={classes.iconalign}>
                 <IconButton
-                  color="primary" onClick={() => this.handleViewClick(application.id)} className="existing-app"
+                  color="primary" onClick={() => this.handleViewClick(application.id)}
                 >
                   <Icon>chevron_right</Icon>
                 </IconButton>

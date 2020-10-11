@@ -9,14 +9,12 @@ import {
   TableCell,
   TableBody,
   IconButton,
-  Card,
   Typography,
   Fab,
   Grid,
   CircularProgress
 } from "@material-ui/core";
 import { ValidatorForm } from "react-material-ui-form-validator";
-import { parseJSON } from "date-fns";
 import { withRouter } from "react-router-dom";
 import axios from "axios"
 import localStorageService from "../../services/localStorageService"
@@ -76,7 +74,6 @@ class ClientFileViewer extends Component {
   }
 
   downloadFile = () => {
-    let file = this.state.files[0];
     const auth = {
       headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} 
     }
@@ -84,8 +81,8 @@ class ClientFileViewer extends Component {
     const appid = this.state.application_id
     const tags = this.state.tag
     const mime_type = this.state.mime_type
-    const filetype = mime_type.match(/[^\/]+$/)[0]
-    const key = user.id + "/" + appid + "/" + tags + "." + filetype
+    const filetype = mime_type.match(/[^/]+$/)[0]
+    const key = `${user.id}/${appid}/${tags}.${filetype}`
     
     if (filetype === "json") {
       const appid = this.state.application_id
