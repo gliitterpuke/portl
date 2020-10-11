@@ -12,15 +12,12 @@ import { exportAllEvents, exportFutureEvents, getAllEvents, updateEvent } from "
 import EventEditorDialog from "./EventEditorDialog";
 
 import globalize from "globalize";
-import axios from "axios"
 
 const localizer = globalizeLocalizer(globalize);
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 let viewList = Object.keys(Views).map(key => Views[key]);
-
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class MatxCalendar extends Component {
   state = {
     events: [],
@@ -41,9 +38,14 @@ class MatxCalendar extends Component {
     getAllEvents()
       .then(res => res.data)
       .then(events => {
+        // convert start + end time to js Date
+        events.forEach(function (element, index) {
+          events[index].starts_at = new Date(element.starts_at+"Z")
+        }, events);
+        events.forEach(function (element, index) {
+          events[index].ends_at = new Date(element.ends_at+"Z")
+        }, events)
         this.setState({ events });
-      }).then (() => {
-        console.log(this.state.events)
       })
   };
 
