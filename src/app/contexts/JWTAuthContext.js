@@ -164,8 +164,7 @@ export const AuthProvider = ({ children }) => {
             },
           });
         } else {
-          history.push('/session/signin')
-
+                    
           dispatch({
             type: "INIT",
             payload: {
