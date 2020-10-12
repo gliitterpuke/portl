@@ -40,6 +40,10 @@ const JwtLogin = () => {
 
   const classes = useStyles();
 
+  const demoPage = () => {
+    history.push("/session/demo")
+  };
+
   const handleChange = ({ target: { name, value } }) => {
     let temp = { ...userInfo };
     temp[name] = value;
@@ -106,7 +110,7 @@ const JwtLogin = () => {
                   validators={["required"]}
                   errorMessages={["this field is required"]}
                 />
-                <FormControlLabel
+                {/* <FormControlLabel
                   className="mb-3 min-w-288"
                   name="agreement"
                   onChange={handleChange}
@@ -121,8 +125,8 @@ const JwtLogin = () => {
                       checked={userInfo.agreement || true}
                     />
                   }
-                  label="Remeber me"
-                />
+                  label="Remember me"
+                /> */}
 
                 {message && <p className="text-error">{message}</p>}
 
@@ -156,6 +160,12 @@ const JwtLogin = () => {
                   onClick={() => history.push("/session/forgot-password")}
                 >
                   Forgot password?
+                </Button>
+                <Button
+                  className="text-primary"
+                  onClick ={demoPage}
+                >
+                  Demo set-up
                 </Button>
               </ValidatorForm>
             </div>
