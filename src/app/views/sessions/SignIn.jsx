@@ -1,157 +1,169 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import {
   Card,
+  Checkbox,
+  FormControlLabel,
   Grid,
   Button,
-  CircularProgress
+  CircularProgress,
 } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-import axios from "axios";
-import localStorageService from "../../services/localStorageService";
-import history from "../../../history"
 
-import { loginWithEmailAndPassword } from "../../redux/actions/LoginActions";
+import { makeStyles } from "@material-ui/core/styles";
+import history from "history.js";
+import clsx from "clsx";
+import useAuth from 'app/hooks/useAuth';
 
-let user = localStorageService.getItem('auth_user')
-if (!localStorage.getItem("access_token")) {
-}
-else  {
-  history.push('/profile')
-}
-
-const styles = theme => ({
-  wrapper: {
-    position: "relative"
+const useStyles = makeStyles(({ palette, ...theme }) => ({
+  cardHolder: {
+    background: "#1A2038",
   },
-
+  card: {
+    maxWidth: 800,
+    borderRadius: 12,
+    margin: "1rem",
+  },
   buttonProgress: {
     position: "absolute",
     top: "50%",
     left: "50%",
     marginTop: -12,
-    marginLeft: -12
-  }
-});
+    marginLeft: -12,
+  },
+}));
 
-class SignIn extends Component {
-  state = {
-    username: "katherinewwang@gmail.com",
-    password: "test",
+const JwtLogin = () => {
+  const [loading, setLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState({email: "katherinewwang@gmail.com", password: 'test'});
+  const [message, setMessage] = useState('');
+  const { login } = useAuth();
+
+  const classes = useStyles();
+
+  const handleChange = ({ target: { name, value } }) => {
+    let temp = { ...userInfo };
+    temp[name] = value;
+    setUserInfo(temp);
   };
-  handleChange = event => {
-    event.persist();
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  };
-  handleFormSubmit = event => {
-    this.props.loginWithEmailAndPassword({ ...this.state })
-  }
-  clickMe = async (e) => {
-    history.push('/session/demo')
+
+  const handleFormSubmit = async (event) => {
+    setLoading(true);
+    try {
+      await login(userInfo.email, userInfo.password);
+      history.push("/profile");
+    } catch(e) {
+      console.log(e);
+      setMessage(e.message);
+      setLoading(false);
     }
+  };
 
-  render() {
-    let { username, password } = this.state;
-    let { classes } = this.props;
-    return (
-      <div className="signup flex justify-center w-full h-full-screen">
-        <div className="p-8">
-          <Card className="signup-card position-relative y-center">
-            <Grid container>
-              <Grid item lg={5} md={5} sm={5} xs={12}>
-                <div className="p-8 flex justify-center items-center h-full">
-                  <img src="/assets/images/illustrations/dreamer.svg" alt="" />
-                </div>
-              </Grid>
-              <Grid item lg={7} md={7} sm={7} xs={12}>
-                <div className="p-9 h-full bg-light-gray position-relative">
-                  <ValidatorForm ref="form" onSubmit={this.handleFormSubmit}>
-                    <TextValidator
-                      className="mb-6 w-full"
-                      variant="outlined"
-                      label="Email"
-                      onChange={this.handleChange}
-                      type="email"
-                      name="username"
-                      value={username}
-                      validators={["required", "isEmail"]}
-                      errorMessages={[
-                        "this field is required",
-                        "email is not valid"
-                      ]}
-                    />
-                    <TextValidator
-                      className="mb-3 w-full"
-                      label="Password"
-                      variant="outlined"
-                      onChange={this.handleChange}
-                      name="password"
-                      type="password"
-                      value={password}
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
-                    />
-                    <div className="flex flex-wrap items-center mb-4">
-                      <div className={classes.wrapper}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          disabled={this.props.login.loading}
-                          type="submit"
-                        >
-                          Sign in
-                        </Button>
-                        {this.props.login.loading && (
-                          <CircularProgress
-                            size={24}
-                            className={classes.buttonProgress}
-                          />
-                        )}
-                      </div>
-                      <span className="mr-2 ml-5">or</span>
-                      <Button
-                        className="capitalize"
-                        onClick={() =>
-                          this.props.history.push("/session/signup")
-                        }
-                      >
-                        Sign up
-                      </Button>
-                    </div>
-                    <Button
-                      className="text-primary"
-                      onClick={() =>
-                        this.props.history.push("/session/forgot-password")
+  return (
+    <div
+      className={clsx(
+        "flex justify-center items-center  min-h-full-screen",
+        classes.cardHolder
+      )}
+    >
+      <Card className={classes.card}>
+        <Grid container>
+          <Grid item lg={5} md={5} sm={5} xs={12}>
+            <div className="p-8 flex justify-center items-center h-full">
+              <img
+                className="w-200"
+                src="/assets/images/illustrations/dreamer.svg"
+                alt=""
+              />
+            </div>
+          </Grid>
+          <Grid item lg={7} md={7} sm={7} xs={12}>
+            <div className="p-8 h-full bg-light-gray relative">
+              <ValidatorForm onSubmit={handleFormSubmit}>
+                <TextValidator
+                  className="mb-6 w-full"
+                  variant="outlined"
+                  size="small"
+                  label="Email"
+                  onChange={handleChange}
+                  type="email"
+                  name="email"
+                  value={userInfo.email}
+                  validators={["required", "isEmail"]}
+                  errorMessages={[
+                    "this field is required",
+                    "email is not valid",
+                  ]}
+                />
+                <TextValidator
+                  className="mb-3 w-full"
+                  label="Password"
+                  variant="outlined"
+                  size="small"
+                  onChange={handleChange}
+                  name="password"
+                  type="password"
+                  value={userInfo.password}
+                  validators={["required"]}
+                  errorMessages={["this field is required"]}
+                />
+                <FormControlLabel
+                  className="mb-3 min-w-288"
+                  name="agreement"
+                  onChange={handleChange}
+                  control={
+                    <Checkbox
+                      size="small"
+                      onChange={({ target: { checked } }) =>
+                        handleChange({
+                          target: { name: "agreement", value: checked },
+                        })
                       }
-                    >
-                      Forgot password?
-                    </Button>
-                    <Button
-                      className="text-primary"
-                      onClick ={this.clickMe}
-                    >
-                      Demo set-up
-                    </Button>
-                  </ValidatorForm>
-                </div>
-              </Grid>
-            </Grid>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-}
+                      checked={userInfo.agreement || true}
+                    />
+                  }
+                  label="Remeber me"
+                />
 
-const mapStateToProps = state => ({
-  loginWithEmailAndPassword: PropTypes.func.isRequired,
-  login: state.login
-});
-export default withStyles(styles, { withTheme: true })(
-  withRouter(connect(mapStateToProps, { loginWithEmailAndPassword })(SignIn))
-);
+                {message && <p className="text-error">{message}</p>}
+
+                <div className="flex flex-wrap items-center mb-4">
+                  <div className="relative">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      disabled={loading}
+                      type="submit"
+                    >
+                      Sign in
+                    </Button>
+                    {loading && (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />
+                    )}
+                  </div>
+                  <span className="mr-2 ml-5">or</span>
+                  <Button
+                    className="capitalize"
+                    onClick={() => history.push("/session/signup")}
+                  >
+                    Sign up
+                  </Button>
+                </div>
+                <Button
+                  className="text-primary"
+                  onClick={() => history.push("/session/forgot-password")}
+                >
+                  Forgot password?
+                </Button>
+              </ValidatorForm>
+            </div>
+          </Grid>
+        </Grid>
+      </Card>
+    </div>
+  );
+};
+
+export default JwtLogin;

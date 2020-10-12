@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import { ValidatorForm } from "react-material-ui-form-validator";
 import { withRouter } from "react-router-dom";
-import axios from "axios"
+import axios from "axios.js"
 import localStorageService from "../../services/localStorageService"
 import { SimpleCard, Breadcrumb } from "matx"
 import { isMobile } from "utils";

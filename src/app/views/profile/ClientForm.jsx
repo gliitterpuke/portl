@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios"
+import axios from "axios.js"
 import { Link, withRouter } from "react-router-dom";
 import ClientViewer from "./ClientViewer";
 import ClientEditor from "./ClientEditor";

@@ -2,7 +2,7 @@ import React from "react"
 import { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import styled from "@emotion/styled";
-import axios from "axios";
+import axios from "axios.js";
 import { button } from '@material-ui/core'
 
 import Row from "./prebuilt/Row";

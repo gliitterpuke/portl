@@ -6,7 +6,6 @@ import {
   Icon
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
 import localStorageService from "../../services/localStorageService"
 import history from "../../../history"
 

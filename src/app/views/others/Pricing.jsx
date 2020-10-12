@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, Grid, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { Breadcrumb } from "matx";
 
 const Pricing = () => {

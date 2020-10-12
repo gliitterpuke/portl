@@ -18,7 +18,7 @@ import {
 import { ValidatorForm } from "react-material-ui-form-validator";
 import { parseJSON } from "date-fns";
 import { withRouter } from "react-router-dom";
-import axios from "axios"
+import axios from "axios.js"
 import localStorageService from "../../services/localStorageService"
 import { SimpleCard, Breadcrumb } from "matx"
 

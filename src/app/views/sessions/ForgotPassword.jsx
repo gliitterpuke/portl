@@ -4,7 +4,7 @@ import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
+import axios from "axios.js";
 
 import { resetPassword } from "../../redux/actions/LoginActions";
 import localStorageService from "../../services/localStorageService";
@@ -16,7 +16,6 @@ if (!localStorage.getItem("access_token")) {
 else  {
   history.push('/profile')
 }
-const baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 class ForgotPassword extends Component {
   state = {
     email: "katherinewwang@gmail.com"
@@ -29,7 +28,7 @@ class ForgotPassword extends Component {
   };
   handleFormSubmit = () => {
     let email = this.state.email
-    axios.post(baseURL + `email/send-password-reset-email/` + email)
+    axios.post(`email/send-password-reset-email/${email}`)
     alert("Success! Please check your email for further instructions")
   };
   render() {

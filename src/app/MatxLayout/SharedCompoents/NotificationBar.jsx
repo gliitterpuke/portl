@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import {
   getNotification,
 } from "../../redux/actions/NotificationActions";
-import axios from "axios"
+import axios from "axios.js"
 
 const NotificationBar = props => {
   const {

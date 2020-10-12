@@ -21,7 +21,7 @@ import {
 } from "@material-ui/core";
 import localStorageService from "../../services/localStorageService";
 import { withRouter, Link } from "react-router-dom";
-import axios from "axios";
+import axios from "axios.js";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { parseJSON } from "date-fns";
 import { ConfirmationDialog, SimpleCard } from "matx";

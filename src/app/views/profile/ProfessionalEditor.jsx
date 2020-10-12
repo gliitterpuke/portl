@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
+import axios from "axios.js";
 import localStorageService from "../../services/localStorageService";
 import history from "../../../history"
 

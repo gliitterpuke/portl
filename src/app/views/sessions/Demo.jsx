@@ -10,7 +10,7 @@ import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
+import axios from "axios.js";
 import localStorageService from "../../services/localStorageService";
 import history from "../../../history"
 import qs from "qs";

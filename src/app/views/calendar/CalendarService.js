@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios.js';
 
 export const getAllEvents = () => {
     return axios.get("users/me/calendar/events/");
