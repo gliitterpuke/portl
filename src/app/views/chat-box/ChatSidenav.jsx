@@ -10,7 +10,7 @@ let user = localStorageService.getItem('auth_user')
 
 const ChatSidenav = ({
   currentUser,
-  appList = [],
+  appList,
   recentContactList = [],
   handleContactClick
 }) => {
@@ -20,12 +20,12 @@ const ChatSidenav = ({
         {/* <ChatAvatar src={currentUser.avatar} status={currentUser.status} /> */}
         {user.is_client === true && (
         <h5 className="ml-4 whitespace-pre mb-0 font-medium text-18 text-white">
-          {currentUser.client_profile.given_names + " " + currentUser.client_profile.family_name}
+          {user.client_profile.given_names + " " + user.client_profile.family_name}
         </h5>
         )}
         {user.is_client === false && (
         <h5 className="ml-4 whitespace-pre mb-0 font-medium text-18 text-white">
-          {currentUser.professional_profile.given_names + " " + currentUser.professional_profile.family_name}
+          {user.professional_profile.given_names + " " + user.professional_profile.family_name}
         </h5>
         )}
       </div>

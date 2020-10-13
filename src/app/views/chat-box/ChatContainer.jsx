@@ -5,17 +5,25 @@ import {
   Divider,
   Fab,
   TextField,
-  MenuItem
+  MenuItem,
+  Hidden,
 } from "@material-ui/core";
 import { MatxMenu } from "matx";
 import Scrollbar from "react-perfect-scrollbar";
 import EmptyMessage from "./EmptyMessage";
 import ChatAvatar from "./ChatAvatar";
 import { getTimeDifference } from "utils";
-import { parseJSON } from "date-fns";
 import shortid from "shortid";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import { useState } from "react";
 
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
+const useStyles = makeStyles(({ palette, ...theme }) => ({
+  chatContainer: {
+    background: "rgba(0, 0, 0, 0.05)",
+    height: 450,
+  },
+}));
 
 const ChatContainer = ({
   id: currentUserId,
@@ -23,36 +31,58 @@ const ChatContainer = ({
   currentChatRoom,
   opponentUser,
   messageList = [],
-  setBottomRef,
   handleMessageSend,
   chatmessages = [],
   sender
 }) => {
-  let [message, setMessage] = React.useState("");
-  const sendMessageOnEnter = event => {
+  const [message, setMessage] = useState("");
+  const classes = useStyles();
+
+  const sendMessageOnEnter = (event) => {
     if (event.key === "Enter" && !event.shiftKey) {
-      message = message.trim();
-      if (message !== "") handleMessageSend(message);
+      let tempMessage = message.trim();
+      if (tempMessage !== "") handleMessageSend(tempMessage);
       setMessage("");
     }
   };
+
   return (
-    <div className="chat-container flex-column position-relative">
+    <div className={clsx("flex-column relative", classes.chatContainer)}>
       <div className="chat-container__topbar flex items-center justify-between p-1 bg-primary">
         <div className="flex items-center">
-          <div className="show-on-mobile">
+          <Hidden mdUp>
             <IconButton onClick={toggleSidenav}>
               <Icon className="text-white">short_text</Icon>
             </IconButton>
-          </div>
-          </div>
+          </Hidden>
+
+          <Hidden smDown>
+            <div className="pl-3"></div>
+          </Hidden>
+
+        </div>
+        <MatxMenu
+          menuButton={
+            <IconButton>
+              <Icon className="text-white">more_vert</Icon>
+            </IconButton>
+          }
+        >
+          <MenuItem className="flex items-center">
+            <Icon className="mr-4">account_circle</Icon> Contact
+          </MenuItem>
+          <MenuItem className="flex items-center">
+            <Icon className="mr-4">volume_mute</Icon> Mute
+          </MenuItem>
+          <MenuItem className="flex items-center">
+            <Icon className="mr-4">delete</Icon> Clear Chat
+          </MenuItem>
+        </MatxMenu>
       </div>
 
       <Scrollbar
-        containerRef={ref => {
-          setBottomRef(ref);
-        }}
-        className="chat-message-list flex-grow position-relative"
+        className="chat-message-list flex-grow relative"
+        id="chat-message-list"
       >
         {currentChatRoom === "" && (
           <div className="flex-column justify-center items-center h-full">
@@ -61,25 +91,23 @@ const ChatContainer = ({
           </div>
         )}
         {chatmessages.map((message, index) => (
-          <div className="flex items-start px-4 py-3">
+          <div className="flex items-start px-4 py-3" key={shortid.generate()}>
             <div className="ml-4">
               <p className="text-muted m-0 mb-2">{message.sender.display_name}</p>
               <div
-                className={`px-4 py-2 mb-2 list__message ${
-                  sender === message.sender_id
-                    ? "bg-primary text-white"
-                    : "bg-paper"
-                }`}
+                className={clsx({
+                  "px-4 py-2 mb-2 border-radius-4 bg-paper": true,
+                  "bg-primary text-white": sender === message.sender_id,
+                })}
               >
                 <span className="whitespace-pre-wrap">{message.body}</span>
               </div>
               <small className="text-muted mb-0">
-                {new Date(message.sent_at+"Z").toLocaleString('en-US', {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true})}
+              {new Date(message.sent_at+"Z").toLocaleString('en-US', {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true})}
               </small>
             </div>
           </div>
         ))}
-        {/* <div ref={ref => setBottomRef(ref)} /> */}
       </Scrollbar>
 
       <Divider />
@@ -89,8 +117,8 @@ const ChatContainer = ({
           <TextField
             label="Type your message here*"
             value={message}
-            onChange={e => setMessage(e.target.value)}
-            onKeyDown={sendMessageOnEnter}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyUp={sendMessageOnEnter}
             fullWidth
             multiline={true}
             rows={1}

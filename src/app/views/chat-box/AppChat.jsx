@@ -1,14 +1,13 @@
-import React, { Component } from "react";
-import { Card } from "@material-ui/core";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { Card, useMediaQuery } from "@material-ui/core";
 import {
   Breadcrumb,
   MatxSidenavContainer,
   MatxSidenav,
-  MatxSidenavContent
+  MatxSidenavContent,
 } from "matx";
 import {
   getAllContact,
-  // getRecentContact,
   sendNewMessage,
   getContactById,
   getChatRoomByContactId,
@@ -16,197 +15,158 @@ import {
 } from "./ChatService";
 import ChatSidenav from "./ChatSidenav";
 import ChatContainer from "./ChatContainer";
-import { isMobile } from "utils";
-import localStorageService from "../../services/localStorageService";
-import axios from "axios"
+import { useTheme } from "@material-ui/core/styles";
+import localStorageService from "../../services/localStorageService"
+import axios from "axios.js"
 
 const auth = { headers: {Authorization:"Bearer " + localStorage.getItem("access_token")} }
 
-class AppChat extends Component {
-  state = {
-    currentUser: localStorageService.getItem('auth_user'),
-    appList: [],
-    recentContactList: [],
-    messageList: [],
-    chatmessages: [],
-    currentChatRoom: "",
-    opponentUser: null,
-    open: false,
-    sender: ""
-  };
+const AppChat = () => {
+  let user = localStorageService.getItem('auth_user')
+  const chatBottomRef = document.querySelector("#chat-message-list");
+  const [open, setOpen] = useState(true);
+  const [currentUser, setCurrentUser] = useState({
+    user
+  });
+  const [opponentUser, setOpponentUser] = useState(null);
+  const [currentChatRoom, setCurrentChatRoom] = useState("");
+  const [chatmessages, setChatMessages] = useState([])
+  const [application, setApplication] = useState({});
+  const [sender, setSender] = useState("")
+  const [contactList, setContactList] = useState([]);
+  const [recentContactList, setRecentContactList] = useState([]);
+  const [appList, setAppList] = useState([]);
+  const userRef = useRef(currentUser);
 
-  bottomRef = React.createRef();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  componentDidMount() {
-    let { id } = this.state.currentUser;
-    getContactById().then(data => {
-      this.setState({
-        open: !isMobile(),
-        currentUser: {
-          ...data.data
-        },
-      });
+  const updateRecentContactList = useCallback(() => {
+    let { id } = userRef.current;
+  }, []);
+
+  useEffect(() => {
+    let { id } = userRef.current;
+
+    getContactById(id).then((data) => {
+      setOpen(isMobile);
+      setCurrentUser({ ...data.data });
     });
-    getAllContact().then(data =>
-      this.setState({ appList: [...data.data] })
-    );
 
-  }
+    getAllContact().then((data) => setAppList(data.data))
+  }, [isMobile]);
 
-  scrollToBottom = () => {
-    this.bottomRef.current.scrollIntoView({ behavior: "smooth" });
+  const handleContactClick = async (contactId) => {
+    if (isMobile) toggleSidenav();
+    const { data } = await getChatRoomByContactId(contactId)
+      setChatMessages(data)
+      setCurrentChatRoom(contactId);
+      setOpponentUser(data.sender_id)
+      scrollToBottom();
+      
+      let application = appList.find(application => application.id === contactId);
+      setApplication(application)
+      let owner = application.users.find(owner => owner.owner_id === user.id);
+      setSender(owner.id)
+
+    
   };
 
-  handleContactClick = contactId => {
-    if (isMobile()) this.toggleSidenav();
-
-    getContactById(contactId).then(({ data }) => {
-    });
-    getChatRoomByContactId(contactId).then(
-      ({ data }) => {
-        let { chatId, messageList, recentListUpdated, chatmessages } = data;
-
-        this.setState(
-          {
-            currentChatRoom: contactId,
-            opponentUser: data.sender_id,
-            data
-          },
-          () => {
-            this.bottomRef.scrollTop = 9999999999999;
-          });
-      }).then(() => {
-      let application = this.state.appList.find (application => application.id === this.state.currentChatRoom);
-      let owner = application.users.find (owner => owner.owner_id === this.state.currentUser.id)
-      let sender = owner.id
-      this.setState({
-        application: application,
-        sender: owner.id
-      });
-      });
-  };
-
-  handleMessageSend = message => {
-    let { id } = this.state.currentUser;
-    let { currentChatRoom, opponentUser } = this.state;
+  const handleMessageSend = (message) => {
+    let { id } = currentUser;
 
     if (currentChatRoom === "") return;
     sendNewMessage({
       chat_id: currentChatRoom,
       body: message,
-      sender_id: this.state.sender,
-    }).then(data => {
-      
-      // find all chat users in current chatroom
-      const chatUsers = [];
-      this.state.application.users.forEach(function(obj){
-          chatUsers.push(obj.owner_id);
+      sender_id: sender,
+
+    }).then((data) => {
+    // find all chat users in current chatroom
+      const chatUsers = []
+      application.users.forEach(function(obj){
+        chatUsers.push(obj.owner_id)
       })
-      // remove self from list of users
+    // remove self from list of users
       const index = chatUsers.indexOf(id);
-      if (index > -1) {
+      if(index > -1) {
         chatUsers.splice(index, 1);
       }
-
-      // send notification to each recipient on message send
+    // send notification to each recipient on message send
       chatUsers.forEach(function (item, index) {
-        const notification = {
+        const notification ={
           title: "New Message",
           description: `from Application ${currentChatRoom}`,
           category: "message",
           notify_at: new Date(),
           go_to_path: "/messages",
-          recipient_id: item
+          recipient_id: item,
         }
         newEvent(notification)
-      });
+      })
+      getChatRoomByContactId(currentChatRoom).then(({ data }) => {
+          setChatMessages(data)
+        }).then(() => {
+          scrollToBottom()
+        })
+    });
 
-      getChatRoomByContactId(currentChatRoom).then(
-        ({ data }) => {
-          let { chatmessages } = data;
-          this.setState({ data }, () => {
-              this.bottomRef.scrollTop = 9999999999999;
-            });
-        }
-      );
-
-      const poll = async () => {
-        let response = await axios.get("chats/with-unread-messages/", auth)
-        let message = await response;
-        if (message.data.chats_with_unread_messages[0].find(msg => msg === currentChatRoom) === currentChatRoom) {
-          getChatRoomByContactId(currentChatRoom).then(
-            ({ data }) => {
-              let { chatmessages } = data;
-              this.setState(
-                { data }, () => {
-                  this.bottomRef.scrollTop = 9999999999999;
-                }
-              );
-            }
-          );
-          await poll ()
-        }
- 
-      }
-      
+    const poll = async () => {
+      let response = await axios.get("chats/with-unread-messages/", auth)
+      let message = await response;
+      if (message.data.chats_with_unread_messages[0].find(msg => msg === currentChatRoom) === currentChatRoom) {
+        const data = await getChatRoomByContactId(currentChatRoom)
+        await setChatMessages(data.data);
+        scrollToBottom()
+        await poll ()
+      }}
       poll()
-    })
+
   };
 
-  setBottomRef = ref => {
-    this.bottomRef = ref;
+  const scrollToBottom = () => {
+    if (chatBottomRef) {
+      chatBottomRef.scrollTo({
+        top: chatBottomRef.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   };
 
-  toggleSidenav = () => this.setState({ open: !this.state.open });
+  const toggleSidenav = () => {
+    setOpen(!open);
+  };
 
-  render() {
-    let {
-      currentUser,
-      appList,
-      recentContactList,
-      messageList,
-      opponentUser,
-      currentChatRoom,
-      data,
-      chatmessages,
-      sender
-    } = this.state;
-    return (
-      <div className="m-sm-30">
-        <div className="mb-sm-30">
-          <Breadcrumb routeSegments={[{ name: "Messages" }]} />
-        </div>
-        <Card elevation={6}>
-          <MatxSidenavContainer>
-            <MatxSidenav
-              width="230px"
-              open={this.state.open}
-              toggleSidenav={this.toggleSidenav}
-            >
-              <ChatSidenav
-                currentUser={currentUser}
-                appList={appList}
-                handleContactClick={this.handleContactClick}
-              />
-            </MatxSidenav>
-            <MatxSidenavContent>
-              <ChatContainer
-                id={currentUser.id}
-                opponentUser={opponentUser}
-                appList={appList}
-                chatmessages={data}
-                currentChatRoom={currentChatRoom}
-                setBottomRef={this.setBottomRef}
-                handleMessageSend={this.handleMessageSend}
-                toggleSidenav={this.toggleSidenav}
-                sender={sender}
-              />
-            </MatxSidenavContent>
-          </MatxSidenavContainer>
-        </Card>
+  return (
+    <div className="m-sm-30">
+      <div className="mb-sm-30">
+        <Breadcrumb routeSegments={[{ name: "Chat" }]} />
       </div>
-    );
-  }
-}
+      <Card elevation={6}>
+        <MatxSidenavContainer>
+          <MatxSidenav width="230px" open={open} toggleSidenav={toggleSidenav}>
+            <ChatSidenav
+              currentUser={currentUser}
+              appList={appList}
+              handleContactClick={handleContactClick}
+            />
+          </MatxSidenav>
+          <MatxSidenavContent>
+            <ChatContainer
+              id={currentUser?.id}
+              opponentUser={opponentUser}
+              appList={appList}
+              chatmessages={chatmessages}
+              currentChatRoom={currentChatRoom}
+              handleMessageSend={handleMessageSend}
+              toggleSidenav={toggleSidenav}
+              sender={sender}
+            />
+          </MatxSidenavContent>
+        </MatxSidenavContainer>
+      </Card>
+    </div>
+  );
+};
 
 export default AppChat;
