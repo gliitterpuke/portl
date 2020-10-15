@@ -28,7 +28,7 @@ import { SimpleCard, Breadcrumb } from "matx";
 import { Prompt } from 'react-router'
 import MuiAlert from '@material-ui/lab/Alert';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
-import { isMobile } from "utils";
+import { isMobile, isMdScreen } from "utils";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -192,10 +192,21 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp, saveData, coun
   };
 
   React.useEffect(() => {
-    var elmnt = document.getElementsByClassName("scrollbar-container");
-    elmnt[0].scrollTo(0,0);
+    if (isMobile() === true) {
+      var elmnt = document.getElementsByClassName("scrollbar-container");
+      elmnt[0].scrollTo(0,0);
+    }
+    else if (isMdScreen() === true) {
+      var elmnt = document.getElementsByClassName("scrollbar-container");
+      elmnt[0].scrollTo(0,0);
+    }
+
+    else {
+      var elmnt = document.getElementsByClassName("scrollbar-container");
+      elmnt[1].scrollTo(0,0);
+    }
   }, []);
-  
+
   return (
     <>
       <Formik

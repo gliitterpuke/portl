@@ -10,6 +10,7 @@ import { SimpleCard, Breadcrumb } from 'matx';
 import history from "../../../history"
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { isMobile, isMdScreen } from "utils";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -47,8 +48,19 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp, open, setOpe
   };
 
   React.useEffect(() => {
-    var elmnt = document.getElementsByClassName("scrollbar-container");
-    elmnt[0].scrollTo(0,0);
+    if (isMobile() === true) {
+      var elmnt = document.getElementsByClassName("scrollbar-container");
+      elmnt[0].scrollTo(0,0);
+    }
+    else if (isMdScreen() === true) {
+      var elmnt = document.getElementsByClassName("scrollbar-container");
+      elmnt[0].scrollTo(0,0);
+    }
+
+    else {
+      var elmnt = document.getElementsByClassName("scrollbar-container");
+      elmnt[1].scrollTo(0,0);
+    }
   }, []);
   
   const { 
