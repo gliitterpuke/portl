@@ -1,4 +1,5 @@
 export { default as Breadcrumb } from "./components/Breadcrumb";
+export { default as MatxDivider } from "./components/MatxDivider";
 export { default as MatxMenu } from "./components/MatxMenu";
 export { default as MatxToolbarMenu } from "./components/MatxToolbarMenu";
 export { default as MatxLoading } from "./components/MatxLoading/MatxLoading";
@@ -14,6 +15,8 @@ export { default as MatxSidenavContent } from "./components/MatxSidenav/MatxSide
 export { default as RectangleAvatar } from "./components/RectangleAvatar";
 export { default as MatxListItem1 } from "./components/MatxListItem1";
 export { default as MatxSnackbar } from "./components/MatxSnackbar";
+export { default as ChatHead } from "./components/ChatHead";
+export { default as GlobalCss } from "./styles/GlobalCss";
 
 export { EchartTheme } from "./theme/EchartTheme";
 export { default as EchartCreator } from "./components/charts/EchartCreator";
@@ -23,3 +26,7 @@ export { default as RichTextEditor } from "./components/RichTextEditor";
 export { default as ConfirmationDialog } from "./components/ConfirmationDialog";
 export { default as MatxProgressBar } from "./components/MatxProgressBar";
 export { default as SimpleCard } from "./components/cards/SimpleCard";
+
+export { default as MatxLogo } from "./components/MatxLogo";
+export { default as FacebookIcon } from "./components/icons/FacebookIcon";
+export { default as GoogleIcon } from "./components/icons/GoogleIcon";

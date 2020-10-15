@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import {
   IconButton,
   Icon,
@@ -11,8 +11,6 @@ import {
 import { MatxMenu } from "matx";
 import Scrollbar from "react-perfect-scrollbar";
 import EmptyMessage from "./EmptyMessage";
-import ChatAvatar from "./ChatAvatar";
-import { getTimeDifference } from "utils";
 import shortid from "shortid";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";

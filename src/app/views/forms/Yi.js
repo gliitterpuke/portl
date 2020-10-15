@@ -190,11 +190,12 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp, saveData, coun
     if (reason === 'clickaway') { return; }
     setOpen(false);
   };
-  const fieldRef = React.useRef(null);
+
   React.useEffect(() => {
-    var elmnt = document.getElementsByClassName("scrollable-content");
+    var elmnt = document.getElementsByClassName("scrollbar-container");
     elmnt[0].scrollTo(0,0);
   }, []);
+  
   return (
     <>
       <Formik

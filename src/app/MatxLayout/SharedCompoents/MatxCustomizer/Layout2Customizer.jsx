@@ -6,7 +6,7 @@ import {
   Icon,
   FormControlLabel,
   FormControl,
-  FormLabel
+  FormLabel,
 } from "@material-ui/core";
 import { themeColors } from "../../MatxTheme/themeColors";
 
@@ -15,16 +15,16 @@ const Layout2Customizer = ({ settings, handleChange, handleControlChange }) => {
     <Fragment>
       <div className="mb-4 mx-3">
         <div className="text-muted mb-4">Topbar theme</div>
-        <div className="colors">
+        <div className="flex flex-wrap m--2">
           {Object.keys(themeColors).map((color, i) => (
             <Tooltip key={i} title={color} placement="top">
               <div
-                className="color"
+                className="flex justify-center items-center h-40 w-40 border-radius-4 m-2 cursor-pointer elevation-z3"
                 onClick={() =>
                   handleChange("layout2Settings.topbar.theme", color)
                 }
                 style={{
-                  backgroundColor: themeColors[color].palette.primary.main
+                  backgroundColor: themeColors[color].palette.primary.main,
                 }}
               >
                 {settings.layout2Settings.topbar.theme === color && (
@@ -48,7 +48,7 @@ const Layout2Customizer = ({ settings, handleChange, handleControlChange }) => {
                   handleChange("layout2Settings.navbar.theme", color)
                 }
                 style={{
-                  backgroundColor: themeColors[color].palette.primary.main
+                  backgroundColor: themeColors[color].palette.primary.main,
                 }}
               >
                 {settings.layout2Settings.navbar.theme === color && (

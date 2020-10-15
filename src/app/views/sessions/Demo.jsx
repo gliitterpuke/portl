@@ -3,21 +3,17 @@ import {
   Card,
   Grid,
   Button,
-  CircularProgress
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import axios from "axios.js";
-import localStorageService from "../../services/localStorageService";
 import history from "../../../history"
 import qs from "qs";
 
 import { loginWithEmailAndPassword } from "../../redux/actions/LoginActions";
 
-let user = localStorageService.getItem('auth_user')
 if (!localStorage.getItem("access_token")) {
 }
 else  {
@@ -97,36 +93,16 @@ class Demo extends Component {
       product_type_id: 1,
       forms: [ 1 ]
     }
-    const study = {
-      name: "Study Permit",
-      code: "study",
-      total_price: 200,
-      platform_fee: 100,
-      processing_cost: 1,
-      country_code: "cn",
-      currency_code: "cad",
-      product_type_id: 1
-    }
-    const ee = {
-      name: "Express Entry",
-      code: "ee",
-      total_price: 200,
-      platform_fee: 100,
-      processing_cost: 1,
-      country_code: "cn",
-      currency_code: "cad",
-      product_type_id: 1
-    }
-    const work = {
-      name: "Work Permit",
-      code: "work",
-      total_price: 200,
-      platform_fee: 100,
-      processing_cost: 1,
-      country_code: "cn",
-      currency_code: "cad",
-      product_type_id: 1
-    }
+    // const study = {
+    //   name: "Study Permit",
+    //   code: "study",
+    //   total_price: 200,
+    //   platform_fee: 100,
+    //   processing_cost: 1,
+    //   country_code: "cn",
+    //   currency_code: "cad",
+    //   product_type_id: 1
+    // }
     const occupation = {
       name: "Consultant"
     }
@@ -201,15 +177,15 @@ createUsers = async (e) => {
 
     activateUsers = async (e) => {
         const rep = {
-            username: "kat@portl.to",
-            password: "test"
+          username: "kat@portl.to",
+          password: "test"
         }
         const response = await axios.post('http://127.0.0.1:8000/auth/token', qs.stringify(rep))
         const token = response.data.access_token
         axios.get(`users/activate/${token}`)
         const client = {
-            username: "katherinewwang@gmail.com",
-            password: "test"
+          username: "katherinewwang@gmail.com",
+          password: "test"
         }
         const result = await axios.post('http://127.0.0.1:8000/auth/token', qs.stringify(client))
         const clienttoken = result.data.access_token
@@ -218,7 +194,6 @@ createUsers = async (e) => {
         history.push('/session/signin')
     }
   render() {
-    let { username, password } = this.state;
     let { classes } = this.props;
     return (
       <div className="signup flex justify-center w-full h-full-screen">

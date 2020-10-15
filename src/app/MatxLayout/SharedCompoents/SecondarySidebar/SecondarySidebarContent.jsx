@@ -1,18 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 import { IconButton, Icon } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
-import { withRouter, Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { classList } from "utils";
 import MatxCustomizer from "../MatxCustomizer/MatxCustomizer";
 import ShoppingCart from "../ShoppingCart";
-const width = "50px";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import { ChatHead } from "matx";
+import Chatbox from "app/views/chat-box-2/Chatbox";
 
-const styles = theme => ({
+const useStyles = makeStyles(({ palette, ...theme }) => ({
   root: {
     position: "fixed",
     height: "100vh",
-    width,
+    width: (props) => props.width,
     right: 0,
     bottom: 0,
     display: "flex",
@@ -20,63 +19,51 @@ const styles = theme => ({
     alignItems: "center",
     justifyContent: "center",
     boxShadow: theme.shadows[8],
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: palette.primary.main,
     zIndex: 98,
-    transition: "all 0.15s ease"
+    transition: "all 0.15s ease",
   },
   "@global": {
     "@media screen and (min-width: 767px)": {
       ".content-wrap, .layout2.layout-contained, .layout2.layout-full": {
-        marginRight: width
+        marginRight: (props) => props.width,
       },
       ".matx-customizer": {
-        right: width
-      }
+        right: (props) => props.width,
+      },
     },
     "@media screen and (max-width: 959px)": {
       ".toolbar-menu-wrap .menu-area": {
-        width: `calc(100% - ${width})`
-      }
-    }
-  }
-});
+        width: (props) => `calc(100% - ${props.width})`,
+      },
+    },
+  },
+}));
 
-class SecondarySidebarContent extends Component {
-  render() {
-    let { classes } = this.props;
+const SecondarySidebarContent = () => {
+  const classes = useStyles({ width: "50px" });
 
-    return (
-      <div
-        className={
-          classes.root +
-          " " +
-          classList({
-            "secondary-sidebar": true
-          })
-        }
-      >
-        <span className="m-auto"></span>
+  return (
+    <div className={clsx("secondary-sidebar", classes.root)}>
+      <span className="m-auto"></span>
 
-        <MatxCustomizer />
+      <MatxCustomizer />
 
-        <ShoppingCart />
+      <ShoppingCart />
 
-        <Link to="/chat">
-          <IconButton size="small" aria-label="delete" className="my-3">
+      <ChatHead
+        icon={
+          <IconButton className="my-3" size="small">
             <Icon>comments</Icon>
           </IconButton>
-        </Link>
+        }
+      >
+        <Chatbox />
+      </ChatHead>
 
-        <span className="m-auto"></span>
-      </div>
-    );
-  }
-}
+      <span className="m-auto"></span>
+    </div>
+  );
+};
 
-const mapStateToProps = state => ({
-  settings: state.layout.settings
-});
-
-export default withStyles(styles, { withTheme: true })(
-  withRouter(connect(mapStateToProps, {})(SecondarySidebarContent))
-);
+export default SecondarySidebarContent;

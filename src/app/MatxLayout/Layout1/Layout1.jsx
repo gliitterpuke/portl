@@ -1,44 +1,73 @@
 import React, { useContext } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { setLayoutSettings } from "app/redux/actions/LayoutActions";
-import { withStyles, ThemeProvider } from "@material-ui/core/styles";
+import { useSelector } from "react-redux";
+import { ThemeProvider } from "@material-ui/core/styles";
 import Scrollbar from "react-perfect-scrollbar";
-import { classList } from "utils";
 import { renderRoutes } from "react-router-config";
 import Layout1Topbar from "./Layout1Topbar";
 import Layout1Sidenav from "./Layout1Sidenav";
 import Footer from "../SharedCompoents/Footer";
-import SecondarySidebar from "../SharedCompoents/SecondarySidebar/SecondarySidebar";
 import AppContext from "app/appContext";
 import { MatxSuspense } from "matx";
-import image from "../MatxTheme/uno.jpg"
+import { useTheme } from "@material-ui/core/styles";
+import clsx from "clsx";
+import SidenavTheme from "../MatxTheme/SidenavTheme/SidenavTheme";
+import { makeStyles } from "@material-ui/core/styles";
 
-const styles = theme => {
-  return {
-    layout: {
-      backgroundImage: `url(${image})`,
-      backgroundSize: "100% 100%"
+const useStyles = makeStyles(({ palette, ...theme }) => ({
+  contentWrap: ({ width }) => ({
+    verticalAlign: "top",
+    marginLeft: width,
+    transition: "all 0.3s ease",
+  }),
+  topbar: {
+    top: 0,
+    zIndex: 96,
+    background:
+      "linear-gradient(180deg, rgba(255, 255, 255, 0.95) 44%, rgba(247, 247, 247, 0.4) 50%, rgba(255, 255, 255, 0))",
+    transition: "all 0.3s ease",
+  },
+}));
+
+const Layout1 = () => {
+  const { settings } = useSelector((state) => state.layout);
+  const { layout1Settings } = settings;
+  const {
+    leftSidebar: { mode: sidenavMode, show: showSidenav },
+  } = layout1Settings;
+  const { routes } = useContext(AppContext);
+
+  const getSidenavWidth = () => {
+    switch (sidenavMode) {
+      case "full":
+        return "var(--sidenav-width)";
+      case "compact":
+        return "var(--sidenav-compact-width)";
+      default:
+        return "0px";
     }
   };
-};
 
-const Layout1 = props => {
-  const { routes } = useContext(AppContext);
-  let { settings, classes, theme } = props;
-  let { layout1Settings } = settings;
+  const sidenavWidth = getSidenavWidth();
+  const classes = useStyles({ width: sidenavWidth });
+  const theme = useTheme();
+
   const topbarTheme = settings.themes[layout1Settings.topbar.theme];
-  let layoutClasses = {
-    [classes.layout]: true,
-    [`${settings.activeLayout} sidenav-${layout1Settings.leftSidebar.mode} theme-${theme.palette.type} flex`]: true,
-    "topbar-fixed": layout1Settings.topbar.fixed
-  };
+  const layoutClasses = `theme-${theme.palette.type} flex`;
 
   return (
-    <div className={classList(layoutClasses)}>
-      {layout1Settings.leftSidebar.show && <Layout1Sidenav />}
+    <div className={clsx("bg-default", layoutClasses)}>
+      {showSidenav && sidenavMode !== "close" && (
+        <SidenavTheme>
+          <Layout1Sidenav />
+        </SidenavTheme>
+      )}
 
-      <div className="content-wrap position-relative">
+      <div
+        className={clsx(
+          "flex-grow flex-column relative overflow-hidden h-full-screen",
+          classes.contentWrap
+        )}
+      >
         {layout1Settings.topbar.show && layout1Settings.topbar.fixed && (
           <ThemeProvider theme={topbarTheme}>
             <Layout1Topbar fixed={true} className="elevation-z8" />
@@ -46,49 +75,37 @@ const Layout1 = props => {
         )}
 
         {settings.perfectScrollbar && (
-          <Scrollbar className="scrollable-content">
+          <Scrollbar className="flex-grow flex-column relative h-full">
             {layout1Settings.topbar.show && !layout1Settings.topbar.fixed && (
               <ThemeProvider theme={topbarTheme}>
                 <Layout1Topbar />
               </ThemeProvider>
             )}
-            <div className="content">
+            <div className="relative flex-grow">
               <MatxSuspense>{renderRoutes(routes)}</MatxSuspense>
             </div>
-            <div className="my-auto" />
             {settings.footer.show && !settings.footer.fixed && <Footer />}
           </Scrollbar>
         )}
 
         {!settings.perfectScrollbar && (
-          <div className="scrollable-content">
+          <div className="flex-grow flex-column relative h-full scroll-y">
             {layout1Settings.topbar.show && !layout1Settings.topbar.fixed && (
-              <Layout1Topbar />
+              <ThemeProvider theme={topbarTheme}>
+                <Layout1Topbar />
+              </ThemeProvider>
             )}
-            <div className="content">
+            <div className="relative flex-grow">
               <MatxSuspense>{renderRoutes(routes)}</MatxSuspense>
             </div>
-            <div className="my-auto" />
             {settings.footer.show && !settings.footer.fixed && <Footer />}
           </div>
         )}
 
         {settings.footer.show && settings.footer.fixed && <Footer />}
       </div>
-      {settings.secondarySidebar.show && <SecondarySidebar />}
     </div>
   );
 };
 
-Layout1.propTypes = {
-  settings: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-  setLayoutSettings: PropTypes.func.isRequired,
-  settings: state.layout.settings
-});
-
-export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { setLayoutSettings })(Layout1)
-);
+export default Layout1;

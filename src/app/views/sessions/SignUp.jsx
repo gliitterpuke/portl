@@ -9,7 +9,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  DialogActions
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { makeStyles } from "@material-ui/core/styles";
@@ -113,7 +112,6 @@ const JwtRegister = () => {
                   validators={["required"]}
                   errorMessages={["this field is required"]}
                 />
-                <a onClick={handleClickOpen}>
                 <FormControlLabel
                   className="mb-4"
                   name="agreement"
@@ -126,8 +124,8 @@ const JwtRegister = () => {
                     <Checkbox size="small" checked={agreement || false} />
                   }
                   label="I have read and agreed to the terms of service."
+                  onClick={handleClickOpen}
                 />
-                </a>
                 <Dialog
                   open={open}
                   onClose={handleClose}

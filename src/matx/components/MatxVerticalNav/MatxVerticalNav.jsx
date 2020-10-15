@@ -1,30 +1,67 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import { Icon } from "@material-ui/core";
 import TouchRipple from "@material-ui/core/ButtonBase";
 import MatxVerticalNavExpansionPanel from "./MatxVerticalNavExpansionPanel";
-import { withStyles } from "@material-ui/styles";
 import { useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 
-const styles = theme => ({
-  expandIcon: {
-    transition: "transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms",
-    transform: "rotate(90deg)"
+const useStyles = makeStyles(({ palette, ...theme }) => ({
+  navItem: {
+    transition: "all 250ms ease-in-out",
+    // color: palette.type === "dark" ? palette.text.secondary : "inherit",
+    // "&:hover": {
+    //   color: palette.text.primary,
+    // },
   },
-  collapseIcon: {
-    transition: "transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms",
-    transform: "rotate(0deg)"
-  }
-});
+  compactNavItem: {
+    overflow: "hidden",
+    justifyContent: "center !important",
+    "& $itemText": {
+      display: "none",
+    },
+    "& $itemIcon": {
+      display: "none",
+    },
+  },
+  itemIcon: {},
+  itemText: {
+    fontSize: "0.875rem",
+    paddingLeft: "0.8rem",
+  },
+  label: {
+    color: palette.text.secondary,
+  },
+  bulletIcon: {
+    background: palette.text.secondary,
+  },
+}));
 
-const MatxVerticalNav = props => {
-  const navigations = useSelector(({ navigations }) => navigations);
+const MatxVerticalNav = () => {
+  const navigations = useSelector((state) => state.navigations);
+  const { settings } = useSelector((state) => state.layout);
+  const { mode } = settings.layout1Settings.leftSidebar;
+  const classes = useStyles();
 
-  const renderLevels = data => {
+  const renderLevels = (data) => {
     return data.map((item, index) => {
+      if (item.type === "label")
+        return (
+          <p
+            key={index}
+            className={clsx({
+              "px-4 mb-2 mt-6 uppercase text-12 sidenavHoverShow": true,
+              [classes.label]: true,
+              hidden: mode === "compact",
+            })}
+          >
+            {item.label}
+          </p>
+        );
       if (item.children) {
         return (
-          <MatxVerticalNavExpansionPanel item={item} key={index}>
+          <MatxVerticalNavExpansionPanel mode={mode} item={item} key={index}>
             {renderLevels(item.children)}
           </MatxVerticalNavExpansionPanel>
         );
@@ -33,7 +70,11 @@ const MatxVerticalNav = props => {
           <a
             key={index}
             href={item.path}
-            className="nav-item"
+            className={clsx({
+              "flex justify-between h-44 border-radius-4 mb-2 compactNavItem whitespace-pre overflow-hidden": true,
+              [classes.navItem]: true,
+              [classes.compactNavItem]: mode === "compact",
+            })}
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -41,7 +82,9 @@ const MatxVerticalNav = props => {
               {(() => {
                 if (item.icon) {
                   return (
-                    <Icon className="item-icon align-middle">{item.icon}</Icon>
+                    <Icon className="text-18 align-middle px-4">
+                      {item.icon}
+                    </Icon>
                   );
                 } else {
                   return (
@@ -49,10 +92,17 @@ const MatxVerticalNav = props => {
                   );
                 }
               })()}
-              <span className="align-middle item-text">{item.name}</span>
+              <span
+                className={clsx(
+                  "align-middle sidenavHoverShow",
+                  classes.itemText
+                )}
+              >
+                {item.name}
+              </span>
               <div className="mx-auto"></div>
               {item.badge && (
-                <div className={`badge bg-${item.badge.color}`}>
+                <div className={`rounded bg-${item.badge.color} px-1 py-1px`}>
                   {item.badge.value}
                 </div>
               )}
@@ -61,23 +111,57 @@ const MatxVerticalNav = props => {
         );
       } else {
         return (
-          <NavLink key={index} to={item.path} className="nav-item">
+          <NavLink
+            key={index}
+            to={item.path}
+            activeClassName="bg-gray"
+            className={clsx({
+              "flex justify-between h-44 border-radius-4 mb-2 compactNavItem whitespace-pre overflow-hidden": true,
+              [classes.navItem]: true,
+              [classes.compactNavItem]: mode === "compact",
+            })}
+          >
             <TouchRipple key={item.name} name="child" className="w-full">
-              {(() => {
-                if (item.icon) {
-                  return (
-                    <Icon className="item-icon align-middle">{item.icon}</Icon>
-                  );
-                } else {
-                  return (
-                    <span className="item-icon icon-text">{item.iconText}</span>
-                  );
-                }
-              })()}
-              <span className="align-middle item-text">{item.name}</span>
+              {item?.icon ? (
+                <Icon className="text-18 align-middle w-36 px-4">
+                  {item.icon}
+                </Icon>
+              ) : (
+                <Fragment>
+                  <div
+                    className={clsx({
+                      "nav-bullet p-2px rounded ml-6 mr-2": true,
+                      [classes.bulletIcon]: true,
+                      hidden: mode === "compact",
+                    })}
+                  ></div>
+                  <div
+                    className={clsx({
+                      "nav-bullet-text ml-5 text-11": true,
+                      hidden: mode !== "compact",
+                    })}
+                  >
+                    {item.iconText}
+                  </div>
+                </Fragment>
+              )}
+              <span
+                className={clsx(
+                  "align-middle text-left sidenavHoverShow",
+                  classes.itemText
+                )}
+              >
+                {item.name}
+              </span>
               <div className="mx-auto"></div>
               {item.badge && (
-                <div className={`badge bg-${item.badge.color}`}>
+                <div
+                  className={clsx(
+                    `rounded bg-${item.badge.color} px-1 py-1px`,
+                    "sidenavHoverShow",
+                    classes.itemIcon
+                  )}
+                >
                   {item.badge.value}
                 </div>
               )}
@@ -91,4 +175,4 @@ const MatxVerticalNav = props => {
   return <div className="navigation">{renderLevels(navigations)}</div>;
 };
 
-export default withStyles(styles)(MatxVerticalNav);
+export default MatxVerticalNav;

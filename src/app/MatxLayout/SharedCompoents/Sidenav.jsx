@@ -1,64 +1,72 @@
 import React, { Fragment } from "react";
 import Scrollbar from "react-perfect-scrollbar";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 
 import { navigations } from "../../navigations";
 import { MatxVerticalNav } from "matx";
 import { setLayoutSettings } from "app/redux/actions/LayoutActions";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 
-const Sidenav = props => {
-  const updateSidebarMode = sidebarSettings => {
-    let { settings, setLayoutSettings } = props;
+const useStyles = makeStyles(({ palette, ...theme }) => ({
+  scrollable: {
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  sidenavMobileOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    width: "100vw",
+    background: "rgba(0, 0, 0, 0.54)",
+    zIndex: -1,
+    [theme.breakpoints.up("lg")]: {
+      display: "none",
+    },
+  },
+}));
+
+const Sidenav = ({ children }) => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const { settings } = useSelector((state) => state.layout);
+
+  const updateSidebarMode = (sidebarSettings) => {
     let activeLayoutSettingsName = settings.activeLayout + "Settings";
     let activeLayoutSettings = settings[activeLayoutSettingsName];
 
-    setLayoutSettings({
-      ...settings,
-      [activeLayoutSettingsName]: {
-        ...activeLayoutSettings,
-        leftSidebar: {
-          ...activeLayoutSettings.leftSidebar,
-          ...sidebarSettings
-        }
-      }
-    });
+    dispatch(
+      setLayoutSettings({
+        ...settings,
+        [activeLayoutSettingsName]: {
+          ...activeLayoutSettings,
+          leftSidebar: {
+            ...activeLayoutSettings.leftSidebar,
+            ...sidebarSettings,
+          },
+        },
+      })
+    );
   };
-
-  const renderOverlay = () => (
-    <div
-      onClick={() => updateSidebarMode({ mode: "close" })}
-      className="sidenav__overlay"
-    />
-  );
 
   return (
     <Fragment>
       <Scrollbar
         options={{ suppressScrollX: true }}
-        className="scrollable position-relative"
+        className={clsx("relative px-4", classes.scrollable)}
       >
-        {props.children}
+        {children}
         <MatxVerticalNav navigation={navigations} />
       </Scrollbar>
-      {renderOverlay()}
+
+      <div
+        onClick={() => updateSidebarMode({ mode: "close" })}
+        className={classes.sidenavMobileOverlay}
+      />
     </Fragment>
   );
 };
 
-Sidenav.propTypes = {
-  setLayoutSettings: PropTypes.func.isRequired,
-  settings: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-  setLayoutSettings: PropTypes.func.isRequired,
-  settings: state.layout.settings
-});
-
-export default withRouter(
-  connect(mapStateToProps, {
-    setLayoutSettings
-  })(Sidenav)
-);
+export default Sidenav;

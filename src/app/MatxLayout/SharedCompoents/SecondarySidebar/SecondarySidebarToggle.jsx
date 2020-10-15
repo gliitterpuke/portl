@@ -1,14 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLayoutSettings } from "app/redux/actions/LayoutActions";
 import { Fab, IconButton, Icon, useMediaQuery } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
 import { merge } from "lodash";
-import PropTypes from "prop-types";
-import { classList } from "utils";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 
-const styles = theme => ({
+const useStyles = makeStyles(({ palette, ...theme }) => ({
   toggle: {
     position: "fixed",
     right: "-30px",
@@ -16,39 +15,43 @@ const styles = theme => ({
     zIndex: 9999,
     transition: "all 0.15s ease",
     "&.open": {
-      right: "10px"
-    }
-  }
-});
+      right: "10px",
+    },
+  },
+}));
 
-const SecondarySidebarToggle = ({ classes, settings, setLayoutSettings }) => {
-  let isMobile = useMediaQuery("(max-width:767px)");
+const SecondarySidebarToggle = () => {
+  const isMobile = useMediaQuery("(max-width:767px)");
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const { settings } = useSelector(({ layout }) => layout);
 
   const toggle = () => {
-    setLayoutSettings(
-      merge({}, settings, {
-        secondarySidebar: { open: !settings.secondarySidebar.open }
-      })
+    dispatch(
+      setLayoutSettings(
+        merge({}, settings, {
+          secondarySidebar: { open: !settings.secondarySidebar.open },
+        })
+      )
     );
   };
 
   useEffect(() => {
-    setLayoutSettings(
-      merge({}, settings, {
-        secondarySidebar: { open: !isMobile }
-      })
+    dispatch(
+      setLayoutSettings(
+        merge({}, settings, {
+          secondarySidebar: { open: !isMobile },
+        })
+      )
     );
   }, [isMobile, setLayoutSettings]);
 
   return (
     <div
-      className={
-        classes.toggle +
-        " " +
-        classList({
-          open: settings.secondarySidebar.open
-        })
-      }
+      className={clsx({
+        [classes.toggle]: true,
+        open: settings.secondarySidebar.open,
+      })}
     >
       {settings.secondarySidebar.open && (
         <IconButton onClick={toggle} size="small" aria-label="toggle">
@@ -71,11 +74,4 @@ const SecondarySidebarToggle = ({ classes, settings, setLayoutSettings }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  settings: state.layout.settings,
-  setLayoutSettings: PropTypes.func.isRequired
-});
-
-export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { setLayoutSettings })(SecondarySidebarToggle)
-);
+export default SecondarySidebarToggle;

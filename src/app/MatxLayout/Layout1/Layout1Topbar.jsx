@@ -1,129 +1,164 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
-import { Icon, IconButton, MenuItem, Tooltip } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
+import React from "react";
+import {
+  Icon,
+  IconButton,
+  MenuItem,
+  Avatar,
+  useMediaQuery,
+  Hidden,
+} from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
 import { setLayoutSettings } from "app/redux/actions/LayoutActions";
-import { logoutUser } from "app/redux/actions/UserActions";
-import PropTypes from "prop-types";
-import { isMdScreen, classList } from "utils";
+import { MatxMenu, MatxSearchBox } from "matx";
 import NotificationBar from "../SharedCompoents/NotificationBar";
+import { Link } from "react-router-dom";
+import ShoppingCart from "../SharedCompoents/ShoppingCart";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { merge } from "lodash";
+import clsx from "clsx";
+import useAuth from "app/hooks/useAuth";
+import localStorageService from "../../services/localStorageService"
 
-const styles = theme => ({
+const useStyles = makeStyles(({ palette, ...theme }) => ({
   topbar: {
+    top: 0,
+    zIndex: 96,
+    transition: "all 0.3s ease",
+    background:
+      "linear-gradient(180deg, rgba(255, 255, 255, 0.95) 44%, rgba(247, 247, 247, 0.4) 50%, rgba(255, 255, 255, 0))",
+
     "& .topbar-hold": {
-      backgroundColor: theme.palette.primary.main,
-      height: "80px",
-      "&.fixed": {
-        boxShadow: theme.shadows[8],
-        height: "64px"
-      }
-    }
+      backgroundColor: palette.primary.main,
+      height: 80,
+      paddingLeft: 18,
+      paddingRight: 20,
+      [theme.breakpoints.down("sm")]: {
+        paddingLeft: 16,
+        paddingRight: 16,
+      },
+      [theme.breakpoints.down("xs")]: {
+        paddingLeft: 14,
+        paddingRight: 16,
+      },
+    },
+    "& .fixed": {
+      boxShadow: theme.shadows[8],
+      height: 64,
+    },
+  },
+  userMenu: {
+    display: "flex",
+    alignItems: "center",
+    cursor: "pointer",
+    borderRadius: 24,
+    padding: 4,
+    "& span": {
+      margin: "0 8px",
+      // color: palette.text.secondary
+    },
+    "&:hover": {
+      backgroundColor: palette.action.hover,
+    },
   },
   menuItem: {
     display: "flex",
     alignItems: "center",
-    minWidth: 185
-  }
-});
+    minWidth: 185,
+  },
+}));
 
-const IconButtonWhite = withStyles(theme => ({
-  root: {
-    backgroundColor: "transparent",
-    padding: "5px"
-  }
-}))(IconButton);
+const Layout1Topbar = () => {
+  const theme = useTheme();
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const { settings } = useSelector(({ layout }) => layout);
+  const { logout } = useAuth();
+  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const fixed = settings?.layout1Settings?.topbar?.fixed;
+  const user = localStorageService.getItem('auth_user')
 
-const IconSmall = withStyles(() => ({
-  root: {
-    fontSize: "1rem"
-  }
-}))(Icon);
-class Layout1Topbar extends Component {
-  state = {};
-
-  updateSidebarMode = sidebarSettings => {
-    let { settings, setLayoutSettings } = this.props;
-
-    setLayoutSettings({
-      ...settings,
-      layout1Settings: {
-        ...settings.layout1Settings,
-        leftSidebar: {
-          ...settings.layout1Settings.leftSidebar,
-          ...sidebarSettings
-        }
-      }
-    });
+  const updateSidebarMode = (sidebarSettings) => {
+    dispatch(
+      setLayoutSettings(
+        merge({}, settings, {
+          layout1Settings: {
+            leftSidebar: {
+              ...sidebarSettings,
+            },
+          },
+        })
+      )
+    );
   };
 
-  handleSidebarToggle = () => {
-    let { settings } = this.props;
+  const handleSidebarToggle = () => {
     let { layout1Settings } = settings;
-
     let mode;
-    if (isMdScreen()) {
+
+    if (isMdScreen) {
       mode = layout1Settings.leftSidebar.mode === "close" ? "mobile" : "close";
     } else {
       mode = layout1Settings.leftSidebar.mode === "full" ? "close" : "full";
     }
-    this.updateSidebarMode({ mode });
+
+    updateSidebarMode({ mode });
   };
 
-  handleSignOut = () => {
-    this.props.logoutUser();
-  };
+  return (
+    <div className={classes.topbar}>
+      <div className={clsx({ "topbar-hold": true, fixed: fixed })}>
+        <div className="flex justify-between items-center h-full">
+          <div className="flex">
+            <IconButton onClick={handleSidebarToggle} className="hide-on-pc">
+              <Icon>menu</Icon>
+            </IconButton>
 
-  render() {
-    let { classes, fixed } = this.props;
+          </div>
+          <div className="flex items-center">
+            <MatxSearchBox />
 
-    return (
-      <div className={`topbar ${classes.topbar}`}>
-        <div className={classList({ "topbar-hold": true, fixed: fixed })}>
-          <div className="flex justify-between items-center h-full">
-            <div className="flex">
-              <IconButton
-                onClick={this.handleSidebarToggle}
-                className="hide-on-pc"
-              >
-                <Icon>menu</Icon>
-              </IconButton>
-            </div>
-            <div className="flex items-center">
             <NotificationBar />
-              <Tooltip title="Sign out">
-                <IconButtonWhite
-                  aria-label="Delete"
-                  label ="Logout"
-                  className=""
-                  size="small"
-                  onClick={this.handleSignOut}
-                >
-                  <IconSmall>exit_to_app</IconSmall>
-                </IconButtonWhite>
-              </Tooltip>
-            </div>
+
+            <MatxMenu
+              menuButton={
+                <div className={classes.userMenu}>
+                  <Hidden xsDown>
+                    <span>
+                      Hi <strong>{user.client_profile.given_names}</strong>
+                    </span>
+                  </Hidden>
+                </div>
+              }
+            >
+              <MenuItem>
+                <Link className={classes.menuItem} to="/">
+                  <Icon> home </Icon>
+                  <span className="pl-4"> Home </span>
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                {/* <Link
+                className={classes.menuItem}
+                to="/page-layouts/user-profile"
+              > */}
+                <Icon> person </Icon>
+                <span className="pl-4"> Profile </span>
+                {/* </Link> */}
+              </MenuItem>
+              <MenuItem className={classes.menuItem}>
+                <Icon> settings </Icon>
+                <span className="pl-4"> Settings </span>
+              </MenuItem>
+              <MenuItem onClick={logout} className={classes.menuItem}>
+                <Icon> power_settings_new </Icon>
+                <span className="pl-4"> Logout </span>
+              </MenuItem>
+            </MatxMenu>
           </div>
         </div>
       </div>
-    );
-  }
-}
-
-Layout1Topbar.propTypes = {
-  setLayoutSettings: PropTypes.func.isRequired,
-  logoutUser: PropTypes.func.isRequired,
-  settings: PropTypes.object.isRequired
+    </div>
+  );
 };
 
-const mapStateToProps = state => ({
-  setLayoutSettings: PropTypes.func.isRequired,
-  logoutUser: PropTypes.func.isRequired,
-  settings: state.layout.settings
-});
-
-export default withStyles(styles, { withTheme: true })(
-  withRouter(
-    connect(mapStateToProps, { setLayoutSettings, logoutUser })(Layout1Topbar)
-  )
-);
+export default Layout1Topbar;

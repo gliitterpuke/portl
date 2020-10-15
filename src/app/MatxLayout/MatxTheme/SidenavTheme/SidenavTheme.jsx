@@ -1,15 +1,15 @@
 import React from "react";
 import { ThemeProvider } from "@material-ui/core/styles";
-import SidenavThemeStyles from "./SidenavThemeStyles";
+import { useSelector } from "react-redux";
+import { useTheme } from "@material-ui/core/styles";
 
-const SidenavTheme = ({ theme, settings, children }) => {
-  return (
-    <ThemeProvider theme={theme}>
-      <SidenavThemeStyles theme={theme} settings={settings}>
-        {children}
-      </SidenavThemeStyles>
-    </ThemeProvider>
-  );
+const SidenavTheme = ({ children }) => {
+  const theme = useTheme();
+  const { settings } = useSelector((state) => state.layout);
+  const sidenavTheme =
+    settings.themes[settings.layout1Settings.leftSidebar.theme] || theme;
+
+  return <ThemeProvider theme={sidenavTheme}>{children}</ThemeProvider>;
 };
 
 export default SidenavTheme;

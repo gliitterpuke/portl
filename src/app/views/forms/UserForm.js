@@ -22,7 +22,7 @@ import {
   provstate 
 } from "./lists/formvalues"
 import localStorageService from "../../services/localStorageService";
-import axios from "axios";
+import axios from "axios.js";
 
 let user = localStorageService.getItem('auth_user')
 

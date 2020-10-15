@@ -1,47 +1,33 @@
-import React, { Component } from "react";
+import React from "react";
 import { MatxHorizontalNav } from "matx";
 import { navigations } from "../../navigations";
-import { withStyles } from "@material-ui/core/styles"
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 
-const styles = theme => ({
+const useStyles = makeStyles(({ palette, ...theme }) => ({
   root: {
     "&, & .horizontal-nav ul ul": {
-      background: theme.palette.primary.main
+      background: palette.primary.main,
     },
     "& .horizontal-nav a, & .horizontal-nav label": {
-      color: theme.palette.primary.contrastText
+      color: palette.primary.contrastText,
     },
     "& .horizontal-nav ul li ul li:hover, & .horizontal-nav ul li ul li.open": {
-      background: theme.palette.primary.dark
-    }
-  }
-});
+      background: palette.primary.dark,
+    },
+  },
+}));
 
-class Layout2Navbar extends Component {
-  state = {};
-  render() {
-    let { classes } = this.props;
+const Layout2Navbar = () => {
+  const classes = useStyles();
 
-    return (
-      <div className={`navbar ${classes.root}`}>
-        <div className="container">
-          <MatxHorizontalNav navigation={navigations} max={6} />
-        </div>
+  return (
+    <div className={clsx("navbar", classes.root)}>
+      <div className="pl-6">
+        <MatxHorizontalNav navigation={navigations} max={6} />
       </div>
-    );
-  }
-}
-
-Layout2Navbar.propTypes = {
-  settings: PropTypes.object.isRequired
+    </div>
+  );
 };
 
-const mapStateToProps = state => ({
-  settings: state.layout.settings
-});
-
-export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, {})(Layout2Navbar)
-);
+export default Layout2Navbar;

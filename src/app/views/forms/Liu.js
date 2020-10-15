@@ -139,10 +139,12 @@ open, setOpen }) => {
     if (reason === 'clickaway') { return; }
     setOpen(false);
   };
-  const fieldRef = React.useRef(null);
+
   React.useEffect(() => {
-    document.getElementsByClassName("scrollable-content")[0].scrollTo(0,0)
+    var elmnt = document.getElementsByClassName("scrollbar-container");
+    elmnt[0].scrollTo(0,0);
   }, []);
+  
   return (
     <>
       <Formik

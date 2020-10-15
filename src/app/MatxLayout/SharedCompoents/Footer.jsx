@@ -1,22 +1,54 @@
 import React from "react";
-import { withStyles, ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider, makeStyles, useTheme } from "@material-ui/core/styles";
 import { Button, Toolbar, AppBar } from "@material-ui/core";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
+import clsx from "clsx";
 
-const Footer = ({ theme, settings }) => {
+const useStyles = makeStyles(({ palette, ...theme }) => ({
+  footer: {
+    minHeight: "var(--topbar-height)",
+    "@media (max-width: 499px)": {
+      display: "table",
+      width: "100%",
+      minHeight: "auto",
+      padding: "1rem 0",
+      "& .container": {
+        flexDirection: "column !important",
+        "& a": {
+          margin: "0 0 16px !important",
+        },
+      },
+    },
+  },
+  appbar: {
+    zIndex: 96,
+  },
+}));
+
+const Footer = () => {
+  const classes = useStyles();
+  const theme = useTheme();
+  const { settings } = useSelector(({ layout }) => layout);
+
   const footerTheme = settings.themes[settings.footer.theme] || theme;
+
   return (
     <ThemeProvider theme={footerTheme}>
-      <AppBar color="primary" position="static">
-        <Toolbar className="footer flex items-center">
+      <AppBar color="primary" position="static" className={classes.appbar}>
+        <Toolbar className={clsx("flex items-center", classes.footer)}>
           <div className="flex items-center container w-full">
-            <a
-              href="https://portl.to"
+            {/* <a
+              href="https://github.com/uilibrary/matx-react"
               target="_blank"
               className="mr-2"
+              rel="noopener noreferrer"
             >
-              <Button variant="contained">Homepage</Button>
+              <Button variant="contained">Download Free version</Button>
+            </a> */}
+            <a href="https://portl.to">
+              <Button variant="contained">
+                Home
+              </Button>
             </a>
             <a href="https://portl.to/contact">
               <Button variant="contained" color="secondary">
@@ -25,7 +57,7 @@ const Footer = ({ theme, settings }) => {
             </a>
             <span className="m-auto"></span>
             <p className="m-0">
-              © <a href="http://portl.to">Portl 2020</a>
+              © Portl 2020
             </p>
           </div>
         </Toolbar>
@@ -34,15 +66,4 @@ const Footer = ({ theme, settings }) => {
   );
 };
 
-Footer.propTypes = {
-  settings: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-  settings: state.layout.settings
-});
-
-export default withStyles(
-  {},
-  { withTheme: true }
-)(connect(mapStateToProps, {})(Footer));
+export default Footer;

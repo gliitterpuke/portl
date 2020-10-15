@@ -1,7 +1,7 @@
 import React from "react";
 
 const MatxSidenavContainer = ({ children }) => {
-  return <div className="matx-sidenav-container">{children}</div>;
+  return <div className="relative flex h-full">{children}</div>;
 };
 
 export default MatxSidenavContainer;

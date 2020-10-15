@@ -45,11 +45,12 @@ export const QueDing = ({ formData, prevStep, nextStep, currentApp, open, setOpe
     if (reason === 'clickaway') { return; }
     setOpenSnackbar(false);
   };
-  const fieldRef = React.useRef(null);
+
   React.useEffect(() => {
-    var elmnt = document.getElementsByClassName("scrollable-content");
+    var elmnt = document.getElementsByClassName("scrollbar-container");
     elmnt[0].scrollTo(0,0);
   }, []);
+  
   const { 
     PersonalDetails_ServiceIn_ServiceIn,
     PersonalDetails_VisaType_VisaType,

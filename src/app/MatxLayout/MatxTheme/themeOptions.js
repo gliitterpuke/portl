@@ -25,7 +25,7 @@ const shadows = [
   "0px 10px 13px -6px rgba(0, 0, 0, 0.06),0px 20px 31px 3px rgba(0, 0, 0, 0.042),0px 8px 38px 7px rgba(0, 0, 0, 0.036)",
   "0px 10px 13px -6px rgba(0, 0, 0, 0.06),0px 20px 31px 3px rgba(0, 0, 0, 0.042),0px 8px 38px 7px rgba(0, 0, 0, 0.036)",
   "0px 10px 13px -6px rgba(0, 0, 0, 0.06),0px 20px 31px 3px rgba(0, 0, 0, 0.042),0px 8px 38px 7px rgba(0, 0, 0, 0.036)",
-  "0px 10px 13px -6px rgba(0, 0, 0, 0.06),0px 20px 31px 3px rgba(0, 0, 0, 0.042),0px 8px 38px 7px rgba(0, 0, 0, 0.036)"
+  "0px 10px 13px -6px rgba(0, 0, 0, 0.06),0px 20px 31px 3px rgba(0, 0, 0, 0.042),0px 8px 38px 7px rgba(0, 0, 0, 0.036)",
 ];
 
 const themeOptions = {
@@ -33,70 +33,94 @@ const themeOptions = {
     fontSize: 14,
     body1: {
       fontSize: "14px",
-      fontFamily: "Roboto Condensed" 
-    }
+    },
   },
 
   status: {
-    danger: red[500]
+    danger: red[500],
   },
   shadows,
   overrides: {
     MuiTable: {
       root: {
-        tableLayout: "fixed"
-      }
+        tableLayout: "fixed",
+      },
     },
-
     MuiTableCell: {
       head: {
         fontSize: "13px",
-        padding: "12px 0px"
+        padding: "12px 0px",
       },
       root: {
         fontSize: "14px",
         whiteSpace: "pre-wrap",
-        padding: "8px 0px"
-      }
+        wordBreak: "break-all",
+        padding: "12px 8px 12px 0px",
+      },
     },
 
-    MuiExpansionPanelSummary: {
-      content: {
-        margin: "0px"
-      }
+    MUIDataTableSelectCell: {
+      root: {
+        paddingLeft: 12,
+      },
+    },
+    MUIDataTableHeadCell: {
+      root: {
+        paddingLeft: 16,
+      },
+    },
+    MUIDataTableBodyCell: {
+      root: {
+        paddingLeft: 8,
+      },
+    },
+
+    MuiAccordion: {
+      root: {
+        "&:before": {
+          display: "none",
+        },
+      },
     },
 
     MuiButton: {
       root: {
         fontSize: "14px",
         textTransform: "none",
-        fontWeight: "400"
+        fontWeight: "400",
       },
       contained: {
-        boxShadow: shadows[8]
-      }
+        boxShadow: shadows[8],
+      },
     },
     MuiFab: {
       root: {
-        boxShadow: shadows[12]
-      }
+        boxShadow: shadows[12],
+      },
     },
     MuiCard: {
       root: {
-        borderRadius: "8px"
-      }
+        borderRadius: "8px",
+      },
     },
     MuiTooltip: {
       tooltip: {
-        fontSize: "11px"
-      }
+        fontSize: "11px",
+      },
     },
     MuiMenuItem: {
       root: {
-        fontSize: "0.875rem"
-      }
-    }
-  }
+        fontSize: "0.875rem",
+      },
+    },
+    MuiExpansionPanel: {
+      root: {
+        "&:before": {
+          display: "none",
+        },
+      },
+    },
+  },
 };
 
 export default themeOptions;

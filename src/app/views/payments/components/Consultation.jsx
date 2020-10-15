@@ -3,7 +3,6 @@ import { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import styled from "@emotion/styled";
 import axios from "axios.js";
-import { button } from '@material-ui/core'
 
 import Row from "./prebuilt/Row";
 import BillingDetailsFields from "./prebuilt/BillingDetailsFields";
@@ -13,7 +12,6 @@ import CheckoutError from "./prebuilt/CheckoutError";
 import history from "../../../../history";
 import localStorageService from "../../../services/localStorageService";
 import { Breadcrumb } from "matx"
-import QRCode from 'react-google-qrcode'
 
 let user = localStorageService.getItem('auth_user')
 

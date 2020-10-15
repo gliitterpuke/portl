@@ -1,10 +1,9 @@
 import React, { Fragment, useState } from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setLayoutSettings,
-  setDefaultSettings
+  setDefaultSettings,
 } from "app/redux/actions/LayoutActions";
-import PropTypes from "prop-types";
 import {
   Icon,
   IconButton,
@@ -15,10 +14,9 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
-  Paper,
-  Link
+  Link,
+  Card,
 } from "@material-ui/core";
-import { withStyles, ThemeProvider } from "@material-ui/core/styles";
 import Scrollbar from "react-perfect-scrollbar";
 import { merge, get, set } from "lodash";
 import Layout1Customizer from "./Layout1Customizer";
@@ -26,12 +24,13 @@ import Layout2Customizer from "./Layout2Customizer";
 import { themeColors } from "../../MatxTheme/themeColors";
 import BadgeSelected from "./BadgeSelected";
 import { mainThemes, topbarThemes } from "./customizerOptions";
-import { classList } from 'utils';
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
+import clsx from "clsx";
 
-const styles = theme => ({
+const useStyles = makeStyles(({ palette, ...theme }) => ({
   label: {
-    color: theme.palette.secondary.main,
-    backgroundColor: theme.palette.primary.dark,
+    color: palette.secondary.main,
+    backgroundColor: palette.primary.dark,
     fontWeight: 700,
     transform: "rotate(90deg)",
     marginBottom: "2.5rem",
@@ -41,119 +40,61 @@ const styles = theme => ({
     letterSpacing: "1.5px",
     fontSize: "1rem",
     "&:hover, &.open": {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.secondary.contrastText,
-    }
+      backgroundColor: palette.secondary.main,
+      color: palette.secondary.contrastText,
+    },
   },
   helpText: {
     margin: "0px .5rem 1rem",
-  }
-});
+  },
+  maxCustomizer: {
+    position: "fixed",
+    top: 0,
+    right: 0,
+    zIndex: 50,
+  },
+  customizerCloseButton: {
+    position: "absolute",
+    right: 8,
+    top: 8,
+  },
+  layoutBox: {
+    "&:hover": {
+      "& .layout-name": {
+        position: "absolute",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
+        width: "100%",
+        background: "rgba(0,0,0,0.3)",
+        zIndex: 12,
+      },
+    },
+  },
+}));
 
-const MatxCustomizer = props => {
+const MatxCustomizer = (props) => {
   const [open, setOpen] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
 
-  let { settings, classes, setLayoutSettings, setDefaultSettings } = props;
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const { settings } = useSelector((state) => state.layout);
 
-  const demoLayouts = [
-    {
-      name: "Light Sidebar",
-      thumbnail: "/assets/images/screenshots/layout1-customizer.png",
-      isPro: false,
-      options: {
-        activeLayout: "layout1",
-        activeTheme: "blue",
-        layout1Settings: {
-          leftSidebar: {
-            theme: "whiteBlue",
-            bgOpacity: 0.98
-          },
-          topbar: {
-            theme: "blueDark",
-            fixed: true
-          }
-        },
-        footer: {
-          theme: "slateDark1"
-        }
-      }
-    },
-    {
-      name: "Dark Sidebar",
-      thumbnail: "/assets/images/screenshots/layout1-blue-customizer.png",
-      isPro: false,
-      options: {
-        activeLayout: "layout1",
-        activeTheme: "blue",
-        layout1Settings: {
-          leftSidebar: {
-            theme: "slateDark1",
-            bgOpacity: 0.92
-          },
-          topbar: {
-            theme: "blueDark",
-            fixed: true
-          }
-        }
-      }
-    },
-    {
-      name: "Dark Theme",
-      thumbnail: "/assets/images/screenshots/layout3-customizer.png",
-      isPro: false,
-      options: {
-        activeLayout: "layout1",
-        activeTheme: "purpleDark1",
-        layout1Settings: {
-          leftSidebar: {
-            theme: "slateDark1",
-            bgOpacity: 0.92
-          },
-          topbar: {
-            theme: "purpleDark1",
-            fixed: true
-          }
-        },
-        footer: {
-          theme: "slateDark1"
-        }
-      }
-    },
-    {
-      name: "Horizontal Navigation",
-      thumbnail: "/assets/images/screenshots/layout4-customizer.png",
-      isPro: true,
-      options: {
-        activeLayout: "layout2",
-        activeTheme: "purple1",
-        layout2Settings: {
-          mode: "full"
-          // topbar: {
-          //   theme: "slateDark1"
-          // }
-        },
-        footer: {
-          theme: "slateDark1"
-        }
-      }
-    }
-  ];
-
-  const updateSettings = newSettings => {
+  const updateSettings = (newSettings) => {
     let updatedSettings = merge({}, settings, newSettings);
-    setLayoutSettings(updatedSettings);
-    setDefaultSettings(updatedSettings);
+    dispatch(setLayoutSettings(updatedSettings));
+    dispatch(setDefaultSettings(updatedSettings));
   };
 
   const handleChange = (name, value) => {
-    let { settings } = props;
     let updatedSettings = set(settings, name, value);
 
     updateSettings(updatedSettings);
   };
 
-  const handleControlChange = name => event => {
+  const handleControlChange = (name) => (event) => {
     let controlValue =
       event.target.type === "checkbox"
         ? event.target.checked
@@ -164,7 +105,7 @@ const MatxCustomizer = props => {
   const tooglePanel = () => {
     setOpen(!open);
   };
-  const handleTabChange = index => {
+  const handleTabChange = (index) => {
     setTabIndex(index);
   };
 
@@ -174,26 +115,28 @@ const MatxCustomizer = props => {
     <Fragment>
       <Tooltip title="Theme Settings" placement="left">
         <span
-          className={`${classes.label} ${classList({open})}`}
+          className={clsx({ [classes.label]: true, open })}
           onClick={tooglePanel}
         >
           DEMOS
-          {/* <Icon className="spin">settings</Icon> */}
         </span>
       </Tooltip>
 
       {open && (
         <ThemeProvider theme={activeTheme}>
           <div
-            className={`matx-customizer pb-8 ${classes.root}`}
-            style={{
-              backgroundColor: activeTheme.palette.background.default
-            }}
+            className={clsx(
+              "flex-column fixed w-320 pb-8 elevation-z12 h-full-screen bg-default",
+              classes.maxCustomizer
+            )}
           >
-            <div className="flex felx-row items-center px-5 py-4 mb-4 min-h-64 elevation-z6">
+            <div className="flex items-center px-5 py-4 mb-4 min-h-64 elevation-z6">
               <Icon color="primary">settings</Icon>
               <h5 className="mb-0 ml-2">Theme Settings</h5>
-              <IconButton onClick={tooglePanel} className="customizer-close">
+              <IconButton
+                onClick={tooglePanel}
+                className={classes.customizerCloseButton}
+              >
                 <Icon>close</Icon>
               </IconButton>
             </div>
@@ -220,27 +163,35 @@ const MatxCustomizer = props => {
                 <div className="mb-8 mx-2">
                   <div className="text-muted">Layouts</div>
 
-                  <div className="layout-boxes">
-                    {demoLayouts.map(layout => (
+                  <div className="flex-column">
+                    {demoLayouts.map((layout) => (
                       <BadgeSelected
                         color="secondary"
-                        className="layout-box"
+                        className={clsx(
+                          "w-full my-3 max-h-152 cursor-pointer",
+                          classes.layoutBox
+                        )}
                         badgeContent={"Pro"}
                         invisible={!layout.isPro}
                         key={layout.name}
                       >
-                        <Paper
+                        <Card
+                          className="relative"
                           onClick={() => updateSettings(layout.options)}
                           elevation={4}
                         >
-                          <span className="layout-name">
+                          <div className="layout-name hidden">
                             <Button variant="contained" color="secondary">
                               {layout.name}
                             </Button>
-                          </span>
+                          </div>
 
-                          <img src={layout.thumbnail} alt={layout.name} />
-                        </Paper>
+                          <img
+                            className="w-full"
+                            src={layout.thumbnail}
+                            alt={layout.name}
+                          />
+                        </Card>
                       </BadgeSelected>
                     ))}
                   </div>
@@ -252,22 +203,28 @@ const MatxCustomizer = props => {
               {tabIndex === 1 && (
                 <div>
                   <div className={classes.helpText}>
-                    Set different themes to body, topbar, sidebar, 
-                    footer & etc. Check out the <Link href="http://demos.ui-lib.com/matx-react-doc/layout.html" target="_blank">Documentation</Link>
+                    Set different themes to body, topbar, sidebar, footer & etc.
+                    Check out the{" "}
+                    <Link
+                      href="http://demos.ui-lib.com/matx-react-doc/layout.html"
+                      target="_blank"
+                    >
+                      Documentation
+                    </Link>
                   </div>
                   <div className="mb-4 mx-2">
                     <div className="text-muted mb-4">Main theme</div>
-                    <div className="colors">
+                    <div className="flex flex-wrap m--2">
                       {mainThemes.map((color, i) => (
                         <Tooltip key={i} title={color} placement="top">
                           <div
-                            className="color"
+                            className="flex justify-center items-center h-40 w-40 border-radius-4 m-2 cursor-pointer elevation-z3"
                             onClick={() =>
                               updateSettings({ activeTheme: color })
                             }
                             style={{
                               backgroundColor:
-                                themeColors[color].palette.primary.main
+                                themeColors[color].palette.primary.main,
                             }}
                           >
                             {settings.activeTheme === color && (
@@ -353,17 +310,17 @@ const MatxCustomizer = props => {
                     <div className="text-muted mb-4">
                       Secondary sidebar theme
                     </div>
-                    <div className="colors">
+                    <div className="flex flex-wrap m--2">
                       {topbarThemes.map((color, i) => (
                         <Tooltip key={i} title={color} placement="top">
                           <div
-                            className="color"
+                            className="flex justify-center items-center h-40 w-40 border-radius-4 m-2 cursor-pointer elevation-z3"
                             onClick={() =>
                               handleChange("secondarySidebar.theme", color)
                             }
                             style={{
                               backgroundColor:
-                                themeColors[color].palette.primary.main
+                                themeColors[color].palette.primary.main,
                             }}
                           >
                             {settings.secondarySidebar.theme === color && (
@@ -380,15 +337,15 @@ const MatxCustomizer = props => {
 
                   <div className="mb-4 mx-2">
                     <div className="text-muted mb-4">Footer theme</div>
-                    <div className="colors">
+                    <div className="flex flex-wrap m--2">
                       {topbarThemes.map((color, i) => (
                         <Tooltip key={i} title={color} placement="top">
                           <div
-                            className="color"
+                            className="flex justify-center items-center h-40 w-40 border-radius-4 m-2 cursor-pointer elevation-z3"
                             onClick={() => handleChange("footer.theme", color)}
                             style={{
                               backgroundColor:
-                                themeColors[color].palette.primary.main
+                                themeColors[color].palette.primary.main,
                             }}
                           >
                             {settings.footer.theme === color && (
@@ -412,14 +369,85 @@ const MatxCustomizer = props => {
   );
 };
 
-const mapStateToProps = state => ({
-  settings: state.layout.settings,
-  setLayoutSettings: PropTypes.func.isRequired,
-  setDefaultSettings: PropTypes.func.isRequired
-});
+const demoLayouts = [
+  {
+    name: "Light Sidebar",
+    thumbnail: "/assets/images/screenshots/layout1-customizer.png",
+    isPro: false,
+    options: {
+      activeLayout: "layout1",
+      activeTheme: "blue",
+      layout1Settings: {
+        leftSidebar: {
+          theme: "whiteBlue",
+          bgOpacity: 0.98,
+        },
+        topbar: {
+          theme: "blueDark",
+          fixed: true,
+        },
+      },
+      footer: {
+        theme: "slateDark1",
+      },
+    },
+  },
+  {
+    name: "Dark Sidebar",
+    thumbnail: "/assets/images/screenshots/layout1-blue-customizer.png",
+    isPro: false,
+    options: {
+      activeLayout: "layout1",
+      activeTheme: "blue",
+      layout1Settings: {
+        leftSidebar: {
+          theme: "slateDark1",
+          bgOpacity: 0.92,
+        },
+        topbar: {
+          theme: "blueDark",
+          fixed: true,
+        },
+      },
+    },
+  },
+  {
+    name: "Dark Theme",
+    thumbnail: "/assets/images/screenshots/layout3-customizer.png",
+    isPro: false,
+    options: {
+      activeLayout: "layout1",
+      activeTheme: "purpleDark1",
+      layout1Settings: {
+        leftSidebar: {
+          theme: "slateDark1",
+          bgOpacity: 0.92,
+        },
+        topbar: {
+          theme: "purpleDark1",
+          fixed: true,
+        },
+      },
+      footer: {
+        theme: "slateDark1",
+      },
+    },
+  },
+  {
+    name: "Horizontal Navigation",
+    thumbnail: "/assets/images/screenshots/layout4-customizer.png",
+    isPro: true,
+    options: {
+      activeLayout: "layout2",
+      activeTheme: "purple1",
+      layout2Settings: {
+        mode: "full",
+      },
+      footer: {
+        theme: "slateDark1",
+      },
+    },
+  },
+];
 
-export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { setLayoutSettings, setDefaultSettings })(
-    MatxCustomizer
-  )
-);
+export default MatxCustomizer;

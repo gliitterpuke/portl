@@ -1,38 +1,71 @@
-import React from "react";
-import { Icon, Badge, IconButton, Drawer } from "@material-ui/core";
-import { ThemeProvider, withStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { useState } from "react";
+import { Icon, Badge, IconButton, Drawer, Button } from "@material-ui/core";
+import { ThemeProvider, useTheme } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getCartList,
   deleteProductFromCart,
-  updateCartAmount
+  updateCartAmount,
 } from "app/redux/actions/EcommerceActions";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
+
+const useStyles = makeStyles(({ palette, ...theme }) => ({
+  miniCart: {
+    width: "var(--sidenav-width)",
+    "& .cart__topbar": {
+      height: "var(--topbar-height)",
+    },
+    "& .mini-cart__item": {
+      transition: "background 300ms ease",
+      "&:hover": {
+        background: "rgba(0,0,0,0.01)",
+      },
+    },
+  },
+}));
 
 let cartListLoaded = false;
 
-function ShoppingCart(props) {
-  const {
-    container,
-    theme,
-    settings,
-    cartList = [],
-    getCartList,
-    deleteProductFromCart,
-    updateCartAmount,
-    user
-  } = props;
+function ShoppingCart({ container }) {
+  const [totalCost, setTotalCost] = useState(0);
+  const [panelOpen, setPanelOpen] = useState(false);
 
-  const [panelOpen, setPanelOpen] = React.useState(false);
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const theme = useTheme();
+  const history = useHistory();
+  const user = useSelector((state) => state.user);
+  const { cartList } = useSelector((state) => state.ecommerce);
+  const { settings } = useSelector((state) => state.layout);
 
   if (!cartListLoaded) {
-    getCartList(user.userId);
+    dispatch(getCartList(user.userId));
     cartListLoaded = true;
   }
 
-  function handleDrawerToggle() {
+  const handleDrawerToggle = () => {
     setPanelOpen(!panelOpen);
-  }
+  };
+
+  const handleCheckoutClick = () => {
+    if (totalCost > 0) {
+      history.push("/ecommerce/checkout");
+      setPanelOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    let total = 0;
+
+    cartList.forEach((product) => {
+      total += product.price * product.amount;
+    });
+
+    setTotalCost(total);
+  }, [cartList]);
 
   const parentThemePalette = theme.palette;
 
@@ -44,7 +77,7 @@ function ShoppingCart(props) {
           color:
             parentThemePalette.type === "light"
               ? parentThemePalette.text.secondary
-              : parentThemePalette.text.primary
+              : parentThemePalette.text.primary,
         }}
       >
         <Badge color="secondary" badgeContent={cartList.length}>
@@ -59,91 +92,89 @@ function ShoppingCart(props) {
         open={panelOpen}
         onClose={handleDrawerToggle}
         ModalProps={{
-          keepMounted: true
+          keepMounted: true,
         }}
       >
-        <div className="mini-cart">
-          <div className="cart__topbar flex items-center p-1 mb-2 pl-4">
+        <div className={clsx("flex-column h-full", classes.miniCart)}>
+          <div className="cart__topbar elevation-z6 flex items-center p-1 mb-2 pl-4">
             <Icon color="primary">shopping_cart</Icon>
             <h5 className="ml-2 my-0 font-medium">Cart</h5>
           </div>
 
-          {cartList.map(product => (
-            <div
-              key={product.id}
-              className="mini-cart__item flex items-center justify-between py-2 px-2"
-            >
-              <div className="flex flex-column mr-2">
-                <IconButton
-                  size="small"
-                  onClick={() =>
-                    updateCartAmount(
-                      user.userId,
-                      product.id,
-                      product.amount + 1
-                    )
-                  }
-                >
-                  <Icon className="cursor-pointer">keyboard_arrow_up</Icon>
-                </IconButton>
-                <IconButton
-                  disabled={!(product.amount - 1)}
-                  size="small"
-                  onClick={() =>
-                    updateCartAmount(
-                      user.userId,
-                      product.id,
-                      product.amount - 1
-                    )
-                  }
-                >
-                  <Icon className="cursor-pointer">keyboard_arrow_down</Icon>
-                </IconButton>
-              </div>
-              <div className="mr-2">
-                <img src={product.imgUrl} alt={product.title} />
-              </div>
-              <div className="mr-2 text-center">
-                <h6 className="m-0 mb-1">{product.title}</h6>
-                <small className="text-muted">
-                  ${product.price} x {product.amount}
-                </small>
-              </div>
-              <IconButton
-                size="small"
-                onClick={() => deleteProductFromCart(user.userId, product.id)}
+          <div className="flex-grow overflow-auto">
+            {cartList.map((product) => (
+              <div
+                key={product.id}
+                className="mini-cart__item flex items-center py-2 px-2"
               >
-                <Icon fontSize="small">clear</Icon>
-              </IconButton>
-            </div>
-          ))}
+                <div className="flex flex-column mr-1">
+                  <IconButton
+                    size="small"
+                    onClick={() =>
+                      dispatch(
+                        updateCartAmount(
+                          user.userId,
+                          product.id,
+                          product.amount + 1
+                        )
+                      )
+                    }
+                  >
+                    <Icon className="cursor-pointer">keyboard_arrow_up</Icon>
+                  </IconButton>
+                  <IconButton
+                    disabled={!(product.amount - 1)}
+                    size="small"
+                    onClick={() =>
+                      dispatch(
+                        updateCartAmount(
+                          user.userId,
+                          product.id,
+                          product.amount - 1
+                        )
+                      )
+                    }
+                  >
+                    <Icon className="cursor-pointer">keyboard_arrow_down</Icon>
+                  </IconButton>
+                </div>
+                <div className="mr-2">
+                  <img
+                    className="w-48"
+                    src={product.imgUrl}
+                    alt={product.title}
+                  />
+                </div>
+                <div className="mr-2 text-center flex-grow flex-column">
+                  <h6 className="m-0 mb-1 ellipsis w-120">{product.title}</h6>
+                  <small className="text-muted">
+                    ${product.price} x {product.amount}
+                  </small>
+                </div>
+                <IconButton
+                  size="small"
+                  onClick={() =>
+                    dispatch(deleteProductFromCart(user.userId, product.id))
+                  }
+                >
+                  <Icon fontSize="small">clear</Icon>
+                </IconButton>
+              </div>
+            ))}
+          </div>
+
+          <Button
+            className="w-full border-radius-0"
+            variant="contained"
+            color="primary"
+            onClick={handleCheckoutClick}
+          >
+            Checkout (${totalCost.toFixed(2)})
+          </Button>
         </div>
       </Drawer>
     </ThemeProvider>
   );
 }
 
-ShoppingCart.propTypes = {
-  settings: PropTypes.object.isRequired,
-  cartList: PropTypes.array.isRequired
-};
-
-const mapStateToProps = state => ({
-  settings: state.layout.settings,
-  getCartList: PropTypes.func.isRequired,
-  deleteProductFromCart: PropTypes.func.isRequired,
-  updateCartAmount: PropTypes.func.isRequired,
-  cartList: state.ecommerce.cartList,
-  user: state.user
-});
-
-export default withStyles(
-  {},
-  { withTheme: true }
-)(
-  connect(mapStateToProps, {
-    getCartList,
-    deleteProductFromCart,
-    updateCartAmount
-  })(ShoppingCart)
-);
+export default ShoppingCart;

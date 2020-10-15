@@ -10,7 +10,7 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
-  Paper
+  Paper,
 } from "@material-ui/core";
 import { get } from "lodash";
 import { themeColors } from "../../MatxTheme/themeColors";
@@ -19,7 +19,7 @@ import { mainSidebarThemes, topbarThemes } from "./customizerOptions";
 
 const sidebarBG = [
   "/assets/images/sidebar/sidebar-bg-dark.jpg",
-  "/assets/images/sidebar/sidebar-bg-light.jpg"
+  "/assets/images/sidebar/sidebar-bg-light.jpg",
 ];
 
 const Layout1Customizer = ({ settings, handleChange, handleControlChange }) => {
@@ -27,18 +27,18 @@ const Layout1Customizer = ({ settings, handleChange, handleControlChange }) => {
     <Fragment>
       <div className="mb-4 mx-3">
         <div className="text-muted mb-4">Sidebar theme</div>
-        <div className="colors">
+        <div className="flex flex-wrap m--2">
           {mainSidebarThemes
             // .filter(c => themeColors[c].palette.type === "dark")
             .map((color, i) => (
               <Tooltip key={i} title={color} placement="top">
                 <div
-                  className="color"
+                  className="flex justify-center items-center h-40 w-40 border-radius-4 m-2 cursor-pointer elevation-z3"
                   onClick={() =>
                     handleChange("layout1Settings.leftSidebar.theme", color)
                   }
                   style={{
-                    backgroundColor: themeColors[color].palette.primary.main
+                    backgroundColor: themeColors[color].palette.primary.main,
                   }}
                 >
                   {settings.layout1Settings.leftSidebar.theme === color && (
@@ -53,16 +53,16 @@ const Layout1Customizer = ({ settings, handleChange, handleControlChange }) => {
 
       <div className="mb-8 mx-3">
         <div className="text-muted mb-4">Topbar theme</div>
-        <div className="colors">
+        <div className="flex flex-wrap m--2">
           {topbarThemes.map((color, i) => (
             <Tooltip key={i} title={color} placement="top">
               <div
-                className="color"
+                className="flex justify-center items-center h-40 w-40 border-radius-4 m-2 cursor-pointer elevation-z3"
                 onClick={() =>
                   handleChange("layout1Settings.topbar.theme", color)
                 }
                 style={{
-                  backgroundColor: themeColors[color].palette.primary.main
+                  backgroundColor: themeColors[color].palette.primary.main,
                 }}
               >
                 {settings.layout1Settings.topbar.theme === color && (
@@ -98,13 +98,13 @@ const Layout1Customizer = ({ settings, handleChange, handleControlChange }) => {
       <div className="mb-8 mx-3">
         <div className="text-muted mb-8">Sidebar background image</div>
 
-        <div className="layout-boxes sidebar-bg">
+        <div>
           <Grid container spacing={3}>
             {sidebarBG.map((bg, i) => (
-              <Grid item lg={4} key={i}>
+              <Grid item xs={4} key={i}>
                 <BadgeSelected
                   color="primary"
-                  className="layout-box mr-4"
+                  className="w-full h-full cursor-pointer"
                   badgeContent={<Icon>done</Icon>}
                   invisible={
                     settings.layout1Settings.leftSidebar.bgImgURL !== bg
@@ -114,9 +114,8 @@ const Layout1Customizer = ({ settings, handleChange, handleControlChange }) => {
                     onClick={() =>
                       handleChange("layout1Settings.leftSidebar.bgImgURL", bg)
                     }
-                    className="h-160"
                   >
-                    <img src={bg} alt="" />
+                    <img className="max-h-152 w-full block" src={bg} alt="" />
                   </Paper>
                 </BadgeSelected>
               </Grid>

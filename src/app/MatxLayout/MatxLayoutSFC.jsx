@@ -1,72 +1,74 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef, useCallback } from "react";
 import { MatxLayouts } from "./index";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { matchRoutes } from "react-router-config";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AppContext from "app/appContext";
-import {
-  setLayoutSettings,
-  setDefaultSettings
-} from "app/redux/actions/LayoutActions";
+import { setLayoutSettings } from "app/redux/actions/LayoutActions";
 import { isEqual, merge } from "lodash";
-import { isMdScreen } from "utils";
 import { MatxSuspense } from "matx";
+import { useMediaQuery } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 
-let tempSettings;
-
-const MatxLayoutSFC = props => {
-  let appContext = useContext(AppContext);
-  const {
-    settings,
-    defaultSettings,
-    setLayoutSettings,
-    // setDefaultSettings
-  } = props;
-
-  tempSettings = settings;
-
-  useEffect(() => {
-    listenWindowResize();
-
-    if (window) {
-      window.addEventListener("resize", listenWindowResize);
-    }
-    return () => {
-      if (window) {
-        window.removeEventListener("resize", listenWindowResize);
-      }
-    };
-  }, []);
+const MatxLayoutSFC = (props) => {
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  const { pathname } = useLocation();
+  const appContext = useContext(AppContext);
+  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const settings = useSelector((state) => state.layout.settings);
+  const defaultSettings = useSelector((state) => state.layout.defaultSettings);
+  const ref = useRef({ appContext, isMdScreen, settings, defaultSettings });
 
   useEffect(() => {
-    updateSettingsFromRouter();
-  }, [props.location]);
+    let { settings } = ref.current;
 
-  const listenWindowResize = () => {
-    let settings = tempSettings;
     if (settings.layout1Settings.leftSidebar.show) {
-      let mode = isMdScreen() ? "close" : "compact";
-      setLayoutSettings(
-        merge({}, settings, { layout1Settings: { leftSidebar: { mode } } })
+      let mode = isMdScreen ? "close" : "full";
+      dispatch(
+        setLayoutSettings(
+          merge({}, settings, { layout1Settings: { leftSidebar: { mode } } })
+        )
       );
     }
-  };
+  }, [isMdScreen, dispatch]);
 
-  const updateSettingsFromRouter = () => {
+  const updateSettingsFromRouter = useCallback(() => {
+    let { settings, defaultSettings, appContext, isMdScreen } = ref.current;
     const { routes } = appContext;
-    const matched = matchRoutes(routes, props.location.pathname)[0];
+    const matched = matchRoutes(routes, pathname)[0];
 
     if (matched && matched.route.settings) {
       // ROUTE HAS SETTINGS
-      const updatedSettings = merge({}, settings, matched.route.settings);
+      let updatedSettings = merge({}, settings, matched.route.settings);
+
       if (!isEqual(settings, updatedSettings)) {
-        setLayoutSettings(updatedSettings);
+        dispatch(
+          setLayoutSettings(
+            isMdScreen
+              ? merge({}, updatedSettings, {
+                  layout1Settings: { leftSidebar: { mode: "close" } },
+                })
+              : updatedSettings
+          )
+        );
       }
     } else if (!isEqual(settings, defaultSettings)) {
-      setLayoutSettings(defaultSettings);
+      dispatch(
+        setLayoutSettings(
+          isMdScreen
+            ? merge({}, defaultSettings, {
+                layout1Settings: { leftSidebar: { mode: "close" } },
+              })
+            : defaultSettings
+        )
+      );
     }
-  };
+  }, [pathname, dispatch]);
+
+  useEffect(() => {
+    updateSettingsFromRouter();
+  }, [updateSettingsFromRouter]);
 
   const Layout = MatxLayouts[settings.activeLayout];
 
@@ -77,15 +79,4 @@ const MatxLayoutSFC = props => {
   );
 };
 
-const mapStateToProps = state => ({
-  setLayoutSettings: PropTypes.func.isRequired,
-  setDefaultSettings: PropTypes.func.isRequired,
-  settings: state.layout.settings,
-  defaultSettings: state.layout.defaultSettings
-});
-
-export default withRouter(
-  connect(mapStateToProps, { setLayoutSettings, setDefaultSettings })(
-    MatxLayoutSFC
-  )
-);
+export default MatxLayoutSFC;

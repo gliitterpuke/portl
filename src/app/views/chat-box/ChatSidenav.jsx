@@ -3,10 +3,18 @@ import ChatAvatar from "./ChatAvatar";
 import Scrollbar from "react-perfect-scrollbar";
 import { Divider } from "@material-ui/core";
 import { format } from "date-fns";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 import localStorageService from "../../services/localStorageService"
 
-let baseURL = "https://portl-dev.herokuapp.com/api/v1/"
 let user = localStorageService.getItem('auth_user')
+
+const useStyles = makeStyles(({ palette, ...theme }) => ({
+  chatSidenav: {
+    borderRight: "1px solid rgba(0, 0, 0, 0.08)",
+    height: 450,
+  },
+}));
 
 const ChatSidenav = ({
   currentUser,
@@ -14,10 +22,11 @@ const ChatSidenav = ({
   recentContactList = [],
   handleContactClick
 }) => {
+  const classes = useStyles();
+
   return (
-    <div className="chat-sidenav bg-default">
+    <div className={clsx("bg-default", classes.chatSidenav)}>
       <div className="chat-sidenav__topbar flex items-center h-56 px-4 bg-primary">
-        {/* <ChatAvatar src={currentUser.avatar} status={currentUser.status} /> */}
         {user.is_client === true && (
         <h5 className="ml-4 whitespace-pre mb-0 font-medium text-18 text-white">
           {user.client_profile.given_names + " " + user.client_profile.family_name}
@@ -29,19 +38,19 @@ const ChatSidenav = ({
         </h5>
         )}
       </div>
-      <Scrollbar className="chat-contact-list position-relative h-400">
-        {appList.map((contact, index) => (
+      <Scrollbar className="relative h-full">
+      {appList.map((contact, index) => (
           <div
             onClick={() => handleContactClick(contact.id)}
             key={index}
-            className="flex items-center px-4 py-1 cursor-pointer  gray-on-hover"
+            className="flex items-center p-4 cursor-pointer  gray-on-hover"
           >
-            {/* <ChatAvatar src={contact.avatar} status={contact.status} /> */}
             <div className="pl-4">
-              <p>{`Application ${contact.application_id}`}</p>
+              <p className="m-0">{`Application ${contact.application_id}`}</p>
             </div>
           </div>
         ))}
+        <Divider />
       </Scrollbar>
     </div>
   );
