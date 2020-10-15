@@ -119,6 +119,8 @@ const Layout1Topbar = () => {
 
             <NotificationBar />
 
+            <Icon onClick={logout} className="hide-on-pc"> power_settings_new </Icon>
+
             <MatxMenu
               menuButton={
                 <div className={classes.userMenu}>
