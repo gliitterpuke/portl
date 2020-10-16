@@ -1,54 +1,74 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Icon, IconButton } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 
-const styles = theme => ({
+const useStyles = makeStyles(({ palette, ...theme }) => ({
   root: {
-    backgroundColor: theme.palette.primary.dark,
-    color: theme.palette.primary.contrastText,
+    backgroundColor: palette.primary.dark,
+    color: palette.primary.contrastText,
     "&::placeholder": {
-      color: theme.palette.primary.contrastText
-    }
-  }
-});
+      color: palette.primary.contrastText,
+    },
+  },
+  searchBoxHolder: {
+    position: "absolute",
+    width: "100%",
+    top: 0,
+    left: 0,
+    zIndex: 9,
+    height: "var(--topbar-height)",
+  },
+  searchBox: {
+    outline: "none",
+    border: "none",
+    fontSize: "1rem",
+    height: "calc(100% - 5px)",
+  },
+}));
 
-class MatxSearchBox extends Component {
-  state = {
-    open: false
+const MatxSearchBox = () => {
+  const [open, setOpen] = useState(false);
+
+  const classes = useStyles();
+
+  const toggle = () => {
+    setOpen(!open);
   };
 
-  toggle = () => {
-    this.setState({ open: !this.state.open });
-  };
+  return (
+    <React.Fragment>
+      {!open && (
+        <IconButton onClick={toggle}>
+          <Icon>search</Icon>
+        </IconButton>
+      )}
 
-  render() {
-    let { classes } = this.props;
-    return (
-      <React.Fragment>
-        {!this.state.open && (
-          <IconButton onClick={this.toggle}>
-            <Icon>search</Icon>
+      {open && (
+        <div
+          className={clsx(
+            "flex items-center",
+            classes.root,
+            classes.searchBoxHolder
+          )}
+        >
+          <input
+            className={clsx(
+              "px-4 search-box w-full",
+              classes.root,
+              classes.searchBox
+            )}
+            type="text"
+            placeholder="Search here..."
+            autoFocus
+          />
+          <IconButton onClick={toggle} className="align-middle mx-4">
+            <Icon>close</Icon>
           </IconButton>
-        )}
+        </div>
+      )}
+    </React.Fragment>
+  );
+};
 
-        {this.state.open && (
-          <div
-            className={`flex items-center h-full matx-search-box ${classes.root}`}
-          >
-            <input
-              className={`px-4 search-box w-full ${classes.root}`}
-              type="text"
-              placeholder="Search here..."
-              autoFocus
-            />
-            <IconButton onClick={this.toggle} className="align-middle mx-4">
-              <Icon>close</Icon>
-            </IconButton>
-          </div>
-        )}
-      </React.Fragment>
-    );
-  }
-}
-
-export default withStyles(styles, { withTheme: true })(MatxSearchBox);
+export default MatxSearchBox;

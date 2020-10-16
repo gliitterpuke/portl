@@ -1,46 +1,46 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import {
   Card,
+  Checkbox,
+  FormControlLabel,
   Grid,
   Button,
+  CircularProgress,
 } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
+
+import { makeStyles } from "@material-ui/core/styles";
+import history from "history.js";
+import clsx from "clsx";
+import useAuth from 'app/hooks/useAuth';
 import axios from "axios.js";
-import history from "../../../history"
 import qs from "qs";
 
-import { loginWithEmailAndPassword } from "../../redux/actions/LoginActions";
-
-if (!localStorage.getItem("access_token")) {
-}
-else  {
-  history.push('/profile')
-}
-
-const styles = theme => ({
-  wrapper: {
-    position: "relative"
+const useStyles = makeStyles(({ palette, ...theme }) => ({
+  cardHolder: {
+    background: "#1A2038",
   },
-
+  card: {
+    maxWidth: 800,
+    borderRadius: 12,
+    margin: "1rem",
+  },
   buttonProgress: {
     position: "absolute",
     top: "50%",
     left: "50%",
     marginTop: -12,
-    marginLeft: -12
-  }
-});
+    marginLeft: -12,
+  },
+}));
 
-class Demo extends Component {
-  state = {
-    username: "katherinewwang@gmail.com",
-    password: "test",
-  };
+const Demo = () => {
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
 
-  createValues = async (e) => {
+  const classes = useStyles();
+
+  const createValues = async (e) => {
     const isolang = { 
       code: "eng",
       name: "English"
@@ -135,13 +135,14 @@ class Demo extends Component {
     alert('Values success')
 }
 
-createUsers = async (e) => {
+  const createUsers = async (e) => {
     const repuser = {
         is_client: false,
         email: "kat@portl.to",
         password: "test"
     }
-    const response = await axios.post("users/", repuser)
+
+  const response = await axios.post("users/", repuser)
     const professional = {
         family_name: "Smith",
         given_names: "John",
@@ -173,88 +174,94 @@ createUsers = async (e) => {
       }
     await axios.post("clients/", client)
     alert('Users Success')
-    }
-
-    activateUsers = async (e) => {
-        const rep = {
-          username: "kat@portl.to",
-          password: "test"
-        }
-        const response = await axios.post('http://127.0.0.1:8000/auth/token', qs.stringify(rep))
-        const token = response.data.access_token
-        axios.get(`users/activate/${token}`)
-        const client = {
-          username: "katherinewwang@gmail.com",
-          password: "test"
-        }
-        const result = await axios.post('http://127.0.0.1:8000/auth/token', qs.stringify(client))
-        const clienttoken = result.data.access_token
-        axios.get(`users/activate/${clienttoken}`)
-        alert('Activation successful')
-        history.push('/session/signin')
-    }
-  render() {
-    let { classes } = this.props;
-    return (
-      <div className="signup flex justify-center w-full h-full-screen">
-        <div className="p-8">
-          <Card className="signup-card position-relative y-center">
-            <Grid container>
-              <Grid item lg={5} md={5} sm={5} xs={12}>
-                <div className="p-8 flex justify-center items-center h-full">
-                  <img src="/assets/images/illustrations/dreamer.svg" alt="" />
-                </div>
-              </Grid>
-              <Grid item lg={7} md={7} sm={7} xs={12}>
-                <div className="p-9 h-full bg-light-gray position-relative">
-                    To test, please click Values, wait for the success alert, then repeat for Users and Activate. 
-                    <p/> You will be redirected to the signin page after activation!
-                    <p/>
-                    <u>Credentials</u>
-                    <p/>
-                    <b>Client: </b> katherinewwang@gmail.com / test
-                    <p/>
-                    <b>Professional: </b>kat@portl.to / test
-                    <p/>
-                    <div className="flex flex-wrap items-center mb-4">
-                      <div className={classes.wrapper}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick ={this.createValues}
-                        >
-                          Values
-                        </Button>
-                      </div>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick ={this.createUsers}
-                        >
-                          Users
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick ={this.activateUsers}
-                        >
-                          Activate
-                        </Button>
-                    </div>
-                </div>
-              </Grid>
-            </Grid>
-          </Card>
-        </div>
-      </div>
-    );
   }
-}
 
-const mapStateToProps = state => ({
-  loginWithEmailAndPassword: PropTypes.func.isRequired,
-  login: state.login
-});
-export default withStyles(styles, { withTheme: true })(
-  withRouter(connect(mapStateToProps, { loginWithEmailAndPassword })(Demo))
-);
+  const activateUsers = async (e) => {
+    const rep = {
+      username: "kat@portl.to",
+      password: "test"
+    }
+    const response = await axios.post('http://127.0.0.1:8000/auth/token', qs.stringify(rep))
+    const token = response.data.access_token
+    axios.get(`users/activate/${token}`)
+    const client = {
+        username: "katherinewwang@gmail.com",
+        password: "test"
+    }
+    const result = await axios.post('http://127.0.0.1:8000/auth/token', qs.stringify(client))
+    const clienttoken = result.data.access_token
+    axios.get(`users/activate/${clienttoken}`)
+    alert('Activation successful')
+    history.push('/session/signin')
+  }
+
+  return (
+    <div
+      className={clsx(
+        "flex justify-center items-center  min-h-full-screen",
+        classes.cardHolder
+      )}
+    >
+      <Card className={classes.card}>
+        <Grid container>
+          <Grid item lg={5} md={5} sm={5} xs={12}>
+            <div className="p-8 flex justify-center items-center h-full">
+              <img
+                className="w-200"
+                src="/assets/images/illustrations/dreamer.svg"
+                alt=""
+              />
+            </div>
+          </Grid>
+          <Grid item lg={7} md={7} sm={7} xs={12}>
+            <div className="p-8 h-full bg-light-gray relative">
+              To test, please click Values, wait for the success alert, then repeat for Users and Activate. 
+              <p/> You will be redirected to the signin page after activation!
+              <p/>
+              <u>Credentials</u>
+              <p/>
+              <b>Client: </b> katherinewwang@gmail.com / test
+              <p/>
+              <b>Professional: </b>kat@portl.to / test
+              <p/>
+
+              <div className="flex flex-wrap items-center mb-4">
+                <div className="relative">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick ={createValues}
+                  >
+                    Values
+                  </Button>
+                  {loading && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
+                  )}
+                </div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick ={createUsers}
+                >
+                  Users
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick ={activateUsers}
+                >
+                  Activate
+                </Button>
+              </div>
+            </div>
+          </Grid>
+        </Grid>
+      </Card>
+    </div>
+  );
+};
+
+export default Demo;

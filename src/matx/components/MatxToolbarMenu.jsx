@@ -1,41 +1,35 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Icon, IconButton, Hidden } from "@material-ui/core";
-import { classList } from "utils";
+import clsx from "clsx";
 
-class MatxToolbarMenu extends Component {
-  state = {
-    open: false
+const MatxToolbarMenu = ({ offsetTop, children }) => {
+  const [open, setOpen] = useState(false);
+
+  const handleToggle = () => {
+    setOpen(!open);
   };
 
-  handleToggle = () => {
-    this.setState({ open: !this.state.open });
-  };
+  return (
+    <div
+      className={clsx({
+        "toolbar-menu-wrap": true,
+        open: open,
+      })}
+    >
+      <Hidden mdUp>
+        <IconButton onClick={handleToggle}>
+          <Icon>{open ? "close" : "more_vert"}</Icon>
+        </IconButton>
+      </Hidden>
 
-  render() {
-    let { offsetTop, children } = this.props;
-
-    return (
       <div
-        className={classList({
-          "toolbar-menu-wrap": true,
-          open: this.state.open
-        })}
+        style={{ top: offsetTop }}
+        className="flex items-center menu-area container"
       >
-        <Hidden mdUp>
-          <IconButton onClick={this.handleToggle}>
-            <Icon>{this.state.open ? "close" : "more_vert"}</Icon>
-          </IconButton>
-        </Hidden>
-
-        <div
-          style={{ top: offsetTop }}
-          className="flex items-center menu-area container"
-        >
-          {children}
-        </div>
+        {children}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default MatxToolbarMenu;

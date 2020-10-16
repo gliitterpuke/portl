@@ -3,15 +3,17 @@ import echarts from "echarts";
 import ReactEcharts from "echarts-for-react";
 import PropTypes from "prop-types";
 import { EchartTheme } from "matx";
-import { withStyles } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 
-const EchartCreator = props => {
-  echarts.registerTheme("echarts-theme", EchartTheme(props.theme));
+const EchartCreator = ({ height, option }) => {
+  const theme = useTheme();
+
+  echarts.registerTheme("echarts-theme", EchartTheme(theme));
 
   return (
     <ReactEcharts
-      style={{ height: props.height, width: "100%" }}
-      option={props.option}
+      style={{ height: height, width: "100%" }}
+      option={option}
       lazyUpdate={true}
       theme="echarts-theme"
     />
@@ -20,7 +22,7 @@ const EchartCreator = props => {
 
 EchartCreator.prototype = {
   height: PropTypes.string.isRequired,
-  settings: PropTypes.object.isRequired
+  option: PropTypes.object.isRequired,
 };
 
-export default withStyles({}, { withTheme: true })(EchartCreator);
+export default EchartCreator;

@@ -1,9 +1,10 @@
 import React from "react";
 import RectangleAvatar from "./RectangleAvatar";
 import { IconButton, Icon } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 
-const styles = {
+const useStyles = makeStyles(({ palette, ...theme }) => ({
   root: {
     borderRadius: "8px",
     cursor: "pointer",
@@ -13,14 +14,14 @@ const styles = {
       paddingLeft: "8px",
       overflow: "hidden",
       "& .action-icon, & .rectangle-box": {
-        opacity: 1
-      }
+        opacity: 1,
+      },
     },
     "& .action-icon, & .rectangle-box": {
-      opacity: 0.76
-    }
-  }
-};
+      opacity: 0.76,
+    },
+  },
+}));
 
 const MatxListItem1 = ({
   title,
@@ -29,10 +30,11 @@ const MatxListItem1 = ({
   iconColor,
   bulletIcon,
   actionIcon,
-  classes
 }) => {
+  const classes = useStyles();
+
   return (
-    <div className={`${classes.root} matx-list-item-1 py-2 flex items-center`}>
+    <div className={clsx("py-2 flex items-center", classes.root)}>
       <RectangleAvatar
         color={iconColor}
         icon={bulletIcon}
@@ -53,4 +55,4 @@ const MatxListItem1 = ({
   );
 };
 
-export default withStyles(styles, { withTheme: true })(MatxListItem1);
+export default MatxListItem1;

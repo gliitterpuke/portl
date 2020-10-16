@@ -6,26 +6,27 @@ const ConfirmationDialog = ({
   onConfirmDialogClose,
   text,
   title = "confirm",
-  onYesClick
+  onYesClick,
 }) => {
   return (
-    <Dialog
-      maxWidth="xs"
-      fullWidth={true}
-      open={open}
-      onClose={onConfirmDialogClose}
-    >
-      <div className="p-5 pb-2">
+    <Dialog maxWidth="xs" open={open} onClose={onConfirmDialogClose}>
+      <div className="p-8 text-center w-360 mx-auto">
         <h4 className="capitalize m-0 mb-2">{title}</h4>
         <p>{text}</p>
-        <div className="flex justify-between pt-2">
-          <Button onClick={onYesClick} variant="contained" color="primary">
+        <div className="flex justify-center pt-2 m--2">
+          <Button
+            className="m-2 rounded hover-bg-primary px-6"
+            variant="outlined"
+            color="primary"
+            onClick={onYesClick}
+          >
             Yes
           </Button>
           <Button
-            onClick={onConfirmDialogClose}
-            variant="contained"
+            className="m-2 rounded hover-bg-secondary px-6"
+            variant="outlined"
             color="secondary"
+            onClick={onConfirmDialogClose}
           >
             No
           </Button>

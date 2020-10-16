@@ -27,6 +27,7 @@ export const positioningStyles = makeStyles(({ palette, ...theme }) => ({
     ".position-bottom": { position: "absolute", bottom: "0" },
     ".text-center": { textAlign: "center" },
     ".align-middle": { verticalAlign: "middle" },
+    ".align-center": { alignSelf: "center" },
     ".text-right": { textAlign: "right" },
     ".text-left": { textAlign: "left" },
     ".x-center": { left: "50%", transform: "translateX(-50%)" },

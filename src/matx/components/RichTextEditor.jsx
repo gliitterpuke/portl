@@ -1,14 +1,34 @@
+import "react-quill/dist/quill.snow.css";
 import React from "react";
 import PropTypes from "prop-types";
 import ReactQuill from "react-quill";
+import { makeStyles } from "@material-ui/core/styles";
 
-/*
- * Simple editor component that takes placeholder text as a prop
- */
+const useStyles = makeStyles(({ palette, ...theme }) => ({
+  editor: {
+    "& .ql-container": {
+      minHeight: 250,
+      borderBottomRightRadius: 8,
+      borderBottomLeftRadius: 8,
+      "& p,code": {
+        fontSize: 16,
+      },
+    },
+    "& .ql-toolbar": {
+      background: "white",
+      borderBottom: "none",
+      borderTopRightRadius: 8,
+      borderTopLeftRadius: 8,
+    },
+  },
+}));
 
 const RichTextEditor = ({ content, placeholder, handleContentChange }) => {
+  const classes = useStyles();
+
   return (
     <ReactQuill
+      className={classes.editor}
       theme="snow"
       onChange={handleContentChange}
       value={content}
@@ -43,12 +63,12 @@ RichTextEditor.modules = {
     [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
     [{ direction: "rtl" }], // text direction
 
-    ["clean"]
+    ["clean"],
   ],
   clipboard: {
     // toggle to add extra line breaks when pasting HTML:
-    matchVisual: true
-  }
+    matchVisual: true,
+  },
 };
 
 /*
@@ -77,14 +97,14 @@ RichTextEditor.formats = [
   "strike",
   "script",
   "underline",
-  "video"
+  "video",
 ];
 
 /*
  * PropType validation
  */
 RichTextEditor.propTypes = {
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
 };
 
 export default RichTextEditor;
