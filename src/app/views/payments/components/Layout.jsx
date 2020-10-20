@@ -1,6 +1,4 @@
 import React from "react"
-import styled from "@emotion/styled";
-import GlobalStyles from "./prebuilt/GlobalStyles";
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -22,7 +20,6 @@ const stripePromise = loadStripe('pk_test_51HN3fDEkWn13hvdtsBsDuCuRXcXIfHUEVLLPW
 const Layout = ({ children, title }) => {
   return (
     <>
-      <GlobalStyles />
         <title>{title}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />

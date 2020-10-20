@@ -1,93 +1,61 @@
-import React from "react"
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import styled from "@emotion/styled";
-import axios from "axios.js";
-import { button } from '@material-ui/core'
-
-import Row from "./prebuilt/Row";
-import BillingDetailsFields from "./prebuilt/BillingDetailsFields";
-import SubmitButton from "./prebuilt/SubmitButton";
 import CheckoutError from "./prebuilt/CheckoutError";
-
+import {
+  Card,
+  Grid,
+  Button,
+  MenuItem,
+} from "@material-ui/core";
+import { countries } from "../Country";
+import { useSelector, useDispatch } from "react-redux";
 import history from "../../../../history";
 import localStorageService from "../../../services/localStorageService";
-import { Breadcrumb } from "matx"
-import QRCode from 'react-google-qrcode'
+import axios from "axios.js"
+import {
+  getCartList,
+} from "app/redux/actions/EcommerceActions";
 
 let user = localStorageService.getItem('auth_user')
 
-const CardElementContainer = styled.div`
-  height: 40px;
-  display: flex;
-  align-items: center;
+const CARD_OPTIONS = {
+  iconStyle: 'solid',
+  style: {
+    base: {
+      iconColor: '#c4f0ff',
+      color: '#000000',
+      fontWeight: 500,
+      fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+      ':-webkit-autofill': {
+        color: '#fce883',
+      },
+      '::placeholder': {
+        color: '#87bbfd',
+      },
+    },
+    invalid: {
+      iconColor: '#ffc7ee',
+      color: '#ffc7ee',
+    },
+  },
+};
 
-  & .StripeElement {
-    width: 100%;
-    padding: 15px;
-  }
-`;
-
-const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
+const CheckoutForm = ({props, product}) => {
+  const [state, setState] = useState({});
   const [isProcessing, setProcessingTo] = useState(false);
   const [isAlipaying, setAlipayingTo] = useState(false);
-  const [isWeChatting, setWeChattingTo] = useState(false);
   const [checkoutError, setCheckoutError] = useState();
   const [type, setType] = useState('none')
-  const [wechat, setWechat] = useState('')
 
   const stripe = useStripe();
   const elements = useElements();
+  const dispatch = useDispatch();
+  
+  const { cartList = [] } = useSelector((state) => state.ecommerce);
 
-  const alipayResponse = async ev => {
-    var query = window.location.search;
-    var payment = query.match(/(?<=payment_intent_client_secret=)(.*)(?=\&product)/)
-    const prod = window.location.search.match(/(?<=product=)(.*)(?=\&)/)
-
-    const data = { 
-      professional_id: 1,
-      product_id: prod[0],
-      language_code: "eng",
-      client_id: user.id
-    }
-    setAlipayingTo(true);
-    stripe.retrievePaymentIntent(payment[0]).then(function(response) {
-      if (response.paymentIntent && response.paymentIntent.status === 'succeeded') {
-
-        axios.post("applications/", data).then(result => { 
-          console.log(result)
-          let user = localStorageService.getItem("auth_user")
-          user.applications.push(result.data)
-          localStorageService.setItem("auth_user", user)
-          let secondstate = user.applications.find (application => application.id === result.data.id);
-          const notification = {
-            title: "New Application",
-            description: `You have been assigned a new ${result.data.products[0].name}`,
-            category: "alert",
-            notify_at: new Date(),
-            go_to_path: `/profile`,
-            recipient_id: result.data.professional_id
-          }
-          axios.post("notifications", notification)
-          history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
-            setProcessingTo(false)
-            alert('Payment successful - now taking you to your application')
-        })
-        } else if (response.paymentIntent && response.paymentIntent.status === 'requires_payment_method') {
-          setAlipayingTo(false)
-          alert('Payment failed; please re-select your product and try again')
-          history.push('/products')
-        }
-        else {
-          console.log(response)
-        }
-    });
-  }
-  window.onload = function () {
-    if (window.location.search.length > 0) {
-      alipayResponse()
-    }
-  }
   const handleCardDetailsChange = ev => {
     ev.error ? setCheckoutError(ev.error.message) : setCheckoutError();
   };
@@ -100,29 +68,10 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
     setType('alipay')
   };
 
-  // FUTURE USE WECHAT
-  // const handleWeChatChange = async ev => {
-  //   setWeChattingTo(true);
-  //   const { prod } = props.location.state
-
-  //     const data = { 
-  //       professional_id: 1,
-  //       product_id: prod,
-  //       language_code: "eng",
-  //       client_id: user.id
-  //     }
-
-  //     const { source } = await stripe.createSource({
-  //       type: 'wechat',
-  //       amount: 50000,
-  //       currency: 'cad',
-  //     })
-  //       setType('wechat')
-  //       console.log(source.wechat.qr_code_url)
-  //       setWechat(source.wechat.qr_code_url)
-      
-
-  // };
+  const handleChange = (event) => {
+    event.persist();
+    setState({ ...state, [event.target.name]: event.target.value });
+  };
 
   const handleFormSubmit = async ev => {
     ev.preventDefault();
@@ -134,7 +83,8 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
       address: {
         city: ev.target.city.value,
         line1: ev.target.address.value,
-        state: ev.target.state.value,
+        state: ev.target.prov.value,
+        // country: ev.target.country.value,
         postal_code: ev.target.zip.value
       }
     };
@@ -191,7 +141,8 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
           recipient_id: 1
         }
         axios.post("notifications", notification)
-        const form = {    PersonalDetails_ServiceIn_ServiceIn: "01",
+        const form = {    
+    PersonalDetails_ServiceIn_ServiceIn: "01",
     PersonalDetails_VisaType_VisaType: "VisitorVisa",
     PersonalDetails_Name_FamilyName: user.client_profile.family_name,
     PersonalDetails_Name_GivenName: user.client_profile.given_names,
@@ -429,74 +380,239 @@ const CheckoutForm = ({ price, onSuccessfulCheckout, props }) => {
   
   }
 
-  const iframeStyles = {
-    base: {
-      color: "#fff",
-      fontSize: "16px",
-      iconColor: "#fff",
-      "::placeholder": {
-        color: "#87bbfd"
-      }
-    },
-    invalid: {
-      iconColor: "#FFC7EE",
-      color: "#FFC7EE"
-    },
-    complete: {
-      iconColor: "#cbf4c9"
-    }
-  };
+  const alipayResponse = async ev => {
+    const query = window.location.search;
+    const payment = query.match(/payment_intent_client_secret=(.*)&product/)
+    const prod = window.location.search.match(/&product=(.*)&redirect/)
 
-  const cardElementOpts = {
-    iconStyle: "solid",
-    style: iframeStyles,
-    hidePostalCode: true
-  };
+    dispatch(getCartList(prod[1]));
+
+    const data = { 
+      professional_id: 1,
+      product_id: prod[1],
+      language_code: "eng",
+      client_id: user.id
+    }
+    setAlipayingTo(true);
+    const response = await stripe.retrievePaymentIntent(payment[1])
+      if (response.paymentIntent && response.paymentIntent.status === 'succeeded') {
+
+        axios.post("applications/", data).then(result => { 
+          console.log(result)
+          let user = localStorageService.getItem("auth_user")
+          user.applications.push(result.data)
+          localStorageService.setItem("auth_user", user)
+          let secondstate = user.applications.find (application => application.id === result.data.id);
+          const notification = {
+            title: "New Application",
+            description: `You have been assigned a new ${result.data.products[0].name}`,
+            category: "alert",
+            notify_at: new Date(),
+            go_to_path: `/profile`,
+            recipient_id: result.data.professional_id
+          }
+          axios.post("notifications", notification)
+          history.push({pathname: `/application/${result.data.id}`, state: secondstate.id });
+            setProcessingTo(false)
+            alert('Payment successful - now taking you to your application')
+        })
+        } else if (response.paymentIntent && response.paymentIntent.status === 'requires_payment_method') {
+          setAlipayingTo(false)
+          alert('Payment failed; please re-select your product and try again')
+          history.push('/products')
+        }
+        else {
+          console.log(response)
+        }
+  }
+
+  // window.onload = function () {
+  //   alert('load damnit')
+  //   if (!stripe || !elements) {
+  //     // Stripe.js has not loaded yet. Make sure to disable
+  //     // form submission until Stripe.js has loaded.
+  //     return;
+  //   }
+
+  //   // if (window.location.search.length > 0) {
+  //   //   alipayResponse()
+  //   // }
+  // }
+
+  useEffect(() => {
+    if (!window.location.search > 0) {
+      dispatch(getCartList(props.location.state.prod));
+    }
+    else if (stripe) {
+      setTimeout(() => {
+        if (window.location.search.length > 0) {
+          console.log(stripe)
+          alipayResponse()
+        }
+      }, 3000);
+      return;
+    }
+  }, [dispatch]);  
+
+  let {
+    name,
+    email,
+    address,
+    city,
+    prov,
+    country,
+    zip
+  } = state;
 
   return (
-    <div>
-    <form onSubmit={handleFormSubmit}>
-      <div className="upload-form m-sm-30">
-        <div className="mb-sm-30">
-          <Breadcrumb routeSegments={[{ name: "Payment" }]} />
-        </div>
-      </div>
-      <Row>
-        <BillingDetailsFields />
-      </Row>
-      <Row>
-        <CardElementContainer>
-          <CardElement
-            options={cardElementOpts}
-            onChange={handleCardDetailsChange}
-          />
-        </CardElementContainer>
-      </Row>
-      {checkoutError && <CheckoutError>{checkoutError}</CheckoutError>}
-      <Row>
-        <SubmitButton name="payment" value="card" onClick={handleCardChange} disabled={isProcessing || !stripe}>
-          {isProcessing ? "Processing..." : `Pay $200`}
-        </SubmitButton>
-      </Row>
-      <Row>
-        <SubmitButton name="payment" value="alipay" onClick={handleAlipayChange} disabled={isAlipaying || !stripe}>
-          {isAlipaying ? "Processing..." : `Alipay`}
-        </SubmitButton>
-      </Row>
-    </form>
+    <Card className="checkout m-sm-30 p-sm-24">
+      <ValidatorForm onSubmit={handleFormSubmit} onError={(errors) => null}>
+        <h5 className="font-medium mt-0 mb-6">Billing Details</h5>
+        <Grid container spacing={3}>
+          <Grid item lg={7} md={7} sm={12} xs={12}>
+            <Grid container spacing={3} className="mb-2">
+              <Grid item xs={6}>
+                <TextValidator
+                  variant="outlined"
+                  label="Name"
+                  onChange={handleChange}
+                  type="text"
+                  name="name"
+                  value={name || ""}
+                  validators={["required"]}
+                  errorMessages={["this field is required"]}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextValidator
+                  className="mb-5"
+                  variant="outlined"
+                  label="Email"
+                  onChange={handleChange}
+                  type="email"
+                  name="email"
+                  value={email || ""}
+                  validators={["required", "isEmail"]}
+                  errorMessages={[
+                    "this field is required",
+                    "email is not valid",
+                  ]}
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
 
-      {/* <Row>
-        <SubmitButton name="payment" value="wechat" onClick={handleWeChatChange} disabled={isWeChatting || !stripe}>
-          {isWeChatting ? "Processing..." : `WeChat Pay`}
-        </SubmitButton>
-      </Row> */}
-      {type === 'wechat' && (
-      <QRCode
-          data={wechat}
-          size={115}
-        />
-      )}
-      </div>
+            <TextValidator
+              variant="outlined"
+              className="mb-5"
+              label="Address"
+              onChange={handleChange}
+              type="text"
+              name="address"
+              value={address || ""}
+              validators={["required"]}
+              errorMessages={["this field is required"]}
+              fullWidth
+            />
+
+            <Grid container spacing={3} className="mb-2">
+              <Grid item xs={6}>
+                <TextValidator
+                  variant="outlined"
+                  label="City"
+                  onChange={handleChange}
+                  type="text"
+                  name="city"
+                  value={city || ""}
+                  validators={["required"]}
+                  errorMessages={["this field is required"]}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextValidator
+                  variant="outlined"
+                  label="State/Province"
+                  onChange={handleChange}
+                  type="text"
+                  name="prov"
+                  value={prov || ""}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextValidator
+                  label="Country"
+                  select
+                  name="country"
+                  variant="outlined"
+                  value={country || ""}
+                  onChange={handleChange}
+                  fullWidth
+                >
+                  {countries.map((country) => (
+                    <MenuItem key={country.code} value={country.name}>
+                      {country.name}
+                    </MenuItem>
+                  ))}
+                </TextValidator>
+              </Grid>
+              <Grid item xs={6}>
+                <TextValidator
+                  variant="outlined"
+                  label="Postal/Zip Code"
+                  onChange={handleChange}
+                  type="text"
+                  name="zip"
+                  value={zip || ""}
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
+
+            <CardElement
+              options={CARD_OPTIONS} onChange={handleCardDetailsChange}
+            />
+            {checkoutError && <CheckoutError>{checkoutError}</CheckoutError>}
+          </Grid>
+          <Grid item lg={5} md={5} sm={12} xs={12}>
+            <div className="flex justify-between mb-4">
+              <h6 className="m-0">Product</h6>
+              <h6 className="m-0">Total Price</h6>
+            </div>
+            <div>
+              <div className="flex justify-between py-4">
+                <span className="text-muted pr-8">{cartList.name}</span>
+                <span className="text-muted">
+                  ${cartList.total_price}
+                </span>
+              </div>
+              <div className="flex justify-between mb-8 mt-4">
+                <h6 className="m-0">Total</h6>
+                <h6 className="m-0">${cartList.total_price}</h6>
+              </div>
+              <Button
+                name="payment"  value="card" onClick={handleCardChange} 
+                disabled={isProcessing || !stripe}
+                className="w-full" color="primary" variant="contained" type="submit"
+              >
+                {isProcessing ? "Processing..." : `Pay by Card`}
+              </Button>
+              <br/><br/>
+              <Button
+                name="payment"  value="card" onClick={handleAlipayChange} 
+                disabled={isAlipaying || !stripe}
+                className="w-full" color="secondary" variant="contained" type="submit"
+              >
+                {isAlipaying ? "Processing..." : `Alipay`}
+              </Button>
+            </div>
+          </Grid>
+        </Grid>
+      </ValidatorForm>
+
+    </Card>
   );
 };
 
