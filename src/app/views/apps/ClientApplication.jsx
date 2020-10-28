@@ -78,9 +78,7 @@ class ClientApplication extends Component {
     fileList: [],
     shouldShowConfirmationDialog: false,
     filename: "",
-    dragClass: "",
     files: [],
-    statusList: [],
     tags: "",
     status: "",
     blobs: [],
@@ -101,10 +99,6 @@ class ClientApplication extends Component {
       {
         target: ".web-upload",
         content: "Click here to upload your files",
-      },
-      {
-        target: ".tags-info",
-        content: "Choose which category your file belongs to",
       },
       {
         target: ".add-ons",
@@ -136,6 +130,7 @@ class ClientApplication extends Component {
     if (action === 'next' || 'start' ) {
       document.getElementsByClassName(step.target.replace('.', ''))[0].scrollIntoView({
         block: "center",
+        inline: "nearest"
       })
     } else {
       console.group(type);
@@ -376,7 +371,7 @@ class ClientApplication extends Component {
 
   render() {
     const { classes } = this.props;
-    let { dragClass, files, result, mobile, steps, run } = this.state;
+    let { files, result, mobile, steps, run } = this.state;
     let isEmpty = files.length === 0;
     let user = localStorageService.getItem("auth_user")
     let state = user.applications.find (application => application.id === this.props.location.state);
@@ -724,7 +719,7 @@ class ClientApplication extends Component {
             <Thead>
               <Tr className={classes.thAlign}>
                 <Th>Name</Th>
-                <Th className="tags-info">Category</Th>
+                <Th>Category</Th>
                 <Th>Actions</Th>
                 <Th>Status</Th>
               </Tr>

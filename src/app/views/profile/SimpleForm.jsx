@@ -7,7 +7,6 @@ class SimpleForm extends Component {
 
   render() {
     let user = localStorageService.getItem("auth_user")
-    console.log(user)
 
     return (
       <React.Fragment>

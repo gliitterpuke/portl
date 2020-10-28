@@ -28,7 +28,7 @@ class ClientViewer extends Component {
         <Grid container spacing={2}>
           <Grid item xs={8} lg={10} md={10} sm={10}>
           <br/><br/>
-            <Typography variant="h6">Profile</Typography>
+            <h4>Profile</h4>
           </Grid>
           <Grid item xs={4} lg={2} md={2}>
           <br/><br/>
@@ -40,7 +40,7 @@ class ClientViewer extends Component {
             <h5 className="font-normal mb-4 capitalize">
               <strong>First Name</strong>
             </h5>
-            <h6> {user.client_profile.given_names} </h6>
+            <p> {user.client_profile.given_names} </p>
           </Grid>
           <Grid item xs={12} md={4} sm={4}>
             <h5 className="font-normal mb-4 capitalize">

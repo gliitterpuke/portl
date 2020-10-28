@@ -35,7 +35,7 @@ const styles = theme => ({
     flexBasis: '33.33%',
     flexShrink: 0,
     alignSelf: "center",
-    fontFamily: "Lato",
+    // fontFamily: "Lato",
     // textTransform: "uppercase"
   },
   heading2: {
@@ -44,12 +44,12 @@ const styles = theme => ({
     flexBasis: '33.33%',
     flexShrink: 0,
     alignSelf: "center",
-    fontFamily: "Lato",
+    // fontFamily: "Lato",
   },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: 700,
-    fontFamily: "Lato",
+    // fontFamily: "Lato",
     color: theme.palette.text.secondary,
     flexShrink: 0,
     alignSelf: "center"
@@ -166,7 +166,7 @@ class ClientForm extends Component {
             </Grid>
             <Grid item xs={8} md={10} className="align-center">
               <h5>Click here to start the tour</h5>
-              <Button color="primary" variant="contained" onClick={this.handleClickStart}>Let's Go!</Button>
+              <Button color="primary" variant="contained" onClick={this.handleClickStart}><b>Let's Go!</b></Button>
             </Grid>
           </Grid>
         </Card>
@@ -187,13 +187,13 @@ class ClientForm extends Component {
           <br /><br />
           <Grid container spacing={2}>
             <Grid item xs={12} lg={10} md={10}>
-              <Typography variant="h6">Applications</Typography>
+              <h4>Applications</h4>
             </Grid>
             {isApp && (
             <Grid item xs={12} lg={2} md={2}>
               <Link to={`/products`}>
                 <Button color="primary" variant="contained" className="create-app">
-                  <span className={classes.iconalign}>Create New App</span>
+                  <span className={classes.iconalign}>New App</span>
                 </Button>
               </Link>
             </Grid>
@@ -212,7 +212,6 @@ class ClientForm extends Component {
             )}
           </Grid>
 
-          <br/><br/>
           {state.map((application) => (
           <Accordion className={classes.title}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>

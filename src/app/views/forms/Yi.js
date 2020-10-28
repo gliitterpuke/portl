@@ -38,12 +38,6 @@ const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
   },
-  snack: {
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    textColor: '#FFFFFF',
-    padding: '0 30px',
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-  },
   root: {
     maxWidth: 400,
     flexGrow: 1,
@@ -266,7 +260,7 @@ export const Yi = ({ formData, setFormData, nextStep, currentApp, saveData, coun
             <Snackbar open={open} autoHideDuration={1000} onClose={handleClose} 
               style={{ height: "100%" }}
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
-              <Alert onClose={handleClose} className={classes.snack}>
+              <Alert onClose={handleClose} className="bg-green">
                 Saved!
               </Alert>
             </Snackbar> 
